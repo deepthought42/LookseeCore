@@ -1188,12 +1188,12 @@ public class Browser {
 	 * @return
 	 */
 	public Alert isAlertPresent(){
-	    try { 
-	        return driver.switchTo().alert(); 
-	    }   // try 
-	    catch (NoAlertPresentException Ex) { 
-	        return null; 
-	    }   // catch 
+	    try {
+	        return driver.switchTo().alert();
+	    }   // try
+	    catch (NoAlertPresentException Ex) {
+	        return null;
+	    }   // catch
 	}
 
 	public boolean isDisplayed(ElementState element) {

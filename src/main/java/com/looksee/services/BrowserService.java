@@ -19,7 +19,6 @@ import javax.imageio.ImageIO;
 import javax.xml.xpath.XPathExpressionException;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpStatus;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Attribute;
 import org.jsoup.nodes.Attributes;
@@ -41,9 +40,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.google.cloud.storage.StorageException;
+import com.looksee.exceptions.ServiceUnavailableException;
 import com.looksee.gcp.CloudVisionUtils;
 import com.looksee.gcp.GoogleCloudStorage;
 import com.looksee.gcp.ImageSafeSearchAnnotation;
@@ -273,7 +272,7 @@ public class BrowserService {
 		
 		//html_doc.attr("id","");
 		for(Element element : html_doc.getAllElements()) {
-		    List<String>  attToRemove = new ArrayList<>();
+			List<String> attToRemove = new ArrayList<>();
 			for (Attribute a : element.attributes()) {
 				/*
 				if(element.tagName().contentEquals("img") && a.getKey().contentEquals("src")) {
@@ -282,12 +281,12 @@ public class BrowserService {
 				*/
 		        // transfer it into a list -
 		        // to be sure ALL data-attributes will be removed!!!
-		        attToRemove.add(a.getKey());
-		    }
+				attToRemove.add(a.getKey());
+			}
 
-		    for(String att : attToRemove) {
-		        element.removeAttr(att);
-		   }
+			for(String att : attToRemove) {
+				element.removeAttr(att);
+			}
 		}
 		
 		removeComments(html_doc);
@@ -333,24 +332,24 @@ public class BrowserService {
 	 * @param url_after_loading TODO
 	 * @param title TODO
 	 * @return page {@linkplain PageState}
-	 * @throws StorageException 
-	 * @throws GridException 
-	 * @throws IOException 
-	 * @throws XPathExpressionException 
-	 * @throws Exception 
+	 * @throws StorageException
+	 * @throws GridException
+	 * @throws IOException
+	 * @throws XPathExpressionException
+	 * @throws Exception
 	 * 
 	 * @pre browser != null
 	 * 
 	 * @Version - 9/18/2023
 	 */
-	public PageState buildPageState( URL url, 
-									Browser browser, 
-									boolean isSecure, 
+	public PageState buildPageState( URL url,
+									Browser browser,
+									boolean isSecure,
 									int httpStatus,
-									long audit_record_id ) 
-											throws WebDriverException, 
-													IOException, 
-													NullPointerException 
+									long audit_record_id )
+											throws WebDriverException,
+													IOException,
+													NullPointerException
 	{
 		assert browser != null;
 		assert url != null;
@@ -370,7 +369,7 @@ public class BrowserService {
 
 		if(Browser.is503Error(source)) {
 			browser.close();
-			throw new ServiceUnavailableException("503(Service Unavailable) Error encountered. Starting over..");
+			throw new ServiceUnavailableException("503(Service Unavailable) Error encountered.");
 		}
 		Document html_doc = Jsoup.parse(source);
 		Set<String> metadata = BrowserService.extractMetadata(html_doc);
@@ -1803,32 +1802,5 @@ public class BrowserService {
 			}
 		}
 		return element_state;
-	}
-}
-
-
-@ResponseStatus(HttpStatus.SEE_OTHER)
-class ServiceUnavailableException extends RuntimeException {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 794045239226319408L;
-
-	public ServiceUnavailableException(String msg) {
-		super(msg);
-	}
-}
-
-@ResponseStatus(HttpStatus.SEE_OTHER)
-class FiveZeroThreeException extends RuntimeException {
-
-	/**
-	 *
-	 */
-	private static final long serialVersionUID = 452417401491490882L;
-
-	public FiveZeroThreeException(String msg) {
-		super(msg);
 	}
 }

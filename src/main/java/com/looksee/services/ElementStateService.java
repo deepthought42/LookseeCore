@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 
-import com.looksee.ExistingRuleException;
+import com.looksee.exceptions.ExistingRuleException;
 import com.looksee.models.Domain;
 import com.looksee.models.Element;
 import com.looksee.models.ElementState;

@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import com.google.cloud.language.v1.AnalyzeSyntaxRequest;
 import com.google.cloud.language.v1.AnalyzeSyntaxResponse;
 import com.google.cloud.language.v1.Document;
+import com.google.cloud.language.v1.Document.Type;
 import com.google.cloud.language.v1.EncodingType;
 import com.google.cloud.language.v1.Entity;
 import com.google.cloud.language.v1.LanguageServiceClient;
