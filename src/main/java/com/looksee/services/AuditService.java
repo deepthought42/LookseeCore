@@ -1,6 +1,5 @@
 package com.looksee.services;
 
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -131,13 +130,13 @@ public class AuditService {
 			//load page state by url
 			PageState page_state = page_state_service.findByUrl(url);
 			SimplePage simple_page = new SimplePage(
-											page_state.getUrl(), 
-											page_state.getViewportScreenshotUrl(), 
-											page_state.getFullPageScreenshotUrl(), 
+											page_state.getUrl(),
+											page_state.getViewportScreenshotUrl(),
+											page_state.getFullPageScreenshotUrl(),
 											page_state.getFullPageWidth(),
 											page_state.getFullPageHeight(),
-											page_state.getSrc(), 
-											page_state.getKey(), 
+											page_state.getSrc(),
+											page_state.getKey(),
 											page_state.getId());
 			PageStateAudits page_state_audits = new PageStateAudits(simple_page, audit_url_map.get(url));
 			page_audits.add( page_state_audits ) ;
@@ -148,18 +147,16 @@ public class AuditService {
 	
 	
 	/**
-	 * Generates a {@linkplain Map} with element keys for it's keys and a set of issue keys associated 
-	 * 	with each element as the values
-	 * 
-	 * @param audits
-	 * @param page_url
-	 * @return
-	 * @throws MalformedURLException
+	 * Generates a {@linkplain Map} with element keys for it's keys and a set
+	 * of issue keys associated with each element as the values
+	 *
+	 * @param audits the {@link Set} of {@link Audit}s
+	 * @return the {@link Map}
 	 */
-	public Map<String, Set<String>> generateElementIssuesMap(Set<Audit> audits)  {		
+	public Map<String, Set<String>> generateElementIssuesMap(Set<Audit> audits)  {
 		Map<String, Set<String>> element_issues = new HashMap<>();
 				
-		for(Audit audit : audits) {	
+		for(Audit audit : audits) {
 			Set<UXIssueMessage> issues = getIssues(audit.getId());
 
 			for(UXIssueMessage issue_msg : issues ) {
@@ -187,21 +184,20 @@ public class AuditService {
 	}
 	
 	/**
-	 * WIP
+	 * Generates a {@linkplain Map} with issue keys for it's keys and a set of element keys associated 
+	 * 	with each issue as the values
 	 * 
-	 * @param audits
-	 * @param page_url
-	 * @return
-	 * @throws MalformedURLException
+	 * @param audits the {@link Set} of {@link Audit}s
+	 * @return the {@link Map}
 	 */
-	public Map<String, String> generateIssueElementMap(Set<Audit> audits)  {		
+	public Map<String, String> generateIssueElementMap(Set<Audit> audits)  {
 		Map<String, String> issue_element_map = new HashMap<>();
 				
 		for(Audit audit : audits) {	
 			Set<UXIssueMessage> issues = getIssues(audit.getId());
 
 			for(UXIssueMessage issue_msg : issues ) {
-				if(issue_msg.getType().equals(ObservationType.COLOR_CONTRAST) || 
+				if(issue_msg.getType().equals(ObservationType.COLOR_CONTRAST) ||
 						issue_msg.getType().equals(ObservationType.ELEMENT) ) {
 					ElementState element = ux_issue_service.getElement(issue_msg.getId());
 					if(element == null) {

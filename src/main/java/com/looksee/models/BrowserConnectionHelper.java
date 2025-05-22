@@ -50,8 +50,8 @@ public class BrowserConnectionHelper {
 	 * 
 	 * @return
 	 * 
-	 * @pre browser != null
-	 * @pre environment != null
+	 * precondition: browser != null
+	 * precondition: environment != null
 	 * 
 	 * @throws MalformedURLException
 	 */

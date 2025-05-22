@@ -46,7 +46,7 @@ public class PageStateService {
 	 * @return
 	 * @throws Exception
 	 *
-	 * @pre page_state != null
+	 * precondition: page_state != null
 	 */
 	public PageState save(PageState page_state) throws Exception {
 		assert page_state != null;
@@ -67,7 +67,7 @@ public class PageStateService {
 	 * @return
 	 * @throws Exception 
 	 * 
-	 * @pre page_state != null
+	 * precondition: page_state != null
 	 */
 	@Retry(name = "neoforj")
 	public PageState save(long audit_record_id, PageState page_state) throws Exception {

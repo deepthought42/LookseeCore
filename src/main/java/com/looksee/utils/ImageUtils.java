@@ -118,12 +118,13 @@ public class ImageUtils {
 	/**
 	 * Measures color frequency from the specified local image.
 	 * 
-	 * @param image_url
-	 * @throws IOException
+	 * @param buffered_image the image to extract properties from
+	 * @return a list of color usage statistics
+	 * @throws IOException if an error occurs
 	 */
 	public static List<ColorUsageStat> extractImageProperties(BufferedImage buffered_image) throws IOException {
 		int width = buffered_image.getWidth();
-		int height = buffered_image.getHeight();		
+		int height = buffered_image.getHeight();
 		
 		int desired_width = 768;
 		int desired_height = 1024;
@@ -205,7 +206,7 @@ public class ImageUtils {
 	 * @param x coordinate for x axis
 	 * @param y coordinate for y axis
 	 * 
-	 * @pre img != null
+	 * precondition: img != null
 	 * 
 	 * @return rgb value as a comma separated string ( ie. 255, 255, 255 ) 
 	 */
@@ -235,10 +236,11 @@ public class ImageUtils {
 	
 	/**
 	 * Extracts background color from element screenshot by identifying the most prevalent color and returning that color
-	 * @param element
-	 * @return
-	 * @throws MalformedURLException
-	 * @throws IOException
+	 * @param screenshot_url the url of the screenshot
+	 * @param font_color the font color
+	 * @return the background color
+	 * @throws MalformedURLException if the url is malformed
+	 * @throws IOException if an error occurs
 	 */
 	public static ColorData extractBackgroundColor(URL screenshot_url, ColorData font_color) throws IOException {
 		List<ColorUsageStat> color_data_list = new ArrayList<>();

@@ -42,14 +42,14 @@ public class ColorContrastIssueMessage extends ElementStateIssueMessage{
 	 * @param points_earned TODO
 	 * @param max_points TODO
 	 * @param recommendation TODO
-	 * @pre priority != null
-	 * @pre recommendation != null
-	 * @pre !recommendation.isEmpty()
-	 * @pre element != null
-	 * @pre foreground_color != null
-	 * @pre !foreground_color.isEmpty()
-	 * @pre assert background_color != null
-	 * @pre !background_color.isEmpty()
+	 * precondition: priority != null
+	 * precondition: recommendation != null
+	 * precondition: !recommendation.isEmpty()
+	 * precondition: element != null
+	 * precondition: foreground_color != null
+	 * precondition: !foreground_color.isEmpty()
+	 * precondition: assert background_color != null
+	 * precondition: !background_color.isEmpty()
 	 * 
 	 */
 	public ColorContrastIssueMessage(

@@ -84,15 +84,16 @@ public class BrowserService {
 	private GoogleCloudStorage googleCloudStorage;
 	
 	/**
-	 * retrieves a new browser connection
+	 * Retrieves a new browser connection
 	 *
-	 * @param browser_name name of the browser (ie. firefox, chrome)
+	 * @param browser the browser
+	 * @param browser_env the browser environment
 	 *
 	 * @return new {@link Browser} instance
 	 * @throws MalformedURLException
 	 *
-	 * @pre browser_name != null;
-	 * @pre !browser_name.isEmpty();
+	 * precondition: browser != null;
+	 * precondition: !browser_name.isEmpty();
 	 */
 	public Browser getConnection(BrowserType browser, BrowserEnvironment browser_env) throws MalformedURLException {
 		assert browser != null;
@@ -102,23 +103,26 @@ public class BrowserService {
 
 	/**
  	 * Constructs an {@link Element} from a JSOUP {@link Element element}
- 	 * 
-	 * @param xpath
-	 * @param attributes
-	 * @param element
-	 * @param web_elem
-	 * @param classification
-	 * @param rendered_css_values
-	 * @param screenshot_url TODO
-	 * @param css_selector TODO
-	 * @pre xpath != null && !xpath.isEmpty()
-	 * @pre attributes != null
-	 * @pre element != null
-	 * @pre classification != null
-	 * @pre rendered_css_values != null
-	 * @pre css_values != null
-	 * @pre screenshot != null
-	 * 
+ 	 *
+	 * @param xpath the xpath
+	 * @param attributes the attributes
+	 * @param element the element
+	 * @param classification the classification
+	 * @param rendered_css_values the rendered css values
+	 * @param screenshot_url the screenshot url
+	 * @param css_selector the css selector
+	 * @param element_size the element size
+	 * @param element_location the element location
+	 *
+	 * precondition: xpath != null
+	 * precondition: !xpath.isEmpty()
+	 * precondition: attributes != null
+	 * precondition: element != null
+	 * precondition: classification != null
+	 * precondition: rendered_css_values != null
+	 * precondition: css_values != null
+	 * precondition: screenshot != null
+	 *
 	 * @return {@link ElementState} based on {@link WebElement} and other params
 	 * @throws IOException
 	 * @throws MalformedURLException
@@ -169,22 +173,23 @@ public class BrowserService {
 
 	/**
 	 * Constructs and Image Element State
-	 * @param xpath
-	 * @param attributes
-	 * @param element
-	 * @param classification
-	 * @param rendered_css_values
-	 * @param screenshot_url
-	 * @param css_selector
-	 * @param landmark_info_set
-	 * @param faces
-	 * @param image_search_set
-	 * @param logos
-	 * @param labels
-	 * @param is_displayed
-	 * @param element_size
-	 * @param element_location
-	 * @return
+	 *
+	 * @param xpath the xpath
+	 * @param attributes the attributes
+	 * @param element the element
+	 * @param classification the classification
+	 * @param rendered_css_values the rendered css values
+	 * @param screenshot_url the screenshot url
+	 * @param css_selector the css selector
+	 * @param landmark_info_set the landmark info set
+	 * @param faces the faces
+	 * @param image_search_set the image search set
+	 * @param logos the logos
+	 * @param labels the labels
+	 * @param element_size the element size
+	 * @param element_location the element location
+	 *
+	 * @return {@link ElementState} based on {@link WebElement} and other params
 	 * @throws IOException
 	 */
 	public static ElementState buildImageElementState(
@@ -299,9 +304,9 @@ public class BrowserService {
 	
 	/**
 	 * Removes HTML comments from html string
-	 * 
+	 *
 	 * @param html
-	 * 
+	 *
 	 * @return html string without comments
 	 */
 	public static String removeComments(String html) {
@@ -309,16 +314,15 @@ public class BrowserService {
     }
 	
 	/**
-	 * Removes HTML comments from html string
-	 * 
-	 * @param html
-	 * 
-	 * @return html string without comments
+	 * Removes HTML comments from a {@link Element}
+	 *
+	 * @param e the element
 	 */
 	public static void removeComments(Element e) {
 		e.childNodes().stream()
-        	.filter(n -> n.nodeName().equals("#comment")).collect(Collectors.toList())
-        	.forEach(n -> n.remove());
+			.filter(n -> n.nodeName().equals("#comment"))
+			.collect(Collectors.toList())
+			.forEach(n -> n.remove());
 		e.children().forEach(elem -> removeComments(elem));
 	}
 	
@@ -327,20 +331,19 @@ public class BrowserService {
 	 * 	chat client from page if it exists. Finally it builds a {@link PageState}
 	 * 
 	 *Constructs a page object that contains all child elements that are considered to be potentially expandable.
-	 * @param isSecure TODO
-	 * @param httpStatus TODO
-	 * @param url_after_loading TODO
-	 * @param title TODO
+	 * @param url the {@link URL}
+	 * @param browser the {@link Browser}
+	 * @param isSecure true if the page is secure, false otherwise
+	 * @param httpStatus the http status code
+	 * @param audit_record_id the audit record id
+	 *
 	 * @return page {@linkplain PageState}
 	 * @throws StorageException
-	 * @throws GridException
 	 * @throws IOException
-	 * @throws XPathExpressionException
-	 * @throws Exception
-	 * 
-	 * @pre browser != null
-	 * 
-	 * @Version - 9/18/2023
+	 * @throws NullPointerException
+	 *
+	 * precondition: browser != null
+	 * precondition: url != null
 	 */
 	public PageState buildPageState( URL url,
 									Browser browser,
@@ -424,21 +427,19 @@ public class BrowserService {
 	/**
 	 * identify and collect data for elements within the Document Object Model
 	 *
-	 * @param domain_audit_id TODO
-	 * @param full_page_screenshot TODO
-	 * @param page_source
-	 * @param rule_sets TODO
-	 * @param reviewed_xpaths
+	 * @param domain_audit_id the domain audit id
+	 * @param page_state the {@link PageState}
+	 * @param xpaths the xpaths
+	 * @param browser the {@link Browser}
 	 *
-	 * @return List of ElementStates
+	 * @return List of {@link ElementState}s
 	 *
 	 * @throws Exception
 	 * @throws XPathExpressionException
 	 *
-	 * @pre xpaths != null
-	 * @pre browser != null
-	 * @pre element_states_map != null
-	 * @pre page_state != null
+	 * precondition: xpaths != null
+	 * precondition: browser != null
+	 * precondition: page_state != null
 	 */
 	public List<ElementState> getDomElementStates(
 			PageState page_state,
@@ -678,7 +679,7 @@ public class BrowserService {
 	 * @param web_elements
 	 * @param is_element_state
 	 *
-	 * @pre web_elements != null
+	 * precondition: web_elements != null
 	 *
 	 * @return filtered list of {@link Element}s
 	 */
@@ -745,7 +746,7 @@ public class BrowserService {
 	 *
 	 * @param tag_name
 	 *
-	 * @pre tag_name != null
+	 * precondition: tag_name != null
 	 *
 	 * @return true if tag name is html, body, link, title, script, meta, head, iframe, or noscript
 	 */
@@ -821,7 +822,7 @@ public class BrowserService {
 	 * Checks if {@link ElementState element} is visible in the current viewport window or not
 	 * 
 	 * @param browser {@link Browser browser} connection to use
-	 * @param location {@link ElementState element} to be be evaluated
+	 * @param element {@link ElementState element} to be be evaluated
 	 * 
 	 * @return true if element is rendered within viewport, otherwise false
 	 */
@@ -889,8 +890,8 @@ public class BrowserService {
 	/**
 	 * Get immediate parent elements for a given element
 	 *
-	 * @param elem	{@linkplain WebElement) to get parent of
-	 * @return parent {@linkplain WebElement)
+	 * @param elem	{@linkplain WebElement} to get parent of
+	 * @return parent {@linkplain WebElement}
 	 */
 	public WebElement getParentElement(WebElement elem) throws WebDriverException{
 		return elem.findElement(By.xpath(".."));
@@ -1110,10 +1111,12 @@ public class BrowserService {
 	/**
 	 * creates a unique xpath based on a given hash of xpaths
 	 *
-	 * @param driver
-	 * @param xpathHash
+	 * @param elem the {@link Element}
+	 * @param xpath the xpath
+	 * @param doc the {@link Document}
+	 * @param xpath_cnt the xpath count
 	 *
-	 * @return
+	 * @return the unique xpath
 	 */
 	public static String uniqifyXpath(Element elem, String xpath, Document doc, Map<String, Integer> xpath_cnt){
 		try {
@@ -1138,10 +1141,11 @@ public class BrowserService {
 	/**
 	 * creates a unique xpath based on a given hash of xpaths
 	 *
-	 * @param driver
-	 * @param xpathHash
+	 * @param driver the driver
+	 * @param xpath the xpath
+	 * @param elem the {@link WebElement}
 	 *
-	 * @return
+	 * @return the unique xpath
 	 */
 	public static String uniqifyXpath(WebElement elem, String xpath, WebDriver driver){
 		try {
@@ -1252,11 +1256,11 @@ public class BrowserService {
 	/**
 	 * Checks if Attributes contains keywords indicative of a slider
 	 * @param attributes
-	 * 
+	 *
 	 * @return true if any of keywords present, otherwise false
-	 * 
-	 * @pre attributes != null
-	 * @pre !attributes.isEmpty()
+	 *
+	 * precondition: attributes != null
+	 * precondition: !attributes.isEmpty()
 	 */
 	public static boolean doesAttributesContainSliderKeywords(Map<String, List<String>> attributes) {
 		assert attributes != null;
@@ -1271,7 +1275,7 @@ public class BrowserService {
 	
 	/**
 	 * Extracts template for element by using outer html and removing inner text
-	 * @param element {@link Element}
+	 * @param outerHtml the outer html of the element to extract template from
 	 * @return templated version of element html
 	 */
 	public static String extractTemplate(String outerHtml){
@@ -1398,10 +1402,10 @@ public class BrowserService {
 	}
 	
 	/**
-	 * 
-	 * @param src
-	 * @param driver TODO
-	 * @return
+	 * Extracts all unique xpaths from a given source code
+	 *
+	 * @param src the source code to extract xpaths from
+	 * @return a list of unique xpaths
 	 */
 	public List<String> extractAllUniqueElementXpaths(String src) {
 		assert src != null;
@@ -1459,7 +1463,7 @@ public class BrowserService {
 	 * the shortest unique xpath.
 	 *
 	 * @param xpath a valid xpath for a {@link WebElement}
-	 * @param driver a {@link WebDriver} connection to a selenium instance
+	 * @param driver the {@link WebDriver}
 	 *
 	 * @return a shortened unique xpath
 	 */
@@ -1502,7 +1506,7 @@ public class BrowserService {
 	 * the shortest unique xpath.
 	 *
 	 * @param xpath a valid xpath for a {@link WebElement}
-	 * @param driver a {@link WebDriver} connection to a selenium instance
+	 * @param html_doc a {@link Document}
 	 *
 	 * @return a shortened unique xpath
 	 */
@@ -1747,19 +1751,31 @@ public class BrowserService {
 	}
 
 	/**
-	 * Enriches image {@link ImageElementState element with information about the image including logos, labels, faces, places, etc.
-	 * 
-	 * @param element_state
-	 * @param page_state
-	 * @param browser
-	 * @param host
-	 * @return
+	 * Enriches an image element with information about the image including
+	 * logos, labels, faces, places, etc.
+	 *
+	 * @param element_state the element state to enrich
+	 * @param page_state the page state
+	 * @param browser the browser
+	 * @param host the host
+	 *
+	 * @return the enriched element state or the original element state if it
+	 * is not an image element
+	 *
+	 * precondition: element_state != null
 	 */
 	public ElementState enrichImageElement(ElementState element_state,
 											PageState page_state,
 											Browser browser,
 											String host)
-	{	
+	{
+		assert element_state != null;
+		assert page_state != null;
+		assert browser != null;
+		assert host != null;
+		assert element_state instanceof ImageElementState;
+		assert !element_state.getScreenshotUrl().isEmpty();
+		
 		if(element_state instanceof ImageElementState && !element_state.getScreenshotUrl().isEmpty()) {
 			BufferedImage element_screenshot;
 			try {
@@ -1794,10 +1810,8 @@ public class BrowserService {
 				image_element.setLabels(labels);
 				return image_element;
 			} catch (MalformedURLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

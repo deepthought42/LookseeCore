@@ -41,8 +41,8 @@ public class UXIssueMessageService {
 	 * 
 	 * @return updated {@link UXIssueMessage} object
 	 * 
-	 * @pre key != null
-	 * @pre !key.isEmpty()
+	 * precondition: key != null
+	 * precondition: !key.isEmpty()
 	 */
 	public UXIssueMessage findByKey(String key) {
 		assert key != null;
@@ -59,10 +59,10 @@ public class UXIssueMessageService {
 	 * 
 	 * @return updated UXIssueMessage record
 	 * 
-	 * @pre key != null
-	 * @pre !key.isEmpty()
-	 * @pre priority != null
-	 * @pre priority.isEmpty()
+	 * precondition: key != null
+	 * precondition: !key.isEmpty()
+	 * precondition: priority != null
+	 * precondition: priority.isEmpty()
 	 */
 	public UXIssueMessage addRecommendation(String key, String recommendation) {
 		assert key != null;
@@ -81,10 +81,10 @@ public class UXIssueMessageService {
 	 * @param priority to be set on observation
 	 * @return updated UXIssueMessage record
 	 * 
-	 * @pre key != null
-	 * @pre !key.isEmpty()
-	 * @pre priority != null
-	 * @pre priority.isEmpty()
+	 * precondition: key != null
+	 * precondition: !key.isEmpty()
+	 * precondition: priority != null
+	 * precondition: priority.isEmpty()
 	 */
 	public UXIssueMessage updatePriority(String key, String priority) {
 		assert key != null;

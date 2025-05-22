@@ -18,7 +18,7 @@ public class PageLoadAnimation extends LookseeObject {
 	 * 
 	 * @param image_urls 
 	 * 
-	 * @pre image_urls != null
+	 * precondition: image_urls != null
 	 */
 	public PageLoadAnimation(List<String> image_urls, List<String> image_checksums, String page_url) {
 		assert image_urls != null;

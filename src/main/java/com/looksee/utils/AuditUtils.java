@@ -159,14 +159,14 @@ public class AuditUtils {
 	public static boolean isPageAuditComplete(AuditRecord audit_record) {
 		return audit_record.getAestheticAuditProgress() >= 1 
 			&& audit_record.getContentAuditProgress() >= 1
-			&& audit_record.getInfoArchitechtureAuditProgress() >= 1
+			&& audit_record.getInfoArchitectureAuditProgress() >= 1
 			&& audit_record.getDataExtractionProgress() >= 1;
 	}
 
 	public static String getExperienceRating(PageAuditRecord audit_record) {
 		double score = audit_record.getAestheticAuditProgress();
 		score += audit_record.getContentAuditProgress();
-		score += audit_record.getInfoArchitechtureAuditProgress();
+		score += audit_record.getInfoArchitectureAuditProgress();
 		
 		double final_score = score / 3;
 		if(final_score >= 80) {
@@ -194,14 +194,14 @@ public class AuditUtils {
 
 	/**
 	 * Calculate the score for all audits that have the given subcategory
-	 * 
+	 *
 	 * @param audits
 	 * @param subcategory
-	 * 
+	 *
 	 * @return
-	 * 
-	 * @pre audits != null
-	 * @pre subcategory != null
+	 *
+	 * precondition: audits != null
+	 * precondition: subcategory != null
 	 */
 	public static double calculateSubcategoryScore(Set<Audit> audits, AuditSubcategory subcategory) {
 		assert audits != null;
@@ -209,12 +209,12 @@ public class AuditUtils {
 		
 		
 		List<Audit> filtered_audits = audits.parallelStream()
-				  .filter((s) -> (s.getTotalPossiblePoints() > 0 && s.getSubcategory().equals(subcategory)))
-			      .collect(Collectors.toList());
+				.filter((s) -> (s.getTotalPossiblePoints() > 0 && s.getSubcategory().equals(subcategory)))
+				.collect(Collectors.toList());
 
 		double scores_total = filtered_audits.parallelStream()
-				   .mapToDouble(x -> (x.getPoints() / (double)x.getTotalPossiblePoints()))
-				   .sum();
+				.mapToDouble(x -> (x.getPoints() / (double)x.getTotalPossiblePoints()))
+				.sum();
 
 		if(filtered_audits.isEmpty()) {
 			return -1.0;

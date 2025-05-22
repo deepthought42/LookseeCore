@@ -8,9 +8,14 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * Core Message object that defines global fields that are to be used by apage_idll Message objects
  */
+@Getter
+@Setter
 public abstract class Message {
 	private String messageId;
 
@@ -26,8 +31,9 @@ public abstract class Message {
 	}
 	
 	/**
-	 * 
-	 * @param account_id
+	 * Constructs a {@link Message} with the given account id
+	 *
+	 * @param account_id the account id
 	 */
 	public Message(long account_id){
 		this.messageId = UUID.randomUUID().toString();
@@ -35,28 +41,4 @@ public abstract class Message {
 		
 		setAccountId(account_id);
 	}
-	
-	public long getAccountId() {
-		return accountId;
-	}
-
-	protected void setAccountId(long account_id) {
-		this.accountId = account_id;
-	}
-
-	public String getMessageId() {
-		return messageId;
-    }
-
-    public void setMessageId(String messageId) {
-    	this.messageId = messageId;
-    }
-
-    public LocalDateTime getPublishTime() {
-    	return publishTime;
-    }
-
-    public void setPublishTime(LocalDateTime publishTime) {
-    	this.publishTime = publishTime;
-    }
 }

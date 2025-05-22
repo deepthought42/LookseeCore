@@ -11,19 +11,21 @@ import com.looksee.models.PageState;
 import com.looksee.models.journeys.Redirect;
 import com.looksee.models.journeys.Step;
 
-
+/**
+ * Utility class for path operations
+ */
 public class PathUtils {
 	@SuppressWarnings("unused")
 	private static Logger log = LoggerFactory.getLogger(PathUtils.class);
 
 	/**
 	 * Retrieves the last {@link PageState} in the given list of {@link LookseeObject}s
-	 * 
+	 *
 	 * @param pathObjects list of {@link LookseeObject}s in sequential order
-	 * 
+	 *
 	 * @return last page state in list
-	 * 
-	 * @pre pathObjects != null
+	 *
+	 * precondition: pathObjects != null
 	 */
 	public static PageState getLastPageStateOLD(List<LookseeObject> path_objects) {
 		assert(path_objects != null);
@@ -38,13 +40,13 @@ public class PathUtils {
 	}
 	
 	/**
-	 * Retrieves the last {@link PageState} in the given list of {@link LookseeObject}s
-	 * 
-	 * @param pathObjects list of {@link LookseeObject}s in sequential order
-	 * 
+	 * Retrieves the last {@link PageState} in the given list of {@link Step}s
+	 *
+	 * @param steps list of {@link Step}s in sequential order
+	 *
 	 * @return last page state in list
-	 * 
-	 * @pre pathObjects != null
+	 *
+	 * precondition: steps != null
 	 */
 	public static PageState getLastPageState(List<Step> steps) {
 		assert(steps != null);
@@ -57,13 +59,13 @@ public class PathUtils {
 	}
 	
 	/**
-	 * Retrieves the last {@link PageState} in the given list of {@link LookseeObject}s
-	 * 
-	 * @param pathObjects list of {@link LookseeObject}s in sequential order
-	 * 
-	 * @return last page state in list
-	 * 
-	 * @pre pathObjects != null
+	 * Retrieves the second to last {@link PageState} in the given list of {@link Step}s
+	 *
+	 * @param steps list of {@link Step}s in sequential order
+	 *
+	 * @return second to last page state in list
+	 *
+	 * precondition: steps != null
 	 */
 	public static PageState getSecondToLastPageState(List<Step> steps) {
 		assert(steps != null);
@@ -76,12 +78,17 @@ public class PathUtils {
 	}
 	
 	/**
-	 * 
-	 * 
-	 * @param path_keys
-	 * @return
+	 * Retrieves the index of the last {@link String} in the given list of {@link String}s that contains "elementstate"
+	 *
+	 * @param path_keys list of {@link String}s
+	 *
+	 * @return index of last element state in list
+	 *
+	 * precondition: path_keys != null
 	 */
 	public static int getIndexOfLastElementState(List<String> path_keys){
+		assert(path_keys != null);
+
 		for(int element_idx=path_keys.size()-1; element_idx >= 0; element_idx--){
 			if(path_keys.get(element_idx).contains("elementstate")){
 				return element_idx;
@@ -92,14 +99,20 @@ public class PathUtils {
 	}
 
 	/**
-	 * 
-	 * @param path_keys
-	 * @param path_objects
-	 * @return
+	 * Orders the given list of {@link LookseeObject}s based on the order of the given list of {@link String}s
+	 *
+	 * @param path_keys list of {@link String}s
+	 * @param path_objects list of {@link LookseeObject}s
+	 *
+	 * @return ordered list of {@link LookseeObject}s
+	 *
+	 * precondition: path_keys != null
+	 * precondition: path_objects != null
 	 */
 	public static List<LookseeObject> orderPathObjects(List<String> path_keys, List<LookseeObject> path_objects) {
 		List<LookseeObject> ordered_path_objects = new ArrayList<>();
 		List<String> temp_path_keys = new ArrayList<>(path_keys);
+		
 		//Ensure Order path objects
 		for(String path_obj_key : temp_path_keys){
 			for(LookseeObject obj : path_objects){
@@ -122,6 +135,14 @@ public class PathUtils {
 		return reduced_path_obj;
 	}
 
+	/**
+	 * Removes duplicate {@link LookseeObject}s from the given list of {@link LookseeObject}s
+	 *
+	 * @param ordered_path_objects list of {@link LookseeObject}s
+	 *
+	 * @return list of {@link LookseeObject}s with duplicates removed
+	 *
+	 */
 	public static List<LookseeObject> reducePathObjects(List<LookseeObject> ordered_path_objects) {
 		//scrub path objects for duplicates
 		List<LookseeObject> reduced_path_objs = new ArrayList<>();
@@ -136,6 +157,15 @@ public class PathUtils {
 		return reduced_path_objs;
 	}
 
+	/**
+	 * Retrieves the first {@link PageState} in the given list of {@link LookseeObject}s
+	 *
+	 * @param ordered_path_objects list of {@link LookseeObject}s
+	 *
+	 * @return first page state in list
+	 *
+	 * precondition: ordered_path_objects != null
+	 */
 	public static PageState getFirstPage(List<LookseeObject> ordered_path_objects) {
 		//find first page
 		for(LookseeObject obj : ordered_path_objects){
@@ -147,6 +177,15 @@ public class PathUtils {
 		return null;
 	}
 
+	/**
+	 * Retrieves the second to last {@link PageState} in the given list of {@link LookseeObject}s
+	 *
+	 * @param path_objects list of {@link LookseeObject}s
+	 *
+	 * @return second to last page state in list
+	 *
+	 * precondition: path_objects != null
+	 */
 	public static PageState getSecondToLastPageStateOLD(List<LookseeObject> path_objects) {
 		assert(path_objects != null);
 		
@@ -164,6 +203,15 @@ public class PathUtils {
 		return null;
 	}
 
+	/**
+	 * Removes duplicate {@link String}s from the given list of {@link String}s
+	 *
+	 * @param final_key_list list of {@link String}s
+	 *
+	 * @return list of {@link String}s with duplicates removed
+	 *
+	 * precondition: final_key_list != null
+	 */
 	public static List<String> reducePathKeys(List<String> final_key_list) {
 		//scrub path objects for duplicates
 		List<String> reduced_path_keys = new ArrayList<>();
@@ -178,11 +226,13 @@ public class PathUtils {
 	}
 
 	/**
-	 * 
-	 * @param pathObjects
-	 * @return
-	 * 
-	 * @pre !pathObjects.isEmpty()
+	 * Retrieves the first {@link String} in the given list of {@link LookseeObject}s
+	 *
+	 * @param pathObjects list of {@link LookseeObject}s
+	 *
+	 * @return first url in list
+	 *
+	 * precondition: !pathObjects.isEmpty()
 	 */
 	public static String getFirstUrl_OLD(List<LookseeObject> pathObjects) {
 		assert !pathObjects.isEmpty();
@@ -203,11 +253,13 @@ public class PathUtils {
 	}
 	
 	/**
-	 * 
-	 * @param steps
-	 * @return
-	 * 
-	 * @pre !pathObjects.isEmpty()
+	 * Retrieves the first {@link String} in the given list of {@link Step}s
+	 *
+	 * @param steps list of {@link Step}s
+	 *
+	 * @return first url in list
+	 *
+	 * precondition: !steps.isEmpty()
 	 */
 	public static String getFirstUrl(List<Step> steps) {
 		assert !steps.isEmpty();

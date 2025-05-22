@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import org.aspectj.weaver.ast.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.neo4j.core.schema.CompositeProperty;
@@ -15,87 +14,164 @@ import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.looksee.models.enums.ElementClassification;
 import com.looksee.services.BrowserService;
 
+import lombok.Getter;
+import lombok.Setter;
+
 
 /**
- * Contains all the pertinent information for an element on a page. A ElementState
- *  may be a Parent and/or child of another ElementState. This heirarchy is not
- *  maintained by ElementState though. 
+ * Represents the state of an HTML element on a webpage, including its properties and attributes
+ *
+ * This class represents the state of an HTML element with the following invariants:
+ * - outerHtml must not be null
+ * - xpath must not be null
+ * - key must not be null
+ * - attributes must not be null
+ * - renderedCssValues must not be null
+ * - classification must not be null
+ *
+ * The class is responsible for:
+ * - Storing element properties like text, location and dimensions
+ * - Maintaining element styling and rendering information
+ * - Providing element identification via key and xpath
+ * - Supporting element classification and type information
+ *
+ * This class collaborates with:
+ * - ElementClassification to handle element type classification
+ * - BrowserService to handle key generation
  */
-@JsonSubTypes({ 
-  @Type(value = ImageElementState.class, name = "ImageElementState"), 
+@JsonSubTypes({
+	@Type(value = ImageElementState.class, name = "ImageElementState"),
 })
 @Node
 public class ElementState extends LookseeObject implements Comparable<ElementState> {
 	@SuppressWarnings("unused")
 	private static Logger log = LoggerFactory.getLogger(ElementState.class);
 
-	private String name;
-	private String ownedText;
-	private String allText;
-	private String cssSelector;
-	private String outerHtml;
-	private String xpath;
 	private String classification;
+
+	@Getter
+	@Setter
+	private String outerHtml;
+
+	@Getter
+	@Setter
+	private String name;
+
+	@Getter
+	@Setter
+	private String ownedText;
+
+	@Getter
+	@Setter
+	private String allText;
+	
+	@Getter
+	@Setter
+	private String cssSelector;
+	
+	@Getter
+	@Setter
+	private String xpath;
+
+	@Getter
+	@Setter
 	private String screenshotUrl;
+
+	@Getter
+	@Setter
 	private String backgroundColor;
+
+	@Getter
+	@Setter
 	private String foregroundColor;
+
+	@Getter
+	@Setter
 	private int xLocation;
+
+	@Getter
+	@Setter
 	private int yLocation;
+
+	@Getter
+	@Setter
 	private int width;
+
+	@Getter
+	@Setter
 	private int height;
+
+	@Getter
+	@Setter
 	private double textContrast;
+
+	@Getter
+	@Setter
 	private double nonTextContrast;
+
+	@Getter
+	@Setter
 	private boolean imageFlagged;
-		
+	
+	@Getter
 	@CompositeProperty
 	private Map<String, String> renderedCssValues = new HashMap<>();
 	
+	@Getter
+	@Setter
 	@CompositeProperty
 	private Map<String, String> attributes = new HashMap<>();
 	
-	/*
-	@Relationship(type = "HAS_CHILD", direction = Direction.OUTGOING)
-	private List<ElementState> childElements = new ArrayList<>();
-*/
+	/**
+	 * Constructs an {@link ElementState} object
+	 */
 	public ElementState(){
 		super();
 	}
 	
 	/**
-	 * 
-	 * @param all_text TODO
-	 * @param xpath
-	 * @param name
-	 * @param attributes
-	 * @param css_map
-	 * @param outer_html TODO
-	 * @param css_selector TODO
-	 * @param font_color TODO
-	 * @param background_color TODO
-	 * @param image_flagged TODO
-	 * @param text
-	 * @pre xpath != null
-	 * @pre name != null
-	 * @pre screenshot_url != null
-	 * @pre !screenshot_url.isEmpty()
-	 * @pre outer_html != null;
-	 * @pre !outer_html.isEmpty()
+	 * Constructs an {@link ElementState} object with the given parameters
+	 *
+	 * @param owned_text the text owned by the element
+	 * @param all_text the text of the element
+	 * @param xpath the xpath of the element
+	 * @param name the name of the element
+	 * @param attributes the attributes of the element
+	 * @param css_map the css map of the element
+	 * @param screenshot_url the screenshot url of the element
+	 * @param x_location the x location of the element
+	 * @param y_location the y location of the element
+	 * @param width the width of the element
+	 * @param height the height of the element
+	 * @param classification the classification of the element
+	 * @param outer_html the outer html of the element
+	 * @param css_selector the css selector of the element
+	 * @param font_color the font color of the element
+	 * @param background_color the background color of the element
+	 * @param image_flagged whether the element is an image
+	 *
+	 * precondition: xpath != null
+	 * precondition: name != null
+	 * precondition: screenshot_url != null
+	 * precondition: !screenshot_url.isEmpty()
+	 * precondition: outer_html != null;
+	 * precondition: !outer_html.isEmpty()
 	 */
-	public ElementState(String owned_text, 
-						String all_text, 
-						String xpath, 
-						String name, 
-						Map<String, String> attributes, 
-						Map<String, String> css_map, 
-						String screenshot_url, 
-						int x_location, 
-						int y_location, 
+	public ElementState(String owned_text,
+						String all_text,
+						String xpath,
+						String name,
+						Map<String, String> attributes,
+						Map<String, String> css_map,
+						String screenshot_url,
+						int x_location,
+						int y_location,
 						int width,
-						int height, 
-						ElementClassification classification, 
-						String outer_html, 
-						String css_selector, 
-						String font_color, 
+						int height,
+						ElementClassification classification,
+						String outer_html,
+						String css_selector,
+						String font_color,
 						String background_color,
 						boolean image_flagged){
 		assert name != null;
@@ -127,7 +203,7 @@ public class ElementState extends LookseeObject implements Comparable<ElementSta
 	}
 	
 	/**
-	 * Print Attributes for this element in a prettyish format
+	 * Prints the attributes of the element in a prettyish format
 	 */
 	public void printAttributes(){
 		System.out.print("+++++++++++++++++++++++++++++++++++++++");
@@ -139,39 +215,13 @@ public class ElementState extends LookseeObject implements Comparable<ElementSta
 	}
 	
 	/** GETTERS AND SETTERS  **/
-		
-	public String getName() {
-		return name;
-	}
 	
-	public void setName(String tagName) {
-		this.name = tagName;
-	}
-	
-	public String getOwnedText() {
-		return ownedText;
-	}
-	
-	public void setOwnedText(String text) {
-		this.ownedText = text;
-	}
-	
-	public String getAllText() {
-		return allText;
-	}
-	
-	public void setAllText(String text) {
-		this.allText = text;
-	}
-
-	public void setAttributes(Map<String, String> attribute_persist_list) {
-		this.attributes = attribute_persist_list;
-	}
-
-	public Map<String, String> getAttributes() {
-		return attributes;
-	}
-	
+	/**
+	 * Gets the attribute of the element with the given name
+	 *
+	 * @param attr_name the name of the attribute
+	 * @return the attribute value
+	 */
 	public String getAttribute(String attr_name){
 		//get id for element
 		for(String tag_attr : this.attributes.keySet()){
@@ -183,51 +233,32 @@ public class ElementState extends LookseeObject implements Comparable<ElementSta
 		return null;
 	}
 	
-
+	/**
+	 * Adds an attribute to the element
+	 *
+	 * @param attribute the name of the attribute
+	 * @param values the value of the attribute
+	 */
 	public void addAttribute(String attribute, String values) {
 		this.attributes.put(attribute, values);
 	}
-	
-	public String getScreenshotUrl() {
-		return this.screenshotUrl;
-	}
-
-	public void setScreenshotUrl(String screenshot_url) {
-		this.screenshotUrl = screenshot_url;
-	}
 
 	/**
-	 * Generates a key using both path and result in order to guarantee uniqueness of key as well 
-	 * as easy identity of {@link Test} when generated in the wild via discovery
-	 * 
-	 * @return
+	 * Generates a key using both path and result in order to guarantee uniqueness
+	 *
+	 * @return the key
 	 */
 	public String generateKey() {
 		String generalized_html = BrowserService.generalizeSrc(getOuterHtml());
-		//String attributes = "";
-		//List<String> ordered_attribute_keys = getAttributes().keySet().stream().sorted().collect(Collectors.toList());
 		
-		//for(String attr_key : ordered_attribute_keys) {
-		//	attributes += getAttributes().get(attr_key);
-		//}
 		return "elementstate"+org.apache.commons.codec.digest.DigestUtils.sha256Hex(generalized_html);
-		/*
-		String key = "";
-		List<String> properties = new ArrayList<>(getRenderedCssValues().keySet());
-		Collections.sort(properties);
-		for(String style : properties) {
-			key += getRenderedCssValues().get(style);
-		}
-		
-		return "elementstate"+org.apache.commons.codec.digest.DigestUtils.sha256Hex(key)+org.apache.commons.codec.digest.DigestUtils.sha256Hex(getOuterHtml());
-		*/
 	}
 
 	/**
 	 * Checks if {@link ElementState elements} are equal
-	 * 
-	 * @param elem
-	 * @return whether or not elements are equal
+	 *
+	 * @param o the object to compare to
+	 * @return true if the elements are equal, false otherwise
 	 */
 	@Override
 	public boolean equals(Object o){
@@ -245,6 +276,9 @@ public class ElementState extends LookseeObject implements Comparable<ElementSta
 		return Objects.hash(outerHtml, xpath);
 	}
 
+	/**
+	 * Prints the attributes of the element in a prettyish format
+	 */
 	public void print() {
 		log.warn("element key :: "+getKey());
 		log.warn("element desc :: "+getId());
@@ -273,6 +307,11 @@ public class ElementState extends LookseeObject implements Comparable<ElementSta
 		
 	}
 	
+	/**
+	 * Clones the element
+	 *
+	 * @return the cloned element
+	 */
 	public ElementState clone() {
 		ElementState page_elem = new ElementState();
 		page_elem.setAttributes(this.getAttributes());
@@ -291,57 +330,15 @@ public class ElementState extends LookseeObject implements Comparable<ElementSta
 		return page_elem;
 	}
 
-	public int getXLocation() {
-		return xLocation;
-	}
-
-	public void setXLocation(int x_location) {
-		this.xLocation = x_location;
-	}
-
-	public int getYLocation() {
-		return yLocation;
-	}
-
-	public void setYLocation(int y_location) {
-		this.yLocation = y_location;
-	}
-
-	public int getWidth() {
-		return width;
-	}
-
-	public void setWidth(int width) {
-		this.width = width;
-	}
-
-	public int getHeight() {
-		return height;
-	}
-
-	public void setHeight(int height) {
-		this.height = height;
-	}
-
+	/**
+	 * Compares two elements
+	 *
+	 * @param o the element to compare to
+	 * @return the comparison result
+	 */
 	@Override
 	public int compareTo(ElementState o) {
         return this.getKey().compareTo(o.getKey());
-	}
-
-	public String getCssSelector() {
-		return cssSelector;
-	}
-
-	public void setCssSelector(String css_selector) {
-		this.cssSelector = css_selector;
-	}
-
-	public void setOuterHtml(String outer_html) {
-		this.outerHtml = outer_html;
-	}
-
-	public String getOuterHtml() {
-		return outerHtml;
 	}
 
 	public ElementClassification getClassification() {
@@ -351,73 +348,8 @@ public class ElementState extends LookseeObject implements Comparable<ElementSta
 	public void setClassification(ElementClassification classification) {
 		this.classification = classification.toString();
 	}
-	
-	/*
-	public List<ElementState> getChildElements() {
-		return childElements;
-	}
-
-	public void setChildElements(List<ElementState> child_elements) {
-		this.childElements = child_elements;
-	}
-	
-	public void addChildElement(ElementState child_element) {
-		this.childElements.add(child_element);
-	}
-*/
-	public Map<String, String> getRenderedCssValues() {
-		return renderedCssValues;
-	}
 
 	public void setRenderedCssValues(Map<String, String> rendered_css_values) {
 		this.renderedCssValues.putAll(rendered_css_values);
-	}
-
-	public String getXpath() {
-		return xpath;
-	}
-
-	public void setXpath(String xpath) {
-		this.xpath = xpath;
-	}
-
-	public double getTextContrast() {
-		return textContrast;
-	}
-
-	public void setTextContrast(double text_contrast) {
-		this.textContrast = text_contrast;
-	}
-
-	public double getNonTextContrast() {
-		return nonTextContrast;
-	}
-
-	public void setNonTextContrast(double non_text_contrast) {
-		this.nonTextContrast = non_text_contrast;
-	}
-
-	public String getBackgroundColor() {
-		return backgroundColor;
-	}
-
-	public void setBackgroundColor(String background_color) {
-		this.backgroundColor = background_color;
-	}
-	
-	public String getForegroundColor() {
-		return foregroundColor;
-	}
-
-	public void setForegroundColor(String foreground_color) {
-		this.foregroundColor = foreground_color;
-	}
-
-	public boolean isImageFlagged() {
-		return imageFlagged;
-	}
-
-	public void setImageFlagged(boolean image_flagged) {
-		this.imageFlagged = image_flagged;
 	}
 }

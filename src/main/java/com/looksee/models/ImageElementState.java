@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.neo4j.core.schema.Node;
@@ -14,6 +13,30 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.looksee.gcp.ImageSafeSearchAnnotation;
 import com.looksee.models.enums.ElementClassification;
 
+import lombok.Getter;
+import lombok.Setter;
+
+/**
+ * Represents the state of an image element in a web page, including its visual properties,
+ * content analysis results, and safety classifications.
+ *
+ * <p><b>Class Invariants:</b>
+ * <ul>
+ *   <li>logos, labels, landmarkInfoSet, and faces sets are never null</li>
+ *   <li>adult, racy, and violence fields contain safety classification strings when set</li>
+ *   <li>inherits all invariants from ElementState parent class</li>
+ * </ul>
+ *
+ * <p><b>Usage:</b>
+ * <ul>
+ *   <li>Stores image analysis results including logos, landmarks, faces, and labels detected</li>
+ *   <li>Tracks safety classifications for adult, racy and violent content</li>
+ *   <li>Maintains relationships to related image analysis entities in the graph database</li>
+ *   <li>Used for content moderation and image understanding features</li>
+ * </ul>
+ */
+@Getter
+@Setter
 @Node
 public class ImageElementState extends ElementState {
 	@SuppressWarnings("unused")
@@ -48,54 +71,53 @@ public class ImageElementState extends ElementState {
 	}
 	
 	/**
-	 * Constructor
-	 * 
-	 * @param owned_text
-	 * @param all_text
-	 * @param xpath
-	 * @param tagName
-	 * @param attributes
-	 * @param rendered_css_values
+	 * Constructor for an image element state.
+	 *
+	 * @param owned_text the owned text of the element
+	 * @param all_text the all text of the element
+	 * @param xpath the xpath of the element
+	 * @param tagName the tag name of the element
+	 * @param attributes the attributes of the element
+	 * @param rendered_css_values the rendered css values of the element
 	 * @param screenshot_url
 	 * @param x
 	 * @param y
-	 * @param width
-	 * @param height
-	 * @param classification
-	 * @param outer_html
-	 * @param is_visible visibility of the {@linkplain WebElement}
-	 * @param css_selector
-	 * @param foreground_color
-	 * @param background_color
-	 * @param landmark_info_set
-	 * @param faces
-	 * @param image_search
-	 * @param logos
-	 * @param labels
-	 * @param safe_search_annotation
+	 * @param width the width of the element
+	 * @param height the height of the element
+	 * @param classification the classification of the element
+	 * @param outer_html the outer html of the element
+	 * @param css_selector the css selector of the element
+	 * @param foreground_color the foreground color of the element
+	 * @param background_color the background color of the element
+	 * @param landmark_info_set the landmark info set of the element
+	 * @param faces the faces of the element
+	 * @param image_search the image search of the element
+	 * @param logos the logos of the element
+	 * @param labels the labels of the element
+	 * @param safe_search_annotation the safe search annotation of the element
 	 */
-	public ImageElementState(String owned_text, 
-							 String all_text, 
-							 String xpath, 
-							 String tagName, 
-							 Map<String, String> attributes,
-							 Map<String, String> rendered_css_values, 
-							 String screenshot_url, 
-							 int x, 
-							 int y, 
-							 int width, 
-							 int height,
-							 ElementClassification classification, 
-							 String outer_html, 
-							 String css_selector,
-							 String foreground_color, 
-							 String background_color, 
-							 Set<ImageLandmarkInfo> landmark_info_set,
-							 Set<ImageFaceAnnotation> faces, 
-							 ImageSearchAnnotation image_search, 
-							 Set<Logo> logos,
-							 Set<Label> labels, 
-							 ImageSafeSearchAnnotation safe_search_annotation
+	public ImageElementState(String owned_text,
+							String all_text,
+							String xpath,
+							String tagName,
+							Map<String, String> attributes,
+							Map<String, String> rendered_css_values,
+							String screenshot_url,
+							int x,
+							int y,
+							int width,
+							int height,
+							ElementClassification classification,
+							String outer_html,
+							String css_selector,
+							String foreground_color,
+							String background_color,
+							Set<ImageLandmarkInfo> landmark_info_set,
+							Set<ImageFaceAnnotation> faces,
+							ImageSearchAnnotation image_search,
+							Set<Logo> logos,
+							Set<Label> labels,
+							ImageSafeSearchAnnotation safe_search_annotation
 	) {
 		super(owned_text,
 				all_text,
@@ -124,27 +146,52 @@ public class ImageElementState extends ElementState {
 		setViolence(safe_search_annotation.getViolence());
 	}
 	
-	public ImageElementState(String owned_text, 
-			 String all_text, 
-			 String xpath, 
-			 String tagName, 
-			 Map<String, String> attributes,
-			 Map<String, String> rendered_css_values, 
-			 String screenshot_url, 
-			 int x, 
-			 int y, 
-			 int width, 
-			 int height,
-			 ElementClassification classification, 
-			 String outer_html, 
-			 String css_selector,
-			 String foreground_color, 
-			 String background_color, 
-			 Set<ImageLandmarkInfo> landmark_info_set,
-			 Set<ImageFaceAnnotation> faces, 
-			 ImageSearchAnnotation image_search, 
-			 Set<Logo> logos,
-			 Set<Label> labels) 
+	/**
+	 * Constructor for an image element state.
+	 * 
+	 * @param owned_text the owned text of the element
+	 * @param all_text the all text of the element
+	 * @param xpath the xpath of the element
+	 * @param tagName the tag name of the element
+	 * @param attributes the attributes of the element
+	 * @param rendered_css_values the rendered css values of the element
+	 * @param screenshot_url the screenshot url of the element
+	 * @param x the x coordinate of the element
+	 * @param y the y coordinate of the element
+	 * @param width the width of the element
+	 * @param height the height of the element
+	 * @param classification the classification of the element
+	 * @param outer_html the outer html of the element
+	 * @param css_selector the css selector of the element
+	 * @param foreground_color the foreground color of the element
+	 * @param background_color the background color of the element
+	 * @param landmark_info_set the landmark info set of the element
+	 * @param faces the faces of the element
+	 * @param image_search the image search of the element
+	 * @param logos the logos of the element
+	 * @param labels the labels of the element
+	 */
+	public ImageElementState(String owned_text,
+							String all_text,
+							String xpath,
+							String tagName,
+							Map<String, String> attributes,
+							Map<String, String> rendered_css_values,
+							String screenshot_url,
+							int x,
+							int y,
+							int width,
+							int height,
+							ElementClassification classification,
+							String outer_html,
+							String css_selector,
+							String foreground_color,
+							String background_color,
+							Set<ImageLandmarkInfo> landmark_info_set,
+							Set<ImageFaceAnnotation> faces,
+							ImageSearchAnnotation image_search,
+							Set<Logo> logos,
+							Set<Label> labels)
 	{
 		super(owned_text,
 				all_text,
@@ -170,73 +217,28 @@ public class ImageElementState extends ElementState {
 			setLabels(labels);
 	}
 
-	public Set<Logo> getLogos() {
-		return logos;
-	}
-	public void setLogos(Set<Logo> logos) {
-		this.logos = logos;
-	}
-	public Set<Label> getLabels() {
-		return labels;
-	}
-	public void setLabels(Set<Label> labels) {
-		this.labels = labels;
-	}
-	public Set<ImageLandmarkInfo> getLandmarkInfoSet() {
-		return landmarkInfoSet;
-	}
-	public void setLandmarkInfoSet(Set<ImageLandmarkInfo> landmark_info_set) {
-		this.landmarkInfoSet = landmark_info_set;
-	}
-	public Set<ImageFaceAnnotation> getFaces() {
-		return faces;
-	}
-	public void setFaces(Set<ImageFaceAnnotation> faces) {
-		this.faces = faces;
-	}
-	public ImageSearchAnnotation getImageSearchSet() {
-		return imageSearchSet;
-	}
-	public void setImageSearchSet(ImageSearchAnnotation image_search_set) {
-		this.imageSearchSet = image_search_set;
-	}
-
+	/**
+	 * Checks if the image element state contains adult content.
+	 *
+	 * @return true if the image element state contains adult content, false otherwise
+	 */
 	@JsonIgnore
 	public boolean isAdultContent() {
 		if(getAdult() == null || getRacy() == null) {
 			return false;
 		}
 		return getAdult().contains("LIKELY")
-				|| getRacy().contains("LIKELY");					
+				|| getRacy().contains("LIKELY");
 	}
-	
+
+	/**
+	 * Checks if the image element state contains violent content.
+	 *
+	 * @return true if the image element state contains violent content, false otherwise
+	 */
 	@JsonIgnore
 	public boolean isViolentContent() {
 		return getViolence().contains("LIKELY");
 					
-	}
-
-	public String getAdult() {
-		return adult;
-	}
-
-	public void setAdult(String adult) {
-		this.adult = adult;
-	}
-
-	public String getRacy() {
-		return racy;
-	}
-
-	public void setRacy(String racy) {
-		this.racy = racy;
-	}
-
-	public String getViolence() {
-		return violence;
-	}
-
-	public void setViolence(String violence) {
-		this.violence = violence;
 	}
 }

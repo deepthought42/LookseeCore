@@ -10,95 +10,98 @@ import com.looksee.models.enums.AuditLevel;
 import com.looksee.models.enums.AuditName;
 import com.looksee.models.enums.ExecutionStatus;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
- * Record detailing an set of {@link Audit audits}.
+ * Record detailing a set of {@link Audit audits} performed on a page.
+ * This class extends {@link AuditRecord} to store audit results specific to a single page.
+ * Each record contains the audits performed, the page state being audited, and statistics about the audit process.
+ *
+ * <p><b>Class Invariants:</b>
+ * <ul>
+ *   <li>The audits set must never be null (initialized to empty set if not provided)</li>
+ *   <li>The key must be unique for each record</li>
+ *   <li>The audit level must always be PAGE</li>
+ * </ul>
+ *
+ * @see Audit
+ * @see AuditRecord
+ * @see PageState
  */
+@Getter
+@Setter
 @Node
 public class PageAuditRecord extends AuditRecord {
+	/**
+	 * The set of audits performed on the page.
+	 * Each audit represents a specific check or evaluation performed.
+	 */
 	@Relationship(type = "HAS")
 	private Set<Audit> audits;
 	
+	/**
+	 * The page state that was audited.
+	 * Contains the state of the page at the time of the audit.
+	 */
 	@Relationship(type = "FOR")
-	private PageState page_state;
+	private PageState pageState;
+
+	/**
+	 * The total number of elements found during the audit.
+	 */
+	private long elementsFound;
+
+	/**
+	 * The number of elements that were actually reviewed during the audit.
+	 */
+	private long elementsReviewed;
 	
-	private long elements_found;
-	private long elements_reviewed;
-	
+	/**
+	 * Creates a new empty page audit record.
+	 * Initializes the audits set to an empty HashSet and generates a unique key.
+	 */
 	public PageAuditRecord() {
 		setAudits(new HashSet<>());
 		setKey(generateKey());
 	}
 	
 	/**
-	 * Constructor
-	 * @param audits TODO
-	 * @param page_state TODO
-	 * @param is_part_of_domain_audit TODO
-	 * @param audit_list TODO
-	 * @param audit_stats {@link AuditStats} object with statics for audit progress
-	 * @pre audits != null
-	 * @pre page_state != null
-	 * @pre status != null;
+	 * Creates a new page audit record with the specified parameters.
+	 *
+	 * @param status the execution status of the audit
+	 * @param audits the set of audits performed. Must not be null
+	 * @param page_state the state of the page being audited. Must not be null
+	 * @param is_part_of_domain_audit whether this audit is part of a larger domain audit
+	 * @param audit_list the set of audit types that were performed
+	 * @throws IllegalArgumentException if status, audits, or page_state is null
 	 */
 	public PageAuditRecord(
-			ExecutionStatus status, 
-			Set<Audit> audits, 
-			PageState page_state, 
-			boolean is_part_of_domain_audit, 
+			ExecutionStatus status,
+			Set<Audit> audits,
+			PageState page_state,
+			boolean is_part_of_domain_audit,
 			Set<AuditName> audit_list
 	) {
 		assert audits != null;
 		assert status != null;
+		assert page_state != null;
 		
 		setAudits(audits);
 		setPageState(page_state);
 		setStatus(status);
-		setLevel( AuditLevel.PAGE);
+		setLevel(AuditLevel.PAGE);
 		setAuditLabels(audit_list);
 		setKey(generateKey());
 	}
 
+	/**
+	 * Generates a unique key for this audit record.
+	 * The key is created using a SHA-256 hash of the current timestamp.
+	 *
+	 * @return a unique string key for this audit record
+	 */
 	public String generateKey() {
-		return "pageauditrecord:"+org.apache.commons.codec.digest.DigestUtils.sha256Hex( System.currentTimeMillis() + " " );
-	}
-
-	public Set<Audit> getAudits() {
-		return audits;
-	}
-
-	public void setAudits(Set<Audit> audits) {
-		this.audits = audits;
-	}
-
-	public void addAudit(Audit audit) {
-		this.audits.add( audit );
-	}
-	
-	public void addAudits(Set<Audit> audits) {
-		this.audits.addAll( audits );
-	}
-
-	public PageState getPageState() {
-		return page_state;
-	}
-
-	public void setPageState(PageState page_state) {
-		this.page_state = page_state;
-	}
-
-	public long getElementsFound() {
-		return elements_found;
-	}
-
-	public void setElementsFound(long elements_found) {
-		this.elements_found = elements_found;
-	}
-
-	public long getElementsReviewed() {
-		return elements_reviewed;
-	}
-
-	public void setElementsReviewed(long elements_reviewed) {
-		this.elements_reviewed = elements_reviewed;
+		return "pageauditrecord:" + org.apache.commons.codec.digest.DigestUtils.sha256Hex(System.currentTimeMillis() + " ");
 	}
 }

@@ -50,10 +50,10 @@ public class FormUtils {
 	 * @return
 	 * @throws Exception
 	 * 
-	 * @pre user_id != null
-	 * @pre !user_id.isEmpty()
-	 * @pre form_elem != null
-	 * @pre browser != null;
+	 * precondition: user_id != null
+	 * precondition: !user_id.isEmpty()
+	 * precondition: form_elem != null
+	 * precondition: browser != null;
 	 */
 	public static ElementState findFormSubmitButton(List<ElementState> nested_elements) throws Exception {
 		assert nested_elements != null;

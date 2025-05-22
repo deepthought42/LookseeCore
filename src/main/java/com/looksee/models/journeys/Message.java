@@ -8,9 +8,23 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
- * Core Message object that defines global fields that are to be used by apage_idll Message objects
+ * Core Message object that defines global fields that are to be used by all Message objects.
+ *
+ * <p><b>Class Invariants:</b>
+ * <ul>
+ *   <li>messageId is always a valid UUID string</li>
+ *   <li>publishTime is never null</li>
+ *   <li>accountId is -1 or a positive number</li>
+ *   <li>domainId is a positive number when set</li>
+ *   <li>domainAuditRecordId is a positive number when set</li>
+ * </ul>
  */
+@Getter
+@Setter
 public abstract class Message {
 	private String messageId;
 	
@@ -21,6 +35,9 @@ public abstract class Message {
 	private long domainId;
 	private long domainAuditRecordId;
 	
+	/**
+	 * Creates a new message.
+	 */
 	public Message(){
 		setAccountId(-1);
 		this.messageId = UUID.randomUUID().toString();
@@ -28,10 +45,10 @@ public abstract class Message {
 	}
 	
 	/**
-	 * 
-	 * @param account_id
-	 * @param audit_record_id TODO
-	 * @param domain eg. example.com
+	 * Creates a new message.
+	 * @param account_id the account id
+	 * @param audit_record_id the audit record id
+	 * @param domain_id the domain id
 	 */
 	public Message(long account_id, long audit_record_id, long domain_id){
 		this.messageId = UUID.randomUUID().toString();
@@ -41,44 +58,4 @@ public abstract class Message {
 		setDomainAuditRecordId(audit_record_id);
 		setDomainId(domain_id);
 	}
-	
-	public long getAccountId() {
-		return accountId;
-	}
-
-	protected void setAccountId(long account_id) {
-		this.accountId = account_id;
-	}
-
-	public long getDomainAuditRecordId() {
-		return domainAuditRecordId;
-	}
-
-	public void setDomainAuditRecordId(long audit_record_id) {
-		this.domainAuditRecordId = audit_record_id;
-	}
-
-	public long getDomainId() {
-		return domainId;
-	}
-
-	public void setDomainId(long domain_id) {
-		this.domainId = domain_id;
-	}
-	
-	public String getMessageId() {
-		return messageId;
-    }
-
-    public void setMessageId(String messageId) {
-    	this.messageId = messageId;
-    }
-
-    public LocalDateTime getPublishTime() {
-    	return publishTime;
-    }
-
-    public void setPublishTime(LocalDateTime publishTime) {
-    	this.publishTime = publishTime;
-    }
 }

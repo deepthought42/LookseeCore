@@ -2,7 +2,6 @@ package com.looksee.models;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -13,34 +12,48 @@ import com.looksee.models.enums.AuditLevel;
 import com.looksee.models.enums.AuditName;
 import com.looksee.models.enums.ExecutionStatus;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * Record detailing an set of {@link Audit audits}.
+ *
+ * This class represents a record of an audit performed on a domain. It extends {@link AuditRecord}
+ * and contains a set of {@link PageAuditRecord} objects, which represent the audits performed on
+ * each page of the domain.
  */
 @Node
+@Getter
+@Setter
 public class DomainAuditRecord extends AuditRecord {
 	
 	@Relationship(type = "HAS")
-	private Set<PageAuditRecord> pageAuditRecords;	
+	private Set<PageAuditRecord> pageAuditRecords;
 
+	/**
+	 * Constructs a new {@link DomainAuditRecord} object.
+	 */
 	public DomainAuditRecord() {
 		super();
-		setAudits(new HashSet<>()); 
+		setPageAuditRecords(new HashSet<>());
 	}
 	
 	/**
-	 * Constructor
-	 * 
-	 * @param audit_stats {@link AuditStats} object with statics for audit progress
-	 * @param level TODO
-	 * 
-	 * @pre audit_stats != null;
+	 * Constructs a new {@link DomainAuditRecord} object with the given parameters.
+	 *
+	 * @param status The status of the audit
+	 * @param audit_list The list of audit names
+	 *
+	 * precondition: status != null;
+	 * precondition: audit_list != null;
 	 */
-	public DomainAuditRecord(ExecutionStatus status, 
+	public DomainAuditRecord(ExecutionStatus status,
 							Set<AuditName> audit_list) {
 		super();
 		assert status != null;
-		
-		setAudits(new HashSet<>());
+		assert audit_list != null;
+
+		setPageAuditRecords(new HashSet<>());
 		setStatus(status);
 		setLevel( AuditLevel.DOMAIN);
 		setStartTime(LocalDateTime.now());
@@ -52,22 +65,29 @@ public class DomainAuditRecord extends AuditRecord {
 		setKey(generateKey());
 	}
 
+	/**
+	 * Generates a unique key for the domain audit record.
+	 *
+	 * @return A unique key for the domain audit record
+	 */
 	public String generateKey() {
 		return "domainauditrecord:"+UUID.randomUUID().toString()+org.apache.commons.codec.digest.DigestUtils.sha256Hex(System.currentTimeMillis() + "");
 	}
 
-	public Set<PageAuditRecord> getAudits() {
-		return pageAuditRecords;
-	}
-
-	public void setAudits(Set<PageAuditRecord> audits) {
-		this.pageAuditRecords = audits;
-	}
-
+	/**
+	 * Adds a page audit record to the domain audit record.
+	 *
+	 * @param audit The page audit record to add
+	 */
 	public void addAudit(PageAuditRecord audit) {
 		this.pageAuditRecords.add( audit );
 	}
 	
+	/**
+	 * Adds a set of page audit records to the domain audit record.
+	 *
+	 * @param audits The set of page audit records to add
+	 */
 	public void addAudits(Set<PageAuditRecord> audits) {
 		this.pageAuditRecords.addAll( audits );
 	}

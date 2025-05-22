@@ -201,11 +201,11 @@ public class AuditRecordService {
 		return audit_record_repo.getAllPageParagraphingAudits(audit_record_key);
 	}
 
-	public Set<PageAuditRecord> getAllPageAudits(long audit_record_id) {		
+	public Set<PageAuditRecord> getAllPageAudits(long audit_record_id) {
 		return audit_record_repo.getAllPageAudits(audit_record_id);
 	}
 	
-	public Set<Audit> getAllAuditsForPageAuditRecord(long page_audit_id) {		
+	public Set<Audit> getAllAuditsForPageAuditRecord(long page_audit_id) {
 		return audit_record_repo.getAllAuditsForPageAuditRecord( page_audit_id);
 	}
 
@@ -279,7 +279,7 @@ public class AuditRecordService {
 	}
 
 	public void addPageToAuditRecord(long audit_record_id, long page_state_id) {
-		audit_record_repo.addPageToAuditRecord( audit_record_id, page_state_id );		
+		audit_record_repo.addPageToAuditRecord( audit_record_id, page_state_id );
 	}
 
 	public long getIssueCountBySeverity(long id, String severity) {
@@ -329,22 +329,36 @@ public class AuditRecordService {
 	}
 
 	/**
-	 * Update the progress for the appropriate {@linkplain AuditCategory}
-	 * @param auditRecordId
-	 * @param category
-	 * @param account_id
-	 * @param domain_id
-	 * @param progress
-	 * @param message
-	 * @return
+	 * Updates the progress for the appropriate {@linkplain AuditCategory}
+	 *
+	 * @param auditRecordId the ID of the audit record to update
+	 * @param category the category of the audit to update
+	 * @param account_id the ID of the account
+	 * @param domain_id the ID of the domain
+	 * @param progress the progress to set
+	 * @param message the message to set
+	 *
+	 * @return the updated audit record
+	 *
+	 * precondition: auditRecordId > 0
+	 * precondition: category != null
+	 * precondition: account_id > 0
+	 * precondition: domain_id > 0
+	 * precondition: message != null
 	 */
-	public AuditRecord updateAuditProgress(long auditRecordId, 
-										   AuditCategory category, 
-										   long account_id, 
-										   long domain_id, 
-										   double progress, 
-										   String message) 
+	public AuditRecord updateAuditProgress(long auditRecordId,
+										   AuditCategory category,
+										   long account_id,
+										   long domain_id,
+										   double progress,
+										   String message)
 	{
+		assert auditRecordId > 0;
+		assert category != null;
+		assert account_id > 0;
+		assert domain_id > 0;
+		assert message != null;
+		
 		AuditRecord audit_record = findById(auditRecordId).get();
 		audit_record.setDataExtractionProgress(1.0);
 		audit_record.setStatus(ExecutionStatus.RUNNING_AUDITS);
@@ -363,10 +377,11 @@ public class AuditRecordService {
 	}
 
 	/**
-	 * Retrieves {@link PageState} with given URL for {@link DomainAuditRecord}  
-	 * @param audit_record_id
-	 * @param current_url
-	 * @return
+	 * Retrieves {@link PageState} with given URL for {@link DomainAuditRecord}
+	 *
+	 * @param audit_record_id the {@linkplain DomainAuditRecord} id
+	 * @param url the url
+	 * @return the {@link PageState}
 	 */
 	public PageState findPageWithUrl(long audit_record_id, String url) {
 		return audit_record_repo.findPageWithUrl(audit_record_id, url);

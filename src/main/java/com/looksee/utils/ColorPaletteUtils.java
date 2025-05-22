@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import com.looksee.models.CIEColorSpace;
 import com.looksee.models.ColorData;
 import com.looksee.models.ColorPaletteIssueMessage;
+import com.looksee.models.DesignSystem;
 import com.looksee.models.PaletteColor;
 import com.looksee.models.Score;
 import com.looksee.models.UXIssueMessage;
@@ -35,8 +36,8 @@ public class ColorPaletteUtils {
 	 * @param scheme
 	 * @return
 	 * 
-	 * @pre palette != null
-	 * @pre scheme != null
+	 * precondition: palette != null
+	 * precondition: scheme != null
 	 */
 	public static Score getPaletteScore(List<PaletteColor> palette, ColorScheme scheme) {
 		assert palette != null;
@@ -93,8 +94,8 @@ public class ColorPaletteUtils {
 	 * 
 	 * @return {@link Score}
 	 * 
-	 * @pre palette != null
-	 * @pre colors != null
+	 * precondition: palette != null
+	 * precondition: colors != null
 	 */
 	public static Score getPaletteScore(List<String> palette, List<ColorData> colors) {
 		assert palette != null;
@@ -201,7 +202,7 @@ public class ColorPaletteUtils {
 	 * @param palette
 	 * @return
 	 * 
-	 * @pre palette != null
+	 * precondition: palette != null
 	 */
 	public static ColorScheme getColorScheme(Collection<PaletteColor> palette) {
 		assert palette != null;
@@ -267,7 +268,7 @@ public class ColorPaletteUtils {
 	 * @param colors
 	 * @return
 	 * 
-	 * @pre colors != null;
+	 * precondition: colors != null;
 	 */
 	private static boolean areEquidistantColors(Collection<PaletteColor> colors) {
 		assert colors != null;
@@ -302,7 +303,7 @@ public class ColorPaletteUtils {
 	 * @param palette
 	 * @return
 	 * 
-	 * @pre palette != null
+	 * precondition: palette != null
 	 */
 	private static int getComplementaryScore(List<PaletteColor> palette) {
 		assert palette != null;
@@ -347,7 +348,7 @@ public class ColorPaletteUtils {
 	 * @param palette
 	 * @return
 	 * 
-	 * @pre palette != null
+	 * precondition: palette != null
 	 */
 	private static int getMonochromaticScore(List<PaletteColor> palette) {
 		assert palette != null;

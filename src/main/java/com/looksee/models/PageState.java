@@ -9,10 +9,8 @@ import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.imageio.ImageIO;
@@ -34,8 +32,15 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * A reference to a web page
- *
+ * A reference to a web page that stores its state and content
+ * 
+ * Invariants:
+ * - url is not null
+ * - auditRecordId >= 0
+ * - browser is not null
+ * - elements list is not null
+ * - all elements in elements list are not null
+ * - src is not null if page has content
  */
 @Node
 public class PageState extends LookseeObject {
@@ -153,6 +158,9 @@ public class PageState extends LookseeObject {
 	@Relationship(type = "HAS", direction = Direction.OUTGOING)
 	private List<ElementState> elements;
 
+	/**
+	 * Default constructor for PageState
+	 */
 	public PageState() {
 		super();
 		setKeywords(new HashSet<>());
@@ -166,40 +174,45 @@ public class PageState extends LookseeObject {
 	}
 	
 	/**
-	 * 	 Constructor
-	 * 
-	 * @param screenshot_url
-	 * @param src
-	 * @param isLandable
-	 * @param scroll_x_offset
-	 * @param scroll_y_offset
-	 * @param viewport_width
-	 * @param viewport_height
-	 * @param browser_type
-	 * @param full_page_screenshot_url
-	 * @param full_page_width TODO
-	 * @param full_page_height TODO
-	 * @param url
-	 * @param title TODO
-	 * @param is_secure TODO
-	 * @param http_status_code TODO
-	 * @param url_after_page_load TODO
-	 * @throws MalformedURLException 
+	 * Constructor for PageState
+	 *
+	 * @param screenshot_url the url of the screenshot
+	 * @param src the source url
+	 * @param scroll_x_offset the x offset of the scroll
+	 * @param scroll_y_offset the y offset of the scroll
+	 * @param viewport_width the width of the viewport
+	 * @param viewport_height the height of the viewport
+	 * @param browser_type the browser type
+	 * @param full_page_screenshot_url the url of the full page screenshot
+	 * @param full_page_width the width of the full page
+	 * @param full_page_height the height of the full page
+	 * @param url the url of the page
+	 * @param title the title of the page
+	 * @param is_secure whether the page is secure
+	 * @param http_status_code the http status code
+	 * @param url_after_page_load the url after page load
+	 * @param audit_record_id the audit record id
+	 * @param metadata the metadata
+	 * @param stylesheets the stylesheets
+	 * @param script_urls the script urls
+	 * @param icon_links the icon links
+	 *
+	 * @throws MalformedURLException if the url is malformed
 	 */
-	public PageState(String screenshot_url, 
+	public PageState(String screenshot_url,
 					String src,
-					long scroll_x_offset, 
-					long scroll_y_offset, 
+					long scroll_x_offset,
+					long scroll_y_offset,
 					int viewport_width,
-					int viewport_height, 
-					BrowserType browser_type, 
-					String full_page_screenshot_url, 
+					int viewport_height,
+					BrowserType browser_type,
+					String full_page_screenshot_url,
 					int full_page_width,
-					int full_page_height, 
-					String url, 
-					String title, 
-					boolean is_secure, 
-					int http_status_code, 
+					int full_page_height,
+					String url,
+					String title,
+					boolean is_secure,
+					int http_status_code,
 					String url_after_page_load,
 					long audit_record_id,
 					Set<String> metadata,
@@ -245,29 +258,6 @@ public class PageState extends LookseeObject {
 	}
 
 	/**
-	 * Gets counts for all tags based on {@link Element}s passed
-	 *
-	 * @param page_elements
-	 *            list of {@link Element}s
-	 *
-	 * @return Hash of counts for all tag names in list of {@ElementState}s
-	 *         passed
-	 */
-	public Map<String, Integer> countTags(Set<Element> tags) {
-		Map<String, Integer> elem_cnts = new HashMap<String, Integer>();
-		for (Element tag : tags) {
-			if (elem_cnts.containsKey(tag.getName())) {
-				int cnt = elem_cnts.get(tag.getName());
-				cnt += 1;
-				elem_cnts.put(tag.getName(), cnt);
-			} else {
-				elem_cnts.put(tag.getName(), 1);
-			}
-		}
-		return elem_cnts;
-	}
-
-	/**
 	 * Compares two images pixel by pixel.
 	 *
 	 * @param imgA
@@ -301,12 +291,10 @@ public class PageState extends LookseeObject {
 	/**
 	 * Checks if Pages are equal
 	 *
-	 * @param page
-	 *            the {@link PageVersion} object to compare current page to
+	 * @param o the object to compare to
+	 * @return true if the pages are equal, false otherwise
 	 *
-	 * @pre page != null
-	 * @return boolean value
-	 *
+	 * precondition: o != null
 	 */
 	@Override
 	public boolean equals(Object o) {
@@ -328,25 +316,25 @@ public class PageState extends LookseeObject {
 		try {
 			List<ElementState> elements = new ArrayList<ElementState>(getElements());
 			PageState page = new PageState(getViewportScreenshotUrl(),
-								 getSrc(),
-								 getScrollXOffset(),
-								 getScrollYOffset(),
-								 getViewportWidth(),
-								 getViewportHeight(),
-								 getBrowser(),
-								 getFullPageScreenshotUrl(),
-								 getFullPageWidth(),
-								 getFullPageHeight(),
-								 getUrl(),
-								 getTitle(),
-								 isSecured(),
-								 getHttpStatus(),
-								 getUrlAfterLoading(),
-								 getAuditRecordId(),
-								 getMetadata(),
-								 getStylesheetUrls(),
-								 getScriptUrls(),
-								 getFaviconUrl());
+											getSrc(),
+											getScrollXOffset(),
+											getScrollYOffset(),
+											getViewportWidth(),
+											getViewportHeight(),
+											getBrowser(),
+											getFullPageScreenshotUrl(),
+											getFullPageWidth(),
+											getFullPageHeight(),
+											getUrl(),
+											getTitle(),
+											isSecured(),
+											getHttpStatus(),
+											getUrlAfterLoading(),
+											getAuditRecordId(),
+											getMetadata(),
+											getStylesheetUrls(),
+											getScriptUrls(),
+											getFaviconUrl());
 			page.setElements(elements);
 			return page;
 		} catch (IOException e) {
@@ -356,11 +344,11 @@ public class PageState extends LookseeObject {
 
 	public void addElement(ElementState element) {
 		this.elements.add(element);
-	}	
+	}
 
 	/**
 	 * Generates page name using path
-	 * 
+	 *
 	 * @return
 	 * @throws MalformedURLException
 	 */
@@ -383,12 +371,15 @@ public class PageState extends LookseeObject {
 	}
 	
 	/**
-	 * 
-	 * @param buff_img
-	 * @return
+	 * Generates a checksum for a buffered image
+	 *
+	 * @param buff_img buffered image
+	 *
+	 * @return checksum
+	 *
 	 * @throws IOException
 	 */
-	public static String getFileChecksum(BufferedImage buff_img) throws IOException {
+	public static String getFileChecksum(BufferedImage buff_img) throws IOException, NoSuchAlgorithmException {
 		assert buff_img != null;
 		
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -397,29 +388,26 @@ public class PageState extends LookseeObject {
 							// other formats ?
 		// Get file input stream for reading the file content
 		byte[] data = baos.toByteArray();
-		try {
-			MessageDigest sha = MessageDigest.getInstance("SHA-256");
-			sha.update(data);
-			byte[] thedigest = sha.digest(data);
-			return Hex.encodeHexString(thedigest);
-		} catch (NoSuchAlgorithmException e) {
-			log.error("Error generating checksum of buffered image");
-		}
-		return "";
-
+		MessageDigest sha = MessageDigest.getInstance("SHA-256");
+		sha.update(data);
+		byte[] thedigest = sha.digest(data);
+		return Hex.encodeHexString(thedigest);
 	}
 	
 	/**
 	 * {@inheritDoc}
-	 * @throws IOException
-	 * @throws NoSuchAlgorithmException
-	 *
-	 * @pre page != null
 	 */
 	public String generateKey() {
 		return "pagestate" + getAuditRecordId()+ org.apache.commons.codec.digest.DigestUtils.sha256Hex( getUrl() + getGeneralizedSrc() +getBrowser());
 	}
 
+	/**
+	 * Adds a list of {@link ElementState}s to the {@link PageState}
+	 *
+	 * @param elements list of {@link ElementState}s
+	 *
+	 * precondition: elements != null
+	 */
 	public void addElements(List<ElementState> elements) {
 		//check for duplicates before adding
 		for(ElementState element : elements) {
@@ -429,16 +417,30 @@ public class PageState extends LookseeObject {
 		}
 	}
 
-	@Override
+	/**
+	 * {@inheritDoc}
+	 * @return string representation of {@link PageState}
+	 */
 	public String toString() {
 		return "(page => { key = "+getKey()+"; url = "+getUrl();
 	}
 
-	//Custom getter and setter for src
+	/**
+	 * Custom getter and setter for src
+	 *
+	 * @return src
+	 * @throws IOException
+	 */
 	public String getSrc() {
 		return googleCloudStorage.getHtmlContent(src);
 	}
 
+	/**
+	 * Custom setter for src
+	 *
+	 * @param src src
+	 * @throws IOException
+	 */
 	public void setSrc(String src) throws IOException {
 		String path_key = BrowserService.extractHost(this.getUrl()) + "/pages/" + getKey();
 		this.src = googleCloudStorage.uploadHtmlContent(src, path_key);

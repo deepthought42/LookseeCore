@@ -44,8 +44,8 @@ public class ColorPaletteIssueMessage extends UXIssueMessage{
 	 * @param points_earned TODO
 	 * @param max_points TODO
 	 * 
-	 * @pre colors != null;
-	 * @pre palette_colors != null;
+	 * precondition: colors != null;
+	 * precondition: palette_colors != null;
 	 */
 	public ColorPaletteIssueMessage(
 			Priority priority, 

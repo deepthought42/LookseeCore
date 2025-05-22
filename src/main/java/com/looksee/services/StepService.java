@@ -177,8 +177,8 @@ public class StepService {
 	 * @param domain_map_id TODO
 	 * @return
 	 * 
-	 * @pre page_state != null
-	 * @pre page_state.getId() != null
+	 * precondition: page_state != null
+	 * precondition: page_state.getId() != null
 	 */
 	public List<Step> getStepsWithStartPage(PageState page_state, long domain_map_id) {
 		assert page_state != null;

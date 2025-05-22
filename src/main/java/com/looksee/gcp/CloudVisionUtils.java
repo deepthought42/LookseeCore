@@ -49,8 +49,10 @@ public class CloudVisionUtils {
 	
     /**
 	 * Detects image properties such as color frequency from the specified local image.
-	 * 
-	 * @param image_url
+	 *
+	 * @param buffered_image the {@link BufferedImage}
+	 *
+	 * @return List of {@link String}s
 	 * @throws IOException
 	 */
 	public static List<String> extractImageText(BufferedImage buffered_image) throws IOException {
@@ -95,8 +97,10 @@ public class CloudVisionUtils {
 		
 	/**
 	 * Detects image properties such as color frequency from the specified local image.
-	 * 
-	 * @param image_url
+	 *
+	 * @param buffered_image the {@link BufferedImage}
+	 *
+	 * @return Set of {@link Label}s
 	 * @throws IOException
 	 */
 	public static Set<Label> extractImageLabels(BufferedImage buffered_image) throws IOException {
@@ -143,11 +147,10 @@ public class CloudVisionUtils {
 	
 	/**
 	 * Detects image properties such as color frequency from the specified local image.
-	 * 
-	 * @param image_url
-	 * 
-	 * @pre buffered_image != null
-	 * 
+	 *
+	 * @param buffered_image the {@link BufferedImage}
+	 *
+	 * @return Set of {@link ImageLandmarkInfo}s
 	 * @throws IOException
 	 */
 	public static Set<ImageLandmarkInfo> extractImageLandmarks(BufferedImage buffered_image) throws IOException {
@@ -199,8 +202,10 @@ public class CloudVisionUtils {
 	
 	/**
 	 * Detects image properties such as color frequency from the specified local image.
-	 * 
-	 * @param image_url
+	 *
+	 * @param buffered_image the {@link BufferedImage}
+	 *
+	 * @return Set of {@link ImageFaceAnnotation}s
 	 * @throws IOException
 	 */
 	public static Set<ImageFaceAnnotation> extractImageFaces(BufferedImage buffered_image) throws IOException {
@@ -253,8 +258,10 @@ public class CloudVisionUtils {
 	
 	/**
 	 * Detects image properties such as color frequency from the specified local image.
-	 * 
-	 * @param image_url
+	 *
+	 * @param buffered_image the {@link BufferedImage}
+	 *
+	 * @return Set of {@link Logo}s
 	 * @throws IOException
 	 */
 	public static Set<Logo> extractImageLogos(BufferedImage buffered_image) throws IOException {
@@ -303,8 +310,10 @@ public class CloudVisionUtils {
 	
 	/**
 	 * Detects image properties such as color frequency from the specified local image.
-	 * 
-	 * @param image_url
+	 *
+	 * @param buffered_image the {@link BufferedImage}
+	 *
+	 * @return {@link ImageSearchAnnotation}
 	 * @throws IOException
 	 */
 	public static ImageSearchAnnotation searchWebForImageUsage(BufferedImage buffered_image) throws IOException {
@@ -377,8 +386,10 @@ public class CloudVisionUtils {
 	
 	/**
 	 * Detects image properties such as color frequency from the specified local image.
-	 * 
-	 * @param image_url
+	 *
+	 * @param buffered_image the {@link BufferedImage}
+	 *
+	 * @return List of {@link ColorUsageStat}s
 	 * @throws IOException
 	 */
 	public static List<ColorUsageStat> extractImageProperties(BufferedImage buffered_image) throws IOException {

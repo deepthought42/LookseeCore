@@ -28,8 +28,8 @@ public class ColorData extends LookseeObject{
 	 * 
 	 * @param color_string
 	 * 
-	 * @pre rgba_string != null
-	 * @pre !rgba_string.isEmpty()
+	 * precondition: rgba_string != null
+	 * precondition: !rgba_string.isEmpty()
 	 */
 	public ColorData(String color_string) {
 		assert color_string != null;
@@ -152,12 +152,9 @@ public class ColorData extends LookseeObject{
     }
 	
 	/**
-	 * Conver RGB to XYZ from rgb color
-	 * 
-	 * @param red
-	 * @param green
-	 * @param blue
-	 * @return
+	 * Converts RGB to XYZ from rgb color
+	 *
+	 * @return the {@link XYZColorSpace}
 	 */
 	public XYZColorSpace RGBtoXYZ() {
 		//calculate luminosity
@@ -258,8 +255,8 @@ public class ColorData extends LookseeObject{
 	 * 
 	 * @return contrast value
 	 * 
-	 * @pre color_data_1 != null
-	 * @pre color_data_2 != null
+	 * precondition: color_data_1 != null
+	 * precondition: color_data_2 != null
 	 */
 	public static double computeContrast(ColorData color_data_1, ColorData color_data_2) {
 		assert color_data_1 != null;
@@ -308,15 +305,15 @@ public class ColorData extends LookseeObject{
 
 	
 	/**
-	 * Checks if both colors are within a given distance of each other on the conic HSL(Hugh, Saturation, Luminosity) color representation
-	 * 
-	 * @param palette_color color of primary color being evaluated against
-	 * @param color {@link ColorData} color being evaluated
-	 * 
-	 * @return true if color2 is within 5 arc degress of color1
+	 * Checks if both colors are within a given distance of each other on the
+	 * conic HSL(Hugh, Saturation, Luminosity) color representation
+	 *
+	 * @param color the {@link ColorData} color being evaluated
+	 *
+	 * @return true if the colors are within 5 arc degress of each other, false otherwise
 	 */
-	public boolean isSimilarHue(ColorData color2) {		
-		return Math.abs(this.getHue() - color2.getHue()) <= 5.0;
+	public boolean isSimilarHue(ColorData color) {
+		return Math.abs(this.getHue() - color.getHue()) <= 5.0;
 	}
 
 	public String getHex() {

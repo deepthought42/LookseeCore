@@ -12,19 +12,28 @@ import com.looksee.models.ElementState;
 import com.looksee.models.Form;
 import com.looksee.models.PageState;
 
-
+/**
+ * Utility class for processing and analyzing web page states and their elements.
+ *
+ * @inv All methods are static and do not modify the input parameters
+ * @inv All returned collections are new instances, not references to internal state
+ * @inv For any PageState input, the returned Forms contain only Elements from that PageState
+ * @inv For any returned Form, all contained Elements have XPaths that are descendants of the form Element's XPath
+ *
+ * @see Form
+ * @see PageState
+ * @see ElementState
+ */
 public class PageUtils {
 	@SuppressWarnings("unused")
 	private static Logger log = LoggerFactory.getLogger(PageUtils.class);
 
 	/**
 	 * Extracts all forms including the child inputs and associated labels.
-	 * @param elem
-	 * @param tag
-	 * @param driver
+	 * @param page the page state
 	 *
-	 * @return
-	 * @throws Exception
+	 * @return a set of forms
+	 * @throws Exception if an error occurs
 	 */
 	public static Set<Form> extractAllForms(PageState page) throws Exception {
 		Set<Form> form_list = new HashSet<Form>();

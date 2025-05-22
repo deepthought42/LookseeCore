@@ -11,69 +11,104 @@ import org.springframework.data.neo4j.core.schema.Relationship;
 import com.looksee.models.enums.FormType;
 import com.looksee.models.message.BugMessage;
 
+import lombok.Getter;
+import lombok.Setter;
 
 /**
- * Represents a form tag and the encompassed inputs in a web browser
+ * Represents a form tag and its associated input elements in a web browser.
+ *
+ * <p><b>Class Invariants:</b>
+ * <ul>
+ *   <li>formTag is never null and represents a valid HTML form element</li>
+ *   <li>formFields list is never null and contains only valid form input elements</li>
+ *   <li>submitField may be null if form has no explicit submit button</li>
+ *   <li>name may be null but if set must be non-empty</li>
+ *   <li>type is never null and contains a valid FormType value</li>
+ *   <li>bugMessages list is never null</li>
+ * </ul>
+ *
+ * <p><b>Usage:</b>
+ * <ul>
+ *   <li>Models HTML form elements and their contained input fields</li>
+ *   <li>Tracks form metadata like name and type</li>
+ *   <li>Maintains relationships between form elements in graph database</li>
+ *   <li>Used for form analysis and validation</li>
+ * </ul>
  */
 public class Form extends LookseeObject{
 	@SuppressWarnings("unused")
 	private static Logger log = LoggerFactory.getLogger(Form.class);
 
+	@Getter
+	@Setter
 	private Long memoryId;
+
+	@Getter
+	@Setter
 	private String name;
     
 	private String type;
 	
+	@Getter
 	@Relationship(type = "HAS")
 	private List<BugMessage> bugMessages;
 	
+	@Getter
+	@Setter
 	@Relationship(type = "DEFINED_BY")
 	private ElementState formTag;
 	
+	@Getter
+	@Setter
 	@Relationship(type = "HAS")
 	private List<ElementState> formFields;
-	
+
+	@Getter
+	@Setter
 	@Relationship(type = "HAS_SUBMIT")
 	private ElementState submitField;
 	
 	public Form(){	}
 	
-	public Form(ElementState form_tag, 
-				List<ElementState> form_fields, 
-				ElementState submit_field, 
+	public Form(ElementState form_tag,
+				List<ElementState> form_fields,
+				ElementState submit_field,
 				String name){
 		setFormTag(form_tag);
 		setFormFields(form_fields);
 		setSubmitField(submit_field);
 		setType(determineFormType());
-		log.warn("FORM TYPE IDENTIFIED :: "+getType());
 		setName(name);
 		setKey(generateKey());
 	}
 	
 	/**
-	 * Generates key for form based on element within it and the key of the form tag itself
-	 * 
-	 * @return
+	 * Generates key for form based on element within it and the key of the 
+	 * form tag itself
+	 *
+	 * @return key for form
 	 */
 	@Override
-	public String generateKey() {		
+	public String generateKey() {
 		return "form"+getFormTag();
 	}
 
 	/**
-	 * Returns the {@link FormType} of the form based on attribute values on the form tag
-	 * 
-	 * @return {@link FormType}
+	 * Determines the {@link FormType} of form based on the attributes of the
+	 * form tag
+	 *
+	 * @return the type of form
 	 */
 	private FormType determineFormType(){
 		Map<String, String> attributes = this.formTag.getAttributes();
 		for(String attr: attributes.keySet()){
 			String vals = attributes.get(attr);
-			if(vals.contains("register") || (vals.contains("sign") && vals.contains("up"))){
+			if(vals.contains("register")
+				|| (vals.contains("sign") && vals.contains("up"))){
 				return FormType.REGISTRATION;
 			}
-			else if(vals.contains("login") || (vals.contains("sign") && vals.contains("in"))){
+			else if(vals.contains("login")
+					|| (vals.contains("sign") && vals.contains("in"))){
 				return FormType.LOGIN;
 			}
 			else if(vals.contains("search")){
@@ -86,15 +121,14 @@ public class Form extends LookseeObject{
 				return FormType.PAYMENT;
 			}
 		}
-		
 
-		if(submitField != null && (submitField.getAllText().toLowerCase().contains("login") 
-				|| submitField.getAllText().toLowerCase().contains("sign-in") 
+		if(submitField != null && (submitField.getAllText().toLowerCase().contains("login")
+				|| submitField.getAllText().toLowerCase().contains("sign-in")
 				|| submitField.getAllText().toLowerCase().contains("sign in"))) {
 			return FormType.LOGIN;
 		}
-		else if(submitField != null && (submitField.getAllText().toLowerCase().contains("register") 
-				|| submitField.getAllText().toLowerCase().contains("sign-up") 
+		else if(submitField != null && (submitField.getAllText().toLowerCase().contains("register")
+				|| submitField.getAllText().toLowerCase().contains("sign-up")
 				|| submitField.getAllText().toLowerCase().contains("sign up"))) {
 			return FormType.REGISTRATION;
 		}
@@ -129,9 +163,10 @@ public class Form extends LookseeObject{
 	
 	/**
 	 * Checks if {@link Form forms} are equal
-	 * 
-	 * @param elem
-	 * @return whether or not elements are equal
+	 *
+	 * @param o object to compare to
+	 *
+	 * @return true if forms are equal, false otherwise
 	 */
 	@Override
 	public boolean equals(Object o){
@@ -142,60 +177,44 @@ public class Form extends LookseeObject{
 		return this.getKey().equals(that.getKey());
 	}
 	
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public List<ElementState> getFormFields() {
-		return formFields;
-	}
-	
+	/**
+	 * Adds a form field to the form
+	 *
+	 * @param form_field form field to add
+	 *
+	 * @return true if form field was added, false otherwise
+	 */
 	public boolean addFormField(ElementState form_field) {
 		return this.formFields.add(form_field);
 	}
 	
+	/**
+	 * Adds a list of form fields to the form
+	 *
+	 * @param form_field list of form fields to add
+	 *
+	 * @return true if form fields were added, false otherwise
+	 */
 	public boolean addFormFields(List<ElementState> form_field) {
 		return this.formFields.addAll(form_field);
 	}
-	
-	public void setFormFields(List<ElementState> form_fields) {
-		this.formFields = form_fields;
-	}
 
-	public ElementState getSubmitField() {
-		return submitField;
-	}
-
-	public void setSubmitField(ElementState submit_field) {
-		this.submitField = submit_field;
-	}
-
-	public ElementState getFormTag() {
-		return formTag;
-	}
-
-	public void setFormTag(ElementState form_tag) {
-		this.formTag = form_tag;
-	}
-
+	/**
+	 * Returns the {@link FormType} of the form
+	 *
+	 * @return the type of form
+	 */
 	public FormType getType() {
 		return FormType.valueOf(type.toUpperCase());
 	}
 
+	/**
+	 * Sets the type of the form
+	 *
+	 * @param type the type of form
+	 */
 	public void setType(FormType type) {
 		this.type = type.toString();
-	}
-
-	public Long getMemoryId() {
-		return memoryId;
-	}
-
-	public void setMemoryId(Long memory_id) {
-		this.memoryId = memory_id;
 	}
 	
 	@Override
@@ -203,17 +222,23 @@ public class Form extends LookseeObject{
 		return new Form(formTag, formFields, submitField, name);
 	}
 
-	public List<BugMessage> getBugMessages() {
-		return bugMessages;
-	}
-
+	/**
+	 * Sets the {@link BugMessage}s of the form
+	 *
+	 * @param bug_messages the bug messages to set
+	 */
 	public void setBugMessages(List<BugMessage> bug_messages) {
 		if(this.bugMessages == null) {
 			this.bugMessages = new ArrayList<>();
 		}
 		this.bugMessages = bug_messages;
 	}
-	
+
+	/**
+	 * Adds a {@link BugMessage} to the form
+	 *
+	 * @param bug_message the bug message to add
+	 */
 	public void addBugMessage(BugMessage bug_message) {
 		if(this.bugMessages == null) {
 			this.bugMessages = new ArrayList<>();
@@ -222,6 +247,11 @@ public class Form extends LookseeObject{
 		this.bugMessages.add(bug_message);
 	}
 
+	/**
+	 * Removes a {@link BugMessage} from the form
+	 *
+	 * @param msg the bug message to remove
+	 */
 	public void removeBugMessage(BugMessage msg) {
 		int idx = bugMessages.indexOf(msg);
 		this.bugMessages.remove(idx);

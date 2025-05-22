@@ -93,7 +93,7 @@ public class ElementStateUtils {
 	 * 
 	 * @return 1 if element is text owner, otherwise 0
 	 * 
-	 * @pre element_state != null;
+	 * precondition: element_state != null;
 	 */
 	public static boolean isTextContainer(ElementState element_state) {
 		assert element_state != null;
@@ -107,12 +107,12 @@ public class ElementStateUtils {
 	 * Checks if outer html fragment owns text. An element is defined as owning text if 
 	 *   if it contains text immediately within the element. If an element has only
 	 *   child elements and no text then it does not own text
-	 *   
-	 * @param element_state {@link WebElement element} to be evaluated for text ownership
-	 * 
+	 *
+	 * @param element {@link WebElement element} to be evaluated for text ownership
+	 *
 	 * @return 1 if element is text owner, otherwise 0
-	 * 
-	 * @pre element_state != null;
+	 *
+	 * precondition: element != null;
 	 */
 	public static boolean isTextContainer(WebElement element) {
 		assert element != null;
@@ -122,35 +122,43 @@ public class ElementStateUtils {
 		return !body.ownText().isEmpty();
 	}
 
+	/**
+	 * Checks if the tag name is a list
+	 *
+	 * @param tag_name the tag name to check
+	 * @return true if the tag name is a list, false otherwise
+	 */
 	public static boolean isList(String tag_name) {
 		return "ul".equalsIgnoreCase(tag_name) 
 				|| "ol".equalsIgnoreCase(tag_name)
 				|| "li".equalsIgnoreCase(tag_name);
 	}
 
+	/**
+	 * Enriches background colors for a list of {@link ElementState elements}
+	 *
+	 * @param element_states the list of element states to enrich
+	 * @return the enriched element states
+	 */
 	public static Stream<ElementState> enrichBackgroundColor(List<ElementState> element_states) {
 		//ENRICHMENT : BACKGROUND COLORS
 		return element_states.parallelStream()
-										.filter(element -> element != null)
-										.map(element -> {
+								.filter(element -> element != null)
+								.map(element -> {
 				try {
-					ColorData font_color = new ColorData(element.getRenderedCssValues().get("color"));				
+					ColorData font_color = new ColorData(element.getRenderedCssValues().get("color"));
 					//extract opacity color
 					ColorData bkg_color = null;
 					if(element.getScreenshotUrl().trim().isEmpty()) {
-					bkg_color = new ColorData(element.getRenderedCssValues().get("background-color"));
+						bkg_color = new ColorData(element.getRenderedCssValues().get("background-color"));
 					}
 					else {
-					//log.warn("extracting background color");
-					bkg_color = ImageUtils.extractBackgroundColor( new URL(element.getScreenshotUrl()),
-												   font_color);
-					
-					//log.warn("done extracting background color");
+						bkg_color = ImageUtils.extractBackgroundColor( new URL(element.getScreenshotUrl()),
+																		font_color);
 					}
 					String bg_color = bkg_color.rgb();	
 					
 					//Identify background color by getting largest color used in picture
-					//ColorData background_color_data = ImageUtils.extractBackgroundColor(new URL(element.getScreenshotUrl()));
 					ColorData background_color = new ColorData(bg_color);
 					element.setBackgroundColor(background_color.rgb());
 					element.setForegroundColor(font_color.rgb());
@@ -167,10 +175,10 @@ public class ElementStateUtils {
 	}
 	
 	/**
-	 * Enriches background colors for a list of {@link ElementState elements}
-	 * 
-	 * @param element_states
-	 * @return
+	 * Enriches background colors for a {@link ElementState element}
+	 *
+	 * @param element the element to enrich
+	 * @return the enriched element
 	 */
 	public static ElementState enrichBackgroundColor(ElementState element) {
 		//ENRICHMENT : BACKGROUND COLORS
@@ -192,10 +200,8 @@ public class ElementStateUtils {
 																font_color);
 			}
 			
-			
 			//Identify background color by getting largest color used in picture
-			//ColorData background_color_data = ImageUtils.extractBackgroundColor(new URL(element.getScreenshotUrl()));
-			String bg_color = bkg_color.rgb();	
+			String bg_color = bkg_color.rgb();
 			ColorData background_color = new ColorData(bg_color);
 			element.setBackgroundColor(background_color.rgb());
 			element.setForegroundColor(font_color.rgb());

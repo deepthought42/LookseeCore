@@ -34,14 +34,12 @@ public abstract class Rule extends LookseeObject {
 		this.value = value;
 	}
 	
-	
-	
 	/**
 	 * evaluates the rule to determine if it is satisfied
 	 * 
 	 * @return boolean value indicating the rule is satisfied or not
 	 */
-	abstract Boolean evaluate(Element val);	
+	abstract Boolean evaluate(Element val);
 
 	
 	@Override

@@ -5,50 +5,61 @@ import com.looksee.models.enums.AuditCategory;
 import lombok.Getter;
 import lombok.Setter;
 
-public class AuditError extends Message{
-	private String error_message;
-	private AuditCategory audit_category;
+/**
+ * Represents an error that occurred during an audit process.
+ * This class extends {@link Message} to provide error information specific to audit operations.
+ * 
+ * @see Message
+ * @see AuditCategory
+ */
+@Getter
+@Setter
+public class AuditError extends Message {
+	/**
+	 * A descriptive message explaining the error that occurred during the audit
+	 */
+	private String errorMessage;
+
+	/**
+	 * The category of audit where the error occurred (e.g., COLOR_PALETTE, TEXT_BACKGROUND_CONTRAST)
+	 * @see AuditCategory
+	 */
+	private AuditCategory auditCategory;
+
+	/**
+	 * The progress of the audit operation when the error occurred, represented as a value between 0 and 1
+	 */
 	private double progress;
 
-	@Getter
-	@Setter
+	/**
+	 * The unique identifier of the audit record associated with this error
+	 */
 	private long auditRecordId;
 	
-	public AuditError(long accountId, 
-					  long auditRecordId, 
-					  String error_message,
-					  AuditCategory category, 
-					  double progress
+	/**
+	 * Constructs a new AuditError with the specified parameters.
+	 *
+	 * @param accountId the ID of the account associated with this audit error
+	 * @param auditRecordId the ID of the audit record where the error occurred
+	 * @param errorMessage a descriptive message explaining the error
+	 * @param auditCategory the category of audit where the error occurred
+	 * @param progress the progress of the audit operation when the error occurred (0-1)
+	 * 
+	 * @throws IllegalArgumentException if progress is not between 0 and 1
+	 */
+	public AuditError(long accountId,
+					long auditRecordId,
+					String errorMessage,
+					AuditCategory auditCategory,
+					double progress
 	) {
 		super(accountId);
-		setErrorMessage(error_message);
-		setAuditCategory(category);
-		setProgress(progress);
-		setAuditRecordId(auditRecordId);
-	}
-
-	public String getErrorMessage() {
-		return error_message;
-	}
-
-	public void setErrorMessage(String error_message) {
-		this.error_message = error_message;
-	}
-
-	public AuditCategory getAuditCategory() {
-		return audit_category;
-	}
-
-	public void setAuditCategory(AuditCategory audit_category) {
-		this.audit_category = audit_category;
-	}
-
-	public double getProgress() {
-		return progress;
-	}
-
-	public void setProgress(double progress) {
+		if (progress < 0 || progress > 1) {
+			throw new IllegalArgumentException("Progress must be between 0 and 1");
+		}
+		this.errorMessage = errorMessage;
+		this.auditCategory = auditCategory;
 		this.progress = progress;
+		this.auditRecordId = auditRecordId;
 	}
-
 }

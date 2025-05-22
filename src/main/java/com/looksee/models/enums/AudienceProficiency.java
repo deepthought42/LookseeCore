@@ -3,44 +3,62 @@ package com.looksee.models.enums;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 /**
- * Complementary
-Two colors that are on opposite sides of the color wheel. This combination provides a high contrast and high impact color combination – together, these colors will appear brighter and more prominent.
-
-* 
-* Monochromatic
-Three shades, tones and tints of one base color. Provides a subtle and conservative color combination. This is a versatile color combination that is easy to apply to design projects for a harmonious look.
-
-Analogous
-Three colors that are side by side on the color wheel. This color combination is versatile, but can be overwhelming. To balance an analogous color scheme, choose one dominant color, and use the others as accents.
- 
- * SPLIT_COMPLIMENTARY
-* 	Three shades with uneven spacing between them
-*
- * Triadic
-Three colors that are evenly spaced on the color wheel. This provides a high contrast color scheme, but less so than the complementary color combination — making it more versatile. This combination creates bold, vibrant color palettes.
-
- * Tetradic
-Four colors that are evenly spaced on the color wheel. Tetradic color schemes are bold and work best if you let one color be dominant, and use the others as accents. The more colors you have in your palette, the more difficult it is to balance,
-
-
+ * Defines the proficiency levels of the audience for the audit.
+ *
+ * <p><b>Invariants:</b>
+ * <ul>
+ *   <li>Each enum value has a unique shortName</li>
+ *   <li>shortName is never null or empty</li>
+ *   <li>shortName is always uppercase</li>
+ * </ul>
+ *
+ * <p><b>Thread Safety:</b>
+ * <ul>
+ *   <li>This enum is immutable and thread-safe</li>
+ * </ul>
  */
 public enum AudienceProficiency {
-	GENERAL("GENERAL"), 
-	KNOWLEDGEABLE("KNOWLEDGEABLE"), 
+    /**
+     * Represents a general audience.
+     */
+	GENERAL("GENERAL"),
+
+    /**
+     * Represents a knowledgeable audience.
+     */
+	KNOWLEDGEABLE("KNOWLEDGEABLE"),
+
+    /**
+     * Represents an expert audience.
+     */
 	EXPERT("EXPERT"),
-	UNKNOWN("UNKNOWN"); 
-	
+
+    /**
+     * Represents an unknown audience.
+     */
+	UNKNOWN("UNKNOWN");
 	private String shortName;
 
 	AudienceProficiency (String shortName) {
         this.shortName = shortName;
     }
 
+    /**
+     * Returns the short name of the audience proficiency.
+     *
+     * @return the short name
+     */
     @Override
     public String toString() {
         return shortName;
     }
 
+    /**
+     * Creates an {@linkplain AudienceProficiency} from a string value
+     *
+     * @param value the value
+     * @return the {@link AudienceProficiency}
+     */
     @JsonCreator
     public static AudienceProficiency create(String value) {
         if(value == null) {
@@ -54,6 +72,11 @@ public enum AudienceProficiency {
         return UNKNOWN;
     }
 
+    /**
+     * Returns the short name of the audience proficiency.
+     *
+     * @return the short name
+     */
     public String getShortName() {
         return shortName;
     }

@@ -6,12 +6,19 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.data.neo4j.core.schema.Relationship;
-import org.springframework.data.neo4j.core.schema.Relationship.Direction;
+
+import lombok.Getter;
+import lombok.Setter;
 
 /**
- * Encompasses a domain name as well as all {@link Test}s and {@link Group}s 
- * belong to this domain
+ * Represents a domain.
+ * 
+ * This class represents a domain and contains a list of {@link PageState} objects,
+ * which represent the pages of the domain. It also contains a {@link DesignSystem} object,
+ * which represents the design system of the domain.
  */
+@Getter
+@Setter
 public class Domain extends LookseeObject{
 	
 	private String url;
@@ -23,16 +30,13 @@ public class Domain extends LookseeObject{
 	private List<PageState> pages;
 	
 	@Relationship(type = "HAS")
-	private Set<DomainAuditRecord> audit_records;
+	private Set<DomainAuditRecord> auditRecords;
 
 	@Relationship(type="USES")
-	private DesignSystem design_system;
+	private DesignSystem designSystem;
 	
 	/**
-	 * 
-	 * 
-	 * @param domain
-	 * @param organization
+	 * Constructs a new {@link Domain} object.
 	 */
 	public Domain(){
 		setPages( new ArrayList<>() );
@@ -42,17 +46,28 @@ public class Domain extends LookseeObject{
 	}
 	
 	/**
-	 * 
+	 * Constructs a new {@link Domain} object with the given parameters.
+	 *
 	 * @param protocol web protocol ("http", "https", "file", etc.)
-	 * @param path landable url
-	 * @param browser name of the browser ie. chrome, firefox, etc.
+	 * @param host domain name
+	 * @param path landable url path
 	 * @param logo_url url of logo image file
+	 *
+	 * precondition: protocol != null;
+	 * precondition: host != null;
+	 * precondition: path != null;
+	 * precondition: logo_url != null;
 	 */
-	public Domain( String protocol, 
-				   String host, 
-				   String path, 
-				   String logo_url
+	public Domain( String protocol,
+					String host,
+					String path,
+					String logo_url
 	){
+		assert protocol != null;
+		assert host != null;
+		assert path != null;
+		assert logo_url != null;
+
 		setLogoUrl(logo_url);
 		setUrl(host);
 		setEntrypointUrl(host+path);
@@ -77,14 +92,6 @@ public class Domain extends LookseeObject{
 		return false;
 	}
 
-	public String getLogoUrl() {
-		return logoUrl;
-	}
-
-	public void setLogoUrl(String logo_url) {
-		this.logoUrl = logo_url;
-	}
-
 	/**
 	 * {@inheritDoc}
 	 */
@@ -93,6 +100,12 @@ public class Domain extends LookseeObject{
 		return "domain"+org.apache.commons.codec.digest.DigestUtils.sha512Hex(getUrl());
 	}
 
+	/**
+	 * Adds a page to the domain.
+	 *
+	 * @param page The page to add
+	 * @return true if the page was added successfully, false otherwise
+	 */
 	public boolean addPage(PageState page) {
 		//check if page state exists
 		for(PageState state : this.getPages()){
@@ -102,53 +115,5 @@ public class Domain extends LookseeObject{
 		}
 		
 		return this.getPages().add(page);
-	}
-
-	public List<PageState> getPages() {
-		return this.pages;
-	}
-	
-	public void setPages(List<PageState> pages) {
-		this.pages = pages;
-	}
-
-	public Set<DomainAuditRecord> getAuditRecords() {
-		return audit_records;
-	}
-
-	public void setAuditRecords(Set<DomainAuditRecord> audit_records) {
-		this.audit_records = audit_records;
-	}
-
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-	public List<String> getSitemap() {
-		return sitemap;
-	}
-
-	public void setSitemap(List<String> sitemap) {
-		this.sitemap = sitemap;
-	}
-
-	public String getEntrypointUrl() {
-		return entrypointUrl;
-	}
-
-	public void setEntrypointUrl(String entrypoint_url) {
-		this.entrypointUrl = entrypoint_url;
-	}
-
-	public DesignSystem getDesignSystem() {
-		return design_system;
-	}
-
-	public void setDesignSystem(DesignSystem design_system) {
-		this.design_system = design_system;
 	}
 }

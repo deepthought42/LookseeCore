@@ -15,41 +15,60 @@ import org.springframework.data.neo4j.core.schema.CompositeProperty;
 import org.springframework.data.neo4j.core.schema.Relationship;
 import org.springframework.data.neo4j.core.schema.Relationship.Direction;
 
-import com.looksee.models.rules.Rule;
 import com.looksee.models.enums.ElementClassification;
+import com.looksee.models.rules.Rule;
 
-
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Contains all the pertinent information for an element on a page. A ElementState
  *  may be a Parent and/or child of another ElementState. This heirarchy is not
- *  maintained by ElementState though. 
+ *  maintained by ElementState though.
  */
 public class Element extends LookseeObject implements Comparable<Element> {
 	@SuppressWarnings("unused")
 	private static Logger log = LoggerFactory.getLogger(Element.class);
 
-	private String name;
-	private String xpath;
-	private String cssSelector;
 	private String classification;
+
+	@Getter
+	@Setter
+	private String name;
+
+	@Getter
+	@Setter
+	private String xpath;
+
+	@Getter
+	@Setter
+	private String cssSelector;
+
+	@Getter
+	@Setter
 	private String template;
+	
+	@Getter
+	@Setter
 	private String text;
 	
+	@Getter
+	@Setter
 	@CompositeProperty
 	private Map<String, String> attributes = new HashMap<>();
 	
+	@Getter
+	@Setter
 	@CompositeProperty
 	private Map<String, String> preRenderCssValues = new HashMap<>();
 	
+	@Getter
+	@Setter
 	@Relationship(type = "HAS", direction = Direction.OUTGOING)
 	private Set<Rule> rules = new HashSet<>();
 
 	@Relationship(type = "HAS_CHILD", direction = Direction.OUTGOING)
 	private List<Element> childElements = new ArrayList<>();
-	
-	@Relationship()
-	private List<ElementState> elementEtates = new ArrayList<>();
 
 	public Element(){
 		super();
@@ -62,12 +81,12 @@ public class Element extends LookseeObject implements Comparable<Element> {
 	 * @param name
 	 * @param attributes
 	 * @param css_map
-	 * @pre attributes != null
-	 * @pre css_map != null
-	 * @pre xpath != null
-	 * @pre name != null
-	 * @pre screenshot_url != null
-	 * @pre !screenshot_url.isEmpty()
+	 * precondition: attributes != null
+	 * precondition: css_map != null
+	 * precondition: xpath != null
+	 * precondition: name != null
+	 * precondition: screenshot_url != null
+	 * precondition: !screenshot_url.isEmpty()
 	 */
 	public Element(String text, String xpath, String name, Map<String, String> attributes, 
 			Map<String, String> css_map, String inner_html, String outer_html){
@@ -96,18 +115,14 @@ public class Element extends LookseeObject implements Comparable<Element> {
 	 * @param name
 	 * @param attributes
 	 * @param css_map
-	 * @param outer_html TODO
-	 * @pre xpath != null
-	 * @pre name != null
-	 * @pre screenshot_url != null
-	 * @pre !screenshot_url.isEmpty()
-	 * @pre outer_html != null;
-	 * @pre assert !outer_html.isEmpty()
+	 * @param inner_html
+	 * @param classification
+	 * @param outer_html
 	 */
-	public Element(String text, String xpath, String name, 
-					Map<String, String> attributes, 
-					Map<String, String> css_map, 
-					String inner_html, 
+	public Element(String text, String xpath, String name,
+					Map<String, String> attributes,
+					Map<String, String> css_map,
+					String inner_html,
 					ElementClassification classification, String outer_html){
 		assert name != null;
 		assert xpath != null;
@@ -149,38 +164,6 @@ public class Element extends LookseeObject implements Comparable<Element> {
 	public boolean isPartOfForm() {
 		return this.getXpath().contains("form");
 	}
-	
-	public String getName() {
-		return name;
-	}
-	
-	public void setName(String tagName) {
-		this.name = tagName;
-	}
-
-	public String getXpath() {
-		return xpath;
-	}
-	
-	public void setXpath(String xpath) {
-		this.xpath = xpath;
-	}
-
-	public Map<String, String> getPreRenderCssValues() {
-		return preRenderCssValues;
-	}
-
-	public void setPreRenderCssValues(Map<String, String> css_values) {
-		this.preRenderCssValues = css_values;
-	}
-	
-	public Set<Rule> getRules(){
-		return this.rules;
-	}
-
-	public void setRules(Set<Rule> rules) {
-		this.rules = rules;
-	}
 
 	public void addRule(Rule rule) {
 		boolean exists = false;
@@ -195,10 +178,9 @@ public class Element extends LookseeObject implements Comparable<Element> {
 	}
 	
 	/**
-	 * Generates a key using both path and result in order to guarantee uniqueness of key as well 
-	 * as easy identity of {@link Test} when generated in the wild via discovery
-	 * 
-	 * @return
+	 * Generates a key using both path and result in order to guarantee uniqueness
+	 *
+	 * @return the key
 	 */
 	public String generateKey() {
 		String key = "";
@@ -221,7 +203,7 @@ public class Element extends LookseeObject implements Comparable<Element> {
 	/**
 	 * Checks if {@link Element elements} are equal
 	 * 
-	 * @param elem
+	 * @param o the object to compare to
 	 * @return whether or not elements are equal
 	 */
 	@Override
@@ -250,22 +232,6 @@ public class Element extends LookseeObject implements Comparable<Element> {
         return this.getKey().compareTo(o.getKey());
 	}
 
-	public String getCssSelector() {
-		return cssSelector;
-	}
-
-	public void setCssSelector(String css_selector) {
-		this.cssSelector = css_selector;
-	}
-
-	public String getTemplate(){
-		return this.template;
-	}
-	
-	public void setTemplate(String template) {
-		this.template = template;
-	}
-
 	public ElementClassification getClassification() {
 		return ElementClassification.create(classification);
 	}
@@ -273,39 +239,15 @@ public class Element extends LookseeObject implements Comparable<Element> {
 	public void setClassification(ElementClassification classification) {
 		this.classification = classification.toString();
 	}
-	
-	public List<Element> getChildElements() {
-		return childElements;
-	}
 
-	public void setChildElements(List<Element> child_elements) {
-		this.childElements = child_elements;
-	}
-	
 	public void addChildElement(Element child_element) {
 		this.childElements.add(child_element);
-	}
-
-	public Map<String, String> getAttributes() {
-		return attributes;
 	}
 
 	public String getAttribute(String attr_name) {
 		return attributes.get(attr_name);
 	}
 	
-	public void setAttributes(Map<String, String> attributes) {
-		this.attributes = attributes;
-	}
-
-	public String getText() {
-		return text;
-	}
-
-	public void setText(String text) {
-		this.text = text;
-	}
-
 	public void addAttribute(String attribute_name, String attribute_value) {
 		this.attributes.put(attribute_name, attribute_value);
 	}

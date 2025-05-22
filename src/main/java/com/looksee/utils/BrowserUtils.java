@@ -10,10 +10,7 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.security.cert.Certificate;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -38,7 +35,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.looksee.models.Browser;
-import com.looksee.models.ColorData;
 import com.looksee.models.Domain;
 import com.looksee.models.ElementState;
 import com.looksee.models.ImageElementState;
@@ -96,8 +92,8 @@ public class BrowserUtils {
 	 * 
 	 * @throws MalformedURLException
 	 * 
-	 * @pre url != null
-	 * @pre !url.isEmpty()
+	 * precondition: url != null
+	 * precondition: !url.isEmpty()
 	 */
 	public static String sanitizeUserUrl(String url) throws MalformedURLException  {
 		assert url != null;
@@ -151,17 +147,14 @@ public class BrowserUtils {
 
 	/**
 	 * Checks if url is part of domain including sub-domains
-	 *  
+	 *
 	 * @param domain_host host of {@link Domain domain}
 	 * @param url
-	 * 
+	 *
 	 * @return true if url is external, otherwise false
-	 * 
-	 * @pre !domain_host.isEmpty()
-	 * @pre !url.isEmpty()
-	 * 
-	 * @throws MalformedURLException
-	 * @throws URISyntaxException 
+	 *
+	 * precondition: !domain_host.isEmpty()
+	 * precondition: !url.isEmpty()
 	 */
 	public static boolean isExternalLink(String domain_host, String url) {
 		assert !domain_host.isEmpty();
@@ -190,9 +183,11 @@ public class BrowserUtils {
 	 * Returns true if link is empty or if it starts with a '/' and doesn't contain the domain host
 	 * @param domain_host host (example: google.com)
 	 * @param link_url link href value to be evaluated
-	 * 
+	 *
 	 * @return true if link is empty or if it starts with a '/' and doesn't contain the domain host, otherwise false
-	 * @throws URISyntaxException
+	 *
+	 * precondition: domain_host != null
+	 * precondition: link_url != null
 	 */
 	public static boolean isRelativeLink(String domain_host, String link_url) {
 		assert domain_host != null;
@@ -329,8 +324,8 @@ public class BrowserUtils {
 	
 	/**
 	 * Extracts a {@link List list} of link urls by looking up `a` html tags and extracting the href values
-	 * 
-	 * @param source valid html source
+	 *
+	 * @param elements a list of {@link Element elements}
 	 * @return {@link List list} of link urls
 	 */
 	public static List<com.looksee.models.Element> extractLinks(List<com.looksee.models.Element> elements) {
@@ -395,10 +390,10 @@ public class BrowserUtils {
 	
 	/**
 	 *  check if link returns valid content ie. no 404 or page not found errors when navigating to it
-	 * @param url
-	 * @return
+	 * @param url_str the url to check
+	 * @return true if the url exists, false otherwise
 	 * 
-	 * @pre url_str != null
+	 * precondition: url_str != null
 	 * @throws Exception
 	 */
 	public static boolean doesUrlExist(String url_str) throws Exception {
@@ -503,7 +498,7 @@ public class BrowserUtils {
 	 * 
 	 * @return true if any suffixes match, false otherwise
 	 * 
-	 * @pre href != nuill
+	 * precondition: href != null
 	 */
 	public static boolean isImageUrl(String href) {
 		assert href != null;
@@ -511,89 +506,10 @@ public class BrowserUtils {
 		return href.endsWith(".jpg") || href.endsWith(".png") || href.endsWith(".gif") || href.endsWith(".bmp") || href.endsWith(".tiff") || href.endsWith(".webp") || href.endsWith(".bpg") || href.endsWith(".heif");
 	}
 	
-	/**
-	 * Opens stylesheet content and searches for font-family css settings
-	 * 
-	 * @param stylesheet_url
-	 * @return
-	 * @throws IOException
-	 * 
-	 * @pre stylesheet_url != null;
-	 * 
-	 */
-	public static Collection<? extends String> extractFontFamiliesFromStylesheet(String stylesheet) {
-		assert stylesheet != null;
-		
-		Map<String, Boolean> font_families = new HashMap<>();
-
-		//extract text matching font-family:.*; from stylesheets
-		//for each match, extract entire string even if it's a list and add string to font-families list
-		String patternString = "font-family:(.*?)[?=;|}]";
-
-        Pattern pattern = Pattern.compile(patternString);
-        Matcher matcher = pattern.matcher(stylesheet);
-        while(matcher.find()) {
-			String font_family_setting = matcher.group();
-			if(font_family_setting.contains("inherit")) {
-				continue;
-			}
-			font_family_setting = font_family_setting.replaceAll("'", "");
-			font_family_setting = font_family_setting.replaceAll("\"", "");
-			font_family_setting = font_family_setting.replaceAll(";", "");
-			font_family_setting = font_family_setting.replaceAll(":", "");
-			font_family_setting = font_family_setting.replaceAll(":", "");
-			font_family_setting = font_family_setting.replaceAll("}", "");
-			font_family_setting = font_family_setting.replaceAll("!important", "");
-			font_family_setting = font_family_setting.replaceAll("font-family", "");
-			
-			font_families.put(font_family_setting.trim(), Boolean.TRUE);
-        }
-        
-        return font_families.keySet();
-	}
-
-
 	public static String getTitle(PageState page_state) {
 		Document doc = Jsoup.parse(page_state.getSrc());
 		
 		return doc.title();
-	}
-
-	/**
-	 * Extracts set of colors declared as background or text color in the css
-	 * 
-	 * @param stylesheet
-	 * @return
-	 */
-	public static Collection<? extends ColorData> extractColorsFromStylesheet(String stylesheet) {
-		assert stylesheet != null;
-		
-		List<ColorData> colors = new ArrayList<>();
-
-		//extract text matching font-family:.*; from stylesheets
-		//for each match, extract entire string even if it's a list and add string to font-families list
-		for(String prop_setting : extractCssPropertyDeclarations("background-color", stylesheet)) {
-			if(prop_setting.startsWith("#")) {
-				
-				Color color = hex2Rgb(prop_setting.trim().substring(1));
-				colors.add(new ColorData(color.getRed() + ","+color.getGreen()+","+color.getBlue()));
-			}
-			else if( prop_setting.startsWith("rgb") ){
-				colors.add(new ColorData(prop_setting));
-			}
-        }
-
-        for(String prop_setting : extractCssPropertyDeclarations("color", stylesheet)) {
-			if(prop_setting.startsWith("#")) {
-				Color color = hex2Rgb(prop_setting.trim().substring(1));
-				colors.add(new ColorData(color.getRed() + ","+color.getGreen()+","+color.getBlue()));
-			}
-			else if( prop_setting.startsWith("rgb") ){
-				colors.add(new ColorData(prop_setting));
-			}
-        }
-        
-        return colors;
 	}
 	
 	/**
@@ -732,12 +648,9 @@ public class BrowserUtils {
 
 	/**
 	 * Checks the http status codes received when visiting the given url
-	 * 
-	 * @param url
-	 * @param title
-	 * @param content
-	 * @return
-	 * @throws IOException
+	 *
+	 * @param url the url to check
+	 * @return the http status code
 	 */
 	public static int getHttpStatus(URL url) {
 		int status_code = 500;
@@ -747,7 +660,6 @@ public class BrowserUtils {
 				http_client.setInstanceFollowRedirects(true);
 				
 				status_code = http_client.getResponseCode();
-				//log.warn("HTTP status code = "+status_code);
 				return status_code;
 			}
 			else if(url.getProtocol().contentEquals("https")) {
@@ -774,11 +686,11 @@ public class BrowserUtils {
 	
 	/**
 	 * Checks if the server has certificates. Expects an https protocol in the url
-	 * 
-	 * @param url
-	 * @return
+	 *
+	 * @param url the {@link URL}
+	 * @return true if the server has certificates, false otherwise
+	 *
 	 * @throws MalformedURLException
-	 * @throws IOException
 	 */
 	public static boolean checkIfSecure(URL url) throws MalformedURLException {
         boolean is_secure = false;
@@ -872,8 +784,8 @@ public class BrowserUtils {
 	 * @param host
 	 * @param href
 	 * @param is_secure TODO
-	 * @pre host != null
-	 * @pre !host.isEmpty
+	 * precondition: host != null
+	 * precondition: !host.isEmpty
 	 * 
 	 * @return
 	 * 
@@ -931,15 +843,13 @@ public class BrowserUtils {
 	/**
 	 * Check if the url begins with a valid protocol and is in the valid format.
 	 * Also check if the url is an external link by comparing it to a host name.
-	 * 
+	 *
 	 * @param sanitized_url A sanitized url, such as https://look-see.com
 	 * @param host The host website, such as look-see.com
 	 * @return {@code boolean}
-	 * @throws MalformedURLException
-	 * @throws URISyntaxException
-	 * 
-	 * @pre sanitized_url != null
-	 * @pre !sanitized_url.isEmpty()
+	 *
+	 * precondition: sanitized_url != null
+	 * precondition: !sanitized_url.isEmpty()
 	 */
 	public static boolean isValidUrl(String sanitized_url, String host)
 	{
@@ -991,7 +901,7 @@ public class BrowserUtils {
 	 * @param sanitized_url
 	 * @return {@code boolean} True if valid, false if page is not found.
 	 * 
-	 * @pre sanitized_url != null
+	 * precondition: sanitized_url != null
 	 */
 	public static boolean hasValidHttpStatus(URL sanitized_url){
 		assert sanitized_url != null;
@@ -1011,9 +921,11 @@ public class BrowserUtils {
 	
 	/**
 	 * Retrieves {@link ElementStates} that contain text
-	 * 
-	 * @param element_states
-	 * @return
+	 *
+	 * @param element_states the {@link List} of {@link ElementState}s
+	 * @return the {@link List} of {@link ElementState}s
+	 *
+	 * precondition: element_states != null
 	 */
 	public static List<ElementState> getTextElements(List<ElementState> element_states) {
 		assert element_states != null;
@@ -1071,9 +983,10 @@ public class BrowserUtils {
 	}
 
 	/**
-	 * Checks if a {@link WebElement element} is currently hidden
+	 * Checks if an element is currently hidden based on its location and size
 	 *
-	 * @param web_element {@link WebElement element}
+	 * @param location the {@link Point} location of the element
+	 * @param size the {@link Dimension} size of the element
 	 *
 	 * @return returns true if it is hidden, otherwise returns false
 	 */

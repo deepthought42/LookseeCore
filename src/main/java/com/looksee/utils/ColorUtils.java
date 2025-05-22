@@ -14,10 +14,10 @@ import javax.imageio.ImageIO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.looksee.models.recommend.ColorContrastRecommendation;
 import com.looksee.models.ColorData;
 import com.looksee.models.ColorUsageStat;
 import com.looksee.models.ElementState;
+import com.looksee.models.recommend.ColorContrastRecommendation;
 
 public class ColorUtils {
 	@SuppressWarnings("unused")
@@ -30,23 +30,21 @@ public class ColorUtils {
 	 * @param is_bold
 	 * @return
 	 */
-	public static boolean textContrastMeetsWcag21AAA(double contrast, double font_size, boolean is_bold) {		
+	public static boolean textContrastMeetsWcag21AAA(double contrast, double font_size, boolean is_bold) {
 		return (font_size >= 18 || (font_size >= 14 && is_bold) && contrast >= 4.5) 
 				|| ((font_size < 18 && (font_size >= 14 && !is_bold) || font_size < 14)  && contrast >= 7.0) ;
 	}
 
 	/**
 	 * Reviews Text color contrast with relation to text size and weight to determine if it meets WCAG 2.1 color contrast guidelines 
-	 * @param contrast
-	 * @param font_size
-	 * @param is_bold
-	 * @return
+	 * @param contrast the contrast
+	 * @return true if the text color contrast meets WCAG 2.1 color contrast guidelines, false otherwise
 	 */
-	public static boolean nonTextContrastMeetsWcag21AAA(double contrast) {		
+	public static boolean nonTextContrastMeetsWcag21AAA(double contrast) {
 		return contrast >= 3.0;
 	}
 	
-	public static ColorContrastRecommendation findCompliantFontColor(ColorData font_color, 
+	public static ColorContrastRecommendation findCompliantFontColor(ColorData font_color,
 			ColorData background_color,
 			boolean is_dark_theme, 
 			double font_size, 
@@ -95,8 +93,8 @@ public class ColorUtils {
 	 * @param font_size
 	 * @param is_bold
 	 * 
-	 * @pre font_color != null
-	 * @pre background_color != null
+	 * precondition: font_color != null
+	 * precondition: background_color != null
 	 * 
 	 * @return {@link ColorContrastRecommendation recommendation}
 	 */
@@ -148,8 +146,8 @@ public class ColorUtils {
 	 * @param background_color
 	 * @param is_dark_theme
 	 * 
-	 * @pre element_color != null
-	 * @pre background_color != null
+	 * precondition: element_color != null
+	 * precondition: background_color != null
 	 * 
 	 * @return
 	 */
