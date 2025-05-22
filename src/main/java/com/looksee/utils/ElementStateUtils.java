@@ -14,10 +14,18 @@ import org.openqa.selenium.WebElement;
 import com.looksee.models.ColorData;
 import com.looksee.models.ElementState;
 
-
+/**
+ * Utility class for filtering and enriching element states.
+ */
 public class ElementStateUtils {
 	
+	/**
+	 * Filters elements with negative positions.
+	 * @param elements the list of element states
+	 * @return the filtered list of element states
+	 */
 	public static List<ElementState> filterElementsWithNegativePositions(List<ElementState> elements) {
+		assert elements != null;
 		List<ElementState> filtered_elements = new ArrayList<>();
 
 		for(ElementState element : elements){
@@ -29,7 +37,23 @@ public class ElementStateUtils {
 		return filtered_elements;
 	}
 
-	public static List<ElementState> filterNotVisibleInViewport(int x_offset, int y_offset, List<ElementState> elements, Dimension viewport_size) {
+	/**
+	 * Filters elements that are not visible in the viewport.
+	 * @param x_offset the x offset
+	 * @param y_offset the y offset
+	 * @param elements the list of element states
+	 * @param viewport_size the viewport size
+	 * @return the filtered list of element states
+	 *
+	 * precondition: elements != null && viewport_size != null
+	 */
+	public static List<ElementState> filterNotVisibleInViewport(int x_offset,
+																int y_offset,
+																List<ElementState> elements,
+																Dimension viewport_size) {
+		assert elements != null;
+		assert viewport_size != null;
+
 		List<ElementState> filtered_elements = new ArrayList<>();
 
 		for(ElementState element : elements){
@@ -43,11 +67,14 @@ public class ElementStateUtils {
 
 	/**
 	 * Filters out html, body, script and link tags
+	 * @param web_elements the list of web elements
+	 * @return the filtered list of web elements
 	 *
-	 * @param web_elements
-	 * @return
+	 * precondition: web_elements != null
 	 */
 	public static List<WebElement> filterStructureTags(List<WebElement> web_elements) {
+		assert web_elements != null;
+
 		List<WebElement> elements = new ArrayList<>();
 		for(WebElement element : web_elements){
 			if(element.getTagName().equals("html") || element.getTagName().equals("body")
@@ -61,8 +88,23 @@ public class ElementStateUtils {
 		return elements;
 	}
 	
-	
-	public static boolean isElementVisibleInPane(int x_offset, int y_offset, ElementState elem, Dimension viewport_size){
+	/**
+	 * Checks if an element is visible in the viewport.
+	 * @param x_offset the x offset
+	 * @param y_offset the y offset
+	 * @param elem the element state
+	 * @param viewport_size the viewport size
+	 * @return true if the element is visible in the viewport, false otherwise
+	 *
+	 * precondition: elem != null && viewport_size != null
+	 */
+	public static boolean isElementVisibleInPane(int x_offset,
+													int y_offset,
+													ElementState elem,
+													Dimension viewport_size){
+		assert elem != null;
+		assert viewport_size != null;
+
 		int x = elem.getXLocation();
 		int y = elem.getYLocation();
 
@@ -73,9 +115,16 @@ public class ElementStateUtils {
 				&& (y+height) <= (viewport_size.getHeight()+y_offset);
 	}
 
-	
+	/**
+	 * Checks if the tag name is a header.
+	 * @param tag_name the tag name
+	 * @return true if the tag name is a header, false otherwise
+	 */
 	public static boolean isHeader(String tag_name) {
-		return "h1".equalsIgnoreCase(tag_name) 
+		if(tag_name == null) {
+			return false;
+		}
+		return "h1".equalsIgnoreCase(tag_name)
 				|| "h2".equalsIgnoreCase(tag_name)
 				|| "h3".equalsIgnoreCase(tag_name)
 				|| "h4".equalsIgnoreCase(tag_name)
@@ -88,11 +137,11 @@ public class ElementStateUtils {
 	 * Checks if outer html fragment owns text. An element is defined as owning text if 
 	 *   if it contains text immediately within the element. If an element has only
 	 *   child elements and no text then it does not own text
-	 *   
+	 *
 	 * @param element_state {@link ElementState element} to be evaluated for text ownership
-	 * 
+	 *
 	 * @return 1 if element is text owner, otherwise 0
-	 * 
+	 *
 	 * precondition: element_state != null;
 	 */
 	public static boolean isTextContainer(ElementState element_state) {
@@ -129,7 +178,10 @@ public class ElementStateUtils {
 	 * @return true if the tag name is a list, false otherwise
 	 */
 	public static boolean isList(String tag_name) {
-		return "ul".equalsIgnoreCase(tag_name) 
+		if(tag_name == null) {
+			return false;
+		}
+		return "ul".equalsIgnoreCase(tag_name)
 				|| "ol".equalsIgnoreCase(tag_name)
 				|| "li".equalsIgnoreCase(tag_name);
 	}
@@ -139,8 +191,11 @@ public class ElementStateUtils {
 	 *
 	 * @param element_states the list of element states to enrich
 	 * @return the enriched element states
+	 *
+	 * precondition: element_states != null
 	 */
 	public static Stream<ElementState> enrichBackgroundColor(List<ElementState> element_states) {
+		assert element_states != null;
 		//ENRICHMENT : BACKGROUND COLORS
 		return element_states.parallelStream()
 								.filter(element -> element != null)
@@ -179,8 +234,11 @@ public class ElementStateUtils {
 	 *
 	 * @param element the element to enrich
 	 * @return the enriched element
+	 *
+	 * precondition: element != null
 	 */
 	public static ElementState enrichBackgroundColor(ElementState element) {
+		assert element != null;
 		//ENRICHMENT : BACKGROUND COLORS
 		try {
 			String color_css = element.getRenderedCssValues().get("color");

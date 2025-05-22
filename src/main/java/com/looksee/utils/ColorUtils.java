@@ -43,13 +43,25 @@ public class ColorUtils {
 	public static boolean nonTextContrastMeetsWcag21AAA(double contrast) {
 		return contrast >= 3.0;
 	}
-	
+
+	/**
+	 * Finds a compliant font color for a given background color
+	 * @param font_color the font color
+	 * @param background_color the background color
+	 * @param is_dark_theme true if the theme is dark, false otherwise
+	 * @param font_size the font size
+	 * @param is_bold true if the font is bold, false otherwise
+	 * @return the compliant font color
+	 */
 	public static ColorContrastRecommendation findCompliantFontColor(ColorData font_color,
 			ColorData background_color,
-			boolean is_dark_theme, 
-			double font_size, 
-			boolean is_bold) 
+			boolean is_dark_theme,
+			double font_size,
+			boolean is_bold)
 	{
+		assert font_color != null;
+		assert background_color != null;
+		
 		//if text isn't black then see if we can make it lighter
 		double contrast = ColorData.computeContrast(background_color, font_color);
 		
@@ -86,23 +98,23 @@ public class ColorUtils {
 	
 	/**
 	 * Shifts the shade of the background toward white to find a potential color pair
-	 * 
+	 *
 	 * @param font_color
 	 * @param background_color
 	 * @param is_dark_theme
 	 * @param font_size
 	 * @param is_bold
-	 * 
+	 *
+	 * @return {@link ColorContrastRecommendation recommendation}
+	 *
 	 * precondition: font_color != null
 	 * precondition: background_color != null
-	 * 
-	 * @return {@link ColorContrastRecommendation recommendation}
 	 */
-	public static ColorContrastRecommendation findCompliantBackgroundColor(ColorData font_color, 
-																			ColorData background_color, 
-																			boolean is_dark_theme, 
-																			double font_size, 
-																			boolean is_bold) 
+	public static ColorContrastRecommendation findCompliantBackgroundColor(ColorData font_color,
+																			ColorData background_color,
+																			boolean is_dark_theme,
+																			double font_size,
+																			boolean is_bold)
 	{
 		assert font_color != null;
 		assert background_color != null;
@@ -141,18 +153,16 @@ public class ColorUtils {
 
 	/**
 	 * Identifies a color for the parent background that meets WCAG 2.1 compliance for color contrast
-	 * 
-	 * @param element_color
-	 * @param background_color
-	 * @param is_dark_theme
-	 * 
+	 * @param element_color the element color
+	 * @param background_color the background color
+	 * @param is_dark_theme true if the theme is dark, false otherwise
+	 * @return the compliant non-text background color
+	 *
 	 * precondition: element_color != null
 	 * precondition: background_color != null
-	 * 
-	 * @return
 	 */
 	public static ColorContrastRecommendation findCompliantNonTextBackgroundColor(ColorData element_color,
-																				  ColorData background_color, 
+																				  ColorData background_color,
 																				  boolean is_dark_theme) {
 		assert element_color != null;
 		assert background_color != null;
@@ -214,13 +224,17 @@ public class ColorUtils {
 	}
 
 	/**
-	 * Generates color recommendations based on contrast using either the background or the border color(if border is present)
-	 *   that would make the contrast compliant with WCAG 2.1 AAA standards
-	 *   
-	 * @param element
-	 * @param background_color
-	 * @param is_dark_theme
-	 * @return
+	 * Generates color recommendations based on contrast using either the
+	 * background or the border color(if border is present) that would make the
+	 * contrast compliant with WCAG 2.1 AAA standards
+	 * 
+	 * @param element the element
+	 * @param background_color the background color
+	 * @param is_dark_theme true if the theme is dark, false otherwise
+	 * @return the color recommendations
+	 *
+	 * precondition: element != null
+	 * precondition: background_color != null
 	 */
 	public static Set<ColorContrastRecommendation> findCompliantElementColors(ElementState element,
 																				ColorData background_color,
@@ -236,7 +250,11 @@ public class ColorUtils {
 		//calculate for element background
 		if(is_dark_theme) {
 			//if background isn't white then see if we can make it lighter
-			while(!contrast_compliant && (element_color.getRed() < 255 || element_color.getGreen() < 255 || element_color.getBlue() < 255)) {
+			while(!contrast_compliant
+					&& (element_color.getRed() < 255
+						|| element_color.getGreen() < 255
+						|| element_color.getBlue() < 255))
+			{
 				int new_red = element_color.getRed() + 1;
 				if(new_red > 255) {
 					new_red = 255;
@@ -285,19 +303,20 @@ public class ColorUtils {
 			recommendations.add( new ColorContrastRecommendation(element_color.rgb(), background_color.rgb()) );
 		}
 		
-		
 		String border_rgb = element.getRenderedCssValues().get("border-color");
 		if(border_rgb == null) {
 			return recommendations;
 		}
 		ColorData border_color = new ColorData(border_rgb);
 		
-		
 		//calculate for element border color
 		if(is_dark_theme) {
 			//if background isn't white then see if we can make it lighter
-			while(!contrast_compliant 
-					&& (border_color.getRed() < 255 || border_color.getGreen() < 255 || border_color.getBlue() < 255)) {
+			while(!contrast_compliant
+					&& (border_color.getRed() < 255
+							|| border_color.getGreen() < 255
+							|| border_color.getBlue() < 255))
+			{
 				int new_red = border_color.getRed() + 1;
 				if(new_red > 255) {
 					new_red = 255;
@@ -320,8 +339,10 @@ public class ColorUtils {
 		}
 		else {
 			//if background isn't white then see if we can make it lighter
-			while(!contrast_compliant 
-					&& (border_color.getRed() > 0 || border_color.getGreen() > 0 || border_color.getBlue() > 0)) {
+			while(!contrast_compliant
+					&& (border_color.getRed() > 0
+							|| border_color.getGreen() > 0
+							|| border_color.getBlue() > 0)) {
 				int new_red = border_color.getRed() - 1;
 				if(new_red < 0) {
 					new_red = 0;
@@ -343,43 +364,50 @@ public class ColorUtils {
 			}
 		}
 		
-		
 		if(ColorUtils.nonTextContrastMeetsWcag21AAA(contrast)) {
 			recommendations.add( new ColorContrastRecommendation(border_color.rgb(), background_color.rgb()) );
 		}
 		
-		
-		//generate color recommendation for border color
 		return recommendations;
 	}
 	
 	/**
-	 * 
-	 * @param screenshot_url
-	 * @param elements
-	 * @return
-	 * @throws MalformedURLException
-	 * @throws IOException
+	 * Extracts colors from a screenshot
+	 * @param screenshot_url the screenshot URL
+	 * @param elements the elements
+	 * @return the color usage statistics
+	 *
+	 * precondition: screenshot_url != null
+	 * precondition: elements != null
+	 *
+	 * @throws MalformedURLException if the URL is malformed
+	 * @throws IOException if an I/O error occurs
 	 */
 	public static List<ColorUsageStat> extractColorsFromScreenshot(URL screenshot_url,
-															 		List<ElementState> elements
-	) throws MalformedURLException, IOException {		
+																	List<ElementState> elements
+	) throws MalformedURLException, IOException {
+		assert screenshot_url != null;
+		assert elements != null;
+		
 		//copy page state full page screenshot
 		BufferedImage screenshot = ImageIO.read(screenshot_url);
-		
 		removeImageElements(screenshot, elements);
 		
-		//return CloudVisionUtils.extractImageProperties(screenshot);
 		return ImageUtils.extractImageProperties(screenshot);
 	}
 
 	/**
 	 * Removes image elements from a screenshot
-	 * 
-	 * @param screenshot
-	 * @param elements
+	 * @param screenshot the screenshot
+	 * @param elements the elements
+	 *
+	 * precondition: screenshot != null
+	 * precondition: elements != null
 	 */
 	public static void removeImageElements(BufferedImage screenshot, List<ElementState> elements) {
+		assert screenshot != null;
+		assert elements != null;
+		
 		for(ElementState element : elements) {
 			if(!element.getName().contentEquals("img")) {
 				continue;
@@ -402,7 +430,7 @@ public class ColorUtils {
 						continue;
 					}
 					screenshot.setRGB(x_pixel, y_pixel, new Color(0,0,0).getRGB());
-				}	
+				}
 			}
 		}
 	}
@@ -411,12 +439,13 @@ public class ColorUtils {
 	
 	/**
 	 * Checks if the given {@link ColorData} hue is a variant of the color Red.
-	 * 
-	 * @param color_data
-	 * 
-	 * @return true if it's red, otherwise false
+	 * @param color_data the color data
+	 * @return true if the color is red, false otherwise
+	 *
+	 * precondition: color_data != null
 	 */
 	public static boolean isRed(ColorData color_data) {
+		assert color_data != null;
 		double red_low = 321.0;
 		double red_hi = 10.0;
 		
@@ -425,12 +454,13 @@ public class ColorUtils {
 
 	/**
 	 * Checks if the given {@link ColorData} hue is a variant of the color Orange.
-	 * 
-	 * @param color_data
-	 * 
-	 * @return true if it's orange, otherwise false
+	 * @param color_data the color data
+	 * @return true if the color is orange, false otherwise
+	 *
+	 * precondition: color_data != null
 	 */
 	public static boolean isOrange(ColorData color_data) {
+		assert color_data != null;
 		double orange_low = 11.0;
 		double orange_hi = 40.0;
 		
@@ -439,12 +469,14 @@ public class ColorUtils {
 
 	/**
 	 * Checks if the given {@link ColorData} hue is a variant of the color Gold.
-	 * 
-	 * @param color_data
-	 * 
-	 * @return true if it's gold, otherwise false
+	 * @param color_data the color data
+	 * @return true if the color is gold, false otherwise
+	 *
+	 * precondition: color_data != null
 	 */
 	public static boolean isGold(ColorData color_data) {
+		assert color_data != null;
+
 		double gold_low = 41.0;
 		double gold_high = 50.0;
 		
@@ -453,12 +485,14 @@ public class ColorUtils {
 
 	/**
 	 * Checks if the given {@link ColorData} hue is a variant of the color Yellow.
-	 * 
-	 * @param color_data
-	 * 
-	 * @return true if it's yellow, otherwise false
+	 * @param color_data the color data
+	 * @return true if the color is yellow, false otherwise
+	 *
+	 * precondition: color_data != null
 	 */
 	public static boolean isYellow(ColorData color_data) {
+		assert color_data != null;
+
 		double yellow_low = 51.0;
 		double yellow_high = 72.0;
 		
@@ -467,12 +501,14 @@ public class ColorUtils {
 
 	/**
 	 * Checks if the given {@link ColorData} hue is a variant of the color Green.
-	 * 
-	 * @param color_data
-	 * 
-	 * @return true if it's green, otherwise false
+	 * @param color_data the color data
+	 * @return true if the color is green, false otherwise
+	 *
+	 * precondition: color_data != null
 	 */
 	public static boolean isGreen(ColorData color_data) {
+		assert color_data != null;
+
 		double green_low = 73.0;
 		double green_high = 165.0;
 		
@@ -481,12 +517,14 @@ public class ColorUtils {
 
 	/**
 	 * Checks if the given {@link ColorData} hue is a variant of the color Cyan.
-	 * 
-	 * @param color_data
-	 * 
-	 * @return true if it's cyan, otherwise false
+	 * @param color_data the color data
+	 * @return true if the color is cyan, false otherwise
+	 *
+	 * precondition: color_data != null
 	 */
 	public static boolean isCyan(ColorData color_data) {
+		assert color_data != null;
+
 		double cyan_low = 166.0;
 		double cyan_high = 195.0;
 		
@@ -495,12 +533,14 @@ public class ColorUtils {
 
 	/**
 	 * Checks if the given {@link ColorData} hue is a variant of the color Blue.
-	 * 
-	 * @param color_data
-	 * 
-	 * @return true if it's blue, otherwise false
+	 * @param color_data the color data
+	 * @return true if the color is blue, false otherwise
+	 *
+	 * precondition: color_data != null
 	 */
 	public static boolean isBlue(ColorData color_data) {
+		assert color_data != null;
+
 		double blue_low = 196.0;
 		double blue_high = 225.0;
 		
@@ -509,12 +549,14 @@ public class ColorUtils {
 
 	/**
 	 * Checks if the given {@link ColorData} hue is a variant of the color Violet.
-	 * 
-	 * @param color_data
-	 * 
-	 * @return true if it's violet, otherwise false
+	 * @param color_data the color data
+	 * @return true if the color is violet, false otherwise
+	 *
+	 * precondition: color_data != null
 	 */
 	public static boolean isViolet(ColorData color_data) {
+		assert color_data != null;
+
 		double violet_low = 226.0;
 		double violet_high = 250.0;
 		
@@ -523,12 +565,14 @@ public class ColorUtils {
 
 	/**
 	 * Checks if the given {@link ColorData} hue is a variant of the color Purple.
-	 * 
-	 * @param color_data
-	 * 
-	 * @return true if it's purple, otherwise false
+	 * @param color_data the color data
+	 * @return true if the color is purple, false otherwise
+	 *
+	 * precondition: color_data != null
 	 */
 	public static boolean isPurple(ColorData color_data) {
+		assert color_data != null;
+
 		double purple_low = 251.0;
 		double purple_high = 280.0;
 		
@@ -537,26 +581,39 @@ public class ColorUtils {
 
 	/**
 	 * Checks if the given {@link ColorData} hue is a variant of the color Magenta.
-	 * 
-	 * @param color_data
-	 * 
-	 * @return true if it's magenta, otherwise false
+	 * @param color_data the color data
+	 * @return true if the color is magenta, false otherwise
+	 *
+	 * precondition: color_data != null
 	 */
 	public static boolean isMagenta(ColorData color_data) {
+		assert color_data != null;
+
 		double magenta_low = 281.0;
-		double magenta_high = 320.0;	
+		double magenta_high = 320.0;
 		
 		return color_data.getHue() >= magenta_low && color_data.getHue() <= magenta_high;
 	}
 
+	/**
+	 * Checks if the given {@link ColorData} brightness is less than 15.
+	 * @param color_data the color data
+	 * @return true if the color is black, false otherwise
+	 *
+	 * precondition: color_data != null
+	 */
 	public static boolean isBlack(ColorData color_data) {
 		return color_data.getBrightness() < 15;
 	}
-	
+
+	/**
+	 * Checks if the given {@link ColorData} saturation is less than 5 and brightness is greater than 90.
+	 * @param color_data the color data
+	 * @return true if the color is white, false otherwise
+	 *
+	 * precondition: color_data != null
+	 */
 	public static boolean isWhite(ColorData color_data) {
 		return color_data.getSaturation() < 5 && color_data.getBrightness() > 90;
 	}
-	
-	
-	
 }

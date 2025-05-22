@@ -65,10 +65,10 @@ public class PageUtils {
 															.collect(Collectors.toList());
 			
 			ElementState submit_element = FormUtils.findFormSubmitButton(form_elements);
-			Form form = new Form(form_element, 
-								 input_elements, 
-								 submit_element,
-								 "Form #"+(forms.size()+1));
+			Form form = new Form(form_element,
+								input_elements,
+								submit_element,
+								"Form #"+(forms.size()+1));
 			
 			form_list.add(form);
 		}

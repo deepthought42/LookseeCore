@@ -167,10 +167,6 @@ public class GoogleCloudStorage {
 		assert image_url != null;
 		assert !image_url.isEmpty();
 		
-//		Storage storage = StorageOptions.getDefaultInstance().getService();
-//		Bucket bucket = storage.get(bucketName);
-
-//		Blob blob = bucket.get(image_url);
 		return ImageIO.read(new URL(image_url));
     }
 }

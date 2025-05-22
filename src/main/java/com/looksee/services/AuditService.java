@@ -218,6 +218,13 @@ public class AuditService {
 		return issue_element_map;
 	}
 
+	/**
+	 * Add an issue message to an audit
+	 *
+	 * @param key the key of the audit
+	 * @param issue_key the key of the issue message
+	 * @return the issue message
+	 */
 	public UXIssueMessage addIssue(
 			String key, 
 			String issue_key) {
@@ -230,11 +237,19 @@ public class AuditService {
 	}
 
 	/**
-	 * 
-	 * @param audits
-	 * @return
+	 * Retrieve UX issues for a set of audits
+	 *
+	 * @param audits the set of audits
+	 * @return the collection of UX issues
+	 *
+	 * <p><b>Preconditions:</b>
+	 * <ul>
+	 *   <li>audits != null</li>
+	 * </ul>
 	 */
 	public Collection<UXIssueMessage> retrieveUXIssues(Set<Audit> audits) {
+		assert audits != null;
+
 		Map<String, UXIssueMessage> issues = new HashMap<>();
 		
 		for(Audit audit : audits) {	
@@ -261,10 +276,17 @@ public class AuditService {
 	/**
 	 * Returns a {@linkplain Set} of {@linkplain ElementState} objects that are associated 
 	 * 	with the {@linkplain UXIssueMessage} provided
-	 * @param issue_set
-	 * @return
+	 *
+	 * @param issue_set the set of UX issue messages
+	 * @return the collection of simple elements
+	 *
+	 * <p><b>Preconditions:</b>
+	 * <ul>
+	 *   <li>issue_set != null</li>
+	 * </ul>
 	 */
 	public Collection<SimpleElement> retrieveElementSet(Collection<? extends UXIssueMessage> issue_set) {
+		assert issue_set != null;
 		Map<String, SimpleElement> element_map = new HashMap<>();
 		
 		for(UXIssueMessage ux_issue: issue_set) {
@@ -291,12 +313,12 @@ public class AuditService {
 
 					element_map.put(img_element.getKey(), simple_element);
 				}
-				else {					
+				else {
 					SimpleElement simple_element = 	new SimpleElement(element.getKey(),
-																	  element.getScreenshotUrl(), 
-																	  element.getXLocation(), 
-																	  element.getYLocation(), 
-																	  element.getWidth(), 
+																	  element.getScreenshotUrl(),
+																	  element.getXLocation(),
+																	  element.getYLocation(),
+																	  element.getWidth(),
 																	  element.getHeight(),
 																	  element.getCssSelector(),
 																	  element.getAllText(),
@@ -314,29 +336,97 @@ public class AuditService {
 		return element_map.values();
 	}
 
+	/**
+	 * Add all issues to an audit
+	 *
+	 * @param id the id of the audit
+	 * @param issue_ids the ids of the issues
+	 *
+	 * <p><b>Preconditions:</b>
+	 * <ul>
+	 *   <li>id > 0</li>
+	 *   <li>issue_ids != null</li>
+	 * </ul>
+	 */
 	public void addAllIssues(long id, List<Long> issue_ids) {
+		assert id > 0;
+		assert issue_ids != null;
+
 		audit_repo.addAllIssues(id, issue_ids);
 	}
 
+	/**
+	 * Get issues by name and score
+	 *
+	 * @param audit_name the name of the audit
+	 * @param score the score of the issues
+	 * @return the collection of element states
+	 * 
+	 * <p><b>Preconditions:</b>
+	 * <ul>
+	 *   <li>audit_name != null</li>
+	 * </ul>
+	 */
 	public List<ElementState> getIssuesByNameAndScore(AuditName audit_name, int score) {
+		assert audit_name != null;
+
 		return audit_repo.getIssuesByNameAndScore(audit_name.toString(), score);
 	}
-	
+
+	/**
+	 * Find a good example for an audit
+	 *
+	 * @param audit_name the name of the audit
+	 * @param score the score of the issues
+	 * @return the collection of element states
+	 *
+	 * <p><b>Preconditions:</b>
+	 * <ul>
+	 *   <li>audit_name != null</li>
+	 * </ul>
+	 */
 	public List<ElementState> findGoodExample(AuditName audit_name, int score) {
+		assert audit_name != null;
 		return getIssuesByNameAndScore(audit_name, score);
 	}
-	
+
+	/**
+	 * Count audits by subcategory
+	 *
+	 * @param audits the set of audits
+	 * @param category the subcategory of the audits
+	 * @return the count of audits
+	 * 
+	 * <p><b>Preconditions:</b>
+	 * <ul>
+	 *   <li>audits != null</li>
+	 *   <li>category != null</li>
+	 * </ul>
+	 */
 	public int countAuditBySubcategory(Set<Audit> audits, AuditSubcategory category) {
 		assert audits != null;
 		assert category != null;
 	
 		int issue_count = audits.parallelStream()
-				  .filter((s) -> (s.getTotalPossiblePoints() > 0 && category.equals(s.getSubcategory())))
-				  .mapToInt(s -> audit_repo.getMessageCount(s.getId()))
-				  .sum();
+					.filter((s) -> (s.getTotalPossiblePoints() > 0 && category.equals(s.getSubcategory())))
+					.mapToInt(s -> audit_repo.getMessageCount(s.getId()))
+					.sum();
 		return issue_count;
 	}
 
+	/**
+	 * Count issues by audit name
+	 *
+	 * @param audits the set of audits
+	 * @param name the name of the audit
+	 * @return the count of issues
+	 *
+	 * <p><b>Preconditions:</b>
+	 * <ul>
+	 *   <li>audits != null</li>
+	 *   <li>name != null</li>
+	 * </ul>
+	 */
 	public int countIssuesByAuditName(Set<Audit> audits, AuditName name) {
 		assert audits != null;
 		assert name != null;

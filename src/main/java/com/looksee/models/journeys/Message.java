@@ -26,13 +26,31 @@ import lombok.Setter;
 @Getter
 @Setter
 public abstract class Message {
+	/**
+	 * The message ID
+	 */
 	private String messageId;
 	
+	/**
+	 * The publish time
+	 */
 	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime publishTime;
+
+	/**
+	 * The account ID
+	 */
 	private long accountId;
+	
+	/**
+	 * The domain ID
+	 */
 	private long domainId;
+	
+	/**
+	 * The domain audit record ID
+	 */
 	private long domainAuditRecordId;
 	
 	/**

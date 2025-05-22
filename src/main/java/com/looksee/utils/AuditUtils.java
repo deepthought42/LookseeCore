@@ -19,22 +19,30 @@ import com.looksee.models.enums.AuditCategory;
 import com.looksee.models.enums.AuditName;
 import com.looksee.models.enums.AuditSubcategory;
 
-
+/**
+ * Utility class for auditing
+ */
 public class AuditUtils {
 	@SuppressWarnings("unused")
 	private static Logger log = LoggerFactory.getLogger(AuditUtils.class.getName());
 
-
+	/**
+	 * Calculate the score for a set of {@link Audit}
+	 * @param audits the set of {@link Audit} to calculate the score for
+	 * @return the score
+	 *
+	 * precondition: audits != null
+	 */
 	public static double calculateScore(Set<Audit> audits) {
 		assert audits != null;
 		
 		List<Audit> filtered_audits = audits.parallelStream()
-										    .filter((s) -> (s.getTotalPossiblePoints() > 0))
-										    .collect(Collectors.toList());
+											.filter((s) -> (s.getTotalPossiblePoints() > 0))
+											.collect(Collectors.toList());
 		
 		double scores_total = filtered_audits.parallelStream()
-										   .mapToDouble(x -> x.getPoints() / (double)x.getTotalPossiblePoints())
-										   .sum();
+											.mapToDouble(x -> x.getPoints() / (double)x.getTotalPossiblePoints())
+											.sum();
 
 		if(filtered_audits.isEmpty()) {
 			return -1.0;
@@ -46,11 +54,15 @@ public class AuditUtils {
 	/**
 	 * Reviews set of {@link Audit} and generates audits scores for content,
 	 *   information architecture, aesthetics, interactivity and accessibility
-	 *   
-	 * @param audits
-	 * @return
+	 *
+	 * @param audits the set of {@link Audit} to extract the score from
+	 * @return the {@link AuditScore}
+	 *
+	 * precondition: audits != null
 	 */
 	public static AuditScore extractAuditScore(Set<Audit> audits) {
+		assert audits != null;
+
 		double content_score = 0;
 		int content_count = 0;
 		
@@ -128,16 +140,28 @@ public class AuditUtils {
     							seo,
     							security,
     							aesthetic_score,
-    							color_contrast, 
-    							whitespace, 
-    							interactivity_score, 
+    							color_contrast,
+    							whitespace,
+    							interactivity_score,
     							accessibility,
     							text_contrast,
     							non_text_contrast);
     	
 	}
 
+	/**
+	 * Extract the score for a label
+	 * @param audits the set of {@link Audit} to extract the score from
+	 * @param label the label to extract the score from
+	 * @return the score
+	 *
+	 * precondition: audits != null
+	 * precondition: label != null
+	 */
 	private static double extractLabelScore(Set<Audit> audits, String label) {
+		assert audits != null;
+		assert label != null;
+		
 		double score = 0.0;
 		int count = 0;
     	for(Audit audit: audits) {
@@ -156,14 +180,32 @@ public class AuditUtils {
     	return score / (double)count;
 	}
 
+	/**
+	 * Check if a page audit is complete
+	 * @param audit_record the {@link AuditRecord} to check
+	 * @return true if the page audit is complete, false otherwise
+	 * 
+	 * precondition: audit_record != null
+	 */
 	public static boolean isPageAuditComplete(AuditRecord audit_record) {
+		assert audit_record != null;
+		
 		return audit_record.getAestheticAuditProgress() >= 1 
 			&& audit_record.getContentAuditProgress() >= 1
 			&& audit_record.getInfoArchitectureAuditProgress() >= 1
 			&& audit_record.getDataExtractionProgress() >= 1;
 	}
 
+	/**
+	 * Get the experience rating for a page audit
+	 * @param audit_record the {@link PageAuditRecord} to get the experience rating for
+	 * @return the experience rating
+	 *
+	 * precondition: audit_record != null
+	 */
 	public static String getExperienceRating(PageAuditRecord audit_record) {
+		assert audit_record != null;
+		
 		double score = audit_record.getAestheticAuditProgress();
 		score += audit_record.getContentAuditProgress();
 		score += audit_record.getInfoArchitectureAuditProgress();
@@ -180,15 +222,42 @@ public class AuditUtils {
 		}
 	}
 	
+	/**
+	 * Check if the aesthetics audit is complete
+	 * @param audits the set of {@link Audit} to check
+	 * @return true if the aesthetics audit is complete, false otherwise
+	 *
+	 * precondition: audits != null
+	 */
 	public static boolean isAestheticsAuditComplete(Set<Audit> audits) {
+		assert audits != null;
+		
 		return audits.size() == 2;
 	}
 
+	/**
+	 * Check if the content audit is complete
+	 * @param audits the set of {@link Audit} to check
+	 * @return true if the content audit is complete, false otherwise
+	 *
+	 * precondition: audits != null
+	 */
 	public static boolean isContentAuditComplete(Set<Audit> audits) {
+		assert audits != null;
+		
 		return audits.size() == 3;
 	}
 	
+	/**
+	 * Check if the information architecture audit is complete
+	 * @param audits the set of {@link Audit} to check
+	 * @return true if the information architecture audit is complete, false otherwise
+	 *
+	 * precondition: audits != null
+	 */
 	public static boolean isInformationArchitectureAuditComplete(Set<Audit> audits) {
+		assert audits != null;
+		
 		return audits.size() == 3;
 	}
 
@@ -225,18 +294,27 @@ public class AuditUtils {
 		return category_score;
 	}
 
+	/**
+	 * Calculate the score for a category
+	 * @param audits the set of {@link Audit} to calculate the score for
+	 * @param category the category to calculate the score for
+	 * @return the score
+	 *
+	 * precondition: audits != null
+	 * precondition: category != null
+	 */
 	public static double calculateScoreByCategory(Set<Audit> audits, AuditCategory category) {
 		assert audits != null;
 		assert category != null;
 			
 		List<Audit> filtered_audits = audits.parallelStream()
-							  .filter((s) -> (s.getTotalPossiblePoints() > 0 && s.getCategory().equals(category)))
-						      .collect(Collectors.toList());
+							.filter((s) -> (s.getTotalPossiblePoints() > 0 && s.getCategory().equals(category)))
+							.collect(Collectors.toList());
 		
 		
 		double scores_total = filtered_audits.parallelStream()
-				   .mapToDouble(x -> (x.getPoints() / (double)x.getTotalPossiblePoints()))
-				   .sum();
+					.mapToDouble(x -> (x.getPoints() / (double)x.getTotalPossiblePoints()))
+					.sum();
 		
 		if(filtered_audits.isEmpty()) {
 			return -1.0;
@@ -248,7 +326,7 @@ public class AuditUtils {
 
 	/**
 	 * Calculates percentage score based on audits with the given name
-	 * 
+	 *
 	 * @param audits
 	 * @param name
 	 * @return
@@ -301,7 +379,16 @@ public class AuditUtils {
 		return count_large_text_items / (double)failing_large_text_items;
 	}
 
+	/**
+	 * Calculate the percentage of failing small text items
+	 * @param audits the set of {@link Audit} to calculate the percentage of failing small text items for
+	 * @return the percentage of failing small text items
+	 *
+	 * precondition: audits != null
+	 */
 	public static double getPercentFailingSmallTextItems(Set<Audit> audits) {
+		assert audits != null;
+		
 		int count_text_items = 0;
 		int failing_text_items = 0;
 		
@@ -323,12 +410,18 @@ public class AuditUtils {
 	/**
 	 * Retrieves count of pages that have non text contrast issue
 	 * 
-	 * @param page_audits
-	 * @param subcategory TODO
-	 * @return
+	 * @param page_audits the set of {@link PageAuditRecord} to get the count of pages with non text contrast issue for
+	 * @param subcategory the subcategory to get the count of pages with non text contrast issue for
+	 * @return the count of pages with non text contrast issue
+	 *
+	 * precondition: page_audits != null
+	 * precondition: subcategory != null
 	 */
 	public static int getCountPagesWithSubcategoryIssues(Set<PageAuditRecord> page_audits,
-														 AuditSubcategory subcategory) {
+														AuditSubcategory subcategory) {
+		assert page_audits != null;
+		assert subcategory != null;
+		
 		int count_failing_pages = 0;
 		for(PageAuditRecord page_audit : page_audits) {
 			for(Audit audit: page_audit.getAudits()) {
@@ -346,10 +439,18 @@ public class AuditUtils {
 	/**
 	 * Retrieves count of pages that have non text contrast issue
 	 * 
-	 * @param page_audits
-	 * @return
+	 * @param page_audits the set of {@link PageAuditRecord} to get the count of pages with non text contrast issue for
+	 * @param audit_name the audit name to get the count of pages with non text contrast issue for
+	 * @return the count of pages with non text contrast issue
+	 *
+	 * precondition: page_audits != null
+	 * precondition: audit_name != null
 	 */
-	public static int getCountPagesWithIssuesByAuditName(Set<PageAuditRecord> page_audits, AuditName audit_name) {
+	public static int getCountPagesWithIssuesByAuditName(Set<PageAuditRecord> page_audits,
+														AuditName audit_name) {
+		assert page_audits != null;
+		assert audit_name != null;
+		
 		int count_failing_pages = 0;
 		
 		for(PageAuditRecord page_audit : page_audits) {
@@ -366,12 +467,16 @@ public class AuditUtils {
 	}
 
 	/**
-	 * 
-	 * 
-	 * @param page_audits
-	 * @return
+	 * Retrieves count of pages that have WCAG compliance issues
+	 *
+	 * @param page_audits the set of {@link PageAuditRecord} to get the count of pages with WCAG compliance issues for
+	 * @return the count of pages with WCAG compliance issues
+	 *
+	 * precondition: page_audits != null
 	 */
 	public static int getCountOfPagesWithWcagComplianceIssues(Set<PageAuditRecord> page_audits) {
+		assert page_audits != null;
+		
 		int pages_with_issues = 0;
 		
 		for(PageAuditRecord audit_record : page_audits) {
@@ -392,7 +497,16 @@ public class AuditUtils {
 		return pages_with_issues;
 	}
 
+	/**
+	 * Calculates the average words per sentence
+	 * @param audits the set of {@link Audit} to calculate the average words per sentence for
+	 * @return the average words per sentence
+	 *
+	 * precondition: audits != null
+	 */
 	public static double calculateAverageWordsPerSentence(Set<Audit> audits) {
+		assert audits != null;
+		
 		int issue_count = 0;
 		int word_count = 0;
 		
@@ -408,7 +522,16 @@ public class AuditUtils {
 		return word_count / (double)issue_count;
 	}
 
+	/**
+	 * Calculates the percentage of stock images
+	 * @param audits the set of {@link Audit} to calculate the percentage of stock images for
+	 * @return the percentage of stock images
+	 *
+	 * precondition: audits != null
+	 */
 	public static double calculatePercentStockImages(Set<Audit> audits) {
+		assert audits != null;
+		
 		int image_count = 0;
 		int stock_image_count = 0;
 		
@@ -426,7 +549,16 @@ public class AuditUtils {
 		return image_count / (double)stock_image_count;
 	}
 
+	/**
+	 * Calculates the average reading complexity
+	 * @param audits the set of {@link Audit} to calculate the average reading complexity for
+	 * @return the average reading complexity
+	 *
+	 * precondition: audits != null
+	 */
 	public static double calculateAverageReadingComplexity(Set<Audit> audits) {
+		assert audits != null;
+		
 		int reading_complexity_issues = 0;
 		double reading_complexity_total = 0;
 		

@@ -22,7 +22,7 @@ import com.looksee.models.repository.StepRepository;
 import io.github.resilience4j.retry.annotation.Retry;
 
 /**
- * Enables interacting with database for {@link SimpleStep Steps}
+ * Contains business logic for interacting with and managing steps
  */
 @Service
 @Retry(name = "neoforj")
@@ -50,12 +50,11 @@ public class StepService {
 	}
 
 	/**
-	 * Saves a {@link Step} to the database
-	 * @Version - 9/19/2023
-	 * 
-	 * @param step
-	 * 
-	 * @return saved database record for {@link Step}
+	 * Save a step
+	 * @param step the step to save
+	 * @return the saved step
+	 *
+	 * precondition: step != null
 	 */
 	public Step save(Step step) {
 		assert step != null;
@@ -187,31 +186,116 @@ public class StepService {
 		return step_repo.getStepsWithStartPage(domain_map_id, page_state.getId());
 	}
 
+	/**
+	 * Get steps with start page
+	 * @param domainAuditRecordId the id of the domain audit record
+	 * @param page_state the page state
+	 * @return the steps with start page
+	 *
+	 * precondition: domainAuditRecordId > 0
+	 * precondition: page_state != null
+	 * precondition: page_state.getKey() != null
+	 * precondition: !page_state.getKey().isEmpty()
+	 */
 	public List<Step> getStepsWithStartPage(long domainAuditRecordId, PageState page_state) {
+		assert domainAuditRecordId > 0;
+		assert page_state != null;
+		assert page_state.getKey() != null;
+		assert !page_state.getKey().isEmpty();
+		
 		return step_repo.getStepsWithStartPage(domainAuditRecordId, page_state.getKey());
 	}
-	
+
+	/**
+	 * Get the end page for a step
+	 * @param id the id of the step
+	 * @return the end page
+	 *
+	 * precondition: id > 0
+	 */
 	public PageState getEndPage(long id) {
+		assert id > 0;
+		
 		return page_state_repo.getEndPageForStep(id);
 	}
 	
+	/**
+	 * Set the element state for a step
+	 * @param step_id the id of the step
+	 * @param element_id the id of the element
+	 *
+	 * precondition: step_id > 0
+	 * precondition: element_id > 0
+	 */
 	public void setElementState(long step_id, long element_id) {
+		assert step_id > 0;
+		assert element_id > 0;
+		
 		step_repo.setElementState(step_id, element_id);
 	}
-
+	
+	/**
+	 * Add an end page to a step
+	 * @param step_id the id of the step
+	 * @param page_id the id of the page
+	 *
+	 * precondition: step_id > 0
+	 * precondition: page_id > 0
+	 */
 	public void addEndPage(long step_id, long page_id) {
+		assert step_id > 0;
+		assert page_id > 0;
+		
 		step_repo.addEndPage(step_id, page_id);
 	}
 
+	/**
+	 * Update the key for a step
+	 * @param step_id the id of the step
+	 * @param key the key to update
+	 * @return the updated step
+	 *
+	 * precondition: step_id > 0
+	 * precondition: key != null
+	 * precondition: !key.isEmpty()
+	 */
 	public Step updateKey(long step_id, String key) {
+		assert step_id > 0;
+		assert key != null;
+		assert !key.isEmpty();
+		
 		return step_repo.updateKey(step_id, key);
 	}
 
+	/**
+	 * Set the start page for a step
+	 * @param step_id the id of the step
+	 * @param page_id the id of the page
+	 *
+	 * precondition: step_id > 0
+	 * precondition: page_id > 0
+	 */
 	public void setStartPage(Long step_id, Long page_id) {
-		step_repo.setStartPage(step_id, page_id);		
+		assert step_id != null;
+		assert step_id > 0;
+		assert page_id != null;
+		assert page_id > 0;
+		
+		step_repo.setStartPage(step_id, page_id);
 	}
 	
+	/**
+	 * Get the element state for a step
+	 * @param step_key the key of the step
+	 * @return the element state
+	 *
+	 * precondition: step_key != null
+	 * precondition: !step_key.isEmpty()
+	 */
 	public ElementState getElementState(String step_key) {
+		assert step_key != null;
+		assert !step_key.isEmpty();
+		
 		return step_repo.getElementState(step_key);
 	}
 }

@@ -1,33 +1,39 @@
 package com.looksee.models.journeys;
 
-
 import org.springframework.data.neo4j.core.schema.Node;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.looksee.models.enums.JourneyStatus;
-import com.looksee.models.journeys.LandingStep;
-import com.looksee.models.ElementState;
 import com.looksee.models.PageState;
-import com.looksee.models.enums.Action;
 import com.looksee.models.enums.JourneyStatus;
 import com.looksee.models.enums.StepType;
 
 /**
- * A Step is the increment of work that start with a {@link PageState} contians an {@link ElementState} 
- * 	 that has an {@link Action} performed on it and results in an end {@link PageState}
+ * A LandingStep is a step that is the first step in a journey
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeName("LANDING")
 @Node
 public class LandingStep extends Step {
 	
+	/**
+	 * Creates a new LandingStep
+	 */
 	public LandingStep() {
 		super();
 	}
 	
-	public LandingStep(PageState start_page, JourneyStatus status) 
+	/**
+	 * Creates a new LandingStep with the given start page and status
+	 * @param start_page the start page of the landing step
+	 * @param status the status of the landing step
+	 * @throws IllegalArgumentException if the start page or status is null
+	 */
+	public LandingStep(PageState start_page, JourneyStatus status)
 	{
+		assert start_page != null;
+		assert status != null;
+
 		setStartPage(start_page);
 		setStatus(status);
 		if(JourneyStatus.CANDIDATE.equals(status)) {
@@ -36,26 +42,46 @@ public class LandingStep extends Step {
 		setKey(generateKey());
 	}
 
+	/**
+	 * Clones the landing step
+	 * @return the cloned landing step
+	 */
 	@Override
 	public LandingStep clone() {
 		return new LandingStep(getStartPage(), getStatus());
 	}
 	
+	/**
+	 * Generates a key for the landing step
+	 * @return the key for the landing step
+	 */
 	@Override
 	public String generateKey() {
 		return "landingstep"+getStartPage().getId();
 	}
 
+	/**
+	 * Generates a candidate key for the landing step
+	 * @return the candidate key for the landing step
+	 */
 	@Override
 	public String generateCandidateKey() {
 		return generateKey();
 	}
 	
+	/**
+	 * Returns a string representation of the landing step
+	 * @return a string representation of the landing step
+	 */
 	@Override
 	public String toString() {
 		return "key = "+getKey()+",\n start_page = "+getStartPage();
 	}
 
+	/**
+	 * Returns the type of the landing step
+	 * @return the type of the landing step
+	 */
 	@Override
 	StepType getStepType() {
 		return StepType.LANDING;

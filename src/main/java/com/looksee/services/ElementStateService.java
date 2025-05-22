@@ -304,14 +304,14 @@ public class ElementStateService {
 	/**
 	 * Fetch element that is the child of the given parent element for a given page
 	 *
-	 * @param page_state_key
-	 * @param child_key
+	 * @param parent_key the key of the parent element
+	 * @param child_element_key the key of the child element
 	 *
-	 * @return
-	 * 
-	 * precondition: page_state_key != null
-	 * precondition: page_state_key is not empty
-	 * precondition: child_key != null
+	 * @return the element state
+	 *
+	 * precondition: parent_key != null
+	 * precondition: parent_key is not empty
+	 * precondition: child_element_key != null
 	 * precondition: child_key is not empty
 	 */
 	public List<ElementState> getChildElementForParent(String parent_key,

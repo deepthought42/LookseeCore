@@ -15,6 +15,9 @@ import com.looksee.models.repository.UXIssueMessageRepository;
 
 import io.github.resilience4j.retry.annotation.Retry;
 
+/**
+ * Contains business logic for interacting with and managing UX issue messages
+ */
 @Service
 @Retry(name="neoforj")
 public class UXIssueMessageService {
@@ -27,20 +30,38 @@ public class UXIssueMessageService {
 	@Autowired
 	private ColorContrastIssueMessageRepository contrast_issue_message_repo;
 	
+	/**
+	 * Save a {@link UXIssueMessage}
+	 * @param ux_issue the {@link UXIssueMessage} to save
+	 * @return the saved {@link UXIssueMessage}
+	 * 
+	 * precondition: ux_issue != null
+	 */
 	public UXIssueMessage save(UXIssueMessage ux_issue) {
+		assert ux_issue != null;
+		
 		return issue_message_repo.save(ux_issue);
 	}
 	
+	/**
+	 * Save a {@link ColorContrastIssueMessage}
+	 * @param ux_issue the {@link ColorContrastIssueMessage} to save
+	 * @return the saved {@link ColorContrastIssueMessage}
+	 * 
+	 * precondition: ux_issue != null
+	 */
 	public ColorContrastIssueMessage saveColorContrast(ColorContrastIssueMessage ux_issue) {
+		assert ux_issue != null;
+		
 		return contrast_issue_message_repo.save(ux_issue);
 	}
 
 	/**
 	 * Find {@link UXIssueMessage} with a given key
 	 * @param key used for identifying {@link UXIssueMessage}
-	 * 
+	 *
 	 * @return updated {@link UXIssueMessage} object
-	 * 
+	 *
 	 * precondition: key != null
 	 * precondition: !key.isEmpty()
 	 */
@@ -53,12 +74,12 @@ public class UXIssueMessageService {
 	
 	/**
 	 * Add recommendation string to observation with a given key
-	 * 
+	 *
 	 * @param key for finding observation to be updated
 	 * @param recommendation to be added to observation
-	 * 
+	 *
 	 * @return updated UXIssueMessage record
-	 * 
+	 *
 	 * precondition: key != null
 	 * precondition: !key.isEmpty()
 	 * precondition: priority != null
@@ -71,16 +92,16 @@ public class UXIssueMessageService {
 		assert !recommendation.isEmpty();
 		
 		UXIssueMessage observation = findByKey(key);
-    	return save(observation);
+		return save(observation);
 	}
 
 	/**
 	 * Update priority of observation with a given key
-	 * 
+	 *
 	 * @param key for finding observation to be updated
 	 * @param priority to be set on observation
 	 * @return updated UXIssueMessage record
-	 * 
+	 *
 	 * precondition: key != null
 	 * precondition: !key.isEmpty()
 	 * precondition: priority != null
@@ -93,28 +114,75 @@ public class UXIssueMessageService {
 		assert !priority.isEmpty();
 		
 		UXIssueMessage observation = findByKey(key);
-    	//observation.setPriority(Priority.create(priority));
-    	return save(observation);	
+    	return save(observation);
 	}
 
+	/**
+	 * Get an element state by id
+	 * @param id the id of the element state
+	 * @return the element state
+	 *
+	 * precondition: id > 0
+	 */
 	public ElementState getElement(long id) {
+		assert id > 0;
+		
 		return issue_message_repo.getElement(id);
 	}
 
+	/**
+	 * Save all {@link UXIssueMessage}
+	 * @param issue_messages the {@link UXIssueMessage} to save
+	 * @return the saved {@link UXIssueMessage}
+	 * 
+	 * precondition: issue_messages != null
+	 */
 	public Iterable<UXIssueMessage> saveAll(List<UXIssueMessage> issue_messages) {
-		return issue_message_repo.saveAll(issue_messages);
+		assert issue_messages != null;
 		
+		return issue_message_repo.saveAll(issue_messages);
 	}
 
+	/**
+	 * Get a good example for an issue
+	 * @param issue_id the id of the issue
+	 * @return the good example
+	 *
+	 * precondition: issue_id > 0
+	 */
 	public ElementState getGoodExample(long issue_id) {
+		assert issue_id > 0;
+		
 		return issue_message_repo.getGoodExample(issue_id);
 	}
 
+	/**
+	 * Add an element to an issue
+	 * @param issue_id the id of the issue
+	 * @param element_id the id of the element
+	 *
+	 * precondition: issue_id > 0
+	 * precondition: element_id > 0
+	 */
 	public void addElement(long issue_id, long element_id) {
+		assert issue_id > 0;
+		assert element_id > 0;
+		
 		issue_message_repo.addElement(issue_id, element_id);
 	}
 
+	/**
+	 * Add a page to an issue
+	 * @param issue_id the id of the issue
+	 * @param page_id the id of the page
+	 *
+	 * precondition: issue_id > 0
+	 * precondition: page_id > 0
+	 */
 	public void addPage(long issue_id, long page_id) {
+		assert issue_id > 0;
+		assert page_id > 0;
+		
 		issue_message_repo.addPage(issue_id, page_id);
 	}
 }

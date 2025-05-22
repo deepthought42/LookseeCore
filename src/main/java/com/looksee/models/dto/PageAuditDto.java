@@ -1,28 +1,36 @@
 package com.looksee.models.dto;
 
+import com.looksee.models.Domain;
 import com.looksee.models.enums.ExecutionStatus;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * Data transfer object for {@link Domain} object that is designed to comply with
  * the data format for browser extensions
  */
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class PageAuditDto {
 	private long id;
 	private String url;
-	private double content_score;
-	private double content_progress;
-	private double info_architecture_score;
-	private double info_architecture_progress;
-	private double accessibility_score;
-	private double accessibility_progress;
-	private double aesthetics_score;
-	private double aesthetics_progress;
-	private double data_extraction_progress;
+	private double contentScore;
+	private double contentProgress;
+	private double infoArchitectureScore;
+	private double infoArchitectureProgress;
+	private double accessibilityScore;
+	private double accessibilityProgress;
+	private double aestheticsScore;
+	private double aestheticsProgress;
+	private double dataExtractionProgress;
 	private String message;
 	private String status;
 	
-	public PageAuditDto(){}
-
 	public PageAuditDto(
 			long id,
 			String url,
@@ -31,8 +39,9 @@ public class PageAuditDto {
 			double info_architecture_score,
 			double info_architecture_progress,
 			double accessibility_score,
+			double accessibility_progress,
 			double aesthetics_score,
-			double aesthetics_progress, 
+			double aesthetics_progress,
 			double data_extraction_progress,
 			String message,
 			ExecutionStatus status
@@ -52,107 +61,20 @@ public class PageAuditDto {
 		setStatus(status);
 	}
 
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-	public double getContentScore() {
-		return content_score;
-	}
-
-	public void setContentScore(double content_score) {
-		this.content_score = content_score;
-	}
-
-	public double getInfoArchitectureScore() {
-		return info_architecture_score;
-	}
-
-	public void setInfoArchitectureScore(double info_architecture_score) {
-		this.info_architecture_score = info_architecture_score;
-	}
-
-	public double getAccessibilityScore() {
-		return accessibility_score;
-	}
-
-	public void setAccessibilityScore(double accessibility_score) {
-		this.accessibility_score = accessibility_score;
-	}
-
-	public double getAestheticsScore() {
-		return aesthetics_score;
-	}
-
-	public void setAestheticsScore(double aesthetics_score) {
-		this.aesthetics_score = aesthetics_score;
-	}
-
-	public double getContentProgress() {
-		return content_progress;
-	}
-
-	public void setContentProgress(double content_progress) {
-		this.content_progress = content_progress;
-	}
-
-	public double getInfoArchitectureProgress() {
-		return info_architecture_progress;
-	}
-
-	public void setInfoArchitectureProgress(double info_architecture_progress) {
-		this.info_architecture_progress = info_architecture_progress;
-	}
-
-	public double getAccessibilityProgress() {
-		return accessibility_progress;
-	}
-
-	public void setAccessibilityProgress(double accessibility_progress) {
-		this.accessibility_progress = accessibility_progress;
-	}
-
-	public double getAestheticsProgress() {
-		return aesthetics_progress;
-	}
-
-	public void setAestheticsProgress(double aesthetics_progress) {
-		this.aesthetics_progress = aesthetics_progress;
-	}
-
-	public double getDataExtractionProgress() {
-		return data_extraction_progress;
-	}
-
-	public void setDataExtractionProgress(double data_extraction_progress) {
-		this.data_extraction_progress = data_extraction_progress;
-	}
-
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
-
+	/**
+	 * Returns the status of the page audit.
+	 * @return the status of the page audit
+	 */
 	public ExecutionStatus getStatus() {
 		return ExecutionStatus.create(status);
 	}
 
+	/**
+	 * Sets the status of the page audit.
+	 * @param status the status of the page audit
+	 */
 	public void setStatus(ExecutionStatus status) {
+		assert status != null;
 		this.status = status.getShortName();
-	}	
+	}
 }

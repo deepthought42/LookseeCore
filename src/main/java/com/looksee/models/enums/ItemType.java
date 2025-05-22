@@ -6,10 +6,24 @@ import com.fasterxml.jackson.annotation.JsonCreator;
  * Defines all types of {@link ItemType} that exist in the system
  */
 public enum ItemType {
-	TEXT("text"), 
-	BYTES("bytes"), 
-	NUMERIC("numeric"), 
-	MILLISECONDS("ms"), 
+    /**
+     * Represents a text item type.
+     */
+	TEXT("text"),
+
+    /**
+     * Represents a bytes item type.
+     */
+	BYTES("bytes"),
+
+    /**
+     * Represents a numeric item type.
+     */
+	NUMERIC("numeric"),
+
+    /**
+     * Represents a URL item type.
+     */
 	URL("url") ;
 	
 	private String shortName;
@@ -23,6 +37,11 @@ public enum ItemType {
         return shortName;
     }
 
+    /**
+     * Creates an ItemType from a string.
+     * @param value the string to create the ItemType from
+     * @return the ItemType
+     */
     @JsonCreator
     public static ItemType create (String value) {
         if(value == null) {
@@ -36,6 +55,10 @@ public enum ItemType {
         throw new IllegalArgumentException();
     }
 
+    /**
+     * Returns the short name of the item type.
+     * @return the short name of the item type
+     */
     public String getShortName() {
         return shortName;
     }

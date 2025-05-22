@@ -342,6 +342,11 @@ public class PageState extends LookseeObject {
 		}
 	}
 
+	/**
+	 * Adds an element to the page state
+	 *
+	 * @param element the element to add
+	 */
 	public void addElement(ElementState element) {
 		this.elements.add(element);
 	}
@@ -349,8 +354,8 @@ public class PageState extends LookseeObject {
 	/**
 	 * Generates page name using path
 	 *
-	 * @return
-	 * @throws MalformedURLException
+	 * @param url the url of the page
+	 * @return the page name
 	 */
 	public String generatePageName(String url) {
 		String name = "";
@@ -429,7 +434,6 @@ public class PageState extends LookseeObject {
 	 * Custom getter and setter for src
 	 *
 	 * @return src
-	 * @throws IOException
 	 */
 	public String getSrc() {
 		return googleCloudStorage.getHtmlContent(src);

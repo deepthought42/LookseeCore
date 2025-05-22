@@ -5,10 +5,20 @@ import java.util.List;
 
 import com.looksee.models.journeys.Step;
 
-
+/**
+ * Utility class for list operations.
+ */
 public class ListUtils {
-
+	/**
+	 * Clones a list of steps.
+	 * @param steps_list the list of steps to clone
+	 * @return the cloned list of steps
+	 *
+	 * precondition: steps_list != null
+	 */
 	public static List<Step> clone(List<Step> steps_list) {
+		assert steps_list != null;
+
 		List<Step> steps = new ArrayList<>();
 		for(Step step : steps_list) {
 			steps.add(step.clone());
@@ -16,5 +26,4 @@ public class ListUtils {
 		
 		return steps;
 	}
-	
 }

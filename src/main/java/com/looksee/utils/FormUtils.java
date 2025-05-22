@@ -10,11 +10,25 @@ import org.slf4j.LoggerFactory;
 import com.looksee.models.ElementState;
 import com.looksee.models.enums.FormType;
 
-
+/**
+ * Utility class for classifying form types.
+ */
 public class FormUtils {
 	private static Logger log = LoggerFactory.getLogger(FormUtils.class);
 
+	/**
+	 * Classifies a form based on its attributes.
+	 * @param form_tag the form tag
+	 * @param form_elements the form elements
+	 * @return the form type
+	 *
+	 * precondition: form_tag != null
+	 * precondition: form_elements != null
+	 */
 	public static FormType classifyForm(ElementState form_tag, List<ElementState> form_elements) {
+		assert form_tag != null;
+		assert form_elements != null;
+
 		Map<String, String> attributes = form_tag.getAttributes();
 		for(String attr: attributes.keySet()){
 			String vals = attributes.get(attr);
@@ -42,7 +56,6 @@ public class FormUtils {
 		
 		return FormType.LEAD;
 	}
-
 
 	/**
 	 * locates and returns the form submit button

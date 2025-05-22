@@ -3,11 +3,18 @@ package com.looksee.utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
+/**
+ * Utility class for content-related operations.
+ */
 public class ContentUtils {
 	@SuppressWarnings("unused")
 	private static Logger log = LoggerFactory.getLogger(ContentUtils.class);
 
+	/**
+	 * Returns the reading grade level based on the ease of reading score.
+	 * @param ease_of_reading_score the ease of reading score
+	 * @return the reading grade level
+	 */
 	public static String getReadingGradeLevel(double ease_of_reading_score) {
 		if(ease_of_reading_score >= 90) {
 			return "5th grade";
@@ -36,6 +43,11 @@ public class ContentUtils {
 		return "unknown";
 	}
 	
+	/**
+	 * Returns the reading difficulty rating based on the ease of reading score.
+	 * @param ease_of_reading_score the ease of reading score
+	 * @return the reading difficulty rating
+	 */
 	public static String getReadingDifficultyRating(double ease_of_reading_score) {
 		if(ease_of_reading_score >= 90) {
 			return "very easy";
@@ -65,10 +77,10 @@ public class ContentUtils {
 	}
 
 	/**
-	 * Returns a reading difficulty string based on the provided education level
-	 * @param ease_of_reading_score
-	 * @param targetUserEducation
-	 * @return
+	 * Returns a reading difficulty string based on the provided education level.
+	 * @param ease_of_reading_score the ease of reading score
+	 * @param targetUserEducation the target user education level
+	 * @return the reading difficulty string
 	 */
 	public static String getReadingDifficultyRatingByEducationLevel(double ease_of_reading_score,
 																	String targetUserEducation) {
@@ -89,7 +101,11 @@ public class ContentUtils {
 		}
 	}
 	
-	
+	/**
+	 * Returns the reading difficulty rating for high school students.
+	 * @param ease_of_reading_score the ease of reading score
+	 * @return the reading difficulty rating
+	 */
 	private static String getReadingDifficultyRatingForHS(double ease_of_reading_score) {
 		if(ease_of_reading_score >= 90) {
 			return "very easy";
@@ -117,7 +133,12 @@ public class ContentUtils {
 		}
 		return "unknown";
 	}
-	
+
+	/**
+	 * Returns the reading difficulty rating for college students.
+	 * @param ease_of_reading_score the ease of reading score
+	 * @return the reading difficulty rating
+	 */
 	private static String getReadingDifficultyRatingForCollege(double ease_of_reading_score) {
 		if(ease_of_reading_score >= 90) {
 			return "very easy";
@@ -145,7 +166,12 @@ public class ContentUtils {
 		}
 		return "unknown";
 	}
-	
+
+	/**
+	 * Returns the reading difficulty rating for advanced degrees.
+	 * @param ease_of_reading_score the ease of reading score
+	 * @return the reading difficulty rating
+	 */
 	private static String getReadingDifficultyRatingForAdvancedDegrees(double ease_of_reading_score) {
 		if(ease_of_reading_score >= 90) {
 			return "very easy";
@@ -173,5 +199,4 @@ public class ContentUtils {
 		}
 		return "unknown";
 	}
-
 }

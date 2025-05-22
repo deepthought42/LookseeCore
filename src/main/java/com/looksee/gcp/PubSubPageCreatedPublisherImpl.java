@@ -5,6 +5,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+/**
+ * Implementation of the PubSubPageCreatedPublisher interface.
+ */
 @Component
 public class PubSubPageCreatedPublisherImpl extends PubSubPublisher {
 
@@ -13,6 +16,10 @@ public class PubSubPageCreatedPublisherImpl extends PubSubPublisher {
     @Value("${pubsub.page_built}")
     private String topic;
     
+    /**
+     * Returns the topic for the PubSub page created publisher.
+     * @return the topic for the PubSub page created publisher
+     */
     @Override
     protected String topic() {
         return this.topic;

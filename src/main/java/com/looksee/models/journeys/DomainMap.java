@@ -3,26 +3,43 @@ package com.looksee.models.journeys;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
 import org.springframework.data.neo4j.core.schema.Relationship;
 
 import com.looksee.models.LookseeObject;
 
+import lombok.Getter;
+import lombok.Setter;
 
-
-/**
- * Represents the series of steps taken for an end to end journey
+	/**
+ * Represents a domain map, which is a collection of journeys that are related 
+ * to a specific domain
  */
 public class DomainMap extends LookseeObject {
 
+	/**
+	 * The journeys that are related to the domain map
+	 */
+	@Getter
+	@Setter
 	@Relationship(type = "CONTAINS")
 	private List<Journey> journeys;
-		
+
+	/**
+	 * Creates a new domain map
+	 */
 	public DomainMap() {
 		setJourneys(new ArrayList<>());
 		setKey(generateKey());
 	}
-	
+
+	/**
+	 * Creates a new domain map with the given journeys
+	 * @param journeys the journeys to add to the domain map
+	 * @throws IllegalArgumentException if the journeys are null
+	 */
 	public DomainMap(List<Journey> journeys) {
+		assert journeys != null;
 		setJourneys(journeys);
 		setKey(generateKey());
 	}
@@ -43,14 +60,11 @@ public class DomainMap extends LookseeObject {
 		return new DomainMap(new ArrayList<>(getJourneys()));
 	}
 	
-	public List<Journey> getJourneys() {
-		return journeys;
-	}
-
-	public void setJourneys(List<Journey> journeys) {
-		this.journeys = journeys;
-	}
-
+	/**
+	 * Adds a journey to the domain map
+	 * @param journey the journey to add
+	 * @return true if the journey was added, false otherwise
+	 */
 	public boolean addJourney(Journey journey) {
 		return this.journeys.add(journey);
 	}

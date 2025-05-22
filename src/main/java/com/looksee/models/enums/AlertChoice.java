@@ -2,11 +2,26 @@ package com.looksee.models.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 
+/**
+ * Enum representing the choice of alert
+ */
 public enum AlertChoice {
-	DISMISS("dismiss"), ACCEPT("accept");
+    /**
+     * Dismiss the alert
+     */
+	DISMISS("dismiss"),
+    /**
+     * Accept the alert
+     */
+    ACCEPT("accept");
 
 	private String shortName;
 
+	/**
+	 * Constructor for the AlertChoice enum
+	 *
+	 * @param shortName the short name of the alert choice
+	 */
 	AlertChoice (String shortName) {
         this.shortName = shortName;
     }
@@ -16,6 +31,12 @@ public enum AlertChoice {
         return shortName;
     }
 
+    /**
+     * Create an AlertChoice from a string
+     *
+     * @param value the value of the alert choice
+     * @return the AlertChoice
+     */
     @JsonCreator
     public static AlertChoice create (String value) {
         if(value == null) {
@@ -29,6 +50,11 @@ public enum AlertChoice {
         throw new IllegalArgumentException();
     }
 
+    /**
+     * Get the short name of the alert choice
+     *
+     * @return the short name of the alert choice
+     */
     public String getShortName() {
         return shortName;
     }

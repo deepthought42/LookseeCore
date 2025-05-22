@@ -8,6 +8,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Configuration properties for Google Cloud Storage.
+ */
 @Configuration
 @ConfigurationProperties(prefix = "gcs.bucket")
 @ConstructorBinding

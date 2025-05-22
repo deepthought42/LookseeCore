@@ -12,12 +12,17 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * Universal object that contains values that are expected to exist on all persistable objects within the database
  * @author brand
  *
  */
 @Node
+@Getter
+@Setter
 public abstract class LookseeObject {
 	
 	//@Index(unique=true)
@@ -25,7 +30,6 @@ public abstract class LookseeObject {
     @Id
 	private Long id;
 
-	//@Index(unique=false)
 	@Property
 	private String key;
 	
@@ -52,31 +56,9 @@ public abstract class LookseeObject {
 	}
 	
 	/**
+	 * Generate a key for the object
+	 *
 	 * @return string of hashCodes identifying unique fingerprint of object by the contents of the object
 	 */
 	public abstract String generateKey();
-
-	public String getKey() {
-		return key;
-	}
-
-	public void setKey(String key) {
-		this.key = key;
-	}
-
-	public LocalDateTime getCreatedAt() {
-		return createdAt;
-	}
-
-	public void setCreatedAt(LocalDateTime created_at) {
-		this.createdAt = created_at;
-	}
-	
-	public Long getId() {
-		return this.id;
-	}
-	
-	public void setId(Long id) {
-		this.id = id;
-	}
 }

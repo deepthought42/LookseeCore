@@ -3,12 +3,27 @@ package com.looksee.models.enums;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 /**
- * Defines all types of {@link Audit audits} that exist in the system
+ * Defines all {@link Priority priorities} that exist in the system
  */
 public enum Priority {
-	HIGH("high"), 
-	MEDIUM("medium"), 
+    /**
+     * Represents a high priority.
+     */
+	HIGH("high"),
+
+    /**
+     * Represents a medium priority.
+     */
+	MEDIUM("medium"),
+
+    /**
+     * Represents a low priority.
+     */
 	LOW("low"),
+
+    /**
+     * Represents a none priority.
+     */
 	NONE("none");
 	
 
@@ -18,11 +33,20 @@ public enum Priority {
         this.shortName = shortName;
     }
 
+    /**
+     * Returns the short name of the priority.
+     * @return the short name of the priority
+     */
     @Override
     public String toString() {
         return shortName;
     }
 
+    /**
+     * Creates a Priority from a string.
+     * @param value the string to create the Priority from
+     * @return the Priority
+     */
     @JsonCreator
     public static Priority create (String value) {
     	assert value != null;
@@ -36,6 +60,10 @@ public enum Priority {
         throw new IllegalArgumentException();
     }
 
+    /**
+     * Returns the short name of the priority.
+     * @return the short name of the priority
+     */
     public String getShortName() {
         return shortName;
     }

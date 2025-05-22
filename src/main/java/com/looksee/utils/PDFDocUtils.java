@@ -13,15 +13,29 @@ import com.looksee.models.Audit;
 import com.looksee.models.Score;
 import com.looksee.models.enums.AuditSubcategory;
 
+/**
+ * Utility class for PDF document operations
+ */
 @Service
 public class PDFDocUtils {
 	
 	/**
-	 * Reviews scores within the domain audit 
-	 * @param page_audits
-	 * @return
+	 * Reviews scores within the domain audit
+	 *
+	 * @param audits the audits
+	 * @return the top four categories that need improvement
+	 *
+	 * <p><b>Preconditions:</b>
+	 * <ul>
+	 *   <li>audits is not null</li>
+	 *   <li>audits is not empty</li>
+	 * </ul>
+	 *
 	 */
 	public static List<AuditSubcategory> getTopFourCategoriesThatNeedImprovement(Set<Audit> audits) {
+		assert audits != null;
+		assert !audits.isEmpty();
+
 		Map<AuditSubcategory, Set<Score>> subcategory_map = new HashMap<>();
 		for(Audit audit: audits) {
 			if(!subcategory_map.containsKey(audit.getSubcategory())) {

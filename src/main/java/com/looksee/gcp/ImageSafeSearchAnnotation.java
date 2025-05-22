@@ -4,7 +4,14 @@ import java.util.UUID;
 
 import com.looksee.models.LookseeObject;
 
+import lombok.Getter;
+import lombok.Setter;
 
+/**
+ * Represents a safe search annotation for an image.
+ */
+@Getter
+@Setter
 public class ImageSafeSearchAnnotation extends LookseeObject{
 	private String spoof;
 	private String medical;
@@ -12,6 +19,9 @@ public class ImageSafeSearchAnnotation extends LookseeObject{
 	private String violence;
 	private String racy;
 	
+	/**
+	 * Constructs a new ImageSafeSearchAnnotation with all fields set to empty strings.
+	 */
 	public ImageSafeSearchAnnotation() {
 		setAdult("");
 		setMedical("");
@@ -20,11 +30,19 @@ public class ImageSafeSearchAnnotation extends LookseeObject{
 		setRacy("");
 	}
 	
+	/**
+	 * Constructs a new ImageSafeSearchAnnotation with the specified fields.
+	 * @param spoof the spoof value
+	 * @param medical the medical value
+	 * @param adult the adult value
+	 * @param violence the violence value
+	 * @param racy the racy value
+	 */
 	public ImageSafeSearchAnnotation(String spoof,
-									 String medical,
-									 String adult,
-									 String violence,
-									 String racy
+										String medical,
+										String adult,
+										String violence,
+										String racy
 	) {
 		setSpoof(spoof);
 		setMedical(medical);
@@ -33,49 +51,12 @@ public class ImageSafeSearchAnnotation extends LookseeObject{
 		setRacy(racy);
 	}
 	
-
+	/**
+	 * Generates a unique key for the image safe search annotation.
+	 * @return the unique key
+	 */
 	@Override
 	public String generateKey() {
 		return "imagesearchannotation::"+UUID.randomUUID();
-	}
-
-	public String getSpoof() {
-		return spoof;
-	}
-
-	public void setSpoof(String spoof) {
-		this.spoof = spoof;
-	}
-
-	public String getMedical() {
-		return medical;
-	}
-
-	public void setMedical(String medical) {
-		this.medical = medical;
-	}
-
-	public String getAdult() {
-		return adult;
-	}
-
-	public void setAdult(String adult) {
-		this.adult = adult;
-	}
-
-	public String getViolence() {
-		return violence;
-	}
-
-	public void setViolence(String violence) {
-		this.violence = violence;
-	}
-
-	public String getRacy() {
-		return racy;
-	}
-
-	public void setRacy(String racy) {
-		this.racy = racy;
 	}
 }

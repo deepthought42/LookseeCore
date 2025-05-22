@@ -8,7 +8,6 @@ import java.net.SocketTimeoutException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.UnknownHostException;
-import java.security.cert.Certificate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -19,7 +18,6 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLException;
 import javax.net.ssl.SSLHandshakeException;
-import javax.net.ssl.SSLPeerUnverifiedException;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
@@ -42,11 +40,20 @@ import com.looksee.models.PageState;
 
 
 /**
- * 
+ * Contains utility methods for browser operations
  */
 public class BrowserUtils {
 	private static Logger log = LoggerFactory.getLogger(BrowserUtils.class);
 	
+	/**
+	 * Sanitizes a url
+	 * @param url the url to sanitize
+	 * @param is_secure whether the url is secure
+	 * @return the sanitized url
+	 *
+	 * precondition: url != null
+	 * precondition: !url.isEmpty()
+	 */
 	public static String sanitizeUrl(String url, boolean is_secure) {
 		assert url != null;
 		assert !url.isEmpty();
@@ -82,16 +89,14 @@ public class BrowserUtils {
 		return domain;
 	}
 	
-	
 	/**
 	 * Reformats url so that it matches the Look-see requirements
-	 * 
-	 * @param url
-	 * 
+	 *
+	 * @param url the url to sanitize
 	 * @return sanitized url string
-	 * 
+	 *
 	 * @throws MalformedURLException
-	 * 
+	 *
 	 * precondition: url != null
 	 * precondition: !url.isEmpty()
 	 */
@@ -122,8 +127,20 @@ public class BrowserUtils {
 		return "http://"+new_key;
 	}
 
+	/**
+	 * Updates the location of an element
+	 * @param browser the browser to update the element location for
+	 * @param element the element to update the location for
+	 * @return the updated element
+	 *
+	 * precondition: browser != null
+	 * precondition: element != null
+	 */
 	public static ElementState updateElementLocations(Browser browser, ElementState element) {
-		WebElement web_elem = browser.findWebElementByXpath("");//element.getXpath());
+		assert browser != null;
+		assert element != null;
+		
+		WebElement web_elem = browser.findWebElementByXpath("");
 		Point location = web_elem.getLocation();
 		if(location.getX() != element.getXLocation() || location.getY() != element.getYLocation()){
 			element.setXLocation(location.getX());
@@ -133,7 +150,17 @@ public class BrowserUtils {
 		return element;
 	}
 
+	/**
+	 * Checks if the host of a url changes
+	 * @param urls the list of urls to check
+	 * @return true if the host of a url changes, otherwise false
+	 *
+	 * precondition: urls != null
+	 * @throws MalformedURLException
+	 */
 	public static boolean doesHostChange(List<String> urls) throws MalformedURLException {
+		assert urls != null;
+		
 		for(String url : urls){
 			String last_host_and_path = "";
 			URL url_obj = new URL(url);
@@ -206,21 +233,19 @@ public class BrowserUtils {
 				|| (link_without_params.charAt(0) == '#' && !link_without_params.contains(domain_host))
 				|| (!link_without_params.contains(domain_host) && !containsHost(link_url));
 	}
-	
-
-	private static boolean containsProtocol(String link_url) {
-		return link_url.contains("://");
-	}
-
 
 	/**
 	 * Checks provided link URL to determine if it contains a domain host
-	 * 
-	 * @param link_url
-	 * 
+	 *
+	 * @param link_url the link to check
+	 *
 	 * @return true if it contains a valid host format, otherwise false
+	 *
+	 * precondition: link_url != null
 	 */
 	public static boolean containsHost(String link_url) {
+		assert link_url != null;
+		
 		String host_pattern = "([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&%$-]+)*@)*((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?)(\\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}|([a-zA-Z0-9-]+\\.)*[a-zA-Z0-9-]+\\.(com|app|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|website|space|ca|us|co|uk|cc|es|tn))(:[0-9]+)*";
 		Pattern pattern = Pattern.compile(host_pattern);
         Matcher matcher = pattern.matcher(link_url);
@@ -228,7 +253,15 @@ public class BrowserUtils {
 		return matcher.find();
 	}
 
-
+	/**
+	 * Checks if a new host is a subdomain of a domain host
+	 * @param domain_host the domain host
+	 * @param new_host the new host
+	 * @return true if the new host is a subdomain of the domain host, otherwise false
+	 *
+	 * precondition: domain_host != null
+	 * precondition: new_host != null
+	 */
 	public static boolean isSubdomain(String domain_host, String new_host) throws URISyntaxException {
 		assert domain_host != null;
 		assert new_host != null;
@@ -239,6 +272,13 @@ public class BrowserUtils {
 		return is_contained && !is_equal && ends_with;
 	}
 	
+	/**
+	 * Checks if a url is a file
+	 * @param url the url to check
+	 * @return true if the url is a file, otherwise false
+	 *
+	 * precondition: url != null
+	 */
 	public static boolean isFile(String url) {
 		assert url != null;
 		
@@ -255,8 +295,16 @@ public class BrowserUtils {
 				|| isImageUrl(url);
 	}
 	
-	
+	/**
+	 * Checks if a url is a video file
+	 * @param url the url to check
+	 * @return true if the url is a video file, otherwise false
+	 *
+	 * precondition: url != null
+	 */
 	public static boolean isVideoFile(String url) {
+		assert url != null;
+		
 		return url.endsWith(".mov")
 				|| url.endsWith(".webm")
 				|| url.endsWith(".mkv")
@@ -340,10 +388,11 @@ public class BrowserUtils {
 	}
 	
 	/**
-	 *  check if link returns valid content ie. no 404 or page not found errors when navigating to it
-	 * @param url
-	 * @return
-	 * @throws Exception
+	 * Checks if a url exists
+	 * @param url the url to check
+	 * @return true if the url exists, otherwise false
+	 *
+	 * precondition: url != null
 	 */
 	public static boolean doesUrlExist(URL url) throws Exception {
 		assert(url != null);
@@ -389,12 +438,12 @@ public class BrowserUtils {
 	}
 	
 	/**
-	 *  check if link returns valid content ie. no 404 or page not found errors when navigating to it
+	 * Checks if a url exists
 	 * @param url_str the url to check
-	 * @return true if the url exists, false otherwise
-	 * 
-	 * precondition: url_str != null
+	 * @return true if the url exists, otherwise false
 	 * @throws Exception
+	 *
+	 * precondition: url_str != null
 	 */
 	public static boolean doesUrlExist(String url_str) throws Exception {
 		assert url_str != null;
@@ -407,7 +456,6 @@ public class BrowserUtils {
 		) {
 			return true;
 		}
-		
 		
 		URL url = new URL(url_str);
 		//perform check for http clients
@@ -458,7 +506,16 @@ public class BrowserUtils {
 		return false;
 	}
 
+	/**
+	 * Gets a https client
+	 * @param url the url to get the https client for
+	 * @return the https client
+	 * @throws Exception
+	 *
+	 * precondition: url != null
+	 */
 	private static HttpsURLConnection getHttpsClient(URL url) throws Exception {
+		assert url != null;
         // Security section START
         TrustManager[] trustAllCerts = new TrustManager[]{
             new X509TrustManager() {
@@ -492,12 +549,10 @@ public class BrowserUtils {
     }
 	
 	/**
-	 * Checks if url string ends with an image suffix indicating that it points to an image file
-	 * 
-	 * @param href url to examine
-	 * 
-	 * @return true if any suffixes match, false otherwise
-	 * 
+	 * Checks if a url is an image url
+	 * @param href the url to check
+	 * @return true if the url is an image url, otherwise false
+	 *
 	 * precondition: href != null
 	 */
 	public static boolean isImageUrl(String href) {
@@ -506,14 +561,23 @@ public class BrowserUtils {
 		return href.endsWith(".jpg") || href.endsWith(".png") || href.endsWith(".gif") || href.endsWith(".bmp") || href.endsWith(".tiff") || href.endsWith(".webp") || href.endsWith(".bpg") || href.endsWith(".heif");
 	}
 	
+	/**
+	 * Gets the title of a page
+	 * @param page_state the page state to get the title from
+	 * @return the title of the page
+	 *
+	 * precondition: page_state != null
+	 */
 	public static String getTitle(PageState page_state) {
+		assert page_state != null;
+		
 		Document doc = Jsoup.parse(page_state.getSrc());
 		
 		return doc.title();
 	}
 	
 	/**
-	 * Extracts css property settings from a string containing valid css
+	 * Extracts css property declarations from a css string
 	 * @param prop
 	 * @param css
 	 * @return
@@ -548,11 +612,12 @@ public class BrowserUtils {
         return settings;
 	}
 
-	
 	/**
 	 * Converts hexadecimal colors to RGB format
-	 * @param color_str e.g. "#FFFFFF"
-	 * @return 
+	 * @param color_str the hexadecimal color to convert
+	 * @return the RGB color
+	 *
+	 * precondition: color_str != null
 	 */
 	public static Color hex2Rgb(String color_str) {
 		assert color_str != null;
@@ -570,7 +635,16 @@ public class BrowserUtils {
 				Integer.valueOf( color_str.substring( 4, 6 ), 16 ) );
 	}
 
+	/**
+	 * Expands a hexadecimal color string
+	 * @param color_str the hexadecimal color to expand
+	 * @return the expanded hexadecimal color
+	 *
+	 * precondition: color_str != null
+	 */
 	private static String expandHex(String color_str) {
+		assert color_str != null;
+		
 		String expanded_hex = "";
 		for(int idx = 0; idx < color_str.length(); idx++) {
 			expanded_hex += color_str.charAt(idx)  + color_str.charAt(idx);
@@ -579,7 +653,16 @@ public class BrowserUtils {
 		return expanded_hex;
 	}
 
+	/**
+	 * Checks if a font weight is bold
+	 * @param font_weight the font weight to check
+	 * @return true if the font weight is bold, otherwise false
+	 *
+	 * precondition: font_weight != null
+	 */
 	public static boolean isTextBold(String font_weight) {
+		assert font_weight != null;
+		
 		return font_weight.contentEquals("bold")
 				|| font_weight.contentEquals("bolder")
 				|| font_weight.contentEquals("700")
@@ -600,7 +683,15 @@ public class BrowserUtils {
 		return page_url.replace("www.", "");
 	}
 
+	/**
+	 * Gets the page url from a sanitized url
+	 * @param sanitized_url the sanitized url to get the page url from
+	 * @return the page url
+	 *
+	 * precondition: sanitized_url != null
+	 */
 	public static String getPageUrl(String sanitized_url) {
+		assert sanitized_url != null;
 		//remove protocol
 		String url_without_protocol = sanitized_url.replace("https://", "");
 		url_without_protocol = url_without_protocol.replace("http://", "");
@@ -718,78 +809,116 @@ public class BrowserUtils {
         
         return is_secure;
 	}
-	
+
 	/**
-	 * 
-	 * @param con
+	 * Checks if an element has a background color
+	 * @param web_element the element to check
+	 * @return true if the element has a background color, otherwise false
+	 *
+	 * precondition: web_element != null
 	 */
-	private static void print_https_cert(HttpsURLConnection con){
-		if(con != null){
-			try {
-				System.out.println("Cipher Suite : " + con.getCipherSuite());
-				System.out.println("\n");
-
-				Certificate[] certs = con.getServerCertificates();
-				for(Certificate cert : certs){
-					System.out.println("Cert Type : " + cert.getType());
-					System.out.println("Cert Hash Code : " + cert.hashCode());
-					System.out.println("Cert Public Key Algorithm : "
-											+ cert.getPublicKey().getAlgorithm());
-					System.out.println("Cert Public Key Format : "
-											+ cert.getPublicKey().getFormat());
-					System.out.println("\n");
-				}
-			} catch (SSLPeerUnverifiedException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
 	public static boolean doesElementHaveBackgroundColor(WebElement web_element) {
+		assert web_element != null;
+		
 		String background_color = web_element.getCssValue("background-color");
 		return background_color != null && !background_color.isEmpty();
 	}
 
+	/**
+	 * Checks if an element has a font color
+	 * @param web_element the element to check
+	 * @return true if the element has a font color, otherwise false
+	 *
+	 * precondition: web_element != null
+	 */
 	public static boolean doesElementHaveFontColor(WebElement web_element) {
+		assert web_element != null;
+		
 		String font_color = web_element.getCssValue("color");
 		return font_color != null && !font_color.isEmpty();
 	}
 
+	/**
+	 * Checks if an element has a background image
+	 * @param web_element the element to check
+	 * @return true if the element has a background image, otherwise false
+	 *
+	 * precondition: web_element != null
+	 */
 	public static boolean isElementBackgroundImageSet(WebElement web_element) {
+		assert web_element != null;
+		
 		String background_image = web_element.getCssValue("background-image");
 		return background_image != null && !background_image.trim().isEmpty() && !background_image.trim().contentEquals("none");
 	}
 
+	/**
+	 * Converts a pixel size to a point size
+	 * @param pixel_size the pixel size to convert
+	 * @return the point size
+	 */
 	public static double convertPxToPt(double pixel_size) {
 		return pixel_size * 0.75;
 	}
 
+	/**
+	 * Checks if a url is a javascript url
+	 * @param href the url to check
+	 * @return true if the url is a javascript url, otherwise false
+	 *
+	 * precondition: href != null
+	 */
 	public static boolean isJavascript(String href) {
+		assert href != null;
+		
 		return href.startsWith("javascript:");
 	}
 
+	/**
+	 * Checks if an element is larger than the viewport
+	 * @param element_size the size of the element
+	 * @param viewportWidth the width of the viewport
+	 * @param viewportHeight the height of the viewport
+	 * @return true if the element is larger than the viewport, otherwise false
+	 *
+	 * precondition: element_size != null
+	 */
 	public static boolean isLargerThanViewport(Dimension element_size, int viewportWidth, int viewportHeight) {
+		assert element_size != null;
+		
 		return element_size.getWidth() > viewportWidth || element_size.getHeight() > viewportHeight;
 	}
 	
 	/**
+	 * Checks if an element is larger than the viewport
+	 * @param element the element to check
+	 * @param viewportWidth the width of the viewport
+	 * @param viewportHeight the height of the viewport
+	 * @return true if the element is larger than the viewport, otherwise false
+	 *
+	 * precondition: element != null
 	 */
-	public static boolean isLargerThanViewport(ElementState element, int viewportWidth, int viewportHeight) {
-		return element.getWidth() > viewportWidth || element.getHeight() > viewportHeight;
+	public static boolean isLargerThanViewport(ElementState element,
+												int viewportWidth,
+												int viewportHeight) {
+		assert element != null;
+		
+		return element.getWidth() > viewportWidth
+				|| element.getHeight() > viewportHeight;
 	}
 
 	/**
 	 * Handles extra formatting for relative links
-	 * @param protocol TODO
-	 * @param host
-	 * @param href
-	 * @param is_secure TODO
+	 * @param protocol the protocol to use
+	 * @param host the host to use
+	 * @param href the href to use
+	 * @param is_secure whether the url is secure
+	 *
+	 * @return the formatted url
+	 * @throws MalformedURLException
+	 *
 	 * precondition: host != null
 	 * precondition: !host.isEmpty
-	 * 
-	 * @return
-	 * 
-	 * @throws MalformedURLException
 	 */
 	public static String formatUrl(String protocol,
 									String host,
@@ -814,15 +943,9 @@ public class BrowserUtils {
 			return href;
 		}
 		
-		if(is_secure) {
-			protocol = "https";
-		}
-		else {
-			protocol = "http";
-		}
+		if(is_secure) { protocol = "https"; }
+		else { protocol = "http"; }
 		
-		//URL sanitized_href = new URL(BrowserUtils.sanitizeUrl(href));
-		//href = BrowserUtils.getPageUrl(sanitized_href);
 		//check if external link
 		if(BrowserUtils.isRelativeLink(host, href)) {
 			if(!href.startsWith("/") && !href.startsWith("?") && !href.startsWith("#")) {
@@ -836,7 +959,19 @@ public class BrowserUtils {
 		return href;
 	}
 
+	/**
+	 * Checks if a url is scheme relative
+	 * @param host the host to check
+	 * @param href the href to check
+	 * @return true if the url is scheme relative, otherwise false
+	 *
+	 * precondition: host != null
+	 * precondition: href != null
+	 */
 	private static boolean isSchemeRelative(String host, String href) {
+		assert host != null;
+		assert href != null;
+		
 		return href.startsWith("//");
 	}
 
@@ -918,9 +1053,8 @@ public class BrowserUtils {
 		}
 	}
 
-	
 	/**
-	 * Retrieves {@link ElementStates} that contain text
+	 * Retrieves {@link ElementState}s that contain text
 	 *
 	 * @param element_states the {@link List} of {@link ElementState}s
 	 * @return the {@link List} of {@link ElementState}s
@@ -957,6 +1091,14 @@ public class BrowserUtils {
 		return filtered_elements;
 	}
 
+	/**
+	 * Retrieves {@link ImageElementState}s that contain text
+	 *
+	 * @param element_states the {@link List} of {@link ElementState}s
+	 * @return the {@link List} of {@link ImageElementState}s
+	 *
+	 * precondition: element_states != null
+	 */
 	public static List<ImageElementState> getImageElements(List<ElementState> element_states) {
 		assert element_states != null;
 		

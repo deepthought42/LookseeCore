@@ -29,15 +29,28 @@ import com.looksee.models.enums.BrowserType;
 
 import io.github.resilience4j.retry.annotation.Retry;
 
+/**
+ * Utility class for image operations.
+ */
 public class ImageUtils {
 	private static Logger log = LoggerFactory.getLogger(ImageUtils.class);
 
+	/**
+	 * Resizes an image to the specified height and width.
+	 * @param img the image to resize
+	 * @param height the height to resize to
+	 * @param width the width to resize to
+	 * @return the resized image
+	 *
+	 * precondition: img != null
+	 * precondition: height > 0
+	 * precondition: width > 0
+	 */
 	 public static BufferedImage resize(BufferedImage img, int height, int width) {
-		 /* 
-		 BufferedImageOp resampler = new ResampleOp(width, height, ResampleOp.FILTER_LANCZOS); // A good default filter, see class documentation for more info
-		 BufferedImage scaledImage = resampler.filter(img, null);
-		 return scaledImage;
-		  */
+		assert img != null;
+		assert height > 0;
+		assert width > 0;
+
 		Image tmp = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
         BufferedImage resized = new BufferedImage(width, height, img.getType());
         Graphics2D g2d = resized.createGraphics();
@@ -45,18 +58,25 @@ public class ImageUtils {
         g2d.dispose();
         return resized;
     }
-	 
-	public static int[] rgb2lab(int R, int G, int B) {
-	    //http://www.brucelindbloom.com
 
-	    float r, g, b, X, Y, Z, fx, fy, fz, xr, yr, zr;
-	    float Ls, as, bs;
-	    float eps = 216.f/24389.f;
-	    float k = 24389.f/27.f;
+	/**
+	 * Converts RGB values to LAB values.
+	 * @param R the red value
+	 * @param G the green value
+	 * @param B the blue value
+	 * @return the LAB values
+	 */
+	public static int[] rgb2lab(int R, int G, int B) {
+		//http://www.brucelindbloom.com
+
+		float r, g, b, X, Y, Z, fx, fy, fz, xr, yr, zr;
+		float Ls, as, bs;
+		float eps = 216.f/24389.f;
+		float k = 24389.f/27.f;
 
 	    float Xr = 0.964221f;  // reference white D50
-	    float Yr = 1.0f;
-	    float Zr = 0.825211f;
+		float Yr = 1.0f;
+		float Zr = 0.825211f;
 
 	    // RGB to XYZ
 	    r = R/255.f; //R 0..1
@@ -64,60 +84,59 @@ public class ImageUtils {
 	    b = B/255.f; //B 0..1
 
 	    // assuming sRGB (D65)
-	    if (r <= 0.04045)
-	        r = r/12;
-	    else
-	        r = (float) Math.pow((r+0.055)/1.055,2.4);
+		if (r <= 0.04045)
+			r = r/12;
+		else
+			r = (float) Math.pow((r+0.055)/1.055,2.4);
 
-	    if (g <= 0.04045)
-	        g = g/12;
-	    else
-	        g = (float) Math.pow((g+0.055)/1.055,2.4);
+		if (g <= 0.04045)
+			g = g/12;
+		else
+			g = (float) Math.pow((g+0.055)/1.055,2.4);
 
-	    if (b <= 0.04045)
-	        b = b/12;
-	    else
-	        b = (float) Math.pow((b+0.055)/1.055,2.4);
-
+		if (b <= 0.04045)
+			b = b/12;
+		else
+			b = (float) Math.pow((b+0.055)/1.055,2.4);
 
 	    X =  0.436052025f*r     + 0.385081593f*g + 0.143087414f *b;
 	    Y =  0.222491598f*r     + 0.71688606f *g + 0.060621486f *b;
 	    Z =  0.013929122f*r     + 0.097097002f*g + 0.71418547f  *b;
 
 	    // XYZ to Lab
-	    xr = X/Xr;
-	    yr = Y/Yr;
-	    zr = Z/Zr;
+		xr = X/Xr;
+		yr = Y/Yr;
+		zr = Z/Zr;
 
-	    if ( xr > eps )
-	        fx =  (float) Math.pow(xr, 1/3.0);
-	    else
-	        fx = (float) ((k * xr + 16.0) / 116.0);
+		if ( xr > eps )
+			fx =  (float) Math.pow(xr, 1/3.0);
+		else
+			fx = (float) ((k * xr + 16.0) / 116.0);
 
-	    if ( yr > eps )
-	        fy =  (float) Math.pow(yr, 1/3.0);
-	    else
+		if ( yr > eps )
+			fy =  (float) Math.pow(yr, 1/3.0);
+		else
 	    fy = (float) ((k * yr + 16.0) / 116.0);
 
-	    if ( zr > eps )
-	        fz =  (float) Math.pow(zr, 1/3.0);
-	    else
+		if ( zr > eps )
+			fz =  (float) Math.pow(zr, 1/3.0);
+		else
 	        fz = (float) ((k * zr + 16.0) / 116);
 
 	    Ls = ( 116 * fy ) - 16;
-	    as = 500*(fx-fy);
-	    bs = 200*(fy-fz);
-	    int[] lab = new int[3];
-	    lab[0] = (int) (2.55*Ls + 0.5);
-	    lab[1] = (int) (as + 0.5); 
-	    lab[2] = (int) (bs + 0.5);       
-	    
-	    return lab;
+		as = 500*(fx-fy);
+		bs = 200*(fy-fz);
+		int[] lab = new int[3];
+		lab[0] = (int) (2.55*Ls + 0.5);
+		lab[1] = (int) (as + 0.5);
+		lab[2] = (int) (bs + 0.5);
+		
+		return lab;
 	}
 
 	/**
 	 * Measures color frequency from the specified local image.
-	 * 
+	 *
 	 * @param buffered_image the image to extract properties from
 	 * @return a list of color usage statistics
 	 * @throws IOException if an error occurs

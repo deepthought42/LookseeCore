@@ -4,9 +4,22 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.image.PixelGrabber;
 
+/**
+ * Compares two images and returns true if they are the same.
+ */
 public class CompareImages {
 
+	/**
+	 * Compares two images and returns true if they are the same.
+	 * @param img1_url the first image URL
+	 * @param img2_url the second image URL
+	 * @return true if the images are the same, false otherwise
+	 *
+	 * precondition: img1_url != null && img2_url != null
+	 */
 	public static boolean imagesMatch(String img1_url, String img2_url) {
+		assert img1_url != null && img2_url != null;
+
 		String file1 = img1_url;
 		String file2 = img2_url;
 
@@ -47,9 +60,5 @@ public class CompareImages {
 		}
 		
 		return false;
-	}
-
-	public static void main(String args[]) {
-		imagesMatch("c://newslider1.jpg", "c://newslider1.jpg");
 	}
 }

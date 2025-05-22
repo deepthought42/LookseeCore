@@ -3,37 +3,53 @@ package com.looksee.models.enums;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 /**
- * Complementary
-Two colors that are on opposite sides of the color wheel. This combination provides a high contrast and high impact color combination – together, these colors will appear brighter and more prominent.
-
-* 
-* Monochromatic
-Three shades, tones and tints of one base color. Provides a subtle and conservative color combination. This is a versatile color combination that is easy to apply to design projects for a harmonious look.
-
-Analogous
-Three colors that are side by side on the color wheel. This color combination is versatile, but can be overwhelming. To balance an analogous color scheme, choose one dominant color, and use the others as accents.
- 
- * SPLIT_COMPLIMENTARY
-* 	Three shades with uneven spacing between them
-*
- * Triadic
-Three colors that are evenly spaced on the color wheel. This provides a high contrast color scheme, but less so than the complementary color combination — making it more versatile. This combination creates bold, vibrant color palettes.
-
- * Tetradic
-Four colors that are evenly spaced on the color wheel. Tetradic color schemes are bold and work best if you let one color be dominant, and use the others as accents. The more colors you have in your palette, the more difficult it is to balance,
-
-
+ * Defines all {@link ToneOfVoice tone of voices} that exist in the system
  */
 public enum ToneOfVoice {
-	CONFIDENT("confident"), 
-	NEUTRAL("neutral"), 
-	JOYFUL("joyful"), 
-	OPTIMISTIC("optimistic"), 
-	FRIENDLY("friendly"), 
-	URGENT("urgent"), 
+    /**
+     * Represents a confident tone of voice.
+     */
+	CONFIDENT("confident"),
+
+    /**
+     * Represents a neutral tone of voice.
+     */
+	NEUTRAL("neutral"),
+    
+    /**
+     * Represents a joyful tone of voice.
+     */
+	JOYFUL("joyful"),
+    
+    /**
+     * Represents an optimistic tone of voice.
+     */
+	OPTIMISTIC("optimistic"),
+    
+    /**
+     * Represents a friendly tone of voice.
+     */
+	FRIENDLY("friendly"),
+
+    /**
+     * Represents an urgent tone of voice.
+     */
+	URGENT("urgent"),
+
+    /**
+     * Represents an analytical tone of voice.
+     */
 	ANALYTICAl("analytical"),
+
+    /**
+     * Represents a respectful tone of voice.
+     */
 	RESPECTFUL("respectful"),
-	UNKNOWN("unknown"); 
+
+    /**
+     * Represents an unknown tone of voice.
+     */
+	UNKNOWN("unknown");
 	
 	private String shortName;
 
@@ -41,11 +57,20 @@ public enum ToneOfVoice {
         this.shortName = shortName;
     }
 
+    /**
+     * Returns the short name of the tone of voice.
+     * @return the short name of the tone of voice
+     */
     @Override
     public String toString() {
         return shortName;
     }
 
+    /**
+     * Creates a ToneOfVoice from a string.
+     * @param value the string to create the ToneOfVoice from
+     * @return the ToneOfVoice
+     */
     @JsonCreator
     public static ToneOfVoice create (String value) {
         if(value == null) {
@@ -59,6 +84,10 @@ public enum ToneOfVoice {
         throw new IllegalArgumentException();
     }
 
+    /**
+     * Returns the short name of the tone of voice.
+     * @return the short name of the tone of voice
+     */
     public String getShortName() {
         return shortName;
     }
