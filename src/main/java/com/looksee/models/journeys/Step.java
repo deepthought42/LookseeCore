@@ -58,7 +58,7 @@ public abstract class Step extends LookseeObject{
 	 */
 	@Getter
 	@Setter
-	private String candidate_key;
+	private String candidateKey;
 	
 	/**
 	 * The status of the step

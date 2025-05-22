@@ -5,64 +5,63 @@ import com.looksee.models.enums.JourneyStatus;
 import com.looksee.models.journeys.Journey;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 /**
- * 
+ * A JourneyMessage is a message that is used to send a journey
  */
+@NoArgsConstructor
+@Getter
+@Setter
 public class JourneyMessage extends Message {
 
+	/**
+	 * The journey
+	 */
 	private Journey journey;
+
+	/**
+	 * The status
+	 */
 	private JourneyStatus status;
+
+	/**
+	 * The browser type
+	 */
 	private BrowserType browser;
 
-	@Getter
-	@Setter
+	/**
+	 * The audit record id
+	 */
 	private long auditRecordId;
 
+	/**
+	 * Creates a new JourneyMessage
+	 * @param journey the journey
+	 * @param status the status
+	 * @param browser_type the browser type
+	 * @param account_id the account id
+	 * @param audit_record_id the audit record id
+	 */
 	public JourneyMessage(Journey journey,
-					   JourneyStatus status, 
-					   BrowserType browser_type, 
-					   long account_id, 
-					   long audit_record_id)
+						JourneyStatus status,
+						BrowserType browserType,
+						long accountId,
+						long auditRecordId)
 	{
-		super(account_id);
+		super(accountId);
 		setJourney(journey);
 		setStatus(status);
-		setBrowser(browser_type);
-		setAuditRecordId(audit_record_id);
+		setBrowser(browserType);
+		setAuditRecordId(auditRecordId);
 	}
 	
 	public JourneyMessage clone(){
 		return new JourneyMessage(journey.clone(),
-								  getStatus(), 
-								  getBrowser(),
-								  getAccountId(),
-								  getAuditRecordId());
-	}
-
-	public JourneyStatus getStatus() {
-		return status;
-	}
-
-	private void setStatus(JourneyStatus status) {
-		this.status = status;
-	}
-
-	public BrowserType getBrowser() {
-		return browser;
-	}
-
-	public void setBrowser(BrowserType browser) {
-		this.browser = browser;
-	}
-
-	public void setJourney(Journey journey) {
-		this.journey = journey;
-	}
-	
-	public Journey getJourney() {
-		return this.journey;
+									getStatus(),
+									getBrowser(),
+									getAccountId(),
+									getAuditRecordId());
 	}
 }

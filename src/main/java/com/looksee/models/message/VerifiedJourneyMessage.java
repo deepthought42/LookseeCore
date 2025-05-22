@@ -4,42 +4,54 @@ import com.looksee.models.enums.BrowserType;
 import com.looksee.models.journeys.Journey;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * 
+ * A VerifiedJourneyMessage is a message that is used to verify a journey
  */
+@NoArgsConstructor
+@Getter
+@Setter
 public class VerifiedJourneyMessage extends Message {
 
-	@Getter
-	@Setter
+	/**
+	 * The journey
+	 */
 	private Journey journey;
 
-	@Getter
-	@Setter
+	/**
+	 * The browser
+	 */
 	private BrowserType browser;
 
-	@Getter
-	@Setter
+	/**
+	 * The audit record id
+	 */
 	private long auditRecordId;
 
-	public VerifiedJourneyMessage() {}
-	
-	public VerifiedJourneyMessage( Journey journey, 
-								   BrowserType browser,
-								   long account_id, 
-								   long audit_record_id)
+	/**
+	 * Creates a new VerifiedJourneyMessage
+	 * @param journey the journey
+	 * @param browser the browser
+	 * @param accountId the account id
+	 * @param auditRecordId the audit record id
+	 */
+	public VerifiedJourneyMessage( Journey journey,
+									BrowserType browser,
+									long accountId,
+									long auditRecordId)
 	{
-		super(account_id);
+		super(accountId);
 		setJourney(journey);
 		setBrowser(browser);
-		setAuditRecordId(audit_record_id);
+		setAuditRecordId(auditRecordId);
 	}
 	
 	public VerifiedJourneyMessage clone(){
-		return new VerifiedJourneyMessage(	journey.clone(), 
-											getBrowser(), 
-											getAccountId(), 
+		return new VerifiedJourneyMessage(	journey.clone(),
+											getBrowser(),
+											getAccountId(),
 											getAuditRecordId());
 	}
 }

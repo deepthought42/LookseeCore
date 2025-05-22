@@ -4,41 +4,55 @@ import com.looksee.models.enums.AuditLevel;
 import com.looksee.models.enums.BrowserType;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Message for different audit actions to perform and which audit types to perform them for.
- * 
+ * A UrlMessage is a message that is used to send a url to the browser
  */
+@NoArgsConstructor
+@Getter
+@Setter
 public class UrlMessage extends Message{
-	@Getter
-	@Setter
+	
+	/**
+	 * The url
+	 */
 	private String url;
 
-	@Getter
-	@Setter
+	/**
+	 * The browser
+	 */
 	private BrowserType browser;
 
-	@Getter
-	@Setter
+	/**
+	 * The audit id
+	 */
 	private long auditId;
 
-	@Setter
-	@Getter
+	/**
+	 * The type
+	 */
 	private AuditLevel type;
-
-	public UrlMessage() {}
 	
-	public UrlMessage(String url, 
+	/**
+	 * Creates a new UrlMessage
+	 * @param url the url
+	 * @param browser the browser
+	 * @param audit_id the audit id
+	 * @param type the type
+	 * @param account_id the account id
+	 */
+	public UrlMessage(String url,
 					  BrowserType browser,
-					  long audit_id,
+					  long auditId,
 					  AuditLevel type,
-					  long account_id)
+					  long accountId)
 	{
 		setUrl(url);
 		setBrowser(browser);
-		setAuditId(audit_id);
-		setAccountId(account_id);
+		setAuditId(auditId);
+		setAccountId(accountId);
 		setType(type);
 	}
 }

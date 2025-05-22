@@ -1,49 +1,51 @@
 package com.looksee.models.message;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * A PageDataExtractionError is a message that is used to indicate that there 
+ * was an error extracting data from a page
+ */
+@NoArgsConstructor
+@Getter
+@Setter
 public class PageDataExtractionError extends Message {
+
+	/**
+	 * The url of the page
+	 */
 	private String url;
-	private String errorMessage;
-	private long audit_record_id;
-	
-	@Getter
-	@Setter
+
+	/**
+	 * The audit record id
+	 */
 	private long auditRecordId;
 
-	public PageDataExtractionError(long accountId, 
-								   long auditRecordId, 
-								   String url, 
-								   String error_message) {
+	/**
+	 * The error message
+	 */
+	private String errorMessage;
+
+	/**
+	 * Creates a new PageDataExtractionError
+	private long auditRecordId;
+
+	/**
+	 * Creates a new PageDataExtractionError
+	 * @param accountId the account id
+	 * @param auditRecordId the audit record id
+	 * @param url the url of the page
+	 * @param errorMessage the error message
+	 */
+	public PageDataExtractionError(long accountId,
+									long auditRecordId,
+									String url,
+									String error_message) {
 		super(accountId);
 		setUrl(url);
 		setAuditRecordId(auditRecordId);
 		setErrorMessage(error_message);
 	}
-
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-	public String getErrorMessage() {
-		return errorMessage;
-	}
-
-	public void setErrorMessage(String error_message) {
-		this.errorMessage = error_message;
-	}
-
-	public long getAuditRecordId() {
-		return audit_record_id;
-	}
-
-	public void setAuditRecordId(long audit_record_id) {
-		this.audit_record_id = audit_record_id;
-	}
-
 }

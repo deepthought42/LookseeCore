@@ -2,39 +2,42 @@ package com.looksee.models.message;
 
 import com.looksee.models.enums.BrowserType;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 /**
- * Message for different audit actions to perform and which audit types to perform them for.
- * 
+ * A PageAuditUrlMessage is a message that is used to audit a url
  */
+@NoArgsConstructor
+@Getter
+@Setter
 public class PageAuditUrlMessage extends PageAuditMessage {
+
+	/**
+	 * The url to audit
+	 */
 	private String url;
+
+	/**
+	 * The browser to audit
+	 */
 	private BrowserType browser;
 	
-	public PageAuditUrlMessage() {}
-	
-	public PageAuditUrlMessage( long account_id,
-				  	   long page_audit_id,
-				  	   String url, 
-				  	   BrowserType browser)
+	/**
+	 * Creates a new PageAuditUrlMessage
+	 * @param account_id the account id
+	 * @param page_audit_id the page audit id
+	 * @param url the url to audit
+	 * @param browser the browser to audit
+	 */
+	public PageAuditUrlMessage(long accountId,
+								long pageAuditId,
+								String url,
+								BrowserType browser)
 	{
-		super(account_id, page_audit_id);
+		super(accountId, pageAuditId);
 		setUrl(url);
 		setBrowser(browser);
-	}
-
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-	public BrowserType getBrowser() {
-		return browser;
-	}
-
-	public void setBrowser(BrowserType browser) {
-		this.browser = browser;
 	}
 }

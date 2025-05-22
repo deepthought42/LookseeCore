@@ -1,24 +1,34 @@
 package com.looksee.models.recommend;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+/**
+ * A ColorContrastRecommendation is a recommendation to improve the color contrast of a page
+ */
+@NoArgsConstructor
+@Getter
+@Setter
 public class ColorContrastRecommendation extends Recommendation{
-	private String color1_rgb;
-	private String color2_rgb;
+
+	/**
+	 * The first color in RGB format
+	 */
+	private String color1Rgb;
+
+	/**
+	 * The second color in RGB format
+	 */
+	private String color2Rgb;
 	
-	public ColorContrastRecommendation(String color1_rgb, String color2_rgb) {
-		setColor1Rgb(color1_rgb);
-		setColor2Rgb(color2_rgb);
-	}
-	
-	public String getColor1Rgb() {
-		return color1_rgb;
-	}
-	public void setColor1Rgb(String color1_rgb) {
-		this.color1_rgb = color1_rgb;
-	}
-	public String getColor2Rgb() {
-		return color2_rgb;
-	}
-	public void setColor2Rgb(String color2_rgb) {
-		this.color2_rgb = color2_rgb;
+	/**
+	 * Creates a new ColorContrastRecommendation
+	 * @param color1Rgb the first color in RGB format
+	 * @param color2Rgb the second color in RGB format
+	 */
+	public ColorContrastRecommendation(String color1Rgb, String color2Rgb) {
+		setColor1Rgb(color1Rgb);
+		setColor2Rgb(color2Rgb);
 	}
 }

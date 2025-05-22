@@ -4,24 +4,46 @@ import com.looksee.models.enums.AuditLevel;
 import com.looksee.models.enums.BrowserType;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
  * Message for different audit actions to perform and which audit types to perform them for.
  * 
  */
+@NoArgsConstructor
+@Getter
+@Setter
 public class AuditStartMessage extends Message{
+	/**
+	 * The url to audit
+	 */
 	private String url;
+
+	/**
+	 * The browser to audit
+	 */
 	private BrowserType browser;
-	private long audit_id;
 
-	@Setter
-	@Getter
+	/**
+	 * The audit id
+	 */
+	private long auditId;
+
+	/**
+	 * The audit type
+	 */
 	private AuditLevel type;
-
-	public AuditStartMessage() {}
 	
-	public AuditStartMessage(String url, 
+	/**
+	 * Creates a new AuditStartMessage
+	 * @param url the url to audit
+	 * @param browser the browser to audit
+	 * @param audit_id the audit id
+	 * @param type the audit type
+	 * @param account_id the account id
+	 */
+	public AuditStartMessage(String url,
 							BrowserType browser,
 							long audit_id,
 							AuditLevel type,
@@ -32,29 +54,5 @@ public class AuditStartMessage extends Message{
 		setAuditId(audit_id);
 		setAccountId(account_id);
 		setType(type);
-	}
-
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-	public BrowserType getBrowser() {
-		return browser;
-	}
-
-	private void setBrowser(BrowserType browser) {
-		this.browser = browser;
-	}
-
-	public long getAuditId() {
-		return audit_id;
-	}
-
-	public void setAuditId(long auditId) {
-		this.audit_id = auditId;
 	}
 }

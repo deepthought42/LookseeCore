@@ -5,66 +5,68 @@ import com.looksee.models.enums.BrowserType;
 import com.looksee.models.journeys.Journey;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
 /**
- * 
+ * A JourneyCandidateMessage is a message that is used to send a journey candidate
  */
+@NoArgsConstructor
+@Getter
+@Setter
 public class JourneyCandidateMessage extends Message {
 
-	private long map_id;
+	/**
+	 * The map id
+	 */
+	private long mapId;
+
+	/**
+	 * The journey
+	 */
 	private Journey journey;
+
+	/**
+	 * The browser type
+	 */
 	private BrowserType browser;
 
-	@Getter
-	@Setter
+	/**
+	 * The audit record id
+	 */
 	private long auditRecordId;
 	
-	public JourneyCandidateMessage() {}
-	
-	public JourneyCandidateMessage(Journey journey, 
-								   BrowserType browser_type, 
-								   long account_id, 
-								   long audit_record_id, 
-								   long map_id)
+	/**
+	 * Creates a new JourneyCandidateMessage
+	 * @param journey the journey
+	 * @param browser_type the browser type
+	 * @param account_id the account id
+	 * @param audit_record_id the audit record id
+	 * @param map_id the map id
+	 */
+	public JourneyCandidateMessage(Journey journey,
+									BrowserType browserType,
+									long accountId,
+									long auditRecordId,
+									long mapId)
 	{
-		super(account_id);
+		super(accountId);
 		setJourney(journey);
-		setBrowser(browser_type);
-		setAuditRecordId(audit_record_id);
+		setBrowser(browserType);
+		setAuditRecordId(auditRecordId);
+		setMapId(mapId);
 	}
 
+	/**
+	 * Clones the JourneyCandidateMessage
+	 * @return the cloned JourneyCandidateMessage
+	 */
 	public JourneyCandidateMessage clone(){
-		return new JourneyCandidateMessage(getJourney(), 
-								  getBrowser(), 
-								  getAccountId(), 
-								  getAuditRecordId(),
-								  getMapId());
+		return new JourneyCandidateMessage(getJourney(),
+											getBrowser(),
+											getAccountId(),
+											getAuditRecordId(),
+											getMapId());
 	}
-
-	public BrowserType getBrowser() {
-		return browser;
-	}
-
-	public void setBrowser(BrowserType browser) {
-		this.browser = browser;
-	}
-
-	public Journey getJourney() {
-		return journey;
-	}
-
-	public void setJourney(Journey journey) {
-		this.journey = journey;
-	}
-
-	public long getMapId() {
-		return map_id;
-	}
-
-	public void setMapId(long map_id) {
-		this.map_id = map_id;
-	}
-	
 }

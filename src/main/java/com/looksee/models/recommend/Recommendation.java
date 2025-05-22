@@ -4,26 +4,31 @@ import java.util.UUID;
 
 import com.looksee.models.LookseeObject;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+/**
+ * A Recommendation is a recommendation to improve a page
+ */
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class Recommendation extends LookseeObject{
+
+	/**
+	 * The description of the recommendation
+	 */
 	private String description;
 
-	public Recommendation() { }
-	
-	public Recommendation(String description) {
-		setDescription(description);
-	}
-
+	/**
+	 * Generates a key for the recommendation
+	 * @return the key for the recommendation
+	 */
 	@Override
 	public String generateKey() {
 		return "recommendation::"+UUID.randomUUID();
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
 	}
 }

@@ -1,15 +1,31 @@
 package com.looksee.models.message;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+/**
+ * A ElementExtractionError is a message that is used to report an error in element extraction
+ */
+@NoArgsConstructor
+@Getter
+@Setter
 public class ElementExtractionError extends Message{
-	private String page_url;
+	private String pageUrl;
 	private String message;
-	private long page_id;
-	
-	public ElementExtractionError(long account_id, 		
-								  long page_state_id, 
-								  String page_url,
-								  String msg
+	private long pageId;
+
+	/**
+	 * Creates a new ElementExtractionError
+	 * @param account_id the account id
+	 * @param page_state_id the page state id
+	 * @param page_url the page url
+	 * @param msg the message
+	 */
+	public ElementExtractionError(long account_id,
+									long page_state_id,
+									String page_url,
+									String msg
 	) {
 		super(account_id);
 		setPageId(page_state_id);
@@ -17,29 +33,4 @@ public class ElementExtractionError extends Message{
 		setPageUrl(page_url);
 		
 	}
-
-	public String getPageUrl() {
-		return page_url;
-	}
-
-	public void setPageUrl(String page_url) {
-		this.page_url = page_url;
-	}
-
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
-
-	public long getPageId() {
-		return page_id;
-	}
-
-	public void setPageId(long page_id) {
-		this.page_id = page_id;
-	}
-
 }

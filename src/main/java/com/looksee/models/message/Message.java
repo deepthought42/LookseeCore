@@ -17,13 +17,26 @@ import lombok.Setter;
 @Getter
 @Setter
 public abstract class Message {
+	/**
+	 * The message id
+	 */
 	private String messageId;
 
+	/**
+	 * The publish time
+	 */
 	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime publishTime;
+
+	/**
+	 * The account id
+	 */
 	private long accountId;
 	
+	/**
+	 * Creates a new Message
+	 */
 	public Message(){
 		setAccountId(-1);
 		this.messageId = UUID.randomUUID().toString();

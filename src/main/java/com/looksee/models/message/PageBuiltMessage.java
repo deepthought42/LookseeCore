@@ -6,25 +6,38 @@ import lombok.Setter;
 /**
  * Message used to indicate that a domain page has been built and data extracted
  */
+@Getter
+@Setter
 public class PageBuiltMessage extends Message{
-	@Getter
-	@Setter
+	/**
+	 * The page id
+	 */
 	private long pageId;
 
-	@Getter
-	@Setter
+	/**
+	 * The audit record id
+	 */
 	private long auditRecordId;
 	
+	/**
+	 * Creates a new PageBuiltMessage
+	 */
 	public PageBuiltMessage() {
 		super(-1);
 	}
 	
-	public PageBuiltMessage(long account_id,
-							long page_id, 
-							long audit_record_id) 
+	/**
+	 * Creates a new PageBuiltMessage
+	 * @param accountId the account id
+	 * @param pageId the page id
+	 * @param auditRecordId the audit record id
+	 */
+	public PageBuiltMessage(long accountId,
+							long pageId,
+							long auditRecordId)
 	{
-		super(account_id);
-		setAuditRecordId(audit_record_id);
-		setPageId(page_id);
+		super(accountId);
+		setAuditRecordId(auditRecordId);
+		setPageId(pageId);
 	}
 }
