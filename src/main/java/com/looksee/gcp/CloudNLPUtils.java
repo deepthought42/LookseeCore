@@ -41,7 +41,7 @@ public class CloudNLPUtils {
 	public static List<Sentence> extractSentences(String text) throws IOException {
 		assert text != null;
 
-	    LanguageServiceClient language = LanguageServiceClient.create();
+		LanguageServiceClient language = LanguageServiceClient.create();
 		Document doc = Document.newBuilder().setContent(text).setType(Type.PLAIN_TEXT).setLanguage("en").build();
 
 		// Detects the sentiment of the text
