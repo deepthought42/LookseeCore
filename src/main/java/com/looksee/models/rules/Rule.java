@@ -7,10 +7,8 @@ import com.looksee.models.LookseeObject;
 import com.looksee.models.serializer.RuleDeserializer;
 
 /**
- * Defines rule to be used to evaluate if a {@link FormField} has a value that satisfies the 
+ * Defines rule to be used to evaluate if a {@link Element} has a value that satisfies the 
  * rule based on its {@link RuleType}
- *
- * @param <T> a generic value that is used to define the type of value returned
  */
 @JsonDeserialize(using = RuleDeserializer.class)
 public abstract class Rule extends LookseeObject {
@@ -56,8 +54,11 @@ public abstract class Rule extends LookseeObject {
 	
 	/**
 	 * evaluates the rule to determine if it is satisfied
-	 * 
+	 *
+	 * @param val the element to evaluate the rule against
 	 * @return boolean value indicating the rule is satisfied or not
+	 *
+	 * precondition: val != null
 	 */
 	abstract Boolean evaluate(Element val);
 

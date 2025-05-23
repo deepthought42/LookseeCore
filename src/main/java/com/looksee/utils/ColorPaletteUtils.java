@@ -23,17 +23,20 @@ import com.looksee.models.enums.AuditCategory;
 import com.looksee.models.enums.ColorScheme;
 import com.looksee.models.enums.Priority;
 
+import lombok.NoArgsConstructor;
+
 /**
  * Utility class for color palette operations
  */
+@NoArgsConstructor
 public class ColorPaletteUtils {
 	private static Logger log = LoggerFactory.getLogger(ColorPaletteUtils.class);
 
 	/**
 	 * Scores site color palette based on the color scheme it most resembles
-	 * @param palette
-	 * @param scheme
-	 * @return
+	 * @param palette the {@link List} of {@link PaletteColor}s
+	 * @param scheme the {@link ColorScheme}
+	 * @return the {@link Score}
 	 *
 	 * precondition: palette != null
 	 * precondition: scheme != null
@@ -170,9 +173,9 @@ public class ColorPaletteUtils {
 	 * Compares colors to palette and if any colors are within 5 arc degrees of a palette color, then it is considered to
 	 * 	conform to the palette.
 	 * 
-	 * @param palette
-	 * @param colors
-	 * @return
+	 * @param palette the {@link List} of {@link String}s
+	 * @param colors the {@link List} of {@link ColorData}s
+	 * @return the {@link Map} of {@link String} to {@link Boolean}
 	 */
 	private static Map<String, Boolean> retrieveNonCompliantColors(List<String> palette, List<ColorData> colors) {
 		Map<String, Boolean> non_compliant_colors = new HashMap<>();
@@ -377,7 +380,7 @@ public class ColorPaletteUtils {
 	 * Extracts set of {@link PaletteColor colors} that define a palette based on a set of rgb strings
 	 *
 	 * @param colors the {@link List} of {@link ColorData}s
-	 * @return
+	 * @return the {@link List} of {@link PaletteColor}s
 	 */
 	public static List<PaletteColor> extractPalette(List<ColorData> colors) {
 		assert colors != null;

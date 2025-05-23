@@ -19,9 +19,12 @@ import com.google.cloud.language.v1.Sentence;
 import com.google.cloud.language.v1.Sentiment;
 import com.google.cloud.language.v1.Token;
 
+import lombok.NoArgsConstructor;
+
 /**
  * Utility class for Google Cloud NLP operations.
  */
+@NoArgsConstructor
 public class CloudNLPUtils {
 	@SuppressWarnings("unused")
 	private static Logger log = LoggerFactory.getLogger(CloudNLPUtils.class);

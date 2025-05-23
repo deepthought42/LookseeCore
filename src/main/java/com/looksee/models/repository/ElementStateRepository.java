@@ -189,7 +189,7 @@ public interface ElementStateRepository extends Neo4jRepository<ElementState, Lo
 	 * @return the element states
 	 */
 	@Query("MATCH (e:ElementState) WHERE e.key IN $element_keys RETURN e")
-	public List<ElementState> getElements(@Param("element_keys")  Set<String> existing_keys);
+	public List<ElementState> getElements(@Param("element_keys") Set<String> element_keys);
 	
 	/**
 	 * Finds all link element states for a page state
@@ -217,7 +217,7 @@ public interface ElementStateRepository extends Neo4jRepository<ElementState, Lo
 	 * @return the element states
 	 */
 	@Query("MATCH (p:PageState{key:$page_key})-[:HAS]->(e:ElementState) RETURN DISTINCT e")
-	public List<ElementState> getElementStates(@Param("page_key") String key);
+	public List<ElementState> getElementStates(@Param("page_key") String page_key);
 	
 	/**
 	 * Finds all element states for a page state
@@ -264,5 +264,5 @@ public interface ElementStateRepository extends Neo4jRepository<ElementState, Lo
 	 * @param element_key the key of the element state
 	 * @return the element state
 	 */
-	@Query("MATCH p=(d:DomainAuditRecord)-[]->(n:PageState) WHERE id(d)=$domain_audit_id MATCH a=(n)-[]-(e:ElementState{key:$key}) RETURN e LIMIT 1")
-	public ElementState findByDomainAuditAndKey(@Param("domain_audit_id") long domain_audit_id, @Param("key") String element_key);}
+	@Query("MATCH p=(d:DomainAuditRecord)-[]->(n:PageState) WHERE id(d)=$domain_audit_id MATCH a=(n)-[]-(e:ElementState{key:$element_key}) RETURN e LIMIT 1")
+	public ElementState findByDomainAuditAndKey(@Param("domain_audit_id") long domain_audit_id, @Param("element_key") String element_key);}

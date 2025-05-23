@@ -354,15 +354,38 @@ public class ElementState extends LookseeObject implements Comparable<ElementSta
         return this.getKey().compareTo(o.getKey());
 	}
 
+	/**
+	 * Gets the classification of the element
+	 *
+	 * @return the classification
+	 */
 	public ElementClassification getClassification() {
 		return ElementClassification.create(classification);
 	}
 
+	/**
+	 * Sets the classification of the element
+	 *
+	 * @param classification the classification
+	 *
+	 * precondition: classification != null
+	 */
 	public void setClassification(ElementClassification classification) {
+		assert classification != null;
+		
 		this.classification = classification.toString();
 	}
 
+	/**
+	 * Sets the rendered css values of the element
+	 *
+	 * @param rendered_css_values the rendered css values
+	 *
+	 * precondition: rendered_css_values != null
+	 */
 	public void setRenderedCssValues(Map<String, String> rendered_css_values) {
+		assert rendered_css_values != null;
+		
 		this.renderedCssValues.putAll(rendered_css_values);
 	}
 }

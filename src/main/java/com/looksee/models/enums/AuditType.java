@@ -3,7 +3,7 @@ package com.looksee.models.enums;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 /**
- * Defines all types of {@link AuditDetail} that exist in the system
+ * Represents the type of audit
  */
 public enum AuditType {
     /**

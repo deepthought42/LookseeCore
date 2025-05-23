@@ -104,15 +104,16 @@ public class Browser {
 	 * 			ie = internet explorer
 	 * 			safari = safari
 	 *
-	 * @throws MalformedURLException
-	 * @throws ApiException
+	 * @throws MalformedURLException if the url is malformed
+	 * @throws ApiException if an error occurs while opening the browser
 	 *
-	 * precondition: url != null
+	 * precondition: hub_node_url != null
 	 * precondition: browser != null
 	 */
 	public Browser(String browser, URL hub_node_url) throws MalformedURLException {
 		assert browser != null;
-		
+		assert hub_node_url != null;
+
 		this.setBrowserName(browser);
 		if("chrome".equals(browser)){
 			this.driver = openWithChrome(hub_node_url);
@@ -130,7 +131,11 @@ public class Browser {
 	}
 	
 	/**
-	 * @return current {@link WebDriver driver}
+	 * Gets the current {@link WebDriver driver}
+	 *
+	 * @return the current {@link WebDriver driver}
+	 *
+	 * precondition: driver != null
 	 */
 	public WebDriver getDriver(){
 		return this.driver;
@@ -159,7 +164,7 @@ public class Browser {
 	 *
 	 * precondition: src != null
 	 *
-	 * @version - 9/18/2023
+	 * version: 9/18/2023
 	 */
 	public static String cleanSrc(String src) {
 		Document html_doc = Jsoup.parse(src);
@@ -197,10 +202,14 @@ public class Browser {
 	 * @param hub_node_url the url of the selenium hub node
 	 * @return firefox web driver
 	 * @throws MalformedURLException
+	 *
+	 * precondition: hub_node_url != null
 	 */
 	public static WebDriver openWithFirefox(URL hub_node_url)
 			throws MalformedURLException, UnreachableBrowserException
 	{
+		assert hub_node_url != null;
+		
 		ImmutableCapabilities capabilities = new ImmutableCapabilities("browserName", "firefox");
 
 		RemoteWebDriver driver = new RemoteWebDriver(hub_node_url, capabilities);
@@ -214,11 +223,15 @@ public class Browser {
 	 * 
 	 * @param hub_node_url the url of the selenium hub node
 	 * @return internet explorer web driver
-	 * @throws MalformedURLException
-	 * @throws UnreachableBrowserException
+	 * @throws MalformedURLException if the url is malformed
+	 * @throws UnreachableBrowserException if the browser is unreachable
+	 *
+	 * precondition: hub_node_url != null
 	 */
 	public static WebDriver openWithInternetExplorer(URL hub_node_url)
 								throws MalformedURLException, UnreachableBrowserException {
+		assert hub_node_url != null;
+		
 		ImmutableCapabilities capabilities = new ImmutableCapabilities("browserName", "ie");
 
 		RemoteWebDriver driver = new RemoteWebDriver(hub_node_url, capabilities);
@@ -231,13 +244,19 @@ public class Browser {
 	 *
 	 * @param hub_node_url the url of the selenium hub node
 	 * @return Chrome web driver
-	 * @throws MalformedURLException
+	 * @throws MalformedURLException if the url is malformed
+	 * @throws UnreachableBrowserException if the browser is unreachable
+	 * @throws WebDriverException if an error occurs while opening the browser
+	 *
+	 * precondition: hub_node_url != null
 	 */
 	public static WebDriver openWithChrome(URL hub_node_url)
 			throws MalformedURLException,
 					UnreachableBrowserException,
 					WebDriverException
 	{
+		assert hub_node_url != null;
+		
 		ChromeOptions chrome_options = new ChromeOptions();
 		chrome_options.addArguments("user-agent=LookseeBot");
 		chrome_options.addArguments("window-size=1920,1080");
@@ -253,8 +272,11 @@ public class Browser {
 	/**
 	 * Accepts alert
 	 * 
-	 * @param driver
-	 * @param wait
+	 * @param driver the driver to use
+	 * @param wait the wait to use
+	 *
+	 * precondition: driver != null
+	 * precondition: wait != null
 	 */
 	public static void AcceptAlert(WebDriver driver, WebDriverWait wait) {
 		if (wait == null) {
@@ -280,7 +302,9 @@ public class Browser {
 	 * Gets image as a base 64 string
 	 *
 	 * @return File png file of image
-	 * @throws IOException
+	 * @throws IOException if an error occurs while getting the screenshot
+	 *
+	 * precondition: driver != null
 	 */
 	public BufferedImage getViewportScreenshot() throws IOException {
 		return ImageIO.read(((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE));
@@ -290,7 +314,7 @@ public class Browser {
 	 * Gets image as a base 64 string
 	 * 
 	 * @return File png file of image
-	 * @throws IOException
+	 * @throws IOException if an error occurs while getting the screenshot
 	 * 
 	 * NOTE: The out put of this method is a screenshot that doesn't make any effort at removing duplicated sections
 	 * caused by things like floating elements sticky navigation bars
@@ -299,6 +323,12 @@ public class Browser {
 		return Shutterbug.shootPage(driver, Capture.FULL_SCROLL).getImage();
 	}
 	
+	/**
+	 * Retrieves a full page screenshot using Ashot
+	 *
+	 * @return the full page screenshot
+	 * @throws IOException if an error occurs while getting the screenshot
+	 */
 	public BufferedImage getFullPageScreenshotAshot() throws IOException {
 		ru.yandex.qatools.ashot.Screenshot screenshot = new AShot().shootingStrategy(ShootingStrategies.viewportPasting(1000)).takeScreenshot(driver);
         return screenshot.getImage();
@@ -308,7 +338,7 @@ public class Browser {
 	 * Retrieves a full page screenshot using Shutterbug
 	 *
 	 * @return the full page screenshot
-	 * @throws IOException if the screenshot cannot be retrieved
+	 * @throws IOException if an error occurs while getting the screenshot
 	 *
 	 * NOTE: works best in CHROME
 	 */
@@ -322,7 +352,7 @@ public class Browser {
 	 * Gets image as a base 64 string
 	 * 
 	 * @return File png file of image
-	 * @throws IOException
+	 * @throws IOException if an error occurs while getting the screenshot
 	 */
 	@Deprecated
 	public BufferedImage getFullPageScreenshotStitched() throws IOException {
@@ -427,7 +457,7 @@ public class Browser {
 	 *
 	 * @param element the element to get a screenshot of
 	 * @return the screenshot
-	 * @throws Exception if the screenshot cannot be retrieved
+	 * @throws Exception if an error occurs while getting the screenshot
 	 */
 	public BufferedImage getElementScreenshot(WebElement element) throws Exception{
 		//calculate element position within screen
@@ -441,7 +471,7 @@ public class Browser {
 	 * @param element_state the element to get a screenshot of
 	 * @param page_screenshot the screenshot to get the element from
 	 * @return the screenshot of the element
-	 * @throws IOException if the screenshot cannot be retrieved
+	 * @throws IOException if an error occurs while getting the screenshot
 	 */
 	public static BufferedImage getElementScreenshot(ElementState element_state,
 													BufferedImage page_screenshot) throws IOException{
@@ -466,7 +496,7 @@ public class Browser {
 	 * @param element_size the size of the element
 	 * @param page_screenshot the screenshot to get the element from
 	 * @return the screenshot of the element
-	 * @throws IOException if the screenshot cannot be retrieved
+	 * @throws IOException if an error occurs while getting the screenshot
 	 */
 	public static BufferedImage getElementScreenshot(Point element_location,
 													Dimension element_size,
@@ -569,8 +599,17 @@ public class Browser {
 	 * @param xpath the xpath of the element
 	 * @param element the element to for which css styles should be loaded.
 	 *
-	 * @throws XPathExpressionException
-	 * @throws IOException
+	 * @return the css styles
+	 *
+	 * @throws XPathExpressionException if an error occurs while evaluating the xpath
+	 * @throws IOException if an error occurs while loading the css styles
+	 *
+	 * precondition: jsoup_doc != null
+	 * precondition: w3c_document != null
+	 * precondition: rule_set_list != null
+	 * precondition: url != null
+	 * precondition: xpath != null
+	 * precondition: element != null
 	 */
 	public static Map<String, String> loadPreRenderCssProperties(Document jsoup_doc,
 																org.w3c.dom.Document w3c_document,
@@ -579,10 +618,12 @@ public class Browser {
 																String xpath,
 																Element element
 	) throws XPathExpressionException, IOException {
-		
+		assert jsoup_doc != null;
 		assert w3c_document != null;
 		assert url != null;
 		assert xpath != null;
+		assert rule_set_list != null;
+		assert element != null;
 		
 		Map<String, String> css_map = new HashMap<>();
 
@@ -619,6 +660,11 @@ public class Browser {
 	 * @param xpath the xpath of the element
 	 * @return the css styles
 	 * @throws XPathExpressionException if the xpath is invalid
+	 *
+	 * precondition: w3c_document != null
+	 * precondition: map != null
+	 * precondition: url != null
+	 * precondition: xpath != null
 	 */
 	public static Map<String, String> loadCssPropertiesUsingParser(Document w3c_document,
 																	StyleMap map,
@@ -626,6 +672,7 @@ public class Browser {
 																	String xpath
     ) throws XPathExpressionException{
 		assert w3c_document != null;
+		assert map != null;
 		assert url != null;
 		assert xpath != null;
 		
@@ -662,6 +709,9 @@ public class Browser {
 	 * @param element the element to for which css styles should be loaded.
 	 *
 	 * @return the css styles
+	 *
+	 * precondition: rule_sets != null
+	 * precondition: element != null
 	 */
 	public static Map<String, String> loadCssPrerenderedPropertiesUsingParser(List<RuleSet> rule_sets, org.jsoup.nodes.Node element){
 		assert rule_sets != null;
@@ -702,8 +752,14 @@ public class Browser {
 	 * @param element the element to for which css styles should be loaded.
 	 * @param driver the driver to load the css styles from
 	 * @return the css styles
+	 *
+	 * precondition: element != null
+	 * precondition: driver != null
 	 */
 	public static Map<String, String> loadCssProperties(WebElement element, WebDriver driver){
+		assert element != null;
+		assert driver != null;
+		
 		JavascriptExecutor executor = (JavascriptExecutor)driver;
 		String script = "var s = '';" +
 						"var o = getComputedStyle(arguments[0]);" +
@@ -739,9 +795,13 @@ public class Browser {
 	 * SO WILL THE TIME IN AT LEAST A LINEAR FASHION. THIS LIST CURRENTLY TAKES ABOUT .4 SECONDS TO CHECK ENTIRE LIST OF 13 CSS ATTRIBUTE TYPES
 	 * @param element the element to for which css styles should be loaded.
 	 * @return the css styles
+	 *
+	 * precondition: element != null
 	 */
 	@Deprecated
 	public static Map<String, String> loadCssProperties(WebElement element){
+		assert element != null;
+		
 		Map<String, String> css_map = new HashMap<String, String>();
 		css_map.put("color", element.getCssValue("color"));
 		
@@ -798,8 +858,12 @@ public class Browser {
 	 * SO WILL THE TIME IN AT LEAST A LINEAR FASHION. THIS LIST CURRENTLY TAKES ABOUT .4 SECONDS TO CHECK ENTIRE LIST OF 13 CSS ATTRIBUTE TYPES
 	 * @param element the element to for which css styles should be loaded.
 	 * @return the css styles
+	 *
+	 * precondition: element != null
 	 */
 	public static Map<String, String> loadTextCssProperties(WebElement element){
+		assert element != null;
+		
 		String[] cssList = {"font-family", "font-size", "text-decoration-color", "text-emphasis-color"};
 		Map<String, String> css_map = new HashMap<String, String>();
 		
@@ -813,8 +877,20 @@ public class Browser {
 		return css_map;
 	}
 		
-	public void scrollToElement(String xpath, WebElement elem) 
+	/**
+	 * Scrolls to an element
+	 *
+	 * @param xpath the xpath of the element to scroll to
+	 * @param elem the element to scroll to.
+	 *
+	 * precondition: xpath != null
+	 * precondition: elem != null
+	 */
+	public void scrollToElement(String xpath, WebElement elem)
     {
+		assert xpath != null;
+		assert elem != null;
+		
 		if(xpath.contains("nav") || xpath.startsWith("//body/header")) {
 			scrollToTopOfPage();
 			return;
@@ -829,11 +905,16 @@ public class Browser {
     }
 	
 	/**
-	 * 
-	 * @param element
+	 * Scrolls to an element
+	 *
+	 * @param element the element to scroll to
+	 *
+	 * precondition: element != null
 	 */
-	public void scrollToElement(WebElement element) 
+	public void scrollToElement(WebElement element)
     {
+		assert element != null;
+		
 		((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", element);
 		//long pause_time = Math.abs(this.getYScrollOffset() - element.getLocation().getY())/10;
 		//TimingUtils.pauseThread(pause_time);
@@ -843,9 +924,13 @@ public class Browser {
 	/**
 	 * Removes element from browser DOM
 	 * 
-	 * @param class_name
+	 * @param class_name the class name of the element to remove
+	 *
+	 * precondition: class_name != null
 	 */
 	public void removeElement(String class_name) {
+		assert class_name != null;
+		
 		JavascriptExecutor js;
 		if (this.getDriver() instanceof JavascriptExecutor) {
 			js = (JavascriptExecutor) driver;
@@ -855,9 +940,11 @@ public class Browser {
 	
 	/**
 	 * Extract all attributes from a given {@link WebElement}
-	 * 
+	 *
 	 * @param element {@link WebElement} to have attributes loaded for
-	 * @return
+	 * @return the attributes
+	 *
+	 * precondition: element != null
 	 */
 	@SuppressWarnings("unchecked")
 	public Map<String, String> extractAttributes(WebElement element) {
@@ -914,7 +1001,6 @@ public class Browser {
 			y_offset = Integer.parseInt(coord[1]);
 		}
 
-		
 		this.setXScrollOffset(x_offset);
 		this.setYScrollOffset(y_offset);
 		
@@ -926,8 +1012,12 @@ public class Browser {
 	 *
 	 * @param element {@link WebElement}
 	 * @return {@link Point} coordinates
+	 *
+	 * precondition: element != null
 	 */
 	public static Point getLocationInViewport(ElementState element, int x_offset, int y_offset) {
+		assert element != null;
+		
 		int y_coord = element.getYLocation() - y_offset;
 		int x_coord = element.getXLocation() - x_offset;
 

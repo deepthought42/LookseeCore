@@ -35,11 +35,11 @@ public interface UXIssueMessageRepository extends Neo4jRepository<UXIssueMessage
 	/**
 	 * Finds a good example for a UX issue message
 	 *
-	 * @param id the ID of the UX issue message
+	 * @param issue_id the ID of the UX issue message
 	 * @return the element
 	 */
-	@Query("MATCH (uim:UXIssueMessage)-[:EXAMPLE]->(e:ElementState) WHERE id(uim)=$id RETURN e")
-	public ElementState getGoodExample(@Param("id") long issue_id);
+	@Query("MATCH (uim:UXIssueMessage)-[:EXAMPLE]->(e:ElementState) WHERE id(uim)=$issue_id RETURN e")
+	public ElementState getGoodExample(@Param("issue_id") long issue_id);
 
 	/**
 	 * Adds an element to a UX issue message

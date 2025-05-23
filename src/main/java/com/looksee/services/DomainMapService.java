@@ -10,10 +10,12 @@ import com.looksee.models.journeys.DomainMap;
 import com.looksee.models.repository.DomainMapRepository;
 
 import io.github.resilience4j.retry.annotation.Retry;
+import lombok.NoArgsConstructor;
 
 /**
  * Contains business logic for interacting with and managing domain maps
  */
+@NoArgsConstructor
 @Service
 @Retry(name = "neoforj")
 public class DomainMapService {

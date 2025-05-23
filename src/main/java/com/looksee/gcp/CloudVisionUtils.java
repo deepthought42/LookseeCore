@@ -41,9 +41,12 @@ import com.looksee.models.LatLng;
 import com.looksee.models.Logo;
 import com.looksee.utils.ImageUtils;
 
+import lombok.NoArgsConstructor;
+
 /**
  * Utility class for analyzing images using the Google Cloud Vision API.
  */
+@NoArgsConstructor
 public class CloudVisionUtils {
 	private static Logger log = LoggerFactory.getLogger(CloudVisionUtils.class);
 	

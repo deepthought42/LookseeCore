@@ -19,9 +19,12 @@ import com.looksee.models.enums.AuditCategory;
 import com.looksee.models.enums.AuditName;
 import com.looksee.models.enums.AuditSubcategory;
 
+import lombok.NoArgsConstructor;
+
 /**
  * Utility class for auditing
  */
+@NoArgsConstructor
 public class AuditUtils {
 	@SuppressWarnings("unused")
 	private static Logger log = LoggerFactory.getLogger(AuditUtils.class.getName());
@@ -75,78 +78,78 @@ public class AuditUtils {
 		double interactivity_score = 0;
 		int interactivity_count = 0;
 		
-    	for(Audit audit: audits) {
-    		if(audit.getTotalPossiblePoints() == 0) {
-    			continue;
-    		}
-    		
-    		if(AuditCategory.CONTENT.equals(audit.getCategory())) {
-    			content_score += (audit.getPoints()/(double)audit.getTotalPossiblePoints());
-    			content_count++;
-    		}
-    		else if(AuditCategory.INFORMATION_ARCHITECTURE.equals(audit.getCategory())) {
-    			info_architecture_score += (audit.getPoints()/(double)audit.getTotalPossiblePoints());
-    			info_architecture_count++;
-    		}
-    		else if(AuditCategory.AESTHETICS.equals(audit.getCategory())) {
-    			aesthetic_score += (audit.getPoints()/(double)audit.getTotalPossiblePoints());
-    			aesthetic_count++;
-    		}
-    	}
-    	
-    	if(content_count > 0) {
-    		content_score = ( content_score / (double)content_count ) * 100;
-    	}
-    	else {
-    		content_score = -1;
-    	}
-    	
-    	if(info_architecture_count > 0) {
-    		info_architecture_score = ( info_architecture_score / (double)info_architecture_count ) * 100;
-    	}
-    	else {
-    		info_architecture_score = -1;
-    	}
-    	
-    	if(aesthetic_count > 0) {
-    		aesthetic_score = ( aesthetic_score / (double)aesthetic_count ) * 100;
-    	}
-    	else {
-    		aesthetic_score = -1;
-    	}
-    	
-    	double readability = extractLabelScore(audits, "readability");
-    	double spelling_grammar = extractLabelScore(audits, "spelling");
-    	double image_quality = extractLabelScore(audits, "images");
-    	double alt_text = extractLabelScore(audits, "alt_text");
-    	double links = extractLabelScore(audits, "links");
-    	double metadata = extractLabelScore(audits, "metadata");
-    	double seo = extractLabelScore(audits, "seo");
-    	double security = extractLabelScore(audits, "security");
-    	double color_contrast = extractLabelScore(audits, "color contrast");
-    	double text_contrast = AuditUtils.calculateScoreByName(audits, AuditName.TEXT_BACKGROUND_CONTRAST);
-    	double non_text_contrast = AuditUtils.calculateScoreByName(audits, AuditName.NON_TEXT_BACKGROUND_CONTRAST);
-    	double whitespace = extractLabelScore(audits, "whitespace");
-    	double accessibility = extractLabelScore(audits, "accessibility");
-    	
-    	return new AuditScore(content_score,
-    							readability,
-    							spelling_grammar,
-    							image_quality,
-    							alt_text,
-    							info_architecture_score,
-    							links,
-    							metadata,
-    							seo,
-    							security,
-    							aesthetic_score,
-    							color_contrast,
-    							whitespace,
-    							interactivity_score,
-    							accessibility,
-    							text_contrast,
-    							non_text_contrast);
-    	
+		for(Audit audit: audits) {
+			if(audit.getTotalPossiblePoints() == 0) {
+				continue;
+			}
+			
+			if(AuditCategory.CONTENT.equals(audit.getCategory())) {
+				content_score += (audit.getPoints()/(double)audit.getTotalPossiblePoints());
+				content_count++;
+			}
+			else if(AuditCategory.INFORMATION_ARCHITECTURE.equals(audit.getCategory())) {
+				info_architecture_score += (audit.getPoints()/(double)audit.getTotalPossiblePoints());
+				info_architecture_count++;
+			}
+			else if(AuditCategory.AESTHETICS.equals(audit.getCategory())) {
+				aesthetic_score += (audit.getPoints()/(double)audit.getTotalPossiblePoints());
+				aesthetic_count++;
+			}
+		}
+		
+		if(content_count > 0) {
+			content_score = ( content_score / (double)content_count ) * 100;
+		}
+		else {
+			content_score = -1;
+		}
+		
+		if(info_architecture_count > 0) {
+			info_architecture_score = ( info_architecture_score / (double)info_architecture_count ) * 100;
+		}
+		else {
+			info_architecture_score = -1;
+		}
+		
+		if(aesthetic_count > 0) {
+			aesthetic_score = ( aesthetic_score / (double)aesthetic_count ) * 100;
+		}
+		else {
+			aesthetic_score = -1;
+		}
+		
+		double readability = extractLabelScore(audits, "readability");
+		double spelling_grammar = extractLabelScore(audits, "spelling");
+		double image_quality = extractLabelScore(audits, "images");
+		double alt_text = extractLabelScore(audits, "alt_text");
+		double links = extractLabelScore(audits, "links");
+		double metadata = extractLabelScore(audits, "metadata");
+		double seo = extractLabelScore(audits, "seo");
+		double security = extractLabelScore(audits, "security");
+		double color_contrast = extractLabelScore(audits, "color contrast");
+		double text_contrast = AuditUtils.calculateScoreByName(audits, AuditName.TEXT_BACKGROUND_CONTRAST);
+		double non_text_contrast = AuditUtils.calculateScoreByName(audits, AuditName.NON_TEXT_BACKGROUND_CONTRAST);
+		double whitespace = extractLabelScore(audits, "whitespace");
+		double accessibility = extractLabelScore(audits, "accessibility");
+		
+		return new AuditScore(content_score,
+								readability,
+								spelling_grammar,
+								image_quality,
+								alt_text,
+								info_architecture_score,
+								links,
+								metadata,
+								seo,
+								security,
+								aesthetic_score,
+								color_contrast,
+								whitespace,
+								interactivity_score,
+								accessibility,
+								text_contrast,
+								non_text_contrast);
+		
 	}
 
 	/**
@@ -164,20 +167,20 @@ public class AuditUtils {
 		
 		double score = 0.0;
 		int count = 0;
-    	for(Audit audit: audits) {
-    		for(UXIssueMessage msg: audit.getMessages()) {
-    			if(msg.getLabels().contains(label)) {
-    				count++;
-    				score += (msg.getPoints() / (double)msg.getMaxPoints());
-       			}
-    		}
-    	}
-    	
-    	if(count <= 0) {
-    		return 0.0;
-    	}
-    	
-    	return score / (double)count;
+		for(Audit audit: audits) {
+			for(UXIssueMessage msg: audit.getMessages()) {
+				if(msg.getLabels().contains(label)) {
+					count++;
+					score += (msg.getPoints() / (double)msg.getMaxPoints());
+				}
+			}
+		}
+		
+		if(count <= 0) {
+			return 0.0;
+		}
+		
+		return score / (double)count;
 	}
 
 	/**
@@ -264,10 +267,10 @@ public class AuditUtils {
 	/**
 	 * Calculate the score for all audits that have the given subcategory
 	 *
-	 * @param audits
-	 * @param subcategory
+	 * @param audits the set of {@link Audit} to calculate the score for
+	 * @param subcategory the subcategory to calculate the score for
 	 *
-	 * @return
+	 * @return the score
 	 *
 	 * precondition: audits != null
 	 * precondition: subcategory != null
@@ -327,9 +330,12 @@ public class AuditUtils {
 	/**
 	 * Calculates percentage score based on audits with the given name
 	 *
-	 * @param audits
-	 * @param name
-	 * @return
+	 * @param audits the set of {@link Audit} to calculate the score for
+	 * @param name the name of the audit to calculate the score for
+	 * @return the score
+	 *
+	 * precondition: audits != null
+	 * precondition: name != null
 	 */
 	public static double calculateScoreByName(Set<Audit> audits, AuditName name) {
 		assert audits != null;
@@ -338,12 +344,12 @@ public class AuditUtils {
 		//int audit_cnt = 0;
 	
 		List<Audit> filtered_audits = audits.parallelStream()
-				  .filter((s) -> (s.getTotalPossiblePoints() > 0 && name.equals(s.getName())))
-			      .collect(Collectors.toList());
+					.filter((s) -> (s.getTotalPossiblePoints() > 0 && name.equals(s.getName())))
+					.collect(Collectors.toList());
 		
 		double scores_total = filtered_audits.parallelStream()
-				   .mapToDouble(x -> { return x.getPoints() / (double)x.getTotalPossiblePoints(); })
-				   .sum();
+					.mapToDouble(x -> { return x.getPoints() / (double)x.getTotalPossiblePoints(); })
+					.sum();
 
 		if(filtered_audits.isEmpty()) {
 			return -1.0;
@@ -357,10 +363,14 @@ public class AuditUtils {
 	/**
 	 * Calculates percentage of failing large text items
 	 * 
-	 * @param audits
-	 * @return
+	 * @param audits the set of {@link Audit} to calculate the percentage of passing large text items for
+	 * @return the percentage of passing large text items
+	 *
+	 * precondition: audits != null
 	 */
 	public static double getPercentPassingLargeTextItems(Set<Audit> audits) {
+		assert audits != null;
+		
 		int count_large_text_items = 0;
 		int failing_large_text_items = 0;
 		

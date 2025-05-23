@@ -65,12 +65,14 @@ import com.looksee.utils.BrowserUtils;
 import com.looksee.utils.ElementStateUtils;
 import com.looksee.utils.ImageUtils;
 
+import lombok.NoArgsConstructor;
 import us.codecraft.xsoup.Xsoup;
 
 /**
  * A collection of methods for interacting with the {@link Browser} session object
  *
  */
+@NoArgsConstructor
 @Service
 public class BrowserService {
 	private static Logger log = LoggerFactory.getLogger(BrowserService.class);
@@ -124,8 +126,8 @@ public class BrowserService {
 	 * precondition: screenshot != null
 	 *
 	 * @return {@link ElementState} based on {@link WebElement} and other params
-	 * @throws IOException
-	 * @throws MalformedURLException
+	 * @throws IOException if an error occurs while reading the screenshot
+	 * @throws MalformedURLException if the url is malformed
 	 */
 	public static ElementState buildElementState(
 			String xpath,
@@ -257,8 +259,12 @@ public class BrowserService {
 	/**
 	 * Generalizes HTML source by removing comments along with script, link, style, and iframe tags.
 	 * Also removes attributes. The goal of this method is to strip out any dynamic data that could cause problems
-	 * @param src
-	 * @return
+	 *
+	 * @param src the html string to generalize
+	 *
+	 * @return the generalized html string
+	 *
+	 * precondition: src != null
 	 */
 	public static String generalizeSrc(String src) {
 		assert src != null;
@@ -305,11 +311,15 @@ public class BrowserService {
 	/**
 	 * Removes HTML comments from html string
 	 *
-	 * @param html
+	 * @param html the html string to remove comments from
 	 *
 	 * @return html string without comments
+	 *
+	 * precondition: html != null
 	 */
 	public static String removeComments(String html) {
+		assert html != null;
+		
 		return Pattern.compile("<!--.*?-->").matcher(html).replaceAll("");
     }
 	
@@ -432,10 +442,10 @@ public class BrowserService {
 	 * @param xpaths the xpaths
 	 * @param browser the {@link Browser}
 	 *
-	 * @return List of {@link ElementState}s
+	 * @return {@link List list} of {@link ElementState element states}
 	 *
-	 * @throws Exception
-	 * @throws XPathExpressionException
+	 * @throws Exception if an error occurs while getting the element states
+	 * @throws XPathExpressionException if an error occurs while evaluating the xpath
 	 *
 	 * precondition: xpaths != null
 	 * precondition: browser != null
@@ -544,21 +554,14 @@ public class BrowserService {
 
 	/**
 	 * Checks if element tag is 'img'
-	 * @param web_element
-	 * @return
+	 * @param web_element the web element to check
+	 * @return true if the element tag is 'img', otherwise false
+	 *
+	 * precondition: web_element != null
 	 */
 	@Deprecated
 	private boolean isImageElement(WebElement web_element) {
 		return web_element.getTagName().equalsIgnoreCase("img");
-	}
-
-	/**
-	 * Checks if element tag is 'img'
-	 * @param web_element
-	 * @return
-	 */
-	private boolean isImageElement(String tag_name) {
-		return "img".equalsIgnoreCase(tag_name);
 	}
 
 	/** MESSAGE GENERATION METHODS **/
@@ -631,46 +634,6 @@ public class BrowserService {
 	private String generateDataExtractionMessage() {
 		int random_idx = (int) (Math.random() * (data_extraction_messages.length-1));
 		return data_extraction_messages[random_idx];
-	}
-
-	/** MESSAGE GENERATION METHODS **/
-	
-	/**
-	 * Retrieves transparency value from rgba string
-	 * @param css_value
-	 * @return
-	 */
-	private boolean hasTransparency(String css_value) {
-		assert css_value != null;
-		assert !css_value.isEmpty();
-		
-		assert css_value.startsWith("rgba(");
-		if(css_value.startsWith("rgb(")) {
-			return false;
-		}
-		
-		css_value = css_value.replace("rgba(", "");
-		css_value = css_value.replace(")", "");
-		String[] rgba = css_value.split(",");
-		double transparency_value = Double.parseDouble(rgba[3].trim());
-
-		return transparency_value < 1.0;
-	}
-
-	/**
-	 * Checks if {@link Element element} is a part of a slideshow container
-	 * 
-	 * @param element
-	 * @return
-	 */
-	private static boolean isSliderElement(Element element) {
-		for(org.jsoup.nodes.Attribute attr : element.attributes()) {
-			if(attr.getValue().toLowerCase().contains("slider") || attr.getKey().toLowerCase().contains("slider")) {
-				return true;
-			}
-		}
-		
-		return false;
 	}
 
 	/**
@@ -1028,6 +991,12 @@ public class BrowserService {
 		return elem.findElement(By.xpath(".."));
 	}
 
+	/**
+	 * Cleans attribute values
+	 *
+	 * @param attribute_values_string the attribute values string
+	 * @return the cleaned attribute values string
+	 */
 	public static String cleanAttributeValues(String attribute_values_string) {
 		String escaped = attribute_values_string.replaceAll("[\\t\\n\\r]+"," ");
 		escaped = escaped.trim().replaceAll("\\s+", " ");
@@ -1102,7 +1071,17 @@ public class BrowserService {
 	/**
 	 * generates a unique xpath for this element.
 	 *
+	 * @param element the element to generate an xpath for
+	 * @param doc the document to use
+	 * @param attributes the attributes to use
+	 * @param xpath_cnt the xpath count
+	 *
 	 * @return an xpath that identifies this element uniquely
+	 *
+	 * precondition: element != null
+	 * precondition: doc != null
+	 * precondition: attributes != null
+	 * precondition: xpath_cnt != null
 	 */
 	@Deprecated
 	public static String generateXpathUsingJsoup(Element element,
@@ -1210,6 +1189,11 @@ public class BrowserService {
 		return css_selector;
 	}
 
+	/**
+	 * Transforms an xpath selector to a css selector
+	 * @param xpath_selector the xpath selector to transform
+	 * @return the css selector
+	 */
 	public static String transformXpathSelectorToCss(String xpath_selector) {
 		String selector = "";
 		
@@ -1218,21 +1202,28 @@ public class BrowserService {
         Pattern pattern_index = Pattern.compile(pattern_string);
         Matcher matcher = pattern_index.matcher(xpath_selector);
         if(matcher.find()) {
-        	String match = matcher.group(1);
-        	match = match.replace("[", "");
-        	match = match.replace("]", "");
-        	int element_index = Integer.parseInt(match);
-        	selector = xpath_selector.replaceAll(pattern_string, "");
+			String match = matcher.group(1);
+			match = match.replace("[", "");
+			match = match.replace("]", "");
+			int element_index = Integer.parseInt(match);
+			selector = xpath_selector.replaceAll(pattern_string, "");
 
 			selector += ":nth-child(" + element_index + ")";
         }
         else {
-        	selector = xpath_selector;
+			selector = xpath_selector;
         }
         
 		return selector.trim();
 	}
 
+	/**
+	 * Removes auto-generated values from a string
+	 * @param trimmed_values the string to remove auto-generated values from
+	 * @return the string with auto-generated values removed
+	 *
+	 * precondition: trimmed_values != null
+	 */
 	private static String removeAutoGeneratedValues(String trimmed_values) {
 		String[] values = trimmed_values.split(" ");
 		List<String> reduced_vals = new ArrayList<>();
@@ -1245,6 +1236,13 @@ public class BrowserService {
 		return String.join(" ", reduced_vals);
 	}
 
+	/**
+	 * Checks if a value is auto-generated
+	 * @param val the value to check
+	 * @return true if the value is auto-generated, otherwise false
+	 *
+	 * precondition: val != null
+	 */
 	private static boolean isAutoGenerated(String val) {
 		//check if value ends in a number
 		return val.length() > 0 && Character.isDigit(val.charAt(val.length()-1));
@@ -1327,7 +1325,14 @@ public class BrowserService {
 		return xpath;
 	}
 	
-
+	/**
+	 * Finds templates in a list of elements
+	 *
+	 * @param element_list the list of elements to find templates in
+	 * @return the map of templates
+	 *
+	 * precondition: element_list != null
+	 */
 	public Map<String, Template> findTemplates(List<com.looksee.models.Element> element_list){
 		//create a map for the various duplicate elements
 		Map<String, Template> element_templates = new HashMap<>();
@@ -1456,8 +1461,13 @@ public class BrowserService {
 		return html_doc.html();
 	}
 	
-	
-
+	/**
+	 * Reduces a list of templates to a list of parent templates
+	 * @param list_elements_list the list of templates to reduce
+	 * @return the reduced list of templates
+	 *
+	 * precondition: list_elements_list != null
+	 */
 	public Map<String, Template> reduceTemplatesToParents(Map<String, Template> list_elements_list) {
 		Map<String, Template> element_map = new HashMap<>();
 		List<Template> template_list = new ArrayList<>(list_elements_list.values());
@@ -1547,19 +1557,37 @@ public class BrowserService {
 		else if( (molecule_cnt == 1 && atom_cnt > 0 || molecule_cnt > 1 || organism_cnt > 0) && template_cnt == 0){
 			return TemplateType.ORGANISM;
 		}
-		else if(isTopLevelElement()){
+		else if(isTopLevelElement(root_element)){
 			return TemplateType.TEMPLATE;
 		}
 		return TemplateType.UNKNOWN;
 
 	}
 
-	private boolean isTopLevelElement() {
-
-		// TODO Auto-generated method stub
+	/**
+	 * Tests if the element is a top level element
+	 *
+	 * @param element the element to test
+	 * @return true if the element is a top level element, false otherwise
+	 *
+	 * precondition: element != null
+	 */
+	private boolean isTopLevelElement(Element element) {
+		assert element != null;
+		
+		Element parent = element.parent();
+		if(parent == null) {
+			return true;
+		}
 		return false;
 	}
 	
+	/**
+	 * Tests if the list of keys contains the string "elementstate"
+	 *
+	 * @param keys the list of keys to test
+	 * @return true if the list of keys contains the string "elementstate", false otherwise
+	 */
 	public static boolean testContainsElement(List<String> keys) {
 		for(String key : keys) {
 			if(key.contains("elementstate")) {
@@ -1713,13 +1741,22 @@ public class BrowserService {
 		return xpath;
 	}
 
+	/**
+	 * Extracts the body from a source code
+	 * @param src the source code to extract the body from
+	 * @return the body
+	 *
+	 * precondition: src != null
+	 */
 	public static String extractBody(String src) {
+		assert src != null;
+		
 		String patternString = "<body[^\\>]*>([\\s\\S]*)<\\/body>";
 
         Pattern pattern = Pattern.compile(patternString);
         Matcher matcher = pattern.matcher(src);
         if(matcher.find()) {
-        	return matcher.group();
+			return matcher.group();
         }
         return "";
 	}
@@ -1739,6 +1776,11 @@ public class BrowserService {
 		}
 	}
 
+	/**
+	 * Extracts metadata from a document
+	 * @param html_doc the document to extract metadata from
+	 * @return a set of metadata
+	 */
 	public static Set<String> extractMetadata(Document html_doc) {
 		Elements meta_tags = html_doc.getElementsByTag("meta");
 		Set<String> meta_tag_html = new HashSet<String>();
@@ -1749,6 +1791,11 @@ public class BrowserService {
 		return meta_tag_html;
 	}
 
+	/**
+	 * Extracts stylesheets from a document
+	 * @param html_doc the document to extract stylesheets from
+	 * @return a set of stylesheet urls
+	 */
 	public static Set<String> extractStylesheets(Document html_doc) {
 		Elements link_tags = html_doc.getElementsByTag("link");
 		Set<String> stylesheet_urls = new HashSet<String>();
@@ -1759,7 +1806,16 @@ public class BrowserService {
 		return stylesheet_urls;
 	}
 
+	/**
+	 * Extracts script urls from a document
+	 * @param html_doc the document to extract script urls from
+	 * @return a set of script urls
+	 *
+	 * precondition: html_doc != null
+	 */
 	public static Set<String> extractScriptUrls(Document html_doc) {
+		assert html_doc != null;
+		
 		Elements script_tags = html_doc.getElementsByTag("script");
 		Set<String> script_urls = new HashSet<String>();
 		
@@ -1772,6 +1828,13 @@ public class BrowserService {
 		return script_urls;
 	}
 
+	/**
+	 * Extracts icon links from a document
+	 * @param html_doc the document to extract icon links from
+	 * @return a set of icon urls
+	 *
+	 * precondition: html_doc != null
+	 */
 	public static Set<String> extractIconLinks(Document html_doc) {
 		Elements icon_tags = html_doc.getElementsByTag("link");
 		Set<String> icon_urls = new HashSet<String>();
@@ -1783,39 +1846,34 @@ public class BrowserService {
 		}
 		return icon_urls;
 	}
-	
-	
-	private static String calculateSha256(String value) {
-		return org.apache.commons.codec.digest.DigestUtils.sha256Hex(value);
-	}
 
 	/**
 	 * Enrich element states with ML applied labels
-	 * 
-	 * @param element_states
-	 * @param page_state
-	 * @param browser
-	 * @param host
-	 * @return
-	 * @throws MalformedURLException
-	 * @throws IOException
+	 *
+	 * @param element_states the list of element states
+	 * @param page_state the page state
+	 * @param browser the browser
+	 * @param host the host
+	 * @return the enriched element states
+	 * @throws MalformedURLException if the url is malformed
+	 * @throws IOException if an error occurs while extracting the screenshot
+	 *
+	 * precondition: element_states != null
+	 * precondition: page_state != null
+	 * precondition: browser != null
+	 * precondition: host != null
 	 */
-	/**
-	 * Enrich element states with ML applied labels
-	 * 
-	 * @param element_states
-	 * @param page_state
-	 * @param browser
-	 * @param host
-	 * @return
-	 * @throws MalformedURLException
-	 * @throws IOException
-	 */
-	public List<ElementState> enrichElementStates(List<ElementState> element_states, 
-													PageState page_state, 
-													Browser browser, 
-													String host) throws MalformedURLException, IOException 
+	
+	public List<ElementState> enrichElementStates(List<ElementState> element_states,
+													PageState page_state,
+													Browser browser,
+													String host) throws MalformedURLException, IOException
 	{
+		assert element_states != null;
+		assert page_state != null;
+		assert browser != null;
+		assert host != null;
+		
 		BufferedImage full_page_screenshot = ImageIO.read(new URL(page_state.getFullPageScreenshotUrl()));
 
 		/*
@@ -1843,21 +1901,33 @@ public class BrowserService {
 	
 	
 	/*
-	 * 
-	 * @param browser
-	 * @param web_element
-	 * @param element_state
-	 * @param page_screenshot
-	 * @param host
-	 * @return
-	 * @throws IOException
+	 * Enrich an element state with screenshot, rendered css values, and attributes
+	 * @param browser the browser
+	 * @param web_element the web element
+	 * @param element_state the element state
+	 * @param page_screenshot the page screenshot
+	 * @param host the host
+	 * @return the enriched element state
+	 * @throws IOException if an error occurs while extracting the screenshot
+	 *
+	 * precondition: browser != null
+	 * precondition: web_element != null
+	 * precondition: element_state != null
+	 * precondition: page_screenshot != null
+	 * precondition: host != null
 	 */
-	public ElementState enrichElementState(Browser browser, 
-											WebElement web_element, 
-											ElementState element_state, 
-											BufferedImage page_screenshot, 
+	public ElementState enrichElementState(Browser browser,
+											WebElement web_element,
+											ElementState element_state,
+											BufferedImage page_screenshot,
 											String host) throws IOException
 	{
+		assert browser != null;
+		assert web_element != null;
+		assert element_state != null;
+		assert page_screenshot != null;
+		assert host != null;
+		
 		if(element_state.getYLocation() < browser.getYScrollOffset()) {
 			browser.scrollToElement(web_element);
 		}
@@ -1885,7 +1955,6 @@ public class BrowserService {
 			}
 			catch(Exception e1){
 				log.warn("Exception occurred while extracting screenshot from full page screenshot");
-				//e1.printStackTrace();
 			}
 		}
 		else {
@@ -1900,17 +1969,7 @@ public class BrowserService {
 																		BrowserType.create(browser.getBrowserName()));
 				element_screenshot.flush();
 			}
-			catch(Exception e1){
-				/* 
-					log.warn("execption occurred capturing element screenshot at "+web_element);
-					log.warn("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-					log.warn("element location = "+element.getXLocation()+" , "+element.getYLocation());
-					log.warn("element size = "+element.getWidth()+" , "+element.getHeight());
-					log.warn("viewport size = "+browser.getViewportSize().getWidth()+" , "+browser.getViewportSize().getHeight());
-					log.warn("viewport offsets = "+browser.getXScrollOffset()+" , "+browser.getYScrollOffset());
-					log.warn("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-				*/
-			}
+			catch(Exception e1){}
 		}
 
 		element_state.setScreenshotUrl(element_screenshot_url);
@@ -1932,6 +1991,11 @@ public class BrowserService {
 	 * is not an image element
 	 *
 	 * precondition: element_state != null
+	 * precondition: page_state != null
+	 * precondition: browser != null
+	 * precondition: host != null
+	 * precondition: element_state is an instance of ImageElementState
+	 * precondition: element_state.getScreenshotUrl() is not empty
 	 */
 	public ElementState enrichImageElement(ElementState element_state,
 											PageState page_state,

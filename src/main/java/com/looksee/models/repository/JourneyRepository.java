@@ -28,7 +28,7 @@ public interface JourneyRepository extends Neo4jRepository<Journey, Long>  {
 	 * @return the journey
 	 */
 	@Query("MATCH (j:Journey) WITH j MATCH (s:Step) WHERE id(s)=$step_id AND id(j)=$journey_id MERGE (j)-[:HAS]->(s) RETURN j")
-	public Journey addStep(@Param("journey_id") long journey_id, @Param("step_id") long id);
+	public Journey addStep(@Param("journey_id") long journey_id, @Param("step_id") long step_id);
 
 	/**
 	 * Finds a journey by its candidate key

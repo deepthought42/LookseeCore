@@ -38,10 +38,13 @@ import com.looksee.models.ElementState;
 import com.looksee.models.ImageElementState;
 import com.looksee.models.PageState;
 
+import lombok.NoArgsConstructor;
+
 
 /**
  * Contains utility methods for browser operations
  */
+@NoArgsConstructor
 public class BrowserUtils {
 	private static Logger log = LoggerFactory.getLogger(BrowserUtils.class);
 	
@@ -156,7 +159,7 @@ public class BrowserUtils {
 	 * @return true if the host of a url changes, otherwise false
 	 *
 	 * precondition: urls != null
-	 * @throws MalformedURLException
+	 * @throws MalformedURLException if the url is malformed
 	 */
 	public static boolean doesHostChange(List<String> urls) throws MalformedURLException {
 		assert urls != null;
@@ -176,7 +179,7 @@ public class BrowserUtils {
 	 * Checks if url is part of domain including sub-domains
 	 *
 	 * @param domain_host host of {@link Domain domain}
-	 * @param url
+	 * @param url the url to check
 	 *
 	 * @return true if url is external, otherwise false
 	 *
@@ -258,6 +261,7 @@ public class BrowserUtils {
 	 * @param domain_host the domain host
 	 * @param new_host the new host
 	 * @return true if the new host is a subdomain of the domain host, otherwise false
+	 * @throws URISyntaxException
 	 *
 	 * precondition: domain_host != null
 	 * precondition: new_host != null
@@ -391,6 +395,7 @@ public class BrowserUtils {
 	 * Checks if a url exists
 	 * @param url the url to check
 	 * @return true if the url exists, otherwise false
+	 * @throws Exception
 	 *
 	 * precondition: url != null
 	 */
@@ -578,9 +583,13 @@ public class BrowserUtils {
 	
 	/**
 	 * Extracts css property declarations from a css string
-	 * @param prop
-	 * @param css
-	 * @return
+	 *
+	 * @param prop the property to extract
+	 * @param css the css string to extract the property from
+	 * @return {@link List list} of css property declarations
+	 *
+	 * precondition: prop != null
+	 * precondition: css != null
 	 */
 	public static List<String> extractCssPropertyDeclarations(String prop, String css) {
 		assert prop != null;
@@ -670,17 +679,26 @@ public class BrowserUtils {
 				|| font_weight.contentEquals("900");
 	}
 
-	public static String getPageUrl(URL sanitized_url) {
-		String path = sanitized_url.getPath();
+	/**
+	 * Gets the page url from a sanitized url
+	 * @param sanitizedUrl the sanitized url to get the page url from
+	 * @return the page url
+	 *
+	 * precondition: sanitizedUrl != null
+	 */
+	public static String getPageUrl(URL sanitizedUrl) {
+		assert sanitizedUrl != null;
+
+		String path = sanitizedUrl.getPath();
 		path = path.replace("index.html", "");
 		path = path.replace("index.htm", "");
 		
 		if("/".contentEquals(path.trim())) {
 			path = "";
 		}
-		String page_url = sanitized_url.getHost() + path;
+		String pageUrl = sanitizedUrl.getHost() + path;
 		
-		return page_url.replace("www.", "");
+		return pageUrl.replace("www.", "");
 	}
 
 	/**
@@ -781,9 +799,13 @@ public class BrowserUtils {
 	 * @param url the {@link URL}
 	 * @return true if the server has certificates, false otherwise
 	 *
-	 * @throws MalformedURLException
+	 * @throws MalformedURLException if the url is malformed
+	 *
+	 * precondition: url != null
 	 */
 	public static boolean checkIfSecure(URL url) throws MalformedURLException {
+		assert url != null;
+		
         boolean is_secure = false;
         
         if(url.getProtocol().contentEquals("http")) {
@@ -1015,8 +1037,8 @@ public class BrowserUtils {
 	 * @return {@code boolean} True if valid, false if invalid
 	 */
 	public static boolean isValidLink(String href_str){
-		if(href_str == null 
-				|| href_str.isEmpty() 
+		if(href_str == null
+				|| href_str.isEmpty()
 				|| BrowserUtils.isJavascript(href_str)
 				|| href_str.startsWith("itms-apps:")
 				|| href_str.startsWith("snap:")
@@ -1032,10 +1054,10 @@ public class BrowserUtils {
 
 	/**
 	 * Check if the sanitized url returns a valid http status code.
-	 * 
-	 * @param sanitized_url
+	 *
+	 * @param sanitized_url the sanitized url
 	 * @return {@code boolean} True if valid, false if page is not found.
-	 * 
+	 *
 	 * precondition: sanitized_url != null
 	 */
 	public static boolean hasValidHttpStatus(URL sanitized_url){

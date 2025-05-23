@@ -33,7 +33,11 @@ public interface DomainRepository extends Neo4jRepository<Domain, Long> {
 	 * Finds a domain by its key
 	 *
 	 * @param key the key of the domain
+	 * @param username the username of the user
 	 * @return the domain
+	 *
+	 * precondition: key != null
+	 * precondition: username != null
 	 */
 	@Query("MATCH (a:Account{username:$username})-[:HAS_DOMAIN]->(d:Domain{key:$key}) RETURN d LIMIT 1")
 	public Domain findByKey(@Param("key") String key, @Param("username") String username);
@@ -44,6 +48,9 @@ public interface DomainRepository extends Neo4jRepository<Domain, Long> {
 	 * @param host the host of the domain
 	 * @param username the username of the user
 	 * @return the domain
+	 *
+	 * precondition: host != null
+	 * precondition: username != null
 	 */
 	@Query("MATCH (a:Account{username:$username})-[:HAS_DOMAIN]->(d:Domain{host:$host}) RETURN d LIMIT 1")
 	public Domain findByHostForUser(@Param("host") String host, @Param("username") String username);
@@ -53,6 +60,8 @@ public interface DomainRepository extends Neo4jRepository<Domain, Long> {
 	 *
 	 * @param host the host of the domain
 	 * @return the domain
+	 *
+	 * precondition: host != null
 	 */
 	@Query("MATCH (d:Domain{host:$host}) RETURN d LIMIT 1")
 	public Domain findByHost(@Param("host") String host);
@@ -62,6 +71,8 @@ public interface DomainRepository extends Neo4jRepository<Domain, Long> {
 	 *
 	 * @param host the host of the domain
 	 * @return the pages
+	 *
+	 * precondition: host != null
 	 */
 	@Query("MATCH (d:Domain{host:$host})-[:HAS]->(p:PageState) RETURN p")
 	public Set<PageState> getPages(@Param("host") String host);
@@ -71,6 +82,8 @@ public interface DomainRepository extends Neo4jRepository<Domain, Long> {
 	 *
 	 * @param url the URL of the domain
 	 * @return the domain
+	 *
+	 * precondition: url != null
 	 */
 	@Query("MATCH (d:Domain{url:$url}) RETURN d LIMIT 1")
 	public Domain findByUrl(@Param("url") String url);
@@ -186,7 +199,6 @@ public interface DomainRepository extends Neo4jRepository<Domain, Long> {
 	 *
 	 * @param domain_id the ID of the domain
 	 * @param audit_record_key the key of the audit record
-	 * @return the audit record
 	 */
 	@Query("MATCH (d:Domain) WITH d MATCH (audit:AuditRecord{key:$audit_record_key}) WHERE id(d) = $domain_id MERGE (d)-[:HAS]->(audit) RETURN audit")
 	public void addAuditRecord(@Param("domain_id") long domain_id, @Param("audit_record_key") String audit_record_key);
@@ -315,7 +327,6 @@ public interface DomainRepository extends Neo4jRepository<Domain, Long> {
 	 *
 	 * @param domain_id the ID of the domain
 	 * @param test_user_id the ID of the test user
-	 * @return the test user
 	 */
 	@Query("MATCH (d:Domain) WITH d MATCH (user:TestUser) WHERE id(d)=$domain_id AND id(user)=$test_user_id MERGE (d)-[:HAS_TEST_USER]->(user) RETURN user")
 	public void addTestUser(@Param("domain_id") long domain_id, @Param("test_user_id") long test_user_id);

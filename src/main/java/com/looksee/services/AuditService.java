@@ -34,7 +34,6 @@ import io.github.resilience4j.retry.annotation.Retry;
 
 /**
  * Contains business logic for interacting with and managing audits
- *
  */
 @Service
 @Retry(name = "neoforj")
@@ -50,20 +49,56 @@ public class AuditService {
 	@Autowired
 	private PageStateService page_state_service;
 
+	/**
+	 * Saves an audit
+	 *
+	 * @param audit the audit to save
+	 * @return the saved audit
+	 *
+	 * precondition: audit != null
+	 */
 	public Audit save(Audit audit) {
 		assert audit != null;
 		
 		return audit_repo.save(audit);
 	}
 
+	/**
+	 * Finds an audit by id
+	 *
+	 * @param id the id of the audit
+	 * @return the audit
+	 *
+	 * precondition: id > 0
+	 */
 	public Optional<Audit> findById(long id) {
+		assert id > 0;
+		
 		return audit_repo.findById(id);
 	}
 	
+	/**
+	 * Finds an audit by key
+	 *
+	 * @param key the key of the audit
+	 * @return the audit
+	 *
+	 * precondition: key != null
+	 */
 	public Audit findByKey(String key) {
+		assert key != null;
+		
 		return audit_repo.findByKey(key);
 	}
 
+	/**
+	 * Saves a list of audits
+	 *
+	 * @param audits the list of audits to save
+	 * @return the list of saved audits
+	 *
+	 * precondition: audits != null
+	 */
 	public List<Audit> saveAll(List<Audit> audits) {
 		assert audits != null;
 		
@@ -88,12 +123,26 @@ public class AuditService {
 		return audits_saved;
 	}
 
+	/**
+	 * Retrieves all audits
+	 *
+	 * @return the list of audits
+	 */
 	public List<Audit> findAll() {
-		// TODO Auto-generated method stub
 		return IterableUtils.toList(audit_repo.findAll());
 	}
 
+	/**
+	 * Retrieves all issues for an audit
+	 *
+	 * @param audit_id the id of the audit
+	 * @return the set of issues
+	 *
+	 * precondition: audit_id > 0
+	 */
 	public Set<UXIssueMessage> getIssues(long audit_id) {
+		assert audit_id > 0;
+		
 		Set<UXIssueMessage> raw_issue_set = audit_repo.findIssueMessages(audit_id);
 		
 		return raw_issue_set.parallelStream()
@@ -106,8 +155,10 @@ public class AuditService {
 	 * using a list of audits, sorts the list by page and packages results into list 
 	 * 	of {@linkplain PageStateAudits}
 	 * 
-	 * @param audits
-	 * @return
+	 * @param audits the set of {@link Audit} to group by page
+	 * @return the list of {@link PageStateAudits}
+	 *
+	 * precondition: audits != null
 	 */
 	public List<PageStateAudits> groupAuditsByPage(Set<Audit> audits) {
 		Map<String, Set<Audit>> audit_url_map = new HashMap<>();
@@ -315,15 +366,15 @@ public class AuditService {
 				}
 				else {
 					SimpleElement simple_element = 	new SimpleElement(element.getKey(),
-																	  element.getScreenshotUrl(),
-																	  element.getXLocation(),
-																	  element.getYLocation(),
-																	  element.getWidth(),
-																	  element.getHeight(),
-																	  element.getCssSelector(),
-																	  element.getAllText(),
-																	  element.isImageFlagged(),
-																	  false);
+																		element.getScreenshotUrl(),
+																		element.getXLocation(),
+																		element.getYLocation(),
+																		element.getWidth(),
+																		element.getHeight(),
+																		element.getCssSelector(),
+																		element.getAllText(),
+																		element.isImageFlagged(),
+																		false);
 					
 					element_map.put(element.getKey(), simple_element);
 				}
@@ -432,14 +483,26 @@ public class AuditService {
 		assert name != null;
 	
 		int issue_count = audits.parallelStream()
-				  .filter((s) -> (s.getTotalPossiblePoints() > 0 && name.equals(s.getName())))
-				  .mapToInt(s -> audit_repo.getMessageCount(s.getId()))
-				  .sum();
+				.filter((s) -> (s.getTotalPossiblePoints() > 0 && name.equals(s.getName())))
+				.mapToInt(s -> audit_repo.getMessageCount(s.getId()))
+				.sum();
 		
-		return issue_count;	
+		return issue_count;
 	}
 
+	/**
+	 * Adds all issues to an audit
+	 *
+	 * @param audit_id the id of the audit
+	 * @param issue_messages the set of {@link UXIssueMessage} to add
+	 *
+	 * precondition: audit_id > 0
+	 * precondition: issue_messages != null
+	 */
 	public void addAllIssues(long audit_id, Set<UXIssueMessage> issue_messages) {
+		assert audit_id > 0;
+		assert issue_messages != null;
+		
 		List<Long> issue_ids = issue_messages.stream().map(x -> x.getId()).collect(Collectors.toList());
 		addAllIssues(audit_id, issue_ids);
 	}

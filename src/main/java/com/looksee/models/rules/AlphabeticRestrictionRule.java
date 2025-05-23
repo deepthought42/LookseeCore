@@ -26,10 +26,16 @@ public class AlphabeticRestrictionRule extends Rule{
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Evaluates the rule for the given element
+	 *
+	 * @param elem the element to evaluate
+	 * @return true if the element is alphabetic, false otherwise
+	 *
+	 * precondition: elem != null
 	 */
-	@Override
 	public Boolean evaluate(Element elem) {
+		assert elem != null;
+		
 		Pattern pattern = Pattern.compile(getValue());
 
         Matcher matcher = pattern.matcher(elem.getText());

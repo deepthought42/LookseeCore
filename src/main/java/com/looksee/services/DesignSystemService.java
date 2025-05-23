@@ -8,9 +8,12 @@ import org.springframework.stereotype.Service;
 import com.looksee.models.DesignSystem;
 import com.looksee.models.repository.DesignSystemRepository;
 
+import lombok.NoArgsConstructor;
+
 /**
  * Contains business logic for interacting with and managing design systems
  */
+@NoArgsConstructor
 @Service
 public class DesignSystemService {
 

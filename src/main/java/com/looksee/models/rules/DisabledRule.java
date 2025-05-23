@@ -1,15 +1,11 @@
 package com.looksee.models.rules;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.looksee.models.Element;
 
 /**
  * A rule that checks if an element is disabled
  */
 public class DisabledRule extends Rule{
-	private static Logger log = LoggerFactory.getLogger(DisabledRule.class);
 
 	/**
 	 * Constructs a new {@link DisabledRule} rule
@@ -21,10 +17,16 @@ public class DisabledRule extends Rule{
 	}
 	
 	/**
-	 * {@inheritDoc}
+	 * Evaluates the rule for the given element
+	 *
+	 * @param elem the element to evaluate
+	 * @return true if the element is disabled, false otherwise
+	 *
+	 * precondition: elem != null
 	 */
-	@Override
 	public Boolean evaluate(Element elem) {
+		assert elem != null;
+		
 		for(String attribute: elem.getAttributes().keySet()){
 			if("disabled".contentEquals(attribute)){
 				return  elem.getAttributes().get(attribute).length() == 0;

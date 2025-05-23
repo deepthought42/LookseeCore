@@ -58,6 +58,12 @@ public class DomainDto {
 	 * precondition: audited_page_count != null
 	 * precondition: content_score != null
 	 * precondition: content_progress != null
+	 * precondition: info_architecture_score != null
+	 * precondition: info_architecture_progress != null
+	 * precondition: accessibility_score != null
+	 * precondition: accessibility_progress != null
+	 * precondition: aesthetics_score != null
+	 * precondition: aesthetics_progress != null
 	 */
 	public DomainDto(
 			long id,
@@ -77,6 +83,22 @@ public class DomainDto {
 			String message,
 			ExecutionStatus status
 	){
+		assert id > 0;
+		assert url != null;
+		assert page_count > 0;
+		assert audited_page_count > 0;
+		assert content_score >= 0;
+		assert content_progress >= 0;
+		assert info_architecture_score >= 0;
+		assert info_architecture_progress >= 0;
+		assert accessibility_score >= 0;
+		assert accessibility_progress >= 0;
+		assert aesthetics_score >= 0;
+		assert aesthetics_progress >= 0;
+		assert data_extraction_progress >= 0;
+		assert message != null;
+		assert status != null;
+
 		setId(id);
 		setUrl(url);
 		setPageCount(page_count);
@@ -95,11 +117,25 @@ public class DomainDto {
 		setStatus(status);
 	}
 
+	/**
+	 * Gets the status of the domain
+	 *
+	 * @return the status
+	 */
 	public ExecutionStatus getStatus() {
 		return ExecutionStatus.create(status);
 	}
 
+	/**
+	 * Sets the status of the domain
+	 *
+	 * @param status the status
+	 *
+	 * precondition: status != null
+	 */
 	public void setStatus(ExecutionStatus status) {
+		assert status != null;
+		
 		this.status = status.getShortName();
 	}
 }

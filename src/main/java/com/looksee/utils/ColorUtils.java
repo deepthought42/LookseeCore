@@ -19,6 +19,18 @@ import com.looksee.models.ColorUsageStat;
 import com.looksee.models.ElementState;
 import com.looksee.models.recommend.ColorContrastRecommendation;
 
+import lombok.NoArgsConstructor;
+
+/**
+ * Utility class for color-related operations.
+ *
+ * This class provides methods for:
+ * - Checking text contrast compliance with WCAG 2.1 AAA standards
+ * - Checking non-text contrast compliance with WCAG 2.1 AAA standards
+ * - Finding compliant font and background colors
+ * - Removing image elements from screenshots
+ */
+@NoArgsConstructor
 public class ColorUtils {
 	@SuppressWarnings("unused")
 	private static Logger log = LoggerFactory.getLogger(ColorUtils.class);
@@ -99,13 +111,13 @@ public class ColorUtils {
 	/**
 	 * Shifts the shade of the background toward white to find a potential color pair
 	 *
-	 * @param font_color
-	 * @param background_color
-	 * @param is_dark_theme
-	 * @param font_size
-	 * @param is_bold
+	 * @param font_color the font color
+	 * @param background_color the background color
+	 * @param is_dark_theme true if the theme is dark, false otherwise
+	 * @param font_size the font size
+	 * @param is_bold true if the font is bold, false otherwise
 	 *
-	 * @return {@link ColorContrastRecommendation recommendation}
+	 * @return the compliant background color
 	 *
 	 * precondition: font_color != null
 	 * precondition: background_color != null

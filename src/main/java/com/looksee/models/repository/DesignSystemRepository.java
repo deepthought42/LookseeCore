@@ -22,6 +22,7 @@ public interface DesignSystemRepository extends Neo4jRepository<DesignSystem, Lo
 	 *
 	 * @param domain_id the ID of the design system
 	 * @param audience_proficiency the new audience proficiency
+	 * @return the updated design system
 	 *
 	 * <p><b>Preconditions:</b>
 	 * <ul>
@@ -36,5 +37,4 @@ public interface DesignSystemRepository extends Neo4jRepository<DesignSystem, Lo
 	 */
 	@Query("MATCH (setting:DesignSystem) WHERE id(setting)=$id SET setting.audienceProficiency=$audience_proficiency RETURN setting")
 	public DesignSystem updateExpertiseSetting(@Param("id") long domain_id, @Param("audience_proficiency") String audience_proficiency);
-	
 }

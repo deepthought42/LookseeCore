@@ -172,11 +172,15 @@ public class Element extends LookseeObject implements Comparable<Element> {
 	
 	/**
 	 * checks if css properties match between {@link WebElement elements}
-	 * 
-	 * @param elem
+	 *
+	 * @param elem the element to compare to
 	 * @return whether attributes match or not
+	 *
+	 * precondition: elem != null
 	 */
 	public boolean cssMatches(Element elem){
+		assert elem != null;
+		
 		for(String propertyName : preRenderCssValues.keySet()){
 			if(propertyName.contains("-moz-") || propertyName.contains("-webkit-") || propertyName.contains("-o-") || propertyName.contains("-ms-")){
 				continue;
@@ -193,7 +197,16 @@ public class Element extends LookseeObject implements Comparable<Element> {
 		return this.getXpath().contains("form");
 	}
 
+	/**
+	 * Adds a rule to the element
+	 *
+	 * @param rule the rule to add
+	 *
+	 * precondition: rule != null
+	 */
 	public void addRule(Rule rule) {
+		assert rule != null;
+		
 		boolean exists = false;
 		for(Rule existing_rule : this.rules){
 			if(existing_rule.getKey().equals(rule.getKey())){
@@ -283,8 +296,12 @@ public class Element extends LookseeObject implements Comparable<Element> {
 	 * Sets the classification of the element
 	 *
 	 * @param classification the classification of the element
+	 *
+	 * precondition: classification != null
 	 */
 	public void setClassification(ElementClassification classification) {
+		assert classification != null;
+		
 		this.classification = classification.toString();
 	}
 
@@ -292,8 +309,12 @@ public class Element extends LookseeObject implements Comparable<Element> {
 	 * Adds a child element to the element
 	 *
 	 * @param child_element the child element to add
+	 *
+	 * precondition: child_element != null
 	 */
 	public void addChildElement(Element child_element) {
+		assert child_element != null;
+		
 		this.childElements.add(child_element);
 	}
 
@@ -302,8 +323,12 @@ public class Element extends LookseeObject implements Comparable<Element> {
 	 *
 	 * @param attr_name the name of the attribute
 	 * @return the attribute of the element
+	 *
+	 * precondition: attr_name != null
 	 */
 	public String getAttribute(String attr_name) {
+		assert attr_name != null;
+		
 		return attributes.get(attr_name);
 	}
 	
@@ -312,8 +337,14 @@ public class Element extends LookseeObject implements Comparable<Element> {
 	 *
 	 * @param attribute_name the name of the attribute
 	 * @param attribute_value the value of the attribute
+	 *
+	 * precondition: attribute_name != null
+	 * precondition: attribute_value != null
 	 */
 	public void addAttribute(String attribute_name, String attribute_value) {
+		assert attribute_name != null;
+		assert attribute_value != null;
+		
 		this.attributes.put(attribute_name, attribute_value);
 	}
 }

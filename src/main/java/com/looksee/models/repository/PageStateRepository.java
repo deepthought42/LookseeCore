@@ -149,11 +149,11 @@ public interface PageStateRepository extends Neo4jRepository<PageState, Long> {
 	/**
 	 * Updates the composite image URL for a page state
 	 *
-	 * @param id the ID of the page state
+	 * @param page_id the ID of the page state
 	 * @param composite_img_url the URL of the composite image
 	 */
-	@Query("MATCH (ps:PageState) WHERE id(ps)=$id SET ps.fullPageScreenshotUrlComposite = $composite_img_url RETURN ps")
-	public void updateCompositeImageUrl(@Param("id") long id, @Param("composite_img_url") String composite_img_url);
+	@Query("MATCH (ps:PageState) WHERE id(ps)=$page_id SET ps.fullPageScreenshotUrlComposite = $composite_img_url RETURN ps")
+	public void updateCompositeImageUrl(@Param("page_id") long page_id, @Param("composite_img_url") String composite_img_url);
 
 	/**
 	 * Adds all elements to a page state
@@ -172,12 +172,12 @@ public interface PageStateRepository extends Neo4jRepository<PageState, Long> {
 	 * @return the page state
 	 */
 	@Query("MATCH (audit_record:AuditRecord)-[:FOR]->(page:PageState) WHERE id(audit_record)=$audit_record_id AND page.key=$page_key RETURN page LIMIT 1")
-	public PageState findPageWithKey(@Param("audit_record_id") long audit_record_id, @Param("page_key") String key);
+	public PageState findPageWithKey(@Param("audit_record_id") long audit_record_id, @Param("page_key") String page_key);
 
 	/**
 	 * Finds a page state by its domain audit ID and URL
 	 *
-	 * @param domain_audit_id the ID of the domain audit
+	 * @param domainAuditRecordId the ID of the domain audit
 	 * @param url the URL of the page
 	 * @return the page state
 	 */
@@ -191,5 +191,5 @@ public interface PageStateRepository extends Neo4jRepository<PageState, Long> {
 	 * @return the page state
 	 */
 	@Query("MATCH (s:Step)-[:ENDS_WITH]->(page:PageState) WHERE id(s)=$step_id RETURN page")
-	public PageState getEndPageForStep(@Param("step_id") long id);
+	public PageState getEndPageForStep(@Param("step_id") long step_id);
 }

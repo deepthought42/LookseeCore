@@ -4,9 +4,12 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.image.PixelGrabber;
 
+import lombok.NoArgsConstructor;
+
 /**
  * Compares two images and returns true if they are the same.
  */
+@NoArgsConstructor
 public class CompareImages {
 
 	/**

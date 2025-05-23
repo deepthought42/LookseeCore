@@ -301,10 +301,10 @@ public class ColorData extends LookseeObject{
 	/**
 	 * Computes the contrast of the 2 colors provided
 	 * 
-	 * @param color_data_1
-	 * @param color_data_2
+	 * @param color_data_1 the first color data
+	 * @param color_data_2 the second color data
 	 * 
-	 * @return contrast value
+	 * @return the contrast value
 	 * 
 	 * precondition: color_data_1 != null
 	 * precondition: color_data_2 != null

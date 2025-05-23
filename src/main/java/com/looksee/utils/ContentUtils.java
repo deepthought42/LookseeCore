@@ -3,9 +3,12 @@ package com.looksee.utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import lombok.NoArgsConstructor;
+
 /**
  * Utility class for content-related operations.
  */
+@NoArgsConstructor
 public class ContentUtils {
 	@SuppressWarnings("unused")
 	private static Logger log = LoggerFactory.getLogger(ContentUtils.class);

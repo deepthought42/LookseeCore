@@ -17,7 +17,12 @@ public class Clickable extends Rule {
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Evaluates the rule for the given element
+	 *
+	 * @param val the element to evaluate
+	 * @return true if the element is clickable, false otherwise
+	 *
+	 * precondition: val != null
 	 */
 	@Override
 	public Boolean evaluate(Element val) {

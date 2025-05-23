@@ -37,32 +37,32 @@ public interface SimpleStepRepository extends Neo4jRepository<SimpleStep, Long> 
 	/**
 	 * Adds a start page to a simple step
 	 *
-	 * @param id the ID of the simple step
+	 * @param step_id the ID of the simple step
 	 * @param page_state_id the ID of the page state
 	 * @return the page state
 	 */
 	@Query("MATCH (s:SimpleStep) WITH s MATCH (p:PageState) WHERE id(s)=$step_id AND id(p)=$page_state_id MERGE (s)-[:STARTS_WITH]->(p) RETURN p")
-	public PageState addStartPage(@Param("step_id") long id, @Param("page_state_id") long page_state_id);
+	public PageState addStartPage(@Param("step_id") long step_id, @Param("page_state_id") long page_state_id);
 	
 	/**
 	 * Adds an end page to a simple step
 	 *
-	 * @param id the ID of the simple step
+	 * @param step_id the ID of the simple step
 	 * @param page_state_id the ID of the page state
 	 * @return the page state
 	 */
 	@Query("MATCH (s:SimpleStep) WITH s MATCH (p:PageState) WHERE id(s)=$step_id AND id(p)=$page_state_id MERGE (s)-[:ENDS_WITH]->(p) RETURN p")
-	public PageState addEndPage(@Param("step_id") long id, @Param("page_state_id") long page_state_id);
+	public PageState addEndPage(@Param("step_id") long step_id, @Param("page_state_id") long page_state_id);
 	
 	/**
 	 * Adds an element state to a simple step
 	 *
-	 * @param id the ID of the simple step
+	 * @param step_id the ID of the simple step
 	 * @param element_state_id the ID of the element state
 	 * @return the element state
 	 */
 	@Query("MATCH (s:SimpleStep) WITH s MATCH(p:ElementState) WHERE id(s)=$step_id AND id(p)=$element_state_id MERGE (s)-[:HAS]->(p) RETURN p")
-	public ElementState addElementState(@Param("step_id") long id, @Param("element_state_id") long element_state_id);
+	public ElementState addElementState(@Param("step_id") long step_id, @Param("element_state_id") long element_state_id);
 
 	/**
 	 * Finds the end page for a simple step
@@ -71,7 +71,7 @@ public interface SimpleStepRepository extends Neo4jRepository<SimpleStep, Long> 
 	 * @return the page state
 	 */
 	@Query("MATCH (:SimpleStep{key:$step_key})-[:STARTS_WITH]->(p:PageState) RETURN p")
-	public PageState getEndPage(@Param("step_key") String key);
+	public PageState getEndPage(@Param("step_key") String step_key);
 	
 	/**
 	 * Finds the start page for a simple step
@@ -80,5 +80,5 @@ public interface SimpleStepRepository extends Neo4jRepository<SimpleStep, Long> 
 	 * @return the page state
 	 */
 	@Query("MATCH (:SimpleStep{key:$step_key})-[:ENDS_WITH]->(p:PageState) RETURN p")
-	public PageState getStartPage(@Param("step_key") String key);
+	public PageState getStartPage(@Param("step_key") String step_key);
 }

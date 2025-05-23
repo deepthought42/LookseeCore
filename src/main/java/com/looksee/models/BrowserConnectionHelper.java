@@ -11,10 +11,12 @@ import com.looksee.models.enums.BrowserEnvironment;
 import com.looksee.models.enums.BrowserType;
 
 import io.github.resilience4j.retry.annotation.Retry;
+import lombok.NoArgsConstructor;
 
 /**
  * A helper class for creating a {@link Browser} connection
  */
+@NoArgsConstructor
 @Retry(name="webdriver")
 public class BrowserConnectionHelper {
 	/**
@@ -29,7 +31,6 @@ public class BrowserConnectionHelper {
 	 * @see #getConnection(BrowserType, BrowserEnvironment)
 	 */
 	private static int SELENIUM_HUB_IDX = 0;
-	//private static final String[] RESOURCE_HEAVY_REQUEST_HUB_IP_ADDRESS = {"selenium-standalone-pb1-uydih6tjpa-uc.a.run.app"};
 
 	/**
 	 * The IP addresses of the selenium hubs

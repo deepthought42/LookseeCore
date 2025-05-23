@@ -80,11 +80,11 @@ public class PathUtils {
 	/**
 	 * Retrieves the index of the last {@link String} in the given list of {@link String}s that contains "elementstate"
 	 *
-	 * @param path_keys list of {@link String}s
+	 * @param pathKeys list of {@link String}s
 	 *
 	 * @return index of last element state in list
 	 *
-	 * precondition: path_keys != null
+	 * precondition: pathKeys != null
 	 */
 	public static int getIndexOfLastElementState(List<String> pathKeys){
 		assert(pathKeys != null);

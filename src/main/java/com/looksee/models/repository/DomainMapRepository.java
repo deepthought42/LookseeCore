@@ -56,9 +56,12 @@ public interface DomainMapRepository extends Neo4jRepository<DomainMap, Long>{
 	 * Adds a page to a domain map
 	 *
 	 * @param domain_map_id the ID of the domain map
-	 * @param page_id the ID of the page
+	 * @param page_state_id the ID of the page
 	 * @return the domain map
+	 *
+	 * precondition: domain_map_id > 0
+	 * precondition: page_state_id > 0
 	 */
-	@Query("MATCH (dm:DomainMap) WHERE id(dm)=$domain_map_id MATCH (page:PageState) WHERE id(page)=$page_id MERGE (dm)-[:CONTAINS]->(page) RETURN dm LIMIT 1")
-	public DomainMap addPageToDomainMap(@Param("domain_map_id") long domain_map_id, @Param("page_id") long page_state_id);
+	@Query("MATCH (dm:DomainMap) WHERE id(dm)=$domain_map_id MATCH (page:PageState) WHERE id(page)=$page_state_id MERGE (dm)-[:CONTAINS]->(page) RETURN dm LIMIT 1")
+	public DomainMap addPageToDomainMap(@Param("domain_map_id") long domain_map_id, @Param("page_state_id") long page_state_id);
 }

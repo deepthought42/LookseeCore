@@ -15,14 +15,12 @@ import com.looksee.models.PageState;
 /**
  * Utility class for processing and analyzing web page states and their elements.
  *
- * @inv All methods are static and do not modify the input parameters
- * @inv All returned collections are new instances, not references to internal state
- * @inv For any PageState input, the returned Forms contain only Elements from that PageState
- * @inv For any returned Form, all contained Elements have XPaths that are descendants of the form Element's XPath
- *
- * @see Form
- * @see PageState
- * @see ElementState
+ * This class provides static utility methods for processing page states and elements.
+ * All methods are guaranteed to:
+ * - Not modify their input parameters
+ * - Return new collection instances rather than references to internal state
+ * - For PageState inputs, return Forms containing only Elements from that PageState
+ * - For any returned Form, include only Elements with XPaths that are descendants of the form Element's XPath
  */
 public class PageUtils {
 	@SuppressWarnings("unused")
@@ -34,8 +32,12 @@ public class PageUtils {
 	 *
 	 * @return a set of forms
 	 * @throws Exception if an error occurs
+	 *
+	 * precondition: page != null
 	 */
 	public static Set<Form> extractAllForms(PageState page) throws Exception {
+		assert page != null;
+		
 		Set<Form> form_list = new HashSet<Form>();
 		
 		//filter all elements that aren't the main form element

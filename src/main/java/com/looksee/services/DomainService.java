@@ -19,6 +19,8 @@ import com.looksee.models.PageState;
 import com.looksee.models.TestUser;
 import com.looksee.models.repository.DomainRepository;
 
+import lombok.NoArgsConstructor;
+
 /**
  * Service class for managing domain-related operations
  *
@@ -34,6 +36,7 @@ import com.looksee.models.repository.DomainRepository;
  * - TestUser to manage test users
  * - Form to manage forms
  */
+@NoArgsConstructor
 @Service
 public class DomainService {
 	@SuppressWarnings("unused")

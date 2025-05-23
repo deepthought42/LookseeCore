@@ -18,20 +18,20 @@ import com.looksee.models.PageState;
 import com.looksee.models.repository.ElementStateRepository;
 import com.looksee.models.rules.Rule;
 
+import lombok.NoArgsConstructor;
+
 /**
  * Service for managing element states in the database
  *
- * @invariant element_repo != null
- * @invariant page_state_service != null
+ * This service requires non-null element_repo and page_state_service dependencies.
  *
- * @responsibility Provides CRUD operations for ElementState entities
- * @responsibility Manages relationships between ElementStates and PageStates
- * @responsibility Handles element state persistence and retrieval
- * @responsibility Enforces data integrity constraints for element states
- *
- * @collaborator ElementStateRepository For database operations
- * @collaborator PageStateService For page state operations
+ * The service is responsible for:
+ * - Providing CRUD operations for ElementState entities
+ * - Managing relationships between ElementStates and PageStates
+ * - Handling element state persistence and retrieval
+ * - Enforcing data integrity constraints for element states
  */
+@NoArgsConstructor
 @Service
 public class ElementStateService {
 	@SuppressWarnings("unused")
@@ -245,13 +245,13 @@ public class ElementStateService {
 	}
 
 	/**
-	 * Fetch elements that are the child of the given parent element for a 
+	 * Fetch elements that are the child of the given parent element for a
 	 * given user
 	 *
-	 * @param user_id
-	 * @param element_key
+	 * @param user_id the id of the user
+	 * @param element_key the key of the element
 	 *
-	 * @return
+	 * @return the list of child elements
 	 *
 	 * precondition: user_id != null
 	 * precondition: user_id is not empty
@@ -272,10 +272,10 @@ public class ElementStateService {
 	/**
 	 * Fetch elements that are the child of the given parent element for a given page
 	 *
-	 * @param page_key
-	 * @param xpath
+	 * @param page_key the key of the page
+	 * @param xpath the xpath of the parent element
 	 *
-	 * @return
+	 * @return the list of child elements
 	 *
 	 * precondition: page_key != null
 	 * precondition: page_key is not empty
@@ -307,7 +307,7 @@ public class ElementStateService {
 	 * @param parent_key the key of the parent element
 	 * @param child_element_key the key of the child element
 	 *
-	 * @return the element state
+	 * @return the list of child elements
 	 *
 	 * precondition: parent_key != null
 	 * precondition: parent_key is not empty
@@ -354,6 +354,11 @@ public class ElementStateService {
 	 *
 	 * @param parent_element_key the key of the parent element
 	 * @param child_element_key the key of the child element
+	 *
+	 * precondition: parent_element_key != null
+	 * precondition: parent_element_key is not empty
+	 * precondition: child_element_key != null
+	 * precondition: child_element_key is not empty
 	 */
 	public void addChildElement(String parent_element_key,
 								String child_element_key)
@@ -378,24 +383,53 @@ public class ElementStateService {
 	 * @return the element state
 	 *
 	 * precondition: page_state_key != null
+	 * precondition: page_state_key is not empty
 	 * precondition: child_key != null
+	 * precondition: child_key is not empty
 	 */
 	public ElementState findByPageStateAndChild(String page_state_key,
 												String child_key)
 	{
 		assert page_state_key != null;
 		assert child_key != null;
+		assert !page_state_key.isEmpty();
+		assert !child_key.isEmpty();
+		
 		return element_repo.findByPageStateAndChild(page_state_key, child_key);
 	}
 
+	/**
+	 * Fetch element that is the parent of the given child element for a given page
+	 *
+	 * @param page_state_key the key of the page state
+	 * @param xpath the xpath of the child element
+	 *
+	 * @return the element state
+	 *
+	 * precondition: page_state_key != null
+	 * precondition: page_state_key is not empty
+	 * precondition: xpath != null
+	 * precondition: xpath is not empty
+	 */
 	public ElementState findByPageStateAndXpath(String page_state_key,
 												String xpath)
 	{
 		assert page_state_key != null;
 		assert xpath != null;
+		assert !page_state_key.isEmpty();
+		assert !xpath.isEmpty();
+		
 		return element_repo.findByPageStateAndXpath(page_state_key, xpath);
 	}
 
+	/**
+	 * Saves a list of element states to the database
+	 *
+	 * @param element_states the list of element states
+	 * @param page_state_id the id of the page state
+	 *
+	 * @return the list of saved element states
+	 */
 	public List<ElementState> saveAll(List<ElementState> element_states,
 										long page_state_id)
 	{

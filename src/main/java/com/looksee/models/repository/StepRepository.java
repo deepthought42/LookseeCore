@@ -44,7 +44,7 @@ public interface StepRepository extends Neo4jRepository<Step, Long>{
 	 * @return the page state
 	 */
 	@Query("MATCH (s:Step) WITH s MATCH (p:PageState) WHERE id(s)=$step_id AND id(p)=$page_state_id MERGE (s)-[:STARTS_WITH]->(p) RETURN p")
-	public PageState addStartPage(@Param("step_id") long id, @Param("page_state_id") long page_state_id);
+	public PageState addStartPage(@Param("step_id") long step_id, @Param("page_state_id") long page_state_id);
 	
 	/**
 	 * Adds an element state to a step
@@ -54,7 +54,7 @@ public interface StepRepository extends Neo4jRepository<Step, Long>{
 	 * @return the element state
 	 */
 	@Query("MATCH (s:Step) WITH s MATCH (p:ElementState) WHERE id(s)=$step_id AND id(p)=$element_state_id MERGE (s)-[:HAS]->(p) RETURN p")
-	public ElementState addElementState(@Param("step_id") long id, @Param("element_state_id") long element_state_id);
+	public ElementState addElementState(@Param("step_id") long step_id, @Param("element_state_id") long element_state_id);
 
 	/**
 	 * Finds steps with a start page
@@ -64,7 +64,7 @@ public interface StepRepository extends Neo4jRepository<Step, Long>{
 	 * @return the steps
 	 */
 	@Query("MATCH (map:DomainMap)-[*2]->(step:Step) where id(map)=$domain_map_id MATCH (step)-[:STARTS_WITH]->(p:PageState) WHERE id(p)=$page_state_id RETURN step")
-	public List<Step> getStepsWithStartPage(@Param("domain_map_id") long domain_map_id, @Param("page_state_id") long id);
+	public List<Step> getStepsWithStartPage(@Param("domain_map_id") long domain_map_id, @Param("page_state_id") long page_state_id);
 
 	/**
 	 * Finds steps with a start page
@@ -74,7 +74,7 @@ public interface StepRepository extends Neo4jRepository<Step, Long>{
 	 * @return the steps
 	 */
 	@Query("MATCH (d:DomainAuditRecord) with d WHERE id(d)=$domain_audit_id MATCH(d)-[]->(p:PageState{key:$page_state_key}) WITH p MATCH (step:Step)-[:STARTS_WITH]->(p:PageState) RETURN step")
-	public List<Step> getStepsWithStartPage(@Param("domain_audit_id") long domain_audit_id, @Param("page_state_key") String key);
+	public List<Step> getStepsWithStartPage(@Param("domain_audit_id") long domain_audit_id, @Param("page_state_key") String page_state_key);
 	
 	/**
 	 * Adds an end page to a step
@@ -94,7 +94,7 @@ public interface StepRepository extends Neo4jRepository<Step, Long>{
 	 * @return the step
 	 */
 	@Query("MATCH (step:Step) WHERE id(step)=$step_id SET step.key=$step_key RETURN step")
-	public Step updateKey(@Param("step_id") long step_id, @Param("step_key") String key);
+	public Step updateKey(@Param("step_id") long step_id, @Param("step_key") String step_key);
 
 	/**
 	 * Sets the start page for a step

@@ -53,16 +53,16 @@ public class ColorPaletteIssueMessage extends UXIssueMessage{
 	 * @param description the description of the color palette issue message
 	 * @param recommendation the recommendation of the color palette issue message
 	 * @param colors the colors of the color palette issue message
-	 * @param palette_colors the palette colors of the color palette issue message
+	 * @param paletteColors the palette colors of the color palette issue message
 	 * @param category the category of the color palette issue message
 	 * @param labels the labels of the color palette issue message
-	 * @param wcag_compliance the wcag compliance of the color palette issue message
+	 * @param wcagCompliance the wcag compliance of the color palette issue message
 	 * @param title the title of the color palette issue message
-	 * @param points_earned the points earned of the color palette issue message
-	 * @param max_points the max points of the color palette issue message
+	 * @param pointsEarned the points earned of the color palette issue message
+	 * @param maxPoints the max points of the color palette issue message
 	 *
 	 * precondition: colors != null;
-	 * precondition: palette_colors != null;
+	 * precondition: paletteColors != null;
 	 */
 	public ColorPaletteIssueMessage(
 			Priority priority,
@@ -72,21 +72,21 @@ public class ColorPaletteIssueMessage extends UXIssueMessage{
 			List<String> paletteColors,
 			AuditCategory category,
 			Set<String> labels,
-			String wcag_compliance,
+			String wcagCompliance,
 			String title,
-			int points_earned,
-			int max_points
+			int pointsEarned,
+			int maxPoints
 	) {
 		super(	priority,
 				description,
 				ObservationType.COLOR_PALETTE,
 				category,
-				wcag_compliance,
+				wcagCompliance,
 				labels,
 				"",
 				title,
-				points_earned,
-				max_points,
+				pointsEarned,
+				maxPoints,
 				recommendation);
 		
 		assert colors != null;
