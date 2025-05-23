@@ -10,12 +10,18 @@ import com.looksee.models.Element;
  *
  */
 public class SpecialCharacterRestriction extends Rule {
+	/**
+	 * Constructs a new {@link SpecialCharacterRestriction} rule
+	 */
 	public SpecialCharacterRestriction() {
 		setValue("[^<>!@#$%&*()]");
 		setType(RuleType.SPECIAL_CHARACTER_RESTRICTION);
 		setKey(generateKey());
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Boolean evaluate(Element elem) {
 		Pattern pattern = Pattern.compile(getValue());

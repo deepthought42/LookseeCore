@@ -5,30 +5,53 @@ import java.util.Set;
 import com.looksee.models.enums.AuditCategory;
 import com.looksee.models.enums.Priority;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 
 /**
- * A observation of potential error for a given {@link Element element} 
+ * A observation of potential error for a given {@link Element element}
  */
-public class SentenceIssueMessage extends ElementStateIssueMessage {	
+@Getter
+@Setter
+@NoArgsConstructor
+public class SentenceIssueMessage extends ElementStateIssueMessage {
 	
+	/**
+	 * The word count of the sentence issue message
+	 */
 	private int wordCount;
 	
-	public SentenceIssueMessage() {}
-	
+	/**
+	 * Constructs a new {@link SentenceIssueMessage}
+	 *
+	 * @param priority the priority of the sentence issue message
+	 * @param description the description of the sentence issue message
+	 * @param recommendation the recommendation of the sentence issue message
+	 * @param element the element of the sentence issue message
+	 * @param category the category of the sentence issue message
+	 * @param labels the labels of the sentence issue message
+	 * @param wcag_compliance the wcag compliance of the sentence issue message
+	 * @param title the title of the sentence issue message
+	 * @param points_awarded the points awarded of the sentence issue message
+	 * @param max_points the max points of the sentence issue message
+	 * @param word_count
+	 */
 	public SentenceIssueMessage(
 			Priority priority,
 			String description,
-			String recommendation, 
-			ElementState element, 
-			AuditCategory category, 
-			Set<String> labels, 
+			String recommendation,
+			ElementState element,
+			AuditCategory category,
+			Set<String> labels,
 			String wcag_compliance,
-			String title, 
+			String title,
 			int points_awarded,
 			int max_points,
 			int word_count
 	) {
-		super(	priority, 
+		super(	priority,
 				description,
 				recommendation,
 				element,
@@ -41,13 +64,4 @@ public class SentenceIssueMessage extends ElementStateIssueMessage {
 		
 		setWordCount(word_count);
 	}
-
-	public int getWordCount() {
-		return wordCount;
-	}
-
-	public void setWordCount(int word_count) {
-		this.wordCount = word_count;
-	}
-
 }

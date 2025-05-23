@@ -40,9 +40,9 @@ public class JourneyMessage extends Message {
 	 * Creates a new JourneyMessage
 	 * @param journey the journey
 	 * @param status the status
-	 * @param browser_type the browser type
-	 * @param account_id the account id
-	 * @param audit_record_id the audit record id
+	 * @param browserType the browser type
+	 * @param accountId the account id
+	 * @param auditRecordId the audit record id
 	 */
 	public JourneyMessage(Journey journey,
 						JourneyStatus status,

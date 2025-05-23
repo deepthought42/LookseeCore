@@ -9,6 +9,9 @@ import com.looksee.models.Element;
  * Defines a {@link Rule} where the numbers 1-9 cannot appear in a given value when evaluated
  */
 public class NumericRestrictionRule extends Rule {
+	/**
+	 * Constructs a new {@link NumericRestrictionRule} rule
+	 */
 	public NumericRestrictionRule() {
 		setValue("[0-9]");
 		setType(RuleType.NUMERIC_RESTRICTION);

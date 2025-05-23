@@ -19,6 +19,7 @@ import com.looksee.models.enums.ElementClassification;
 import com.looksee.models.rules.Rule;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -26,70 +27,91 @@ import lombok.Setter;
  *  may be a Parent and/or child of another ElementState. This heirarchy is not
  *  maintained by ElementState though.
  */
+@NoArgsConstructor
+@Getter
+@Setter
 public class Element extends LookseeObject implements Comparable<Element> {
 	@SuppressWarnings("unused")
 	private static Logger log = LoggerFactory.getLogger(Element.class);
 
+	/**
+	 * The classification of the element
+	 */
 	private String classification;
 
-	@Getter
-	@Setter
+	/**
+	 * The name of the element
+	 */
 	private String name;
 
-	@Getter
-	@Setter
+	/**
+	 * The xpath of the element
+	 */
 	private String xpath;
 
-	@Getter
-	@Setter
+	/**
+	 * The css selector of the element
+	 */
 	private String cssSelector;
 
-	@Getter
-	@Setter
+	/**
+	 * The template of the element
+	 */
 	private String template;
 	
-	@Getter
-	@Setter
+	/**
+	 * The text of the element
+	 */
 	private String text;
 	
-	@Getter
-	@Setter
+	/**
+	 * The attributes of the element
+	 */
 	@CompositeProperty
 	private Map<String, String> attributes = new HashMap<>();
 	
-	@Getter
-	@Setter
+	/**
+	 * The pre-render css values of the element
+	 */
 	@CompositeProperty
 	private Map<String, String> preRenderCssValues = new HashMap<>();
 	
-	@Getter
-	@Setter
+	/**
+	 * The rules of the element
+	 */
 	@Relationship(type = "HAS", direction = Direction.OUTGOING)
 	private Set<Rule> rules = new HashSet<>();
 
+	/**
+	 * The child elements of the element
+	 */
 	@Relationship(type = "HAS_CHILD", direction = Direction.OUTGOING)
 	private List<Element> childElements = new ArrayList<>();
 
-	public Element(){
-		super();
-	}
 	
 	/**
-	 * 
-	 * @param text
-	 * @param xpath
-	 * @param name
-	 * @param attributes
-	 * @param css_map
+	 * Constructs a new {@link Element}
+	 *
+	 * @param text the text of the element
+	 * @param xpath the xpath of the element
+	 * @param name the name of the element
+	 * @param attributes the attributes of the element
+	 * @param css_map the css map of the element
+	 * @param inner_html the inner html of the element
+	 * @param outer_html the outer html of the element
+	 *
 	 * precondition: attributes != null
 	 * precondition: css_map != null
 	 * precondition: xpath != null
 	 * precondition: name != null
-	 * precondition: screenshot_url != null
-	 * precondition: !screenshot_url.isEmpty()
 	 */
-	public Element(String text, String xpath, String name, Map<String, String> attributes, 
-			Map<String, String> css_map, String inner_html, String outer_html){
+	public Element(String text,
+					String xpath,
+					String name,
+					Map<String, String> attributes,
+					Map<String, String> css_map,
+					String inner_html,
+					String outer_html){
 		super();
 		assert attributes != null;
 		assert css_map != null;
@@ -109,15 +131,21 @@ public class Element extends LookseeObject implements Comparable<Element> {
 	}
 	
 	/**
-	 * 
-	 * @param text
-	 * @param xpath
-	 * @param name
-	 * @param attributes
-	 * @param css_map
-	 * @param inner_html
-	 * @param classification
-	 * @param outer_html
+	 * Constructs a new {@link Element} with the given parameters.
+	 *
+	 * @param text the text of the element
+	 * @param xpath the xpath of the element
+	 * @param name the name of the element
+	 * @param attributes the attributes of the element
+	 * @param css_map the css map of the element
+	 * @param inner_html the inner html of the element
+	 * @param classification the classification of the element
+	 * @param outer_html the outer html of the element
+	 *
+	 * precondition: name != null;
+	 * precondition: xpath != null;
+	 * precondition: outer_html != null;
+	 * precondition: !outer_html.isEmpty();
 	 */
 	public Element(String text, String xpath, String name,
 					Map<String, String> attributes,
@@ -215,7 +243,11 @@ public class Element extends LookseeObject implements Comparable<Element> {
 		return this.getKey().equals(that.getKey());
 	}
 
-
+	/**
+	 * Clones the element
+	 *
+	 * @return the cloned element
+	 */
 	public Element clone() {
 		Element page_elem = new Element();
 		page_elem.setPreRenderCssValues(this.getPreRenderCssValues());
@@ -227,27 +259,60 @@ public class Element extends LookseeObject implements Comparable<Element> {
 		return page_elem;
 	}
 
+	/**
+	 * Compares the element to another element
+	 *
+	 * @param o the element to compare to
+	 * @return the comparison result
+	 */
 	@Override
 	public int compareTo(Element o) {
         return this.getKey().compareTo(o.getKey());
 	}
 
+	/**
+	 * Returns the classification of the element
+	 *
+	 * @return the classification of the element
+	 */
 	public ElementClassification getClassification() {
 		return ElementClassification.create(classification);
 	}
 
+	/**
+	 * Sets the classification of the element
+	 *
+	 * @param classification the classification of the element
+	 */
 	public void setClassification(ElementClassification classification) {
 		this.classification = classification.toString();
 	}
 
+	/**
+	 * Adds a child element to the element
+	 *
+	 * @param child_element the child element to add
+	 */
 	public void addChildElement(Element child_element) {
 		this.childElements.add(child_element);
 	}
 
+	/**
+	 * Returns the attribute of the element
+	 *
+	 * @param attr_name the name of the attribute
+	 * @return the attribute of the element
+	 */
 	public String getAttribute(String attr_name) {
 		return attributes.get(attr_name);
 	}
 	
+	/**
+	 * Adds an attribute to the element
+	 *
+	 * @param attribute_name the name of the attribute
+	 * @param attribute_value the value of the attribute
+	 */
 	public void addAttribute(String attribute_name, String attribute_value) {
 		this.attributes.put(attribute_name, attribute_value);
 	}

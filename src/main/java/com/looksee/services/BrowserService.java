@@ -676,19 +676,24 @@ public class BrowserService {
 	/**
 	 * Removes all {@link Element}s that have a negative or 0 value for the x or y coordinates
 	 *
-	 * @param web_elements
-	 * @param is_element_state
-	 *
-	 * precondition: web_elements != null
+	 * @param webElements the {@link List} of {@link ElementState}s or {@link WebElement}s to filter
+	 * @param isElementState true if the elements are {@link ElementState}s, false if they are {@link WebElement}s
 	 *
 	 * @return filtered list of {@link Element}s
+	 *
+	 * <b>Preconditions:</b>
+	 * <ul>
+	 *   <li>web_elements != null</li>
+	 * </ul>
 	 */
-	public static List<ElementState> filterElementsWithNegativePositions(List<ElementState> web_elements, boolean is_element_state) {
-		assert(web_elements != null);
+	public static List<ElementState> filterElementsWithNegativePositions(List<ElementState> webElements,
+																		boolean isElementState)
+	{
+		assert(webElements != null);
 
 		List<ElementState> elements = new ArrayList<>();
 
-		for(ElementState element : web_elements){
+		for(ElementState element : webElements){
 			if(element.getXLocation() >= 0 && element.getYLocation() >= 0){
 				elements.add(element);
 			}
@@ -697,9 +702,23 @@ public class BrowserService {
 		return elements;
 	}
 
-	public static List<WebElement> filterNonDisplayedElements(List<WebElement> web_elements) {
+	/**
+	 * Filters out all {@link WebElement}s that are not displayed
+	 *
+	 * @param webElements the {@link List} of {@link WebElement}s to filter
+	 *
+	 * @return filtered list of {@link WebElement}s
+	 *
+	 * <b>Preconditions:</b>
+	 * <ul>
+	 *   <li>web_elements != null</li>
+	 * </ul>
+	 */
+	public static List<WebElement> filterNonDisplayedElements(List<WebElement> webElements) {
+		assert webElements != null;
+		
 		List<WebElement> filtered_elems = new ArrayList<WebElement>();
-		for(WebElement elem : web_elements){
+		for(WebElement elem : webElements){
 			if(elem.isDisplayed()){
 				filtered_elems.add(elem);
 			}
@@ -708,7 +727,21 @@ public class BrowserService {
 		return filtered_elems;
 	}
 
+	/**
+	 * Filters out all {@link WebElement}s that are children of other elements
+	 *
+	 * @param web_elements the {@link List} of {@link WebElement}s to filter
+	 *
+	 * @return filtered list of {@link WebElement}s
+	 *
+	 * <b>Preconditions:</b>
+	 * <ul>
+	 *   <li>web_elements != null</li>
+	 * </ul>
+	 */
 	public static List<WebElement> filterNonChildElements(List<WebElement> web_elements) {
+		assert web_elements != null;
+
 		List<WebElement> filtered_elems = new ArrayList<WebElement>();
 		for(WebElement elem : web_elements){
 			boolean is_child = getChildElements(elem).isEmpty();
@@ -720,7 +753,21 @@ public class BrowserService {
 		return filtered_elems;
 	}
 
+	/**
+	 * Filters out all {@link WebElement}s that have a negative or 0 value for the x or y coordinates
+	 *
+	 * @param web_elements the {@link List} of {@link WebElement}s to filter
+	 *
+	 * @return filtered list of {@link WebElement}s
+	 *
+	 * <b>Preconditions:</b>
+	 * <ul>
+	 *   <li>web_elements != null</li>
+	 * </ul>
+	 */
 	public static List<WebElement> filterElementsWithNegativePositions(List<WebElement> web_elements) {
+		assert web_elements != null;
+		
 		List<WebElement> elements = new ArrayList<>();
 
 		for(WebElement element : web_elements){
@@ -733,41 +780,86 @@ public class BrowserService {
 		return elements;
 	}
 	
+	/**
+	 * Checks if {@link Point location} has a negative x or y coordinate
+	 *
+	 * @param location the {@link Point} to check
+	 *
+	 * @return true if the point has a negative x or y coordinate, otherwise false
+	 *
+	 * <b>Preconditions:</b>
+	 * <ul>
+	 *   <li>location != null</li>
+	 * </ul>
+	 */
 	public static boolean doesElementHaveNegativePosition(Point location) {
+		assert location != null;
+		
 		return location.getX() < 0 || location.getY() < 0;
 	}
 
+	/**
+	 * Checks if {@link Dimension dimension} has a height and width greater than 1
+	 *
+	 * @param dimension the {@link Dimension} to check
+	 *
+	 * @return true if the dimension has a height and width greater than 1, otherwise false
+	 *
+	 * <b>Preconditions:</b>
+	 * <ul>
+	 *   <li>dimension != null</li>
+	 * </ul>
+	 */
 	public static boolean hasWidthAndHeight(Dimension dimension) {
+		assert dimension != null;
+		
 		return dimension.getHeight() > 1 && dimension.getWidth() > 1;
 	}
 
 	/**
 	 * Filters out html, body, link, title, script, meta, head, iframe, or noscript tags
 	 *
-	 * @param tag_name
-	 *
-	 * precondition: tag_name != null
+	 * @param tagName the tag name to check
 	 *
 	 * @return true if tag name is html, body, link, title, script, meta, head, iframe, or noscript
+	 *
+	 * <b>Preconditions:</b>
+	 * <ul>
+	 *   <li>tagName != null</li>
+	 * </ul>
 	 */
-	public static boolean isStructureTag(String tag_name) {
-		assert tag_name != null;
+	public static boolean isStructureTag(String tagName) {
+		assert tagName != null;
 
-		return "head".contentEquals(tag_name) || "link".contentEquals(tag_name)
-				|| "script".contentEquals(tag_name) || "g".contentEquals(tag_name)
-				|| "path".contentEquals(tag_name) || "svg".contentEquals(tag_name)
-				|| "polygon".contentEquals(tag_name) || "br".contentEquals(tag_name)
-				|| "style".contentEquals(tag_name) || "polyline".contentEquals(tag_name)
-				|| "use".contentEquals(tag_name) || "template".contentEquals(tag_name)
-				|| "audio".contentEquals(tag_name)  || "iframe".contentEquals(tag_name)
-				|| "noscript".contentEquals(tag_name) || "meta".contentEquals(tag_name)
-				|| "base".contentEquals(tag_name) || "em".contentEquals(tag_name)
-				|| "body".contentEquals(tag_name);
+		return "head".contentEquals(tagName) || "link".contentEquals(tagName)
+				|| "script".contentEquals(tagName) || "g".contentEquals(tagName)
+				|| "path".contentEquals(tagName) || "svg".contentEquals(tagName)
+				|| "polygon".contentEquals(tagName) || "br".contentEquals(tagName)
+				|| "style".contentEquals(tagName) || "polyline".contentEquals(tagName)
+				|| "use".contentEquals(tagName) || "template".contentEquals(tagName)
+				|| "audio".contentEquals(tagName)  || "iframe".contentEquals(tagName)
+				|| "noscript".contentEquals(tagName) || "meta".contentEquals(tagName)
+				|| "base".contentEquals(tagName) || "em".contentEquals(tagName)
+				|| "body".contentEquals(tagName);
 	}
 
-	public static List<WebElement> filterNoWidthOrHeight(List<WebElement> web_elements) {
-		List<WebElement> elements = new ArrayList<WebElement>(web_elements.size());
-		for(WebElement element : web_elements){
+	/**
+	 * Filters out all {@link WebElement}s that have a width and height less than 1
+	 *
+	 * @param webElements the {@link List} of {@link WebElement}s to filter
+	 *
+	 * @return filtered list of {@link WebElement}s
+	 *
+	 * <b>Preconditions:</b>
+	 * <ul>
+	 *   <li>webElements != null</li>
+	 * </ul>
+	 */
+	public static List<WebElement> filterNoWidthOrHeight(List<WebElement> webElements) {
+		assert webElements != null;
+		
+		List<WebElement> elements = new ArrayList<WebElement>(webElements.size());
+		for(WebElement element : webElements){
 			Dimension dimension = element.getSize();
 			if(dimension.getHeight() > 1 && dimension.getWidth() > 1){
 				elements.add(element);
@@ -777,9 +869,24 @@ public class BrowserService {
 		return elements;
 	}
 
-	public static List<ElementState> filterNoWidthOrHeight(List<ElementState> web_elements, boolean is_element_state) {
-		List<ElementState> elements = new ArrayList<>(web_elements.size());
-		for(ElementState element : web_elements){
+	/**
+	 * Filters out all {@link ElementState}s that have a width and height less than 1
+	 *
+	 * @param webElements the {@link List} of {@link ElementState}s to filter
+	 * @param isElementState true if the elements are {@link ElementState}s, false if they are {@link WebElement}s
+	 *
+	 * @return filtered list of {@link ElementState}s
+	 *
+	 * <b>Preconditions:</b>
+	 * <ul>
+	 *   <li>webElements != null</li>
+	 * </ul>
+	 */
+	public static List<ElementState> filterNoWidthOrHeight(List<ElementState> webElements, boolean isElementState) {
+		assert webElements != null;
+		
+		List<ElementState> elements = new ArrayList<>(webElements.size());
+		for(ElementState element : webElements){
 			if(element.getHeight() > 1 && element.getWidth() > 1){
 				elements.add(element);
 			}
@@ -796,6 +903,13 @@ public class BrowserService {
 	 * @param size {@link Dimension size} of the element
 	 * 
 	 * @return true if element is rendered within viewport, otherwise false
+	 * 
+	 * <b>Preconditions:</b>
+	 * <ul>
+	 *   <li>browser != null</li>
+	 *   <li>location != null</li>
+	 *   <li>size != null</li>
+	 * </ul>
 	 */
 	public static boolean isElementVisibleInPane(Browser browser, Point location, Dimension size){
 		assert browser != null;
@@ -812,19 +926,25 @@ public class BrowserService {
 		int height = size.getHeight();
 		int width = size.getWidth();
 
-		return x >= x_offset 
-				&& y >= y_offset 
+		return x >= x_offset
+				&& y >= y_offset
 				&& ((x-x_offset)+width) <= (browser.getViewportSize().getWidth())
 				&& ((y-y_offset)+height) <= (browser.getViewportSize().getHeight());
 	}
 	
 	/**
 	 * Checks if {@link ElementState element} is visible in the current viewport window or not
-	 * 
+	 *
 	 * @param browser {@link Browser browser} connection to use
 	 * @param element {@link ElementState element} to be be evaluated
-	 * 
+	 *
 	 * @return true if element is rendered within viewport, otherwise false
+	 *
+	 * <b>Preconditions:</b>
+	 * <ul>
+	 *   <li>browser != null</li>
+	 *   <li>element != null</li>
+	 * </ul>
 	 */
 	public static boolean isElementVisibleInPane(Browser browser, ElementState element){
 		assert browser != null;
@@ -852,9 +972,20 @@ public class BrowserService {
 	 * @param size {@link Dimension size} of the element
 	 * 
 	 * @return true if element is rendered within viewport, otherwise false
+	 *
+	 * <b>Preconditions:</b>
+	 * <ul>
+	 *   <li>browser != null</li>
+	 *   <li>position != null</li>
+	 *   <li>size != null</li>
+	 * </ul>
 	 */
-	public static boolean doesElementFitInViewport(Browser browser, Point position, Dimension size){
+	public static boolean doesElementFitInViewport(Browser browser,
+													Point position,
+													Dimension size)
+	{
 		assert browser != null;
+		assert position != null;
 		assert size != null;
 
 		int height = size.getHeight();
@@ -907,9 +1038,27 @@ public class BrowserService {
 	/**
 	 * generates a unique xpath for this element.
 	 *
+	 * @param element the {@link WebElement} to generate an xpath for
+	 * @param driver the {@link WebDriver} to use
+	 * @param attributes the {@link Map} of attributes to use
+	 *
 	 * @return an xpath that identifies this element uniquely
+	 *
+	 * <b>Preconditions:</b>
+	 * <ul>
+	 *   <li>element != null</li>
+	 *   <li>driver != null</li>
+	 *   <li>attributes != null</li>
+	 * </ul>
 	 */
-	public String generateXpath(WebElement element, WebDriver driver, Map<String, String> attributes){
+	public String generateXpath(WebElement element,
+								WebDriver driver,
+								Map<String, String> attributes)
+	{
+		assert element != null;
+		assert driver != null;
+		assert attributes != null;
+		
 		List<String> attributeChecks = new ArrayList<>();
 		List<String> valid_attributes = Arrays.asList(valid_xpath_attributes);
 		
@@ -929,24 +1078,24 @@ public class BrowserService {
 			xpath += "["+attributeChecks.get(0).toString() + "]";
 		}
 
-	    WebElement parent = element;
-	    String parent_tag_name = parent.getTagName();
-	    while(!"html".equals(parent_tag_name) && !"body".equals(parent_tag_name)){
-	    	try{
-	    		parent = getParentElement(parent);
-	    		if(driver.findElements(By.xpath("//"+parent.getTagName() + xpath)).size() == 1){
-	    			return "//"+parent.getTagName() + xpath;
-	    		}
-	    		else{
-		    		xpath = "/" + parent.getTagName() + xpath;
-	    		}
-	    	}catch(InvalidSelectorException e){
-	    		parent = null;
-	    		log.warn("Invalid selector exception occurred while generating xpath through parent nodes");
-	    		break;
-	    	}
-	    }
-	    xpath = "/"+xpath;
+		WebElement parent = element;
+		String parent_tag_name = parent.getTagName();
+		while(!"html".equals(parent_tag_name) && !"body".equals(parent_tag_name)){
+			try{
+				parent = getParentElement(parent);
+				if(driver.findElements(By.xpath("//"+parent.getTagName() + xpath)).size() == 1){
+					return "//"+parent.getTagName() + xpath;
+				}
+				else{
+					xpath = "/" + parent.getTagName() + xpath;
+				}
+			}catch(InvalidSelectorException e){
+				parent = null;
+				log.warn("Invalid selector exception occurred while generating xpath through parent nodes");
+				break;
+			}
+		}
+		xpath = "/"+xpath;
 		return uniqifyXpath(element, xpath, driver);
 	}
 
@@ -956,7 +1105,14 @@ public class BrowserService {
 	 * @return an xpath that identifies this element uniquely
 	 */
 	@Deprecated
-	public static String generateXpathUsingJsoup(Element element, Document doc, Attributes attributes, Map<String, Integer> xpath_cnt){
+	public static String generateXpathUsingJsoup(Element element,
+												Document doc,
+												Attributes attributes,
+												Map<String, Integer> xpath_cnt) {
+		assert element != null;
+		assert doc != null;
+		assert attributes != null;
+		assert xpath_cnt != null;
 		List<String> attributeChecks = new ArrayList<>();
 		List<String> valid_attributes = Arrays.asList(valid_xpath_attributes);
 		Element element_copy = element.clone();
@@ -980,35 +1136,35 @@ public class BrowserService {
 		Element last_element = element;
 		Element parent = null;
 		String last_element_tagname = last_element.tagName();
-	    while(!"html".equals(last_element_tagname) && !"body".equals(last_element_tagname)){
-	    	try{
-	    		parent = last_element.parent();
+		while(!"html".equals(last_element_tagname) && !"body".equals(last_element_tagname)){
+			try{
+				parent = last_element.parent();
 
-	    		if(!isStructureTag(parent.tagName())){
-	    			Elements elements = Xsoup.compile("//"+parent.tagName() + xpath).evaluate(doc).getElements();
-		    		if( elements.isEmpty()){
-		    			break;
-		    		}
-	    			else if( elements.size() == 1){
-		    			return "//"+parent.tagName() + xpath;
-		    		}
-		    		else{
-			    		xpath = "/" + parent.tagName() + xpath;
-		    		}
-		    		last_element = parent;
-		    		last_element_tagname = last_element.tagName();
-	    		}
-	    		else{
-	    			log.warn("Encountered structure tag. Aborting element xpath extraction..");
-	    			break;
-	    		}
-	    	}catch(InvalidSelectorException e){
-	    		parent = null;
-	    		log.warn("Invalid selector exception occurred while generating xpath through parent nodes");
-	    		break;
-	    	}
-	    }
-	    if(!xpath.startsWith("//")){
+				if(!isStructureTag(parent.tagName())){
+					Elements elements = Xsoup.compile("//"+parent.tagName() + xpath).evaluate(doc).getElements();
+					if( elements.isEmpty()){
+						break;
+					}
+					else if( elements.size() == 1){
+						return "//"+parent.tagName() + xpath;
+					}
+					else{
+						xpath = "/" + parent.tagName() + xpath;
+					}
+					last_element = parent;
+					last_element_tagname = last_element.tagName();
+				}
+				else{
+					log.warn("Encountered structure tag. Aborting element xpath extraction..");
+					break;
+				}
+			}catch(InvalidSelectorException e){
+				parent = null;
+				log.warn("Invalid selector exception occurred while generating xpath through parent nodes");
+				break;
+			}
+		}
+		if(!xpath.startsWith("//")){
 			xpath = "/"+xpath;
 		}
 
@@ -1342,6 +1498,18 @@ public class BrowserService {
 		return classifyUsingChildren(root_element);
 	}
 
+	/**
+	 * Classifies a template into an atom, molecule, organism, or template
+	 *
+	 * @param root_element the root element of the template
+	 *
+	 * @return the template type
+	 *
+	 * <b>Preconditions:</b>
+	 * <ul>
+	 *   <li>root_element != null</li>
+	 * </ul>
+	 */
 	private TemplateType classifyUsingChildren(Element root_element) {
 		assert root_element != null;
 
@@ -1387,6 +1555,7 @@ public class BrowserService {
 	}
 
 	private boolean isTopLevelElement() {
+
 		// TODO Auto-generated method stub
 		return false;
 	}

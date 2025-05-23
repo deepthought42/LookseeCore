@@ -19,70 +19,94 @@ import lombok.Setter;
  * Record detailing an set of {@link Audit audits} and the outcomes of those
  *  audits. Outcomes include progress of audits and final scores of audits
  */
+@Getter
+@Setter
 @Node
 public class AuditRecord extends LookseeObject {
+	
+	/**
+	 * The status of the audit record
+	 */
 	private String status;
+
+	/**
+	 * The level of the audit record
+	 */
 	private String level;
-	
-	@Getter
-	@Setter
+
+	/**
+	 * The url of the audit record
+	 */
 	private String url;
-	
-	@Getter
-	@Setter
+
+	/**
+	 * The status message of the audit record
+	 */
 	private String statusMessage;
 	
-	@Getter
-	@Setter
+	/**
+	 * The target user age of the audit record
+	 */
 	private String targetUserAge;
 
-	@Getter
-	@Setter
+	/**
+	 * The start time of the audit record
+	 */
 	private LocalDateTime startTime;
 	
-	@Getter
-	@Setter
+	/**
+	 * The end time of the audit record
+	 */
 	private LocalDateTime endTime;
 	
-	@Getter
-	@Setter
+	/**
+	 * The content audit progress of the audit record
+	 */
 	private double contentAuditProgress;
 	
-	@Getter
-	@Setter
+	/**
+	 * The content audit score of the audit record
+	 */
 	private double contentAuditScore;
 
-	@Getter
-	@Setter
+	/**
+	 * The info architecture audit progress of the audit record
+	 */
 	private double infoArchitectureAuditProgress;
 	
-	@Getter
-	@Setter
+	/**
+	 * The aesthetic audit progress of the audit record
+	 */
 	private double infoArchScore;
 	
-	@Getter
-	@Setter
+	/**
+	 * The aesthetic audit progress of the audit record
+	 */
 	private double aestheticAuditProgress;
 	
-	@Getter
-	@Setter
+	/**
+	 * The aesthetic score of the audit record
+	 */
 	private double aestheticScore;
 
-	@Getter
-	@Setter
+	/**
+	 * The data extraction progress of the audit record
+	 */
 	private double dataExtractionProgress;
 	
-	@Getter
-	@Setter
+	/**
+	 * The audit labels of the audit record
+	 */
 	private Set<AuditName> auditLabels;
 
 	//DESIGN SYSTEM VALUES
-	@Getter
-	@Setter
+	/**
+	 * The colors of the audit record
+	 */
 	private List<String> colors;
 	
 	/**
-	 * Constructor
+	 * Constructs an empty {@link AuditRecord}
 	 */
 	public AuditRecord() {
 		setStartTime(LocalDateTime.now());
@@ -215,23 +239,28 @@ public class AuditRecord extends LookseeObject {
 				&& this.getDataExtractionProgress() >= 1.0);
 	}
 	
+	/**
+	 * Clones the {@link AuditRecord}
+	 *
+	 * @return the cloned {@link AuditRecord}
+	 */
 	@Override
 	public AuditRecord clone() {
 		return new AuditRecord(getId(),
-							   getStatus(),
-							   getLevel(),
-							   getKey(),
-							   getStartTime(),
-							   getAestheticScore(),
-							   getAestheticAuditProgress(),
-							   getContentAuditScore(),
-							   getContentAuditProgress(),
-							   getInfoArchScore(),
-							   getInfoArchitectureAuditProgress(),
-							   getDataExtractionProgress(),
-							   getCreatedAt(),
-							   getEndTime(),
-							   getUrl());
+								getStatus(),
+								getLevel(),
+								getKey(),
+								getStartTime(),
+								getAestheticScore(),
+								getAestheticAuditProgress(),
+								getContentAuditScore(),
+								getContentAuditProgress(),
+								getInfoArchScore(),
+								getInfoArchitectureAuditProgress(),
+								getDataExtractionProgress(),
+								getCreatedAt(),
+								getEndTime(),
+								getUrl());
 	}
 	
 	/**

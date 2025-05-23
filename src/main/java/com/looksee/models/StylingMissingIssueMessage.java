@@ -16,9 +16,16 @@ import com.looksee.models.recommend.Recommendation;
 @Node
 public class StylingMissingIssueMessage extends UXIssueMessage {
 	
+	/**
+	 * Constructs a new {@link StylingMissingIssueMessage}
+	 *
+	 * @param description the description of the styling missing issue message
+	 * @param recommendation the recommendation of the styling missing issue message
+	 * @param priority the priority of the styling missing issue message
+	 */
 	public StylingMissingIssueMessage(
-			String description, 
-			Set<Recommendation> recommendation, 
+			String description,
+			Set<Recommendation> recommendation,
 			Priority priority) {
 		super();
 		
@@ -28,6 +35,9 @@ public class StylingMissingIssueMessage extends UXIssueMessage {
 		setKey(generateKey());
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public ObservationType getType() {
 		return ObservationType.STYLE_MISSING;

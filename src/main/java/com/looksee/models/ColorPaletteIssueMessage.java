@@ -12,17 +12,34 @@ import com.looksee.models.enums.ColorScheme;
 import com.looksee.models.enums.ObservationType;
 import com.looksee.models.enums.Priority;
 
+import lombok.Getter;
+
 /**
  * A observation of potential error for a given color palette 
  */
 @Node
 public class ColorPaletteIssueMessage extends UXIssueMessage{
 	
-	private List<String> palette_colors = new ArrayList<>();
+	/**
+	 * The palette colors of the color palette issue message
+	 */
+	@Getter
+	private List<String> paletteColors = new ArrayList<>();
 	
+	/**
+	 * The colors of the color palette issue message
+	 */
+	@Getter
 	private Set<String> colors = new HashSet<>();
-	private String color_scheme;
+
+	/**
+	 * The color scheme of the color palette issue message
+	 */
+	private String colorScheme;
 	
+	/**
+	 * Constructs a new {@link ColorPaletteIssueMessage}
+	 */
 	public ColorPaletteIssueMessage() {
 		setPaletteColors(new ArrayList<>());
 		setColors(new HashSet<>());
@@ -32,36 +49,36 @@ public class ColorPaletteIssueMessage extends UXIssueMessage{
 	/**
 	 * Constructs new object
 	 * 
-	 * @param priority
-	 * @param description TODO
-	 * @param recommendation
-	 * @param colors
-	 * @param palette_colors
-	 * @param category TODO
-	 * @param labels TODO
-	 * @param wcag_compliance TODO
-	 * @param title TODO
-	 * @param points_earned TODO
-	 * @param max_points TODO
-	 * 
+	 * @param priority the priority of the color palette issue message
+	 * @param description the description of the color palette issue message
+	 * @param recommendation the recommendation of the color palette issue message
+	 * @param colors the colors of the color palette issue message
+	 * @param palette_colors the palette colors of the color palette issue message
+	 * @param category the category of the color palette issue message
+	 * @param labels the labels of the color palette issue message
+	 * @param wcag_compliance the wcag compliance of the color palette issue message
+	 * @param title the title of the color palette issue message
+	 * @param points_earned the points earned of the color palette issue message
+	 * @param max_points the max points of the color palette issue message
+	 *
 	 * precondition: colors != null;
 	 * precondition: palette_colors != null;
 	 */
 	public ColorPaletteIssueMessage(
-			Priority priority, 
-			String description, 
-			String recommendation, 
-			Set<String> colors, 
-			List<String> palette_colors, 
-			AuditCategory category, 
-			Set<String> labels, 
-			String wcag_compliance, 
-			String title, 
-			int points_earned, 
+			Priority priority,
+			String description,
+			String recommendation,
+			Set<String> colors,
+			List<String> paletteColors,
+			AuditCategory category,
+			Set<String> labels,
+			String wcag_compliance,
+			String title,
+			int points_earned,
 			int max_points
-	) {		
-		super(	priority, 
-				description, 
+	) {
+		super(	priority,
+				description,
 				ObservationType.COLOR_PALETTE,
 				category,
 				wcag_compliance,
@@ -73,36 +90,48 @@ public class ColorPaletteIssueMessage extends UXIssueMessage{
 				recommendation);
 		
 		assert colors != null;
-		assert palette_colors != null;
+		assert paletteColors != null;
 		
 		setColorScheme(ColorScheme.UNKNOWN);
 		setColors(colors);
-		setPaletteColors(palette_colors);
+		setPaletteColors(paletteColors);
 	}
 
-	public Set<String> getColors() {
-		return colors;
-	}
-
+	/**
+	 * Sets the colors of the color palette issue message
+	 *
+	 * @param colors the colors of the color palette issue message
+	 */
 	public void setColors(Set<String> colors) {
 		for(String color : colors) {
 			this.colors.add(color);
 		}
 	}
 
+	/**
+	 * Returns the color scheme of the color palette issue message
+	 *
+	 * @return the color scheme of the color palette issue message
+	 */
 	public ColorScheme getColorScheme() {
-		return ColorScheme.create(color_scheme);
+		return ColorScheme.create(colorScheme);
 	}
 
-	public void setColorScheme(ColorScheme color_scheme) {
-		this.color_scheme = color_scheme.getShortName();
+	/**
+	 * Sets the color scheme of the color palette issue message
+	 *
+	 * @param colorScheme the color scheme of the color palette issue message
+	 */
+	public void setColorScheme(ColorScheme colorScheme) {
+		this.colorScheme = colorScheme.getShortName();
 	}
 
-	public List<String> getPaletteColors() {
-		return palette_colors;
-	}
-
+	/**
+	 * Sets the palette colors of the color palette issue message
+	 *
+	 * @param palette the palette colors of the color palette issue message
+	 */
 	public void setPaletteColors(List<String> palette) {
-		this.palette_colors.addAll(palette);
+		this.paletteColors.addAll(palette);
 	}
 }

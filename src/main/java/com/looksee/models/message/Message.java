@@ -46,12 +46,12 @@ public abstract class Message {
 	/**
 	 * Constructs a {@link Message} with the given account id
 	 *
-	 * @param account_id the account id
+	 * @param accountId the account id
 	 */
-	public Message(long account_id){
+	public Message(long accountId){
 		this.messageId = UUID.randomUUID().toString();
 		this.publishTime = LocalDateTime.now();
 		
-		setAccountId(account_id);
+		setAccountId(accountId);
 	}
 }

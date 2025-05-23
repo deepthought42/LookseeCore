@@ -45,7 +45,11 @@ public class ElementStateUtils {
 	 * @param viewport_size the viewport size
 	 * @return the filtered list of element states
 	 *
-	 * precondition: elements != null && viewport_size != null
+	 * <b>Preconditions:</b>
+	 * <ul>
+	 *   <li>elements != null</li>
+	 *   <li>viewport_size != null</li>
+	 * </ul>
 	 */
 	public static List<ElementState> filterNotVisibleInViewport(int x_offset,
 																int y_offset,
@@ -70,7 +74,10 @@ public class ElementStateUtils {
 	 * @param web_elements the list of web elements
 	 * @return the filtered list of web elements
 	 *
-	 * precondition: web_elements != null
+	 * <b>Preconditions:</b>
+	 * <ul>
+	 *   <li>web_elements != null</li>
+	 * </ul>
 	 */
 	public static List<WebElement> filterStructureTags(List<WebElement> web_elements) {
 		assert web_elements != null;
@@ -96,7 +103,11 @@ public class ElementStateUtils {
 	 * @param viewport_size the viewport size
 	 * @return true if the element is visible in the viewport, false otherwise
 	 *
-	 * precondition: elem != null && viewport_size != null
+	 * <b>Preconditions:</b>
+	 * <ul>
+	 *   <li>elem != null</li>
+	 *   <li>viewport_size != null</li>
+	 * </ul>
 	 */
 	public static boolean isElementVisibleInPane(int x_offset,
 													int y_offset,
@@ -142,7 +153,10 @@ public class ElementStateUtils {
 	 *
 	 * @return 1 if element is text owner, otherwise 0
 	 *
-	 * precondition: element_state != null;
+	 * <b>Preconditions:</b>
+	 * <ul>
+	 *   <li>element_state != null</li>
+	 * </ul>
 	 */
 	public static boolean isTextContainer(ElementState element_state) {
 		assert element_state != null;
@@ -161,7 +175,10 @@ public class ElementStateUtils {
 	 *
 	 * @return 1 if element is text owner, otherwise 0
 	 *
-	 * precondition: element != null;
+	 * <b>Preconditions:</b>
+	 * <ul>
+	 *   <li>element != null</li>
+	 * </ul>
 	 */
 	public static boolean isTextContainer(WebElement element) {
 		assert element != null;
@@ -192,7 +209,10 @@ public class ElementStateUtils {
 	 * @param element_states the list of element states to enrich
 	 * @return the enriched element states
 	 *
-	 * precondition: element_states != null
+	 * <b>Preconditions:</b>
+	 * <ul>
+	 *   <li>element_states != null</li>
+	 * </ul>
 	 */
 	public static Stream<ElementState> enrichBackgroundColor(List<ElementState> element_states) {
 		assert element_states != null;
@@ -235,7 +255,10 @@ public class ElementStateUtils {
 	 * @param element the element to enrich
 	 * @return the enriched element
 	 *
-	 * precondition: element != null
+	 * <b>Preconditions:</b>
+	 * <ul>
+	 *   <li>element != null</li>
+	 * </ul>
 	 */
 	public static ElementState enrichBackgroundColor(ElementState element) {
 		assert element != null;

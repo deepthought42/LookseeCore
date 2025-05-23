@@ -1,36 +1,49 @@
 package com.looksee.models;
 
+import lombok.Getter;
+import lombok.Setter;
+
+/**
+ * Stores a label
+ */
+@Getter
+@Setter
 public class Label extends LookseeObject{
+	/**
+	 * The description of the label
+	 */
 	private String description;
+	
+	/**
+	 * The score of the label
+	 */	
 	private float score;
 	
+	/**
+	 * Constructs a new {@link Label}
+	 */
 	public Label() {
 		setDescription("");
 		setScore(0.0F);
 	}
 	
+	/**
+	 * Constructs a new {@link Label}
+	 *
+	 * @param description the description of the label
+	 * @param score the score of the label
+	 */
 	public Label(String description, float score) {
 		setDescription(description);
 		setScore(score);
 		setKey(generateKey());
 	}
 
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public float getScore() {
-		return score;
-	}
-
-	public void setScore(float score) {
-		this.score = score;
-	}
-
+	/**
+	 * Generates a key for the label
+	 *
+	 * @return the key for the label
+	 */
 	@Override
 	public String generateKey() {
 		return "label::"+getDescription();

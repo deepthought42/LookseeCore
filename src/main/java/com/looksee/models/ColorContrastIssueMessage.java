@@ -2,46 +2,64 @@ package com.looksee.models;
 
 import java.util.Set;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.neo4j.core.schema.Node;
 
 import com.looksee.models.enums.AuditCategory;
 import com.looksee.models.enums.ObservationType;
 import com.looksee.models.enums.Priority;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 
 /**
- * A observation of potential error for a given color palette 
+ * A observation of potential error for a given color palette
  */
+@NoArgsConstructor
+@Getter
+@Setter
 @Node
 public class ColorContrastIssueMessage extends ElementStateIssueMessage{
-	private static Logger log = LoggerFactory.getLogger(ColorContrastIssueMessage.class);
-
+	/**
+	 * The contrast of the color
+	 */
 	private double contrast;
-	private String foreground_color;
-	private String background_color;
-	private String font_size;
+
+	/**
+	 * The foreground color of the color
+	 */
+	private String foregroundColor;
+
+	/**
+	 * The background color of the color
+	 */
+	private String backgroundColor;
+
+	/**
+	 * The font size of the color
+	 */
+	private String fontSize;
 	
-	public ColorContrastIssueMessage() {}
 	
 	/**
 	 * Constructs new instance
-	 * 
-	 * @param priority
-	 * @param description TODO
-	 * @param contrast
-	 * @param foreground_color
-	 * @param background_color
-	 * @param element
-	 * @param category TODO
-	 * @param labels TODO
-	 * @param wcag_compliance TODO
-	 * @param title TODO
-	 * @param font_size TODO
-	 * @param points_earned TODO
-	 * @param max_points TODO
-	 * @param recommendation TODO
+	 *
+	 * @param priority the priority of the color contrast issue
+	 * @param description the description of the color contrast issue
+	 * @param contrast the contrast of the color contrast issue
+	 * @param foreground_color the foreground color of the color contrast issue
+	 * @param background_color the background color of the color contrast issue
+	 * @param element the element of the color contrast issue
+	 * @param category the category of the color contrast issue
+	 * @param labels the labels of the color contrast issue
+	 * @param wcag_compliance the WCAG compliance of the color contrast issue
+	 * @param title the title of the color contrast issue
+	 * @param font_size the font size of the color contrast issue
+	 * @param points_earned the points earned of the color contrast issue
+	 * @param max_points the max points of the color contrast issue
+	 * @param recommendation the recommendation of the color contrast issue
+	 *
 	 * precondition: priority != null
 	 * precondition: recommendation != null
 	 * precondition: !recommendation.isEmpty()
@@ -50,22 +68,22 @@ public class ColorContrastIssueMessage extends ElementStateIssueMessage{
 	 * precondition: !foreground_color.isEmpty()
 	 * precondition: assert background_color != null
 	 * precondition: !background_color.isEmpty()
-	 * 
+	 *
 	 */
 	public ColorContrastIssueMessage(
-			Priority priority, 
+			Priority priority,
 			String description,
 			double contrast,
 			String foreground_color,
 			String background_color,
-			ElementState element, 
-			AuditCategory category, 
-			Set<String> labels, 
-			String wcag_compliance, 
+			ElementState element,
+			AuditCategory category,
+			Set<String> labels,
+			String wcag_compliance,
 			String title,
-			String font_size, 
-			int points_earned, 
-			int max_points, 
+			String font_size,
+			int points_earned,
+			int max_points,
 			String recommendation
 	) {
 		assert priority != null;
@@ -90,37 +108,5 @@ public class ColorContrastIssueMessage extends ElementStateIssueMessage{
 		setPoints(points_earned);
 		setMaxPoints(max_points);
 		setKey(this.generateKey());
-	}
-
-	public double getContrast() {
-		return contrast;
-	}
-
-	public void setContrast(double contrast) {
-		this.contrast = contrast;
-	}
-
-	public String getForegroundColor() {
-		return foreground_color;
-	}
-
-	public void setForegroundColor(String foreground_color) {
-		this.foreground_color = foreground_color;
-	}
-
-	public String getBackgroundColor() {
-		return background_color;
-	}
-
-	public void setBackgroundColor(String background_color) {
-		this.background_color = background_color;
-	}
-
-	public String getFontSize() {
-		return font_size;
-	}
-
-	public void setFontSize(String font_size) {
-		this.font_size = font_size;
 	}
 }

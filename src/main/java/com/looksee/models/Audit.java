@@ -16,57 +16,74 @@ import lombok.Setter;
 /**
  * Represents an audit record for evaluating various aspects of website design and accessibility.
  *
- * @inv category != null && subcategory != null && name != null && level != null
- * @inv points >= 0 && totalPossiblePoints >= points
- * @inv messages != null
- * @inv labels != null
- * @inv url != null && !url.isEmpty()
- * @inv description != null && !description.isEmpty()
- * @inv whyItMatters != null && !whyItMatters.isEmpty()
- *
- * @see AuditCategory
- * @see AuditSubcategory
- * @see AuditName
- * @see AuditLevel
- * @see UXIssueMessage
+ * <p><b>Invariants:</b>
+ * <ul>
+ *   <li>The category, subcategory, name, and level must not be null.</li>
+ *   <li>Points must be non-negative and not exceed totalPossiblePoints.</li>
+ *   <li>Messages and labels collections must not be null.</li>
+ *   <li>URL, description and whyItMatters must not be null or empty strings.</li>
+ * </ul>
  */
+@Getter
+@Setter
 public class Audit extends LookseeObject {
 
+	/**
+	 * The category of the audit
+	 */
 	private String category;
+	/**
+	 * The subcategory of the audit
+	 */
 	private String subcategory;
-	private String name; // name of the audit
+	/**
+	 * The name of the audit
+	 */
+	private String name;
+
+	/**
+	 * The level of the audit
+	 */
 	private String level;
 
-	@Getter
-	@Setter
-	private int points;      //scoring
+	/**
+	 * The points of the audit
+	 */
+	private int points;
 
-	@Getter
-	@Setter
-	private int totalPossiblePoints;      //scoring
+	/**
+	 * The total possible points of the audit
+	 */
+	private int totalPossiblePoints;
 
-	@Getter
-	@Setter
+	/**
+	 * The url of the audit
+	 */
 	private String url;
 
-	@Getter
-	@Setter
+	/**
+	 * The accessible flag of the audit
+	 */
 	private boolean accessible;
 
-	@Getter
-	@Setter
+	/**
+	 * The description of the audit
+	 */
 	private String description;
 
-	@Getter
-	@Setter
+	/**
+	 * The why it matters of the audit
+	 */
 	private String whyItMatters;
 	
-	@Getter
-	@Setter
+	/**
+	 * The messages of the audit
+	 */
 	private Set<UXIssueMessage> messages;
 	
-	@Getter
-	@Setter
+	/**
+	 * The labels of the audit
+	 */
 	private Set<String> labels;
 
 	/**
@@ -127,6 +144,11 @@ public class Audit extends LookseeObject {
 		setKey(generateKey());
 	}
 
+	/**
+	 * Clones the audit
+	 *
+	 * @return the cloned audit
+	 */
 	public Audit clone() {
 		return new Audit(getCategory(),
 						getSubcategory(),

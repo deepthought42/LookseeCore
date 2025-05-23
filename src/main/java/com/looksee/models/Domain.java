@@ -12,7 +12,7 @@ import lombok.Setter;
 
 /**
  * Represents a domain.
- * 
+ *
  * This class represents a domain and contains a list of {@link PageState} objects,
  * which represent the pages of the domain. It also contains a {@link DesignSystem} object,
  * which represents the design system of the domain.
@@ -21,22 +21,46 @@ import lombok.Setter;
 @Setter
 public class Domain extends LookseeObject{
 	
+	/**
+	 * The url of the domain
+	 */
 	private String url;
+
+	/**
+	 * The logo url of the domain
+	 */
 	private String logoUrl;
+
+	/**
+	 * The entrypoint url of the domain
+	 */
 	private String entrypointUrl;
+
+	/**
+	 * The sitemap of the domain
+	 */
 	private List<String> sitemap;
-	
+
+	/**
+	 * The pages of the domain
+	 */
 	@Relationship(type = "HAS")
 	private List<PageState> pages;
 	
+	/**
+	 * The audit records of the domain
+	 */
 	@Relationship(type = "HAS")
 	private Set<DomainAuditRecord> auditRecords;
 
+	/**
+	 * The design system of the domain
+	 */
 	@Relationship(type="USES")
 	private DesignSystem designSystem;
 	
 	/**
-	 * Constructs a new {@link Domain} object.
+	 * Constructs a new {@link Domain}
 	 */
 	public Domain(){
 		setPages( new ArrayList<>() );
@@ -46,7 +70,7 @@ public class Domain extends LookseeObject{
 	}
 	
 	/**
-	 * Constructs a new {@link Domain} object with the given parameters.
+	 * Constructs a new {@link Domain} with the given parameters.
 	 *
 	 * @param protocol web protocol ("http", "https", "file", etc.)
 	 * @param host domain name

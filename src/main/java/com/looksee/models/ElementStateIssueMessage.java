@@ -12,33 +12,51 @@ import com.looksee.models.enums.AuditCategory;
 import com.looksee.models.enums.ObservationType;
 import com.looksee.models.enums.Priority;
 
+import lombok.NoArgsConstructor;
+
 
 /**
- * A observation of potential error for a given {@link Element element} 
+ * A observation of potential error for a given {@link ElementState element state}
  */
 @Node
-public class ElementStateIssueMessage extends UXIssueMessage {	
+@NoArgsConstructor
+public class ElementStateIssueMessage extends UXIssueMessage {
 	private static Logger log = LoggerFactory.getLogger(ElementStateIssueMessage.class);
 
+	/**
+	 * The element state of the element state issue message
+	 */
 	@Relationship(type = "FOR")
 	private ElementState element;
 
-	public ElementStateIssueMessage() {}
-	
+	/**
+	 * Constructs a new {@link ElementStateIssueMessage}
+	 *
+	 * @param priority the priority of the element state issue message
+	 * @param description the description of the element state issue message
+	 * @param recommendation the recommendation of the element state issue message
+	 * @param element the element state of the element state issue message
+	 * @param category the category of the element state issue message
+	 * @param labels the labels of the element state issue message
+	 * @param wcag_compliance the wcag compliance of the element state issue message
+	 * @param title the title of the element state issue message
+	 * @param points_awarded the points awarded of the element state issue message
+	 * @param max_points the max points of the element state issue message
+	 */
 	public ElementStateIssueMessage(
 			Priority priority,
 			String description,
-			String recommendation, 
-			ElementState element, 
-			AuditCategory category, 
-			Set<String> labels, 
+			String recommendation,
+			ElementState element,
+			AuditCategory category,
+			Set<String> labels,
 			String wcag_compliance,
-			String title, 
+			String title,
 			int points_awarded,
 			int max_points
 	) {
-		super(	priority, 
-				description, 
+		super(	priority,
+				description,
 				ObservationType.ELEMENT,
 				category,
 				wcag_compliance,
@@ -52,14 +70,27 @@ public class ElementStateIssueMessage extends UXIssueMessage {
 		setElement(element);
 	}
 
+	/**
+	 * Returns the element state of the element state issue message
+	 *
+	 * @return the element state of the element state issue message
+	 */
 	public ElementState getElement() {
 		return element;
 	}
 
+	/**
+	 * Sets the element state of the element state issue message
+	 *
+	 * @param element the element state of the element state issue message
+	 */
 	public void setElement(ElementState element) {
 		this.element = element;
 	}
 	
+	/**
+	 * Prints the element state issue message
+	 */
 	@Override
 	public void print() {
 		log.warn("ux issue key :: "+getKey());
@@ -76,6 +107,5 @@ public class ElementStateIssueMessage extends UXIssueMessage {
 		log.warn("ux issue priority :: "+getPriority());
 		log.warn("ux issue type :: "+getType());
 		log.warn("------------------------------------------------------------------------------");
-		
 	}
 }

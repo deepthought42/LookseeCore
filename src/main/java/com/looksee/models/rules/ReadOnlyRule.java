@@ -7,12 +7,18 @@ import com.looksee.models.Element;
  *
  */
 public class ReadOnlyRule extends Rule {
+	/**
+	 * Constructs a new {@link ReadOnlyRule} rule
+	 */
 	public ReadOnlyRule(){
 		setValue("");
 		setType(RuleType.READ_ONLY);
 		setKey(generateKey());
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Boolean evaluate(Element elem) {
 		//Check if field is read-only

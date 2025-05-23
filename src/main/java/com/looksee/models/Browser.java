@@ -72,6 +72,7 @@ import cz.vutbr.web.csskit.RuleKeyframesImpl;
 import cz.vutbr.web.csskit.RuleMediaImpl;
 import cz.vutbr.web.domassign.StyleMap;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.yandex.qatools.ashot.AShot;
 import ru.yandex.qatools.ashot.shooting.ShootingStrategies;
@@ -79,6 +80,7 @@ import ru.yandex.qatools.ashot.shooting.ShootingStrategies;
 /**
  * Handles the management of selenium browser instances and provides various methods for interacting with the browser 
  */
+@NoArgsConstructor
 @Component
 @Getter
 @Setter
@@ -86,15 +88,13 @@ public class Browser {
 	
 	private static Logger log = LoggerFactory.getLogger(Browser.class);
 	private WebDriver driver = null;
-	private String browserName; 
+	private String browserName;
 	private long yScrollOffset;
 	private long xScrollOffset;
 	private Dimension viewportSize;
 	private static final String JS_GET_VIEWPORT_WIDTH = "var width = undefined; if (window.innerWidth) {width = window.innerWidth;} else if (document.documentElement && document.documentElement.clientWidth) {width = document.documentElement.clientWidth;} else { var b = document.getElementsByTagName('body')[0]; if (b.clientWidth) {width = b.clientWidth;}};return width;";
 	private static final String JS_GET_VIEWPORT_HEIGHT = "var height = undefined;  if (window.innerHeight) {height = window.innerHeight;}  else if (document.documentElement && document.documentElement.clientHeight) {height = document.documentElement.clientHeight;}  else { var b = document.getElementsByTagName('body')[0]; if (b.clientHeight) {height = b.clientHeight;}};return height;";
 	
-    public Browser(){}
-
 	/**
 	 *
 	 * @param hub_node_url the url of the selenium hub node
@@ -113,18 +113,6 @@ public class Browser {
 	public Browser(String browser, URL hub_node_url) throws MalformedURLException {
 		assert browser != null;
 		
-		//create proxy server connection for handling browserup proxy calls
-		//BrowserUpProxyServer browserup_proxy = new BrowserUpProxyServer();
-		
-		/*
-		DefaultApi browserup_proxy = new DefaultApi();
-		
-		List<HarEntry> har_entries = browserup_proxy.entries(port, urlPattern) //entries(8000, "\"^(http|https)://" + hub_node_url.getHost() + "\\\\.com/.*$\"");
-		for(HarEntry entry: har_entries) {
-			entry.
-		}
-		*/
-		
 		this.setBrowserName(browser);
 		if("chrome".equals(browser)){
 			this.driver = openWithChrome(hub_node_url);
@@ -135,12 +123,7 @@ public class Browser {
 		else if("internet_explorer".equals(browser)){
 			this.driver = openWithInternetExplorer(hub_node_url);
 		}
-		//else if("safari".equals(browser)){
-//			this.driver = openWithSafari(hub_node_url);
-	//	}
-		//else if("opera".equals(browser)){
-		//	this.driver = openWithOpera(hub_node_url);
-		//}
+
 		setYScrollOffset(0);
 		setXScrollOffset(0);
 		setViewportSize(getViewportSize(driver));
@@ -201,7 +184,6 @@ public class Browser {
 	 */
 	public void close(){
 		try{
-			//driver.close();
 			driver.quit();
 		}
 		catch(Exception e){
@@ -275,28 +257,28 @@ public class Browser {
 	 * @param wait
 	 */
 	public static void AcceptAlert(WebDriver driver, WebDriverWait wait) {
-	    if (wait == null) {
-	        wait = new WebDriverWait(driver, 5);
-	    }
-	    try{
-	        Alert alert = wait.until(new ExpectedCondition<Alert>(){
+		if (wait == null) {
+			wait = new WebDriverWait(driver, 5);
+		}
+		try{
+			Alert alert = wait.until(new ExpectedCondition<Alert>(){
 				public Alert apply(WebDriver driver) {
-	                try {
-	                  return driver.switchTo().alert();
-	                } catch (NoAlertPresentException e) {
-	                  return null;
-	                }
-	              }
-	           }
-	        );
-	        alert.accept();
-	    }
-	    catch(TimeoutException e){}
+					try {
+						return driver.switchTo().alert();
+					} catch (NoAlertPresentException e) {
+						return null;
+					}
+					}
+				}
+			);
+			alert.accept();
+		}
+		catch(TimeoutException e){}
 	}
 	
 	/**
 	 * Gets image as a base 64 string
-	 * 
+	 *
 	 * @return File png file of image
 	 * @throws IOException
 	 */
@@ -391,36 +373,36 @@ public class Browser {
 			//	  2. retrieve row that is 25% of the way down the visible area
 			original_screenshot_row =  (original_image.getHeight()-1-window_size);
 
-			do {			
-				doWindowsMatch = ImageUtils.areWindowsMatching(current_screenshot, 
-																current_screenshot_row, 
-																original_image, 
-																original_screenshot_row, 
+			do {
+				doWindowsMatch = ImageUtils.areWindowsMatching(current_screenshot,
+																current_screenshot_row,
+																original_image,
+																original_screenshot_row,
 																window_size);
 
 				//doRowsMatch = areRowsMatching(current_screenshot, current_screenshot_row, original_image, original_screenshot_row);
 				if(doWindowsMatch) {
-					BufferedImage cropped_og_img = original_image.getSubimage(0, 
-																			  0, 
-																			  original_image.getWidth(),
-																			  original_screenshot_row);
+					BufferedImage cropped_og_img = original_image.getSubimage(0,
+																				0,
+																				original_image.getWidth(),
+																				original_screenshot_row);
 					
 					
-					current_screenshot = current_screenshot.getSubimage(0, 
-																		current_screenshot_row, 
-																		current_screenshot.getWidth(), 
+					current_screenshot = current_screenshot.getSubimage(0,
+																		current_screenshot_row,
+																		current_screenshot.getWidth(),
 																		current_screenshot.getHeight()-current_screenshot_row);
 							
 					//append all rows after the row in the current image for step 1 to the original screenshot
 					int height_total = cropped_og_img.getHeight() + current_screenshot.getHeight();
 					BufferedImage concat_image = new BufferedImage(cropped_og_img.getWidth(), height_total, BufferedImage.TYPE_INT_RGB);
 					Graphics2D g2d = concat_image.createGraphics();
-		            g2d.drawImage(cropped_og_img, 0, 0, null);
-		            g2d.drawImage(current_screenshot, 0, original_screenshot_row, null);
-			        g2d.dispose();
-			        
-			        original_image = concat_image;
-			        break;
+					g2d.drawImage(cropped_og_img, 0, 0, null);
+					g2d.drawImage(current_screenshot, 0, original_screenshot_row, null);
+					g2d.dispose();
+					
+					original_image = concat_image;
+					break;
 				}
 				else {
 					//decrement row for original screenshot
@@ -475,19 +457,6 @@ public class Browser {
 		}
 		
 		return page_screenshot.getSubimage(element_state.getXLocation(), element_state.getYLocation(), width, height);
-		
-/*ORIGINAL CODE		
-		//calculate element position within screen
-		int point_x = element_state.getXLocation()+5;
-		int point_y = element_state.getYLocation();
-		int width = element_state.getWidth()+5;
-		int height = element_state.getHeight();
-		if((point_x+width) >= page_screenshot.getWidth()) {
-			width = page_screenshot.getWidth()-point_x-1;
-		}
-		
-		return page_screenshot.getSubimage(point_x, point_y, width, height);
-		*/
 	}
 	
 	/**
@@ -518,10 +487,11 @@ public class Browser {
 	}
 
 	/**
-	 * 
-	 * @param elements
-	 * @param for_id
-	 * @return
+	 * Finds a label for a given id
+	 *
+	 * @param elements the elements to search
+	 * @param for_id the id to search for
+	 * @return the label
 	 */
 	public static ElementState findLabelFor(Set<ElementState> elements, String for_id){
 		for(ElementState elem : elements){
@@ -538,9 +508,10 @@ public class Browser {
 	
 	/**
 	 * Finds labels that match ids passed
-	 * @param elements
-	 * @param for_ids
-	 * @return
+	 *
+	 * @param elements the elements to search
+	 * @param for_ids the ids to search for
+	 * @return the labels
 	 */
 	public static Set<ElementState> findLabelsFor(Set<ElementState> elements, String[] for_ids){
 		Set<ElementState> labels = new HashSet<ElementState>();
@@ -560,9 +531,10 @@ public class Browser {
 
 
 	/**
-	 * 
-	 * @param page_element
-	 * @param driver
+	 * Outlines an element
+	 *
+	 * @param page_element the element to outline
+	 * @param driver the driver to use
 	 */
 	public static void outlineElement(ElementState page_element, WebDriver driver) {
 		WebElement element = driver.findElement(By.xpath(page_element.getXpath()));
@@ -571,11 +543,10 @@ public class Browser {
 	
 	/**
 	 * Finds page element by xpath
-	 * 
-	 * @param xpath
-	 * 
+	 *
+	 * @param xpath the xpath to find the element at
 	 * @return {@link WebElement} located at the provided xpath
-	 * 
+	 *
 	 * precondition: xpath != null
 	 * precondition: !xpath.isEmpty()
 	 */
@@ -735,10 +706,10 @@ public class Browser {
 	public static Map<String, String> loadCssProperties(WebElement element, WebDriver driver){
 		JavascriptExecutor executor = (JavascriptExecutor)driver;
 		String script = "var s = '';" +
-		                "var o = getComputedStyle(arguments[0]);" +
-		                "for(var i = 0; i < o.length; i++){" +
-		                "s+=o[i] + ':' + o.getPropertyValue(o[i])+';';}" +
-		                "return s;";
+						"var o = getComputedStyle(arguments[0]);" +
+						"for(var i = 0; i < o.length; i++){" +
+						"s+=o[i] + ':' + o.getPropertyValue(o[i])+';';}" +
+						"return s;";
 
 		String response = executor.executeScript(script, element).toString();
 		
@@ -877,8 +848,8 @@ public class Browser {
 	public void removeElement(String class_name) {
 		JavascriptExecutor js;
 		if (this.getDriver() instanceof JavascriptExecutor) {
-		    js = (JavascriptExecutor) driver;
-		    js.executeScript("return document.getElementsByClassName('" + class_name + "')[0].remove();");
+			js = (JavascriptExecutor) driver;
+			js.executeScript("return document.getElementsByClassName('" + class_name + "')[0].remove();");
 		}
 	}
 	
@@ -903,8 +874,9 @@ public class Browser {
 	
 	/**
 	 * Loads attributes for this element into a list of attributes
-	 * 
-	 * @param attributeList
+	 *
+	 * @param attributeList the list of attributes to load
+	 * @return the attributes
 	 */
 	private Map<String, String> loadAttributes( List<String> attributeList){
 		Map<String, String> attributes_seen = new HashMap<String, String>();
@@ -962,6 +934,13 @@ public class Browser {
 		return new Point(x_coord, y_coord);
 	}
 	
+	/**
+	 * Calculates the y coordinate
+	 *
+	 * @param y_offset the y offset
+	 * @param location the location
+	 * @return the y coordinate
+	 */
 	public static int calculateYCoordinate(int y_offset, Point location){
 		if((location.getY() - y_offset) >= 0){
 			return location.getY() - y_offset;
@@ -969,6 +948,13 @@ public class Browser {
 		return y_offset;
 	}
 	
+	/**
+	 * Calculates the x coordinate
+	 *
+	 * @param x_offset the x offset
+	 * @param location the location
+	 * @return the x coordinate
+	 */
 	public static int calculateXCoordinate(int x_offset, Point location){
 		if((location.getX() - x_offset) >= 0){
 			return location.getX() - x_offset;
@@ -986,34 +972,56 @@ public class Browser {
 					.equals("complete"));
 	}
 	
+	/**
+	 * Gets the viewport size
+	 *
+	 * @param driver the driver
+	 * @return the viewport size
+	 */
 	private static Dimension getViewportSize(WebDriver driver) {
 		int width = extractViewportWidth(driver);
 		int height = extractViewportHeight(driver);
 		return new Dimension(width, height);
 	}
-
-	private static long extractXOffset(WebDriver driver) {
-		JavascriptExecutor executor = (JavascriptExecutor) driver;
-		return (Long) executor.executeScript("return window.pageXOffset;");
-	}
 	
+	/**
+	 * Extracts the viewport height
+	 *
+	 * @param driver the driver
+	 * @return the viewport height
+	 */
 	private static long extractYOffset(WebDriver driver) {
 		JavascriptExecutor executor = (JavascriptExecutor) driver;
 		return (Long) executor.executeScript("return window.pageYOffset;");
 	}
 	
+	/**
+	 * Extracts the viewport width
+	 *
+	 * @param driver the driver
+	 * @return the viewport width
+	 */
 	private static int extractViewportWidth(WebDriver driver) {
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		int viewportWidth = Integer.parseInt(js.executeScript(JS_GET_VIEWPORT_WIDTH, new Object[0]).toString());
 		return viewportWidth;
 	}
 
+	/**
+	 * Extracts the viewport height
+	 *
+	 * @param driver the driver
+	 * @return the viewport height
+	 */
 	private static int extractViewportHeight(WebDriver driver) {
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		int result = Integer.parseInt(js.executeScript(JS_GET_VIEWPORT_HEIGHT, new Object[0]).toString());
 		return result;
 	}
 
+	/**
+	 * Moves the mouse out of the frame
+	 */
 	public void moveMouseOutOfFrame() {
 		try{
 			Actions mouseMoveAction = new Actions(driver).moveByOffset(-(getViewportSize().getWidth()/3), -(getViewportSize().getHeight()/3) );
@@ -1023,6 +1031,11 @@ public class Browser {
 		}
 	}
 
+	/**
+	 * Moves the mouse to a non-interactive point
+	 *
+	 * @param point the point to move the mouse to
+	 */
 	public void moveMouseToNonInteractive(Point point) {
 		try{
 			Actions mouseMoveAction = new Actions(driver).moveByOffset(point.getX(), point.getY());
@@ -1038,19 +1051,32 @@ public class Browser {
 	 * @return {@link Alert} if present, otherwise {@code null}
 	 */
 	public Alert isAlertPresent(){
-	    try {
-	        return driver.switchTo().alert();
-	    }   // try
-	    catch (NoAlertPresentException Ex) {
-	        return null;
+		try {
+			return driver.switchTo().alert();
+		}   // try
+		catch (NoAlertPresentException Ex) {
+			return null;
 	    }   // catch
 	}
 
+	/**
+	 * Checks if an element is displayed
+	 *
+	 * @param element the element to check
+	 * @return {@code true} if the element is displayed, {@code false} otherwise
+	 */
 	public boolean isDisplayed(ElementState element) {
 		WebElement web_element = driver.findElement(By.xpath(element.getXpath()));
 		return web_element.isDisplayed();
 	}
 
+	/**
+	 * Extracts rule sets from stylesheets
+	 *
+	 * @param raw_stylesheets the raw stylesheets
+	 * @param page_state_url the page state url
+	 * @return the rule sets
+	 */
 	public static List<RuleSet> extractRuleSetsFromStylesheets(List<String> raw_stylesheets, URL page_state_url) {
 		List<RuleSet> rule_sets = new ArrayList<>();
 		for(String raw_stylesheet : raw_stylesheets) {
@@ -1078,13 +1104,14 @@ public class Browser {
 	}
 
 	/**
-	 * 
-	 * @param src
-	 * @return
+	 * Extracts stylesheets from a given source
+	 *
+	 * @param src the source to extract stylesheets from
+	 * @return the stylesheets
 	 */
 	public static List<String> extractStylesheets(String src) {
 		List<String> raw_stylesheets = new ArrayList<>();
-		Document doc = Jsoup.parse(src);	
+		Document doc = Jsoup.parse(src);
 		Elements stylesheets = doc.select("link");
 		for(Element stylesheet : stylesheets) {
 			String rel_value = stylesheet.attr("rel");
@@ -1118,12 +1145,11 @@ public class Browser {
 	}
 	
 	/**
-	 * extract body html from source
-	 * 
-	 * @param src - entire html source for a web page
-	 * 
-	 * @return
-	 * 
+	 * Extracts the body html from source
+	 *
+	 * @param src the entire html source for a web page
+	 * @return the body html
+	 *
 	 * precondition: src != null;
 	 */
 	public static String extractBody(String src) {
@@ -1134,6 +1160,12 @@ public class Browser {
 		return body_elements.html();
 	}
 	
+	/**
+	 * Reads a URL
+	 *
+	 * @param url the url to read
+	 * @return the url
+	 */
 	public static String URLReader(URL url) throws IOException, NoSuchAlgorithmException, KeyManagementException {
         SSLContext sc = SSLContext.getDefault();
         
@@ -1143,13 +1175,19 @@ public class Browser {
         con.setSSLSocketFactory(sc.getSocketFactory());
         // get response code, 200 = Success
         if(con.getContentEncoding() != null && con.getContentEncoding().equalsIgnoreCase("gzip")) {
-        	return readStream(new GZIPInputStream( con.getInputStream()));
+			return readStream(new GZIPInputStream( con.getInputStream()));
         }
         else {
-        	return readStream(con.getInputStream());
+		return readStream(con.getInputStream());
         }
 	}
 
+	/**
+	 * Reads a stream
+	 *
+	 * @param in the stream to read
+	 * @return the stream
+	 */
 	private static String readStream(InputStream in) {
         StringBuilder sb = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(in));) {
@@ -1168,7 +1206,7 @@ public class Browser {
 	 */
 	public void scrollToBottomOfPage() {
 		((JavascriptExecutor) driver)
-	     	.executeScript("window.scrollTo(0, document.body.scrollHeight)");
+			.executeScript("window.scrollTo(0, document.body.scrollHeight)");
 		getViewportScrollOffset();
 	}
 	
@@ -1177,39 +1215,64 @@ public class Browser {
 	 */
 	public void scrollToTopOfPage() {
 		((JavascriptExecutor) driver)
-	     	.executeScript("window.scrollTo(0, 0)");
+			.executeScript("window.scrollTo(0, 0)");
 		getViewportScrollOffset();
 	}
 	
+	/**
+	 * Scrolls down a percentage of the viewport height
+	 *
+	 * @param percent the percentage to scroll down
+	 */
 	public void scrollDownPercent(double percent) {
 		((JavascriptExecutor) driver)
-	     	.executeScript("window.scrollBy(0, (window.innerHeight*"+percent+"))");
+		.executeScript("window.scrollBy(0, (window.innerHeight*"+percent+"))");
 		getViewportScrollOffset();
 	}
 	
+	/**
+	 * Scrolls down the full viewport height
+	 */
 	public void scrollDownFull() {
 		((JavascriptExecutor) driver)
-	     	.executeScript("window.scrollBy(0, window.innerHeight)");
+			.executeScript("window.scrollBy(0, window.innerHeight)");
 		getViewportScrollOffset();
 	}
 
 	/**
 	 * Retrieve HTML source form webpage
-	 * 
+	 *
 	 * @return HTML source
 	 */
 	public String getSource() {
 		return this.getDriver().getPageSource();
 	}
 
+	/**
+	 * Checks if the page is a 503 error
+	 *
+	 * @return {@code true} if the page is a 503 error, {@code false} otherwise
+	 */
 	public boolean is503Error() {
 		return this.getSource().contains("503 Service Temporarily Unavailable");
 	}
 
+	/**
+	 * Checks if the page is a 503 error
+	 *
+	 * @param source the source to check
+	 * @return {@code true} if the page is a 503 error, {@code false} otherwise
+	 */
 	public static boolean is503Error(String source) {
 		return source.contains("503 Service Temporarily Unavailable");
 	}
 
+	/**
+	 * Finds an element by xpath
+	 *
+	 * @param xpath the xpath to find the element at
+	 * @return the element
+	 */
 	public WebElement findElement(String xpath) throws WebDriverException{
 		return getDriver().findElement(By.xpath(xpath));
 	}

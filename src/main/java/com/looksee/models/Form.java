@@ -12,6 +12,7 @@ import com.looksee.models.enums.FormType;
 import com.looksee.models.message.BugMessage;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -35,41 +36,59 @@ import lombok.Setter;
  *   <li>Used for form analysis and validation</li>
  * </ul>
  */
+@NoArgsConstructor
+@Getter
+@Setter
 public class Form extends LookseeObject{
-	@SuppressWarnings("unused")
 	private static Logger log = LoggerFactory.getLogger(Form.class);
 
-	@Getter
-	@Setter
+	/**
+	 * The memory id of the form
+	 */
 	private Long memoryId;
 
-	@Getter
-	@Setter
+	/**
+	 * The name of the form
+	 */
 	private String name;
     
+	/**
+	 * The type of the form
+	 */
 	private String type;
 	
-	@Getter
+	/**
+	 * The bug messages of the form
+	 */
 	@Relationship(type = "HAS")
 	private List<BugMessage> bugMessages;
 	
-	@Getter
-	@Setter
+	/**
+	 * The form tag of the form
+	 */
 	@Relationship(type = "DEFINED_BY")
 	private ElementState formTag;
 	
-	@Getter
-	@Setter
+	/**
+	 * The form fields of the form
+	 */
 	@Relationship(type = "HAS")
 	private List<ElementState> formFields;
 
-	@Getter
-	@Setter
+	/**
+	 * The submit field of the form
+	 */
 	@Relationship(type = "HAS_SUBMIT")
 	private ElementState submitField;
 	
-	public Form(){	}
-	
+	/**
+	 * Constructs a new {@link Form}
+	 *
+	 * @param form_tag the form tag of the form
+	 * @param form_fields the form fields of the form
+	 * @param submit_field the submit field of the form
+	 * @param name the name of the form
+	 */
 	public Form(ElementState form_tag,
 				List<ElementState> form_fields,
 				ElementState submit_field,

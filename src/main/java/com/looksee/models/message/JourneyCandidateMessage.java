@@ -40,10 +40,10 @@ public class JourneyCandidateMessage extends Message {
 	/**
 	 * Creates a new JourneyCandidateMessage
 	 * @param journey the journey
-	 * @param browser_type the browser type
-	 * @param account_id the account id
-	 * @param audit_record_id the audit record id
-	 * @param map_id the map id
+	 * @param browserType the browser type
+	 * @param accountId the account id
+	 * @param auditRecordId the audit record id
+	 * @param mapId the map id
 	 */
 	public JourneyCandidateMessage(Journey journey,
 									BrowserType browserType,

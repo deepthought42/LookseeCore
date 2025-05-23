@@ -28,14 +28,14 @@ public class ElementExtractionMessage extends Message{
 
 	/**
 	 * Creates a new ElementExtractionMessage
-	 * @param account_id the account id
+	 * @param accountId the account id
 	 * @param page the page state
 	 * @param xpaths the xpaths to extract
 	 */
-	public ElementExtractionMessage(long account_id,
+	public ElementExtractionMessage(long accountId,
 									PageState page,
 									List<String> xpaths) {
-		super(account_id);
+		super(accountId);
 		setPageState(page);
 		setXpaths(xpaths);
 	}

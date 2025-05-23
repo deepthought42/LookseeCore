@@ -9,26 +9,89 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AuditScore {
+	/**
+	 * The content score of the audit score
+	 */
 	private double contentScore;
+
+	/**
+	 * The readability score of the audit score
+	 */
 	private double readability;
+
+	/**
+	 * The spelling and grammar score of the audit score
+	 */
 	private double spellingGrammar;
+
+	/**
+	 * The image quality score of the audit score
+	 */
 	private double imageQuality;
+
+	/**
+	 * The alt text score of the audit score
+	 */
 	private double altText;
 
+	/**
+	 * The information architecture score of the audit score
+	 */
 	private double informationArchitectureScore;
+
+	/**
+	 * The links score of the audit score
+	 */
 	private double links;
+
+	/**
+	 * The metadata score of the audit score
+	 */
 	private double metadata;
+
+	/**
+	 * The SEO score of the audit score
+	 */
 	private double seo;
+
+	/**
+	 * The security score of the audit score
+	 */
 	private double security;
 	
+	/**
+	 * The aesthetics score of the audit score
+	 */
 	private double aestheticsScore;
+
+	/**
+	 * The color contrast score of the audit score
+	 */
 	private double colorContrastScore;
+	
+	/**
+	 * The whitespace score of the audit score
+	 */
 	private double whitespaceScore;
 	
+	/**
+	 * The interactivity score of the audit score
+	 */
 	private double interactivityScore;
+
+	/**
+	 * The accessibility score of the audit score
+	 */
 	private double accessibilityScore;
 	
+	/**
+	 * The text contrast score of the audit score
+	 */
 	private double textContrastScore;
+
+	/**
+	 * The non-text contrast score of the audit score
+	 */
 	private double nonTextContrastScore;
 	
 	/**
@@ -53,22 +116,22 @@ public class AuditScore {
 	 * @param non_text_contrast the non-text contrast score
 	 */
 	public AuditScore(double content_score,
-					  double readability,
-					  double spelling_grammar,
-					  double image_quality,
-					  double alt_text,
-					  double information_architecture_score,
-					  double links,
-					  double metadata,
-					  double seo,
-					  double security,
-					  double aesthetic_score,
-					  double color_contrast,
-					  double whitespace,
-					  double interactivity_score,
-					  double accessibility_score,
-					  double text_contrast,
-					  double non_text_contrast) {
+						double readability,
+						double spelling_grammar,
+						double image_quality,
+						double alt_text,
+						double information_architecture_score,
+						double links,
+						double metadata,
+						double seo,
+						double security,
+						double aesthetic_score,
+						double color_contrast,
+						double whitespace,
+						double interactivity_score,
+						double accessibility_score,
+						double text_contrast,
+						double non_text_contrast) {
 		setContentScore(content_score);
 		setReadability(readability);
 		setSpellingGrammar(spelling_grammar);

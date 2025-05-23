@@ -5,9 +5,15 @@ import org.slf4j.LoggerFactory;
 
 import com.looksee.models.Element;
 
+/**
+ * A rule that checks if an element is disabled
+ */
 public class DisabledRule extends Rule{
 	private static Logger log = LoggerFactory.getLogger(DisabledRule.class);
-	
+
+	/**
+	 * Constructs a new {@link DisabledRule} rule
+	 */
 	public DisabledRule() {
 		setType(RuleType.DISABLED);
 		setValue("");
@@ -19,17 +25,8 @@ public class DisabledRule extends Rule{
 	 */
 	@Override
 	public Boolean evaluate(Element elem) {
-		/* 
-		 * Also check for 
-		 * 
-		 * display: none;
-		 * visibility: hidden;
-		 * 
-		 */
-	
 		for(String attribute: elem.getAttributes().keySet()){
 			if("disabled".contentEquals(attribute)){
-				log.info("!DISABLED RULE TYPE....TODO : THIS FEATURE NEEDS A PROPER IMPLEMENTATION!!!");
 				return  elem.getAttributes().get(attribute).length() == 0;
 			}
 		}

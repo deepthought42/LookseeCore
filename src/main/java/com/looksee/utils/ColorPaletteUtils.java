@@ -403,7 +403,10 @@ public class ColorPaletteUtils {
 	 * @param colors the {@link List} of {@link ColorData}s
 	 * @return the {@link List} of {@link PaletteColor}s
 	 *
-	 * precondition: colors != null
+	 * <b>Preconditions:</b>
+	 * <ul>
+	 *   <li>colors != null</li>
+	 * </ul>
 	 */
 	public static List<PaletteColor> extractColors(List<ColorData> colors) {
 		assert colors != null;
@@ -424,7 +427,10 @@ public class ColorPaletteUtils {
 	 * @param color_sets the {@link Set} of {@link Set} of {@link ColorData}s
 	 * @return the {@link Set} of {@link ColorData}s
 	 *
-	 * precondition: color_sets != null
+	 * <b>Preconditions:</b>
+	 * <ul>
+	 *   <li>color_sets != null</li>
+	 * </ul>
 	 */
 	private static Set<ColorData> identifyPrimaryColors(Set<Set<ColorData>> color_sets) {
 		assert color_sets != null;
@@ -443,7 +449,10 @@ public class ColorPaletteUtils {
 	 * @param colors the {@link List} of {@link ColorData}s
 	 * @return the {@link Set} of {@link ColorData}s
 	 *
-	 * precondition: colors != null
+	 * <b>Preconditions:</b>
+	 * <ul>
+	 *   <li>colors != null</li>
+	 * </ul>
 	 */
 	public static Set<ColorData> identifyColorSet(List<ColorData> colors) {
 		assert colors != null;
@@ -555,7 +564,11 @@ public class ColorPaletteUtils {
 	 * @param color2 the second {@link ColorData}
 	 * @return true if the colors are similar, otherwise false
 	 *
-	 * precondition: color1 != null && color2 != null
+	 * <b>Preconditions:</b>
+	 * <ul>
+	 *   <li>color1 != null</li>
+	 *   <li>color2 != null</li>
+	 * </ul>
 	 */
 	public static boolean isSimilar(ColorData color1, ColorData color2) {
 		assert color1 != null;
@@ -580,7 +593,11 @@ public class ColorPaletteUtils {
 	 *
 	 * @return true if the difference between the 2 hues is less 5 degrees, otherwise false
 	 *
-	 * precondition: color1 != null && color2 != null
+	 * <b>Preconditions:</b>
+	 * <ul>
+	 *   <li>color1 != null</li>
+	 *   <li>color2 != null</li>
+	 * </ul>
 	 */
 	public static boolean isSimilarHue(ColorData color1, ColorData color2) {
 		assert color1 != null;
@@ -604,7 +621,10 @@ public class ColorPaletteUtils {
 	 * @param color the {@link ColorData}
 	 * @return true if the color is grayscale, otherwise false
 	 *
-	 * precondition: color != null
+	 * <b>Preconditions:</b>
+	 * <ul>
+	 *   <li>color != null</li>
+	 * </ul>
 	 */
 	public static boolean isGrayScale(ColorData color) {
 		assert color != null;
@@ -618,7 +638,10 @@ public class ColorPaletteUtils {
 	 * @param color the {@link ColorData}
 	 * @return the maximum value
 	 *
-	 * precondition: color != null
+	 * <b>Preconditions:</b>
+	 * <ul>
+	 *   <li>color != null</li>
+	 * </ul>
 	 */
 	public static int getMax(ColorData color) {
 		assert color != null;
@@ -640,7 +663,10 @@ public class ColorPaletteUtils {
 	 * @param color the {@link ColorData}
 	 * @return the minimum value
 	 *
-	 * precondition: color != null
+	 * <b>Preconditions:</b>
+	 * <ul>
+	 *   <li>color != null</li>
+	 * </ul>
 	 */
 	public static int getMin(ColorData color) {
 		if(color.getRed() <= color.getBlue()

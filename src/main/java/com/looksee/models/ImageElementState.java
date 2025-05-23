@@ -4,8 +4,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
 
@@ -39,28 +37,55 @@ import lombok.Setter;
 @Setter
 @Node
 public class ImageElementState extends ElementState {
-	@SuppressWarnings("unused")
-	private static Logger log = LoggerFactory.getLogger(ImageElementState.class);
 	
+	/**
+	 * The logos of the image element state
+	 */
 	@Relationship(type="HAS")
 	private Set<Logo> logos;
 	
+	/**
+	 * The labels of the image element state
+	 */
 	@Relationship(type="HAS")
 	private Set<Label> labels;
 	
+	/**
+	 * The landmark info set of the image element state
+	 */
 	@Relationship(type="HAS")
 	private Set<ImageLandmarkInfo> landmarkInfoSet;
 	
+	/**
+	 * The faces of the image element state
+	 */
 	@Relationship(type="HAS")
 	private Set<ImageFaceAnnotation> faces;
 	
+	/**
+	 * The image search set of the image element state
+	 */
 	@Relationship(type="HAS")
 	private ImageSearchAnnotation imageSearchSet;
 	
+	/**
+	 * The adult of the image element state
+	 */
 	private String adult;
+	
+	/**
+	 * The racy of the image element state
+	 */
 	private String racy;
+	
+	/**
+	 * The violence of the image element state
+	 */
 	private String violence;
 	
+	/**
+	 * Constructs a new {@link ImageElementState}
+	 */
 	public ImageElementState() {
 		super();
 		this.logos = new HashSet<>();
@@ -239,6 +264,5 @@ public class ImageElementState extends ElementState {
 	@JsonIgnore
 	public boolean isViolentContent() {
 		return getViolence().contains("LIKELY");
-					
 	}
 }

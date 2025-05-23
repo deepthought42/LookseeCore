@@ -5,7 +5,10 @@ import org.springframework.stereotype.Repository;
 
 import com.looksee.models.ColorContrastIssueMessage;
 
-
+/**
+ * Repository interface for Spring Data Neo4j to handle interactions with 
+ * {@link ColorContrastIssueMessage} objects
+ */
 @Repository
 public interface ColorContrastIssueMessageRepository extends Neo4jRepository<ColorContrastIssueMessage, Long>  {
 	

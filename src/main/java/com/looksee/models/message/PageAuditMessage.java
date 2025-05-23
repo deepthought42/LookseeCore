@@ -19,8 +19,8 @@ public class PageAuditMessage extends Message {
 	
 	/**
 	 * Creates a new PageAuditMessage
-	 * @param account_id the account id
-	 * @param page_audit_id the page audit id
+	 * @param accountId the account id
+	 * @param pageAuditId the page audit id
 	 */
 	public PageAuditMessage(long accountId,
 							long pageAuditId

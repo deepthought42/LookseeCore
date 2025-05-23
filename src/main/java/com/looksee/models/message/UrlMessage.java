@@ -39,9 +39,9 @@ public class UrlMessage extends Message{
 	 * Creates a new UrlMessage
 	 * @param url the url
 	 * @param browser the browser
-	 * @param audit_id the audit id
+	 * @param auditId the audit id
 	 * @param type the type
-	 * @param account_id the account id
+	 * @param accountId the account id
 	 */
 	public UrlMessage(String url,
 					  BrowserType browser,

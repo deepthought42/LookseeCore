@@ -4,26 +4,73 @@ import java.util.UUID;
 
 import com.google.cloud.vision.v1.BoundingPoly;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
- * 
+ * Stores a logo
  */
+@Getter
+@Setter
 public class Logo extends LookseeObject{
+	/**
+	 * The description of the logo
+	 */
 	private String description;
+
+	/**
+	 * The locale of the logo
+	 */
 	private String locale;
+	
+	/**
+	 * The score of the logo
+	 */
 	private float score;
 	
+	/**
+	 * The x1 of the logo
+	 */
 	private int x1;
+
+	/**
+	 * The y1 of the logo
+	 */
 	private int y1;
 	
+	/**
+	 * The x2 of the logo
+	 */
 	private int x2;
+
+	/**
+	 * The y2 of the logo
+	 */
 	private int y2;
 	
+	/**
+	 * The x3 of the logo
+	 */
 	private int x3;
+
+	/**
+	 * The y3 of the logo
+	 */
 	private int y3;
 	
+	/**
+	 * The x4 of the logo
+	 */
 	private int x4;
+
+	/**
+	 * The y4 of the logo
+	 */
 	private int y4;
 	
+	/**
+	 * Constructs a new {@link Logo}
+	 */
 	public Logo() {
 		setDescription("");
 		setLocale("");
@@ -41,6 +88,14 @@ public class Logo extends LookseeObject{
 		setY4(0);
 	}
 	
+	/**
+	 * Constructs a new {@link Logo}
+	 *
+	 * @param description the description of the logo
+	 * @param locale the locale of the logo
+	 * @param score the score of the logo
+	 * @param bounding_poly the bounding poly of the logo
+	 */
 	public Logo(String description, String locale, float score, BoundingPoly bounding_poly) {
 		setDescription(description);
 		setLocale(locale);
@@ -59,97 +114,13 @@ public class Logo extends LookseeObject{
 		setY4(bounding_poly.getVerticesList().get(3).getY());
 	}
 
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public float getScore() {
-		return score;
-	}
-
-	public void setScore(float score) {
-		this.score = score;
-	}
-
-	public int getX1() {
-		return x1;
-	}
-
-	public void setX1(int x1) {
-		this.x1 = x1;
-	}
-
-	public int getY1() {
-		return y1;
-	}
-
-	public void setY1(int y1) {
-		this.y1 = y1;
-	}
-
-	public int getX2() {
-		return x2;
-	}
-
-	public void setX2(int x2) {
-		this.x2 = x2;
-	}
-
-	public int getY2() {
-		return y2;
-	}
-
-	public void setY2(int y2) {
-		this.y2 = y2;
-	}
-
-	public int getX3() {
-		return x3;
-	}
-
-	public void setX3(int x3) {
-		this.x3 = x3;
-	}
-
-	public int getY3() {
-		return y3;
-	}
-
-	public void setY3(int y3) {
-		this.y3 = y3;
-	}
-
-	public int getX4() {
-		return x4;
-	}
-
-	public void setX4(int x4) {
-		this.x4 = x4;
-	}
-
-	public int getY4() {
-		return y4;
-	}
-
-	public void setY4(int y4) {
-		this.y4 = y4;
-	}
-
+	/**
+	 * Generates a key for the logo
+	 *
+	 * @return the key for the logo
+	 */
 	@Override
 	public String generateKey() {
 		return "logo::"+UUID.randomUUID();
 	}
-
-	public String getLocale() {
-		return locale;
-	}
-
-	public void setLocale(String locale) {
-		this.locale = locale;
-	}
-	
 }

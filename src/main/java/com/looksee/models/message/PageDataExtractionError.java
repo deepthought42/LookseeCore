@@ -42,10 +42,10 @@ public class PageDataExtractionError extends Message {
 	public PageDataExtractionError(long accountId,
 									long auditRecordId,
 									String url,
-									String error_message) {
+									String errorMessage) {
 		super(accountId);
 		setUrl(url);
 		setAuditRecordId(auditRecordId);
-		setErrorMessage(error_message);
+		setErrorMessage(errorMessage);
 	}
 }

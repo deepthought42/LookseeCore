@@ -6,45 +6,59 @@ import java.util.UUID;
 
 import org.springframework.data.neo4j.core.schema.Relationship;
 
+import lombok.Getter;
+import lombok.Setter;
 
+/**
+ * Stores image landmark info
+ */
+@Getter
+@Setter
 public class ImageLandmarkInfo extends LookseeObject{
 	
+	/**
+	 * The lat lng of the image landmark info
+	 */
 	@Relationship(type="EXISTS_AT")
-	private Set<LatLng> latLng;
+	private Set<LatLng> latLngSet;
+	
+	/**
+	 * The description of the image landmark info
+	 */
 	private String description;
+	
+	/**
+	 * The score of the image landmark info
+	 */
 	private double score;
 	
+	/**
+	 * Constructs a new {@link ImageLandmarkInfo}
+	 */
 	public ImageLandmarkInfo() {
 		setLatLngSet(new HashSet<>());
 		setDescription("");
 		setScore(0.0);
 	}
 	
+	/**
+	 * Constructs a new {@link ImageLandmarkInfo}
+	 *
+	 * @param lat_lng_set the lat lng set of the image landmark info
+	 * @param description the description of the image landmark info
+	 * @param score the score of the image landmark info
+	 */
 	public ImageLandmarkInfo(Set<LatLng> lat_lng_set, String description, double score) {
 		setLatLngSet(lat_lng_set);
 		setDescription(description);
 		setScore(score);
 	}
 	
-	public Set<LatLng> getLatLngSet() {
-		return latLng;
-	}
-	public void setLatLngSet(Set<LatLng> lat_lng) {
-		this.latLng = lat_lng;
-	}
-	public double getScore() {
-		return score;
-	}
-	public void setScore(double score) {
-		this.score = score;
-	}
-	public String getDescription() {
-		return description;
-	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	
+	/**
+	 * Generates a key for the image landmark info
+	 *
+	 * @return the key for the image landmark info
+	 */
 	@Override
 	public String generateKey() {
 		return "landmarkinfo::"+UUID.randomUUID();

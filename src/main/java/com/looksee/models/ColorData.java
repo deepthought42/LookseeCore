@@ -5,29 +5,78 @@ import java.awt.Color;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * Represents an both rgb and hsb and luminosity values
- *
  */
 public class ColorData extends LookseeObject{
 	@SuppressWarnings("unused")
 	private static Logger log = LoggerFactory.getLogger(ColorData.class);
 
+	/**
+	 * The usage percentage of the color
+	 */
+	@Getter
+	@Setter
 	private double usagePercent;
+
+	/**
+	 * The red value of the color
+	 */
+	@Getter
 	private int red;
+
+	/**
+	 * The green value of the color
+	 */
+	@Getter
 	private int green;
+
+	/**
+	 * The blue value of the color
+	 */
+	@Getter
 	private int blue;
 	
+	/**
+	 * The transparency of the color
+	 */
+	@Getter
+	@Setter
 	private double transparency;
+
+	/**
+	 * The brightness of the color
+	 */
+	@Getter
 	private double brightness;
+
+	/**
+	 * The hue of the color
+	 */
+	@Getter
 	private double hue;
+
+	/**
+	 * The saturation of the color
+	 */
+	@Getter
 	private double saturation;
+
+	/**
+	 * The luminosity of the color
+	 */
+	@Getter
+	@Setter
 	private double luminosity;
 	
 	/**
-	 * 
-	 * @param color_string
-	 * 
+	 * Constructs a new {@link ColorData}
+	 *
+	 * @param color_string the color string
+	 *
 	 * precondition: rgba_string != null
 	 * precondition: !rgba_string.isEmpty()
 	 */
@@ -67,9 +116,16 @@ public class ColorData extends LookseeObject{
 		this.saturation = Math.round(hsb[1]*100);
 		this.brightness = Math.round(hsb[2]*100);
 		
-		this.setLuminosity(calculatePercievedLightness(red, green, blue));		
+		this.setLuminosity(calculatePercievedLightness(red, green, blue));
 	}
 
+	/**
+	 * Constructs a new {@link ColorData}
+	 *
+	 * @param color_usage_stat the color usage stat
+	 *
+	 * precondition: color_usage_stat != null
+	 */
 	public ColorData(ColorUsageStat color_usage_stat) {
 		assert color_usage_stat != null;
 		
@@ -84,11 +140,17 @@ public class ColorData extends LookseeObject{
 		this.saturation = Math.round(hsb[1]*100);
 		this.brightness = Math.round(hsb[2]*100);
 		
-		this.setLuminosity(calculatePercievedLightness(red, green, blue));		
+		this.setLuminosity(calculatePercievedLightness(red, green, blue));
 		setUsagePercent(color_usage_stat.getPixelPercent());
 	}
 
-
+	/**
+	 * Constructs a new {@link ColorData}
+	 *
+	 * @param red the red value of the color
+	 * @param green the green value of the color
+	 * @param blue the blue value of the color
+	 */
 	public ColorData(int red, int green, int blue) {
 		this.red = red;
 		this.green = green;
@@ -102,16 +164,16 @@ public class ColorData extends LookseeObject{
 		this.saturation = Math.round(hsb[1]*100);
 		this.brightness = Math.round(hsb[2]*100);
 		
-		this.setLuminosity(calculatePercievedLightness(red, green, blue));		
+		this.setLuminosity(calculatePercievedLightness(red, green, blue));
 	}
 
 	/**
 	 * Calculates luminosity from rgb color
-	 * 
-	 * @param red
-	 * @param green
-	 * @param blue
-	 * @return
+	 *
+	 * @param red the red value of the color
+	 * @param green the green value of the color
+	 * @param blue the blue value of the color
+	 * @return the luminosity of the color
 	 */
 	private double calculatePercievedLightness(int red, int green, int blue) {
 		//calculate luminosity
@@ -129,6 +191,12 @@ public class ColorData extends LookseeObject{
 		return 0.2126 * R + 0.7152 * G + 0.0722 * B ;
 	}
 	
+	/**
+	 * Converts Y to L*
+	 *
+	 * @param luminance the luminance value
+	 * @return the L* value
+	 */
 	private double YtoLstar(double luminance) {
         // Send this function a luminance value between 0.0 and 1.0,
         // and it returns L* which is "perceptual lightness"
@@ -140,14 +208,20 @@ public class ColorData extends LookseeObject{
         }
 	}
 	
+	/**
+	 * Converts sRGB to linear
+	 *
+	 * @param colorChannel the color channel
+	 * @return the linear value
+	 */
 	private double sRGBtoLin(double colorChannel) {
         // Send this function a decimal sRGB gamma encoded color value
         // between 0.0 and 1.0, and it returns a linearized value.
 
-	    if ( colorChannel <= 0.04045 ) {
-            return colorChannel / 12.92;
+		if ( colorChannel <= 0.04045 ) {
+			return colorChannel / 12.92;
         } else {
-            return Math.pow((( colorChannel + 0.055)/1.055),2.4);
+			return Math.pow((( colorChannel + 0.055)/1.055),2.4);
         }
     }
 	
@@ -173,12 +247,18 @@ public class ColorData extends LookseeObject{
 	/**
 	 * Returns a string with rgb values separated by a comma. For example 0,0,0
 	 * 
-	 * @return
+	 * @return the rgb values separated by a comma
 	 */
 	public String rgb() {
 		return red+","+green+","+blue;
 	}
 	
+	/**
+	 * Checks if the color is equal to another color
+	 *
+	 * @param obj the object to check
+	 * @return true if the color is equal to the other color, false otherwise
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) return true;
@@ -190,63 +270,34 @@ public class ColorData extends LookseeObject{
 	
 	/**
 	 * Returns the RGB representation of this color
+	 *
+	 * @return the rgb values separated by a comma
 	 */
 	@Override
 	public String toString() {
 		return rgb();
 	}
 
+	/**
+	 * Clones the color
+	 *
+	 * @return the cloned color
+	 */
 	@Override
 	public ColorData clone() {
 		return new ColorData(this.red, this.green, this.blue);
 	}
 	
 	
+	/**
+	 * Returns the HSB representation of the color
+	 *
+	 * @return the hsb values separated by a comma
+	 */
 	public String hsb() {
 		return hue+" , "+saturation+" , "+brightness;
 	}
-
-	public int getRed() {
-		return red;
-	}
 	
-	public int getGreen() {
-		return green;
-	}
-	
-	public int getBlue() {
-		return blue;
-	}
-	
-	public double getTransparency() {
-		return transparency;
-	}
-
-	private void setTransparency(double transparency) {
-		this.transparency = transparency;
-	}
-
-	public double getLuminosity() {
-		return luminosity;
-	}
-
-	private void setLuminosity(double luminosity) {
-		this.luminosity = luminosity;
-	}
-	
-
-	public double getHue() {
-		return hue;
-	}
-
-	public double getSaturation() {
-		return saturation;
-	}
-	
-	public double getBrightness() {
-		return brightness;
-	}
-
 	/**
 	 * Computes the contrast of the 2 colors provided
 	 * 
@@ -276,19 +327,21 @@ public class ColorData extends LookseeObject{
 		return (max_luminosity + 0.05) / (min_luminosity + 0.05);
 	}
 
+	/**
+	 * Generates a key for the color
+	 *
+	 * @return the key
+	 */
 	@Override
 	public String generateKey() {
 		return rgb();
 	}
 
-	public double getUsagePercent() {
-		return usagePercent;
-	}
-
-	public void setUsagePercent(double usage_percent) {
-		this.usagePercent = usage_percent;
-	}
-
+	/**
+	 * Alpha blends the color with a background color
+	 *
+	 * @param background_color_data the background color data
+	 */
 	public void alphaBlend(ColorData background_color_data) {
 		this.red = (int) (((1 - getTransparency()) * background_color_data.getRed()) + (getTransparency() * getRed()));
 		this.green = (int) (((1 - getTransparency()) * background_color_data.getGreen()) + (getTransparency() * getGreen()));
@@ -316,6 +369,11 @@ public class ColorData extends LookseeObject{
 		return Math.abs(this.getHue() - color.getHue()) <= 5.0;
 	}
 
+	/**
+	 * Returns the hex value of the color
+	 *
+	 * @return the hex value of the color
+	 */
 	public String getHex() {
 		String red_value = Integer.toHexString(getRed());
 		if(red_value.length() == 1) {

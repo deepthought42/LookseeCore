@@ -12,15 +12,28 @@ import com.looksee.models.enums.BrowserType;
 
 import io.github.resilience4j.retry.annotation.Retry;
 
+/**
+ * A helper class for creating a {@link Browser} connection
+ */
 @Retry(name="webdriver")
 public class BrowserConnectionHelper {
+	/**
+	 * The logger for the {@link BrowserConnectionHelper} class
+	 */
 	@SuppressWarnings("unused")
 	private static Logger log = LoggerFactory.getLogger(BrowserConnectionHelper.class);
-
+	
+	/**
+	 * The index of the selenium hub
+	 *
+	 * @see #getConnection(BrowserType, BrowserEnvironment)
+	 */
 	private static int SELENIUM_HUB_IDX = 0;
 	//private static final String[] RESOURCE_HEAVY_REQUEST_HUB_IP_ADDRESS = {"selenium-standalone-pb1-uydih6tjpa-uc.a.run.app"};
 
-	//GOOGLE CLOUD CLUSTER
+	/**
+	 * The IP addresses of the selenium hubs
+	 */
 	private static final String[] RESOURCE_HEAVY_REQUEST_HUB_IP_ADDRESS = {	"selenium-standalone-1-uydih6tjpa-uc.a.run.app",
 																			"selenium-standalone-2-uydih6tjpa-uc.a.run.app",
 																			"selenium-standalone-3-uydih6tjpa-uc.a.run.app",
@@ -44,16 +57,16 @@ public class BrowserConnectionHelper {
 																			
 	/**
 	 * Creates a {@linkplain WebDriver} connection
-	 * 
-	 * @param browser
-	 * @param environment
-	 * 
-	 * @return
-	 * 
+	 *
+	 * @param browser the browser to connect to
+	 * @param environment the environment to connect to
+	 *
+	 * @return the browser connection
+	 *
 	 * precondition: browser != null
 	 * precondition: environment != null
-	 * 
-	 * @throws MalformedURLException
+	 *
+	 * @throws MalformedURLException if the url is malformed
 	 */
     @Retry(name="webdriver")
 	public static Browser getConnection(BrowserType browser, BrowserEnvironment environment)

@@ -1,21 +1,16 @@
 package com.looksee.models.rules;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
- * 
- *
+ * A factory for creating rules
  */
 public class RuleFactory {
-	@SuppressWarnings("unused")
-	private static Logger log = LoggerFactory.getLogger(RuleFactory.class);
 
 	/**
-	 * 
-	 * @param type
-	 * @param value
-	 * @return
+	 * Builds a rule based on the type and value
+	 *
+	 * @param type the type of the rule
+	 * @param value the value of the rule
+	 * @return the rule
 	 */
 	public static Rule build(String type, String value){
 		if(type.equalsIgnoreCase(RuleType.ALPHABETIC_RESTRICTION.toString())){
@@ -25,7 +20,6 @@ public class RuleFactory {
 			return new DisabledRule();
 		}
 		else if(type.equalsIgnoreCase(RuleType.EMAIL_PATTERN.toString())){
-			//log.info("Creating email pattern rule");
 			return new EmailPatternRule();
 		}
 		else if(type.equalsIgnoreCase(RuleType.MAX_LENGTH.toString())){
@@ -55,7 +49,6 @@ public class RuleFactory {
 		else if(type.equalsIgnoreCase(RuleType.SPECIAL_CHARACTER_RESTRICTION.toString())){
 			return new SpecialCharacterRestriction();
 		}
-		//log.info("returning null rule");
 		return null;
 	}
 }

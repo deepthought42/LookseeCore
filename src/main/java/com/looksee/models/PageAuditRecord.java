@@ -24,10 +24,6 @@ import lombok.Setter;
  *   <li>The key must be unique for each record</li>
  *   <li>The audit level must always be PAGE</li>
  * </ul>
- *
- * @see Audit
- * @see AuditRecord
- * @see PageState
  */
 @Getter
 @Setter

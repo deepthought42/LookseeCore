@@ -27,11 +27,14 @@ import lombok.Setter;
 @Setter
 public class DomainAuditRecord extends AuditRecord {
 	
+	/**
+	 * The page audit records of the domain audit record
+	 */
 	@Relationship(type = "HAS")
 	private Set<PageAuditRecord> pageAuditRecords;
 
 	/**
-	 * Constructs a new {@link DomainAuditRecord} object.
+	 * Constructs a new {@link DomainAuditRecord}
 	 */
 	public DomainAuditRecord() {
 		super();
@@ -39,7 +42,7 @@ public class DomainAuditRecord extends AuditRecord {
 	}
 	
 	/**
-	 * Constructs a new {@link DomainAuditRecord} object with the given parameters.
+	 * Constructs a new {@link DomainAuditRecord} with the given parameters.
 	 *
 	 * @param status The status of the audit
 	 * @param audit_list The list of audit names
@@ -66,7 +69,7 @@ public class DomainAuditRecord extends AuditRecord {
 	}
 
 	/**
-	 * Generates a unique key for the domain audit record.
+	 * Generates a unique key for the domain audit record
 	 *
 	 * @return A unique key for the domain audit record
 	 */
@@ -75,7 +78,7 @@ public class DomainAuditRecord extends AuditRecord {
 	}
 
 	/**
-	 * Adds a page audit record to the domain audit record.
+	 * Adds a page audit record to the domain audit record
 	 *
 	 * @param audit The page audit record to add
 	 */
@@ -84,7 +87,7 @@ public class DomainAuditRecord extends AuditRecord {
 	}
 	
 	/**
-	 * Adds a set of page audit records to the domain audit record.
+	 * Adds a set of page audit records to the domain audit record
 	 *
 	 * @param audits The set of page audit records to add
 	 */

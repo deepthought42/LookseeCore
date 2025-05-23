@@ -14,20 +14,23 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.looksee.models.rules.Rule;
 import com.looksee.models.rules.RuleFactory;
 
+/**
+ * A deserializer for {@link Rule} objects
+ */
 public class RuleDeserializer extends JsonDeserializer<Rule> {
 	private static Logger log = LoggerFactory.getLogger(RuleDeserializer.class);
  
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Rule deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException, JsonProcessingException {
-    	 ObjectCodec oc = jp.getCodec();
-    	    JsonNode node = oc.readTree(jp);
-    	    final String type = node.get("type").asText();
-    	    final String value = node.get("value").asText();
-    	    log.warn("type :: "+type);
-    	    log.warn("value  ::   " + value);
-    	    //Rule user = new Rule();
-    	    //user.setId(ownerId);
-    	    //return new Rule(id, name, contents, null);
-    	    return RuleFactory.build(type, value);
-    }
+		ObjectCodec oc = jp.getCodec();
+		JsonNode node = oc.readTree(jp);
+		final String type = node.get("type").asText();
+		final String value = node.get("value").asText();
+		log.warn("type :: "+type);
+		log.warn("value  ::   " + value);
+		return RuleFactory.build(type, value);
+	}
 }

@@ -5,34 +5,103 @@ import java.util.UUID;
 import com.google.cloud.vision.v1.BoundingPoly;
 import com.google.cloud.vision.v1.Likelihood;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * Stores image face annotations
- *
  */
+@Getter
+@Setter
 public class ImageFaceAnnotation extends LookseeObject{
+	/**
+	 * The locale of the image face annotation
+	 */
 	private String locale;
+	
+	/**
+	 * The score of the image face annotation
+	 */
 	private float score;
 	
+	/**
+	 * The x1 of the image face annotation
+	 */
 	private int x1;
+
+	/**
+	 * The y1 of the image face annotation
+	 */
 	private int y1;
 	
+	/**
+	 * The x2 of the image face annotation
+	 */
 	private int x2;
+	
+	/**
+	 * The y2 of the image face annotation
+	 */
 	private int y2;
 	
+	/**
+	 * The x3 of the image face annotation
+	 */
 	private int x3;
+	
+	/**
+	 * The y3 of the image face annotation
+	 */
 	private int y3;
 	
+	/**
+	 * The x4 of the image face annotation
+	 */
 	private int x4;
+	
+	/**
+	 * The y4 of the image face annotation
+	 */
 	private int y4;
 	
+	/**
+	 * The joy likelihood of the image face annotation
+	 */
     private String joyLikelihood;
+	
+	/**
+	 * The sorrow likelihood of the image face annotation
+	 */
     private String sorrowLikelihood;
+
+	/**
+	 * The anger likelihood of the image face annotation
+	 */
     private String angerLikelihood;
+	
+	/**
+	 * The surprise likelihood of the image face annotation
+	 */
     private String surpriseLikelihood;
+	
+	/**
+	 * The under exposed likelihood of the image face annotation
+	 */
     private String underExposedLikelihood;
+	
+	/**
+	 * The blurred likelihood of the image face annotation
+	 */
     private String blurredLikelihood;
+	
+	/**
+	 * The headwear likelihood of the image face annotation
+	 */
     private String headwearLikelihood;
     
+	/**
+	 * Constructs a new {@link ImageFaceAnnotation}
+	 */
 	public ImageFaceAnnotation() {
 		setLocale("");
 		setScore(0.0F);
@@ -48,23 +117,23 @@ public class ImageFaceAnnotation extends LookseeObject{
 		setX4(0);
 		setY4(0);
 		
-	    setJoyLikelihood("");
-	    setSorrowLikelihood("");
-	    setAngerLikelihood("");
-	    setSurpriseLikelihood("");
-	    setUnderExposedLikelihood("");
-	    setBlurredLikelihood("");
-	    setHeadwearLikelihood("");
+		setJoyLikelihood("");
+		setSorrowLikelihood("");
+		setAngerLikelihood("");
+		setSurpriseLikelihood("");
+		setUnderExposedLikelihood("");
+		setBlurredLikelihood("");
+		setHeadwearLikelihood("");
     }
 
 	public ImageFaceAnnotation(Likelihood angerLikelihood,
-							   Likelihood joyLikelihood,
-							   Likelihood blurredLikelihood,
-							   Likelihood headwearLikelihood,
-							   Likelihood sorrowLikelihood,
-							   Likelihood surpriseLikelihood,
-							   Likelihood underExposedLikelihood,
-							   BoundingPoly bounding_poly
+								Likelihood joyLikelihood,
+								Likelihood blurredLikelihood,
+								Likelihood headwearLikelihood,
+								Likelihood sorrowLikelihood,
+								Likelihood surpriseLikelihood,
+								Likelihood underExposedLikelihood,
+								BoundingPoly bounding_poly
 	) {
 		setAngerLikelihood(angerLikelihood.toString());
 		setJoyLikelihood(joyLikelihood.toString());
@@ -87,142 +156,11 @@ public class ImageFaceAnnotation extends LookseeObject{
 		setY4(bounding_poly.getVerticesList().get(3).getY());
 	}
 
-	public String getLocale() {
-		return locale;
-	}
-
-	public void setLocale(String locale) {
-		this.locale = locale;
-	}
-
-	public float getScore() {
-		return score;
-	}
-
-	public void setScore(float score) {
-		this.score = score;
-	}
-
-	public int getX1() {
-		return x1;
-	}
-
-	public void setX1(int x1) {
-		this.x1 = x1;
-	}
-
-	public int getY1() {
-		return y1;
-	}
-
-	public void setY1(int y1) {
-		this.y1 = y1;
-	}
-
-	public int getX2() {
-		return x2;
-	}
-
-	public void setX2(int x2) {
-		this.x2 = x2;
-	}
-
-	public int getY2() {
-		return y2;
-	}
-
-	public void setY2(int y2) {
-		this.y2 = y2;
-	}
-
-	public int getX3() {
-		return x3;
-	}
-
-	public void setX3(int x3) {
-		this.x3 = x3;
-	}
-
-	public int getY3() {
-		return y3;
-	}
-
-	public void setY3(int y3) {
-		this.y3 = y3;
-	}
-
-	public int getX4() {
-		return x4;
-	}
-
-	public void setX4(int x4) {
-		this.x4 = x4;
-	}
-
-	public int getY4() {
-		return y4;
-	}
-
-	public void setY4(int y4) {
-		this.y4 = y4;
-	}
-
-	public String getJoyLikelihood() {
-		return joyLikelihood;
-	}
-
-	public void setJoyLikelihood(String joyLikelihood) {
-		this.joyLikelihood = joyLikelihood;
-	}
-
-	public String getSorrowLikelihood() {
-		return sorrowLikelihood;
-	}
-
-	public void setSorrowLikelihood(String sorrowLikelihood) {
-		this.sorrowLikelihood = sorrowLikelihood;
-	}
-
-	public String getAngerLikelihood() {
-		return angerLikelihood;
-	}
-
-	public void setAngerLikelihood(String angerLikelihood) {
-		this.angerLikelihood = angerLikelihood;
-	}
-
-	public String getSurpriseLikelihood() {
-		return surpriseLikelihood;
-	}
-
-	public void setSurpriseLikelihood(String surpriseLikelihood) {
-		this.surpriseLikelihood = surpriseLikelihood;
-	}
-
-	public String getUnderExposedLikelihood() {
-		return underExposedLikelihood;
-	}
-
-	public void setUnderExposedLikelihood(String underExposedLikelihood) {
-		this.underExposedLikelihood = underExposedLikelihood;
-	}
-
-	public String getBlurredLikelihood() {
-		return blurredLikelihood;
-	}
-
-	public void setBlurredLikelihood(String blurredLikelihood) {
-		this.blurredLikelihood = blurredLikelihood;
-	}
-
-	public String getHeadwearLikelihood() {
-		return headwearLikelihood;
-	}
-
-	public void setHeadwearLikelihood(String headwearLikelihood) {
-		this.headwearLikelihood = headwearLikelihood;
-	}
-
+	/**
+	 * Generates a key for the image face annotation
+	 *
+	 * @return the key for the image face annotation
+	 */
 	@Override
 	public String generateKey() {
 		return "imagefaceannotation::"+UUID.randomUUID();

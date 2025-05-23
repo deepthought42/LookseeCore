@@ -33,7 +33,7 @@ import lombok.Setter;
 
 /**
  * A reference to a web page that stores its state and content
- * 
+ *
  * Invariants:
  * - url is not null
  * - auditRecordId >= 0
@@ -42,6 +42,8 @@ import lombok.Setter;
  * - all elements in elements list are not null
  * - src is not null if page has content
  */
+@Getter
+@Setter
 @Node
 public class PageState extends LookseeObject {
 	@SuppressWarnings("unused")
@@ -50,110 +52,139 @@ public class PageState extends LookseeObject {
 	@Autowired
 	private GoogleCloudStorage googleCloudStorage;
 
-	@Getter
-	@Setter
+	/**
+	 * The audit record id of the page state
+	 */
 	private long auditRecordId;
 
+	/**
+	 * The source of the page state
+	 */
 	private String src;
 
-	@Getter
-	@Setter
+	/**
+	 * The generalized source of the page state
+	 */
 	private String generalizedSrc;
 
-	@Getter
-	@Setter
+	/**
+	 * The url of the page state
+	 */
 	private String url;
 
-	@Getter
-	@Setter
+	/**
+	 * The url after loading of the page state
+	 */
 	private String urlAfterLoading;
 
-	@Getter
-	@Setter
+	/**
+	 * The viewport screenshot url of the page state
+	 */
 	private String viewportScreenshotUrl;
 
-	@Getter
-	@Setter
+	/**
+	 * The full page screenshot url of the page state
+	 */
 	private String fullPageScreenshotUrl;
 
-	@Getter
-	@Setter
+	/**
+	 * The page name of the page state
+	 */
 	private String pageName;
 
-	@Getter
-	@Setter
+	/**
+	 * The browser of the page state
+	 */
 	private BrowserType browser;
 
-	@Getter
-	@Setter
+	/**
+	 * The title of the page state
+	 */
 	private String title;
 
-	@Getter
-	@Setter
+	/**
+	 * Whether the page state is login required
+	 */
 	private boolean loginRequired;
 
-	@Getter
-	@Setter
+	/**
+	 * Whether the page state is secured
+	 */
 	private boolean secured;
 
-	@Getter
-	@Setter
+	/**
+	 * Whether the page state is element extraction complete
+	 */
 	private boolean elementExtractionComplete;
 	
-	@Getter
-	@Setter
+	/**
+	 * Whether the page state is interactive element extraction complete
+	 */
 	private boolean interactiveElementExtractionComplete;
 	
-	@Getter
-	@Setter
+	/**
+	 * The scroll x offset of the page state
+	 */
 	private long scrollXOffset;
 
-	@Getter
-	@Setter
+	/**
+	 * The scroll y offset of the page state
+	 */
 	private long scrollYOffset;
 	
-	@Getter
-	@Setter
+	/**
+	 * The viewport width of the page state
+	 */
 	private int viewportWidth;
 
-	@Getter
-	@Setter
+	/**
+	 * The viewport height of the page state
+	 */
 	private int viewportHeight;
 
-	@Getter
-	@Setter
+	/**
+	 * The full page height of the page state
+	 */
 	private int fullPageWidth;
 
-	@Getter
-	@Setter
+	/**
+	 * The full page width of the page state
+	 */
 	private int fullPageHeight;
 
-	@Getter
-	@Setter
+	/**
+	 * The http status of the page state
+	 */
 	private int httpStatus;
 
-	@Getter
-	@Setter
+	/**
+	 * The metadata of the page state
+	 */
 	private Set<String> scriptUrls;
 
-	@Getter
-	@Setter
+	/**
+	 * The favicon url of the page state
+	 */
 	private Set<String> stylesheetUrls;
 
-	@Getter
-	@Setter
+	/**
+	 * The stylesheet urls of the page state
+	 */
 	private Set<String> metadata;
 
-	@Getter
-	@Setter
+	/**
+	 * The favicon url of the page state
+	 */
 	private Set<String> faviconUrl;
 
-	@Getter
-	@Setter
+	/**
+	 * The elements of the page state
+	 */
 	private Set<String> keywords;
 	
-	@Getter
-	@Setter
+	/**
+	 * The keywords of the page state
+	 */
 	@JsonIgnore
 	@Relationship(type = "HAS", direction = Direction.OUTGOING)
 	private List<ElementState> elements;
@@ -260,10 +291,8 @@ public class PageState extends LookseeObject {
 	/**
 	 * Compares two images pixel by pixel.
 	 *
-	 * @param imgA
-	 *            the first image.
-	 * @param imgB
-	 *            the second image.
+	 * @param imgA the first image
+	 * @param imgB the second image
 	 * @return whether the images are both the same or not.
 	 */
 	public static boolean compareImages(BufferedImage imgA, BufferedImage imgB) {

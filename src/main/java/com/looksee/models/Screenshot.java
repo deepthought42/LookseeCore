@@ -2,70 +2,69 @@ package com.looksee.models;
 
 import org.springframework.data.neo4j.core.schema.Node;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 /**
- * 
+ * Stores a screenshot
  */
+@Getter
+@Setter
+@NoArgsConstructor
 @Node
 public class Screenshot extends LookseeObject {
 	
+	/**
+	 * The browser name of the screenshot
+	 */
 	private String browserName;
-	private String url;
+
+	/**
+	 * The url of the screenshot
+	 */
+	private String screenshotUrl;
+
+	/**
+	 * The checksum of the screenshot
+	 */
 	private String checksum;
+
+	/**
+	 * The width of the screenshot
+	 */
 	private int width;
+
+	/**
+	 * The height of the screenshot
+	 */
 	private int height;
 	
-	public Screenshot(){}
 	
+	/**
+	 * Constructs a new {@link Screenshot}
+	 *
+	 * @param viewport the viewport of the screenshot
+	 * @param browser_name the browser name of the screenshot
+	 * @param checksum the checksum of the screenshot
+	 * @param width the width of the screenshot
+	 * @param height the height of the screenshot
+	 */
 	public Screenshot(String viewport, String browser_name, String checksum, int width, int height){
 		setScreenshotUrl(viewport);
 		setChecksum(checksum);
-		setBrowser(browser_name);
+		setBrowserName(browser_name);
 		setKey(generateKey());
 		setWidth(width);
 		setHeight(height);
 	}
-
-	public String getScreenshotUrl() {
-		return url;
-	}
-
-	public void setScreenshotUrl(String url) {
-		this.url = url;
-	}
-
-	public String getBrowser() {
-		return browserName;
-	}
-
-	public void setBrowser(String browser_name) {
-		this.browserName = browser_name;
-	}
 	
+	/**
+	 * Generates a key for the screenshot
+	 *
+	 * @return the key for the screenshot
+	 */
 	public String generateKey() {
 		return "screenshot" + this.checksum;
-	}
-
-	public String getChecksum() {
-		return checksum;
-	}
-
-	public void setChecksum(String checksum) {
-		this.checksum = checksum;
-	}
-
-	public int getWidth() {
-		return width;
-	}
-
-	public void setWidth(int width) {
-		this.width = width;
-	}
-
-	public int getHeight() {
-		return height;
-	}
-
-	public void setHeight(int height) {
-		this.height = height;
 	}
 }

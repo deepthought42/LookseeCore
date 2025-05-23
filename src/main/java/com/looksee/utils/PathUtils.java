@@ -27,12 +27,12 @@ public class PathUtils {
 	 *
 	 * precondition: pathObjects != null
 	 */
-	public static PageState getLastPageStateOLD(List<LookseeObject> path_objects) {
-		assert(path_objects != null);
+	public static PageState getLastPageStateOLD(List<LookseeObject> pathObjects) {
+		assert(pathObjects != null);
 				
-		for(int idx = path_objects.size()-1; idx >= 0; idx--){
-			if(path_objects.get(idx).getKey().contains("page")){
-				return (PageState)path_objects.get(idx);
+		for(int idx = pathObjects.size()-1; idx >= 0; idx--){
+			if(pathObjects.get(idx).getKey().contains("page")){
+				return (PageState)pathObjects.get(idx);
 			}
 		}
 		
@@ -50,12 +50,12 @@ public class PathUtils {
 	 */
 	public static PageState getLastPageState(List<Step> steps) {
 		assert(steps != null);
-			
-		//get last step
-		Step last_step = steps.get(steps.size()-1);
-		PageState last_page = last_step.getEndPage();
 		
-		return last_page;
+		//get last step
+		Step lastStep = steps.get(steps.size()-1);
+		PageState lastPage = lastStep.getEndPage();
+		
+		return lastPage;
 	}
 	
 	/**
@@ -71,10 +71,10 @@ public class PathUtils {
 		assert(steps != null);
 			
 		//get last step
-		Step last_step = steps.get(steps.size()-1);
-		PageState start_page = last_step.getStartPage();
+		Step lastStep = steps.get(steps.size()-1);
+		PageState startPage = lastStep.getStartPage();
 		
-		return start_page;
+		return startPage;
 	}
 	
 	/**
@@ -86,12 +86,12 @@ public class PathUtils {
 	 *
 	 * precondition: path_keys != null
 	 */
-	public static int getIndexOfLastElementState(List<String> path_keys){
-		assert(path_keys != null);
+	public static int getIndexOfLastElementState(List<String> pathKeys){
+		assert(pathKeys != null);
 
-		for(int element_idx=path_keys.size()-1; element_idx >= 0; element_idx--){
-			if(path_keys.get(element_idx).contains("elementstate")){
-				return element_idx;
+		for(int elementIdx=pathKeys.size()-1; elementIdx >= 0; elementIdx--){
+			if(pathKeys.get(elementIdx).contains("elementstate")){
+				return elementIdx;
 			}
 		}
 
@@ -101,74 +101,74 @@ public class PathUtils {
 	/**
 	 * Orders the given list of {@link LookseeObject}s based on the order of the given list of {@link String}s
 	 *
-	 * @param path_keys list of {@link String}s
-	 * @param path_objects list of {@link LookseeObject}s
+	 * @param pathKeys list of {@link String}s
+	 * @param pathObjects list of {@link LookseeObject}s
 	 *
 	 * @return ordered list of {@link LookseeObject}s
 	 *
-	 * precondition: path_keys != null
-	 * precondition: path_objects != null
+	 * precondition: pathKeys != null
+	 * precondition: pathObjects != null
 	 */
-	public static List<LookseeObject> orderPathObjects(List<String> path_keys, List<LookseeObject> path_objects) {
-		List<LookseeObject> ordered_path_objects = new ArrayList<>();
-		List<String> temp_path_keys = new ArrayList<>(path_keys);
+	public static List<LookseeObject> orderPathObjects(List<String> pathKeys, List<LookseeObject> pathObjects) {
+		List<LookseeObject> orderedPathObjects = new ArrayList<>();
+		List<String> tempPathKeys = new ArrayList<>(pathKeys);
 		
 		//Ensure Order path objects
-		for(String path_obj_key : temp_path_keys){
-			for(LookseeObject obj : path_objects){
-				if(obj.getKey().equals(path_obj_key)){
-					ordered_path_objects.add(obj);
+		for(String pathObjKey : tempPathKeys){
+			for(LookseeObject obj : pathObjects){
+				if(obj.getKey().equals(pathObjKey)){
+					orderedPathObjects.add(obj);
 				}
 			}
 		}
 
-		LookseeObject last_path_obj = null;
-		List<LookseeObject> reduced_path_obj = new ArrayList<>();
+		LookseeObject lastPathObj = null;
+		List<LookseeObject> reducedPathObj = new ArrayList<>();
 		//scrub path objects for duplicates
-		for(LookseeObject obj : ordered_path_objects){
-			if(last_path_obj == null || !obj.getKey().equals(last_path_obj.getKey())){
-				last_path_obj = obj;
-				reduced_path_obj.add(obj);
+		for(LookseeObject obj : orderedPathObjects){
+			if(lastPathObj == null || !obj.getKey().equals(lastPathObj.getKey())){
+				lastPathObj = obj;
+				reducedPathObj.add(obj);
 			}
 		}
 
-		return reduced_path_obj;
+		return reducedPathObj;
 	}
 
 	/**
 	 * Removes duplicate {@link LookseeObject}s from the given list of {@link LookseeObject}s
 	 *
-	 * @param ordered_path_objects list of {@link LookseeObject}s
+	 * @param orderedPathObjects list of {@link LookseeObject}s
 	 *
 	 * @return list of {@link LookseeObject}s with duplicates removed
 	 *
 	 */
-	public static List<LookseeObject> reducePathObjects(List<LookseeObject> ordered_path_objects) {
+	public static List<LookseeObject> reducePathObjects(List<LookseeObject> orderedPathObjects) {
 		//scrub path objects for duplicates
-		List<LookseeObject> reduced_path_objs = new ArrayList<>();
-		LookseeObject last_path_obj = null;
-		for(LookseeObject obj : ordered_path_objects){
-			if(last_path_obj == null || !obj.getKey().equals(last_path_obj.getKey())){
-				last_path_obj = obj;
-				reduced_path_objs.add(obj);
+		List<LookseeObject> reducedPathObjs = new ArrayList<>();
+		LookseeObject lastPathObj = null;
+		for(LookseeObject obj : orderedPathObjects){
+			if(lastPathObj == null || !obj.getKey().equals(lastPathObj.getKey())){
+				lastPathObj = obj;
+				reducedPathObjs.add(obj);
 			}
 		}
 				
-		return reduced_path_objs;
+		return reducedPathObjs;
 	}
 
 	/**
 	 * Retrieves the first {@link PageState} in the given list of {@link LookseeObject}s
 	 *
-	 * @param ordered_path_objects list of {@link LookseeObject}s
+	 * @param orderedPathObjects list of {@link LookseeObject}s
 	 *
 	 * @return first page state in list
 	 *
 	 * precondition: ordered_path_objects != null
 	 */
-	public static PageState getFirstPage(List<LookseeObject> ordered_path_objects) {
+	public static PageState getFirstPage(List<LookseeObject> orderedPathObjects) {
 		//find first page
-		for(LookseeObject obj : ordered_path_objects){
+		for(LookseeObject obj : orderedPathObjects){
 			if(obj instanceof PageState){
 				return ((PageState)obj);
 			}
@@ -180,21 +180,21 @@ public class PathUtils {
 	/**
 	 * Retrieves the second to last {@link PageState} in the given list of {@link LookseeObject}s
 	 *
-	 * @param path_objects list of {@link LookseeObject}s
+	 * @param pathObjects list of {@link LookseeObject}s
 	 *
 	 * @return second to last page state in list
 	 *
 	 * precondition: path_objects != null
 	 */
-	public static PageState getSecondToLastPageStateOLD(List<LookseeObject> path_objects) {
-		assert(path_objects != null);
+	public static PageState getSecondToLastPageStateOLD(List<LookseeObject> pathObjects) {
+		assert(pathObjects != null);
 		
 		int page_states_seen = 0;
-		log.warn("path objects length while getting second to last page state ;: "+path_objects.size());
-		for(int idx = path_objects.size()-1; idx >=0; idx--){
-			if(path_objects.get(idx).getKey().contains("pagestate")){
+		log.warn("path objects length while getting second to last page state ;: "+pathObjects.size());
+		for(int idx = pathObjects.size()-1; idx >=0; idx--){
+			if(pathObjects.get(idx).getKey().contains("pagestate")){
 				if(page_states_seen >= 1){
-					return (PageState)path_objects.get(idx);
+					return (PageState)pathObjects.get(idx);
 				}
 				page_states_seen++;
 			}
@@ -206,23 +206,23 @@ public class PathUtils {
 	/**
 	 * Removes duplicate {@link String}s from the given list of {@link String}s
 	 *
-	 * @param final_key_list list of {@link String}s
+	 * @param finalKeyList list of {@link String}s
 	 *
 	 * @return list of {@link String}s with duplicates removed
 	 *
-	 * precondition: final_key_list != null
+	 * precondition: finalKeyList != null
 	 */
-	public static List<String> reducePathKeys(List<String> final_key_list) {
+	public static List<String> reducePathKeys(List<String> finalKeyList) {
 		//scrub path objects for duplicates
-		List<String> reduced_path_keys = new ArrayList<>();
-		String last_path_key = null;
-		for(String key : final_key_list){
-			if(!key.equals(last_path_key)){
-				last_path_key = key;
-				reduced_path_keys.add(key);
+		List<String> reducedPathKeys = new ArrayList<>();
+		String lastPathKey = null;
+		for(String key : finalKeyList){
+			if(!key.equals(lastPathKey)){
+				lastPathKey = key;
+				reducedPathKeys.add(key);
 			}
 		}
-		return reduced_path_keys;
+		return reducedPathKeys;
 	}
 
 	/**
@@ -246,8 +246,8 @@ public class PathUtils {
 		}
 		else if(obj.getKey().contains("pagestate")) {
 			log.warn("first path object is a page state");
-			PageState page_state = (PageState)obj;
-			return page_state.getUrl();
+			PageState pageState = (PageState)obj;
+			return pageState.getUrl();
 		}
 		return null;
 	}
@@ -259,7 +259,10 @@ public class PathUtils {
 	 *
 	 * @return first url in list
 	 *
-	 * precondition: !steps.isEmpty()
+	 * <b>Preconditions:</b>
+	 * <ul>
+	 *   <li>!steps.isEmpty()</li>
+	 * </ul>
 	 */
 	public static String getFirstUrl(List<Step> steps) {
 		assert !steps.isEmpty();

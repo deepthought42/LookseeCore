@@ -26,8 +26,8 @@ public class PageAuditUrlMessage extends PageAuditMessage {
 	
 	/**
 	 * Creates a new PageAuditUrlMessage
-	 * @param account_id the account id
-	 * @param page_audit_id the page audit id
+	 * @param accountId the account id
+	 * @param pageAuditId the page audit id
 	 * @param url the url to audit
 	 * @param browser the browser to audit
 	 */

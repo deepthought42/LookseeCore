@@ -11,17 +11,21 @@ public class CompareImages {
 
 	/**
 	 * Compares two images and returns true if they are the same.
-	 * @param img1_url the first image URL
-	 * @param img2_url the second image URL
+	 * @param img1Url the first image URL
+	 * @param img2Url the second image URL
 	 * @return true if the images are the same, false otherwise
 	 *
-	 * precondition: img1_url != null && img2_url != null
+	 * <b>Preconditions:</b>
+	 * <ul>
+	 *   <li>img1Url != null</li>
+	 *   <li>img2Url != null</li>
+	 * </ul>
 	 */
-	public static boolean imagesMatch(String img1_url, String img2_url) {
-		assert img1_url != null && img2_url != null;
+	public static boolean imagesMatch(String img1Url, String img2Url) {
+		assert img1Url != null && img2Url != null;
 
-		String file1 = img1_url;
-		String file2 = img2_url;
+		String file1 = img1Url;
+		String file2 = img2Url;
 
 		// Load the images
 		Image image1 = Toolkit.getDefaultToolkit().getImage(file1);

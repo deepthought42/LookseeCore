@@ -15,8 +15,8 @@ import com.looksee.models.enums.ElementClassification;
 import com.looksee.services.BrowserService;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 
 /**
  * Represents the state of an HTML element on a webpage, including its properties and attributes
@@ -34,100 +34,113 @@ import lombok.Setter;
  * - Maintaining element styling and rendering information
  * - Providing element identification via key and xpath
  * - Supporting element classification and type information
- *
- * This class collaborates with:
- * - ElementClassification to handle element type classification
- * - BrowserService to handle key generation
  */
 @JsonSubTypes({
 	@Type(value = ImageElementState.class, name = "ImageElementState"),
 })
 @Node
+@Getter
+@Setter
+@NoArgsConstructor
 public class ElementState extends LookseeObject implements Comparable<ElementState> {
-	@SuppressWarnings("unused")
 	private static Logger log = LoggerFactory.getLogger(ElementState.class);
 
+	/**
+	 * The classification of the element
+	 */
 	private String classification;
 
-	@Getter
-	@Setter
+	/**
+	 * The outer html of the element
+	 */
 	private String outerHtml;
 
-	@Getter
-	@Setter
+	/**
+	 * The name of the element
+	 */
 	private String name;
 
-	@Getter
-	@Setter
+	/**
+	 * The owned text of the element
+	 */
 	private String ownedText;
 
-	@Getter
-	@Setter
+	/**
+	 * The all text of the element
+	 */
 	private String allText;
 	
-	@Getter
-	@Setter
+	/**
+	 * The css selector of the element
+	 */
 	private String cssSelector;
 	
-	@Getter
-	@Setter
+	/**
+	 * The xpath of the element
+	 */
 	private String xpath;
 
-	@Getter
-	@Setter
+	/**
+	 * The screenshot url of the element
+	 */
 	private String screenshotUrl;
 
-	@Getter
-	@Setter
+	/**
+	 * The background color of the element
+	 */
 	private String backgroundColor;
 
-	@Getter
-	@Setter
+	/**
+	 * The foreground color of the element
+	 */
 	private String foregroundColor;
 
-	@Getter
-	@Setter
+	/**
+	 * The x location of the element
+	 */
 	private int xLocation;
 
-	@Getter
-	@Setter
+	/**
+	 * The y location of the element
+	 */
 	private int yLocation;
 
-	@Getter
-	@Setter
+	/**
+	 * The width of the element
+	 */
 	private int width;
 
-	@Getter
-	@Setter
+	/**
+	 * The height of the element
+	 */
 	private int height;
 
-	@Getter
-	@Setter
+	/**
+	 * The text contrast of the element
+	 */
 	private double textContrast;
 
-	@Getter
-	@Setter
+	/**
+	 * The non-text contrast of the element
+	 */
 	private double nonTextContrast;
 
-	@Getter
-	@Setter
+	/**
+	 * Whether the element is an image
+	 */
 	private boolean imageFlagged;
 	
-	@Getter
+	/**
+	 * The rendered css values of the element
+	 */
 	@CompositeProperty
 	private Map<String, String> renderedCssValues = new HashMap<>();
 	
-	@Getter
-	@Setter
+	/**
+	 * The attributes of the element
+	 */
 	@CompositeProperty
 	private Map<String, String> attributes = new HashMap<>();
-	
-	/**
-	 * Constructs an {@link ElementState} object
-	 */
-	public ElementState(){
-		super();
-	}
 	
 	/**
 	 * Constructs an {@link ElementState} object with the given parameters

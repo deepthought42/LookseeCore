@@ -46,6 +46,12 @@ public class NumericRule extends Rule{
 		return false;
 	}
 	
+	/**
+	 * Generates a random alphabetic string of a given length
+	 *
+	 * @param str_length the length of the string to generate
+	 * @return the random string
+	 */
 	public static String generateRandomAlphabeticString(int str_length){
 		return StringUtils.repeat("a", str_length);
 	}
