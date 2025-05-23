@@ -350,7 +350,7 @@ public class Browser {
 
 	/**
 	 * Gets image as a base 64 string
-	 * 
+	 *
 	 * @return File png file of image
 	 * @throws IOException if an error occurs while getting the screenshot
 	 */
