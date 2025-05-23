@@ -1,0 +1,47 @@
+package com.looksee.models;
+
+import org.springframework.data.neo4j.core.schema.Node;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+/**
+ * Defines user information that can be used during testing and discovery
+ */
+@Node
+@Getter
+@Setter
+@NoArgsConstructor
+public class TestUser extends LookseeObject{
+
+	/**
+	 * The username of the test user
+	 */
+	private String username;
+
+	/**
+	 * The password of the test user
+	 */
+	private String password;
+	
+	/**
+	 * Constructs a new {@link TestUser}
+	 *
+	 * @param username the username of the test user
+	 * @param password the password of the test user
+	 */
+	public TestUser(String username, String password){
+		setUsername(username);
+		setPassword(password);
+		setKey(generateKey());
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String generateKey() {
+		return "user"+username+password;
+	}
+}

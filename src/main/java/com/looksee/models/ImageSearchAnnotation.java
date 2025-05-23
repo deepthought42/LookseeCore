@@ -1,0 +1,72 @@
+package com.looksee.models;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+
+import lombok.Getter;
+import lombok.Setter;
+
+/**
+ * Stores image search annotation
+ */
+@Getter
+@Setter
+public class ImageSearchAnnotation extends LookseeObject{
+	/**
+	 * The score of the image search annotation
+	 */
+	private float score;
+
+	/**
+	 * The best guess label of the image search annotation
+	 */
+	private Set<String> bestGuessLabel;
+
+	/**
+	 * The full matching images of the image search annotation
+	 */
+	private Set<String> fullMatchingImages;
+
+	/**
+	 * The similar images of the image search annotation
+	 */
+	private Set<String> similarImages;
+	
+	/**
+	 * Constructs a new {@link ImageSearchAnnotation}
+	 */
+	public ImageSearchAnnotation() {
+		setScore(0.0F);
+		setBestGuessLabel(new HashSet<>());
+		setFullMatchingImages(new HashSet<>());
+		setSimilarImages(new HashSet<>());
+	}
+	
+	/**
+	 * Constructs a new {@link ImageSearchAnnotation}
+	 *
+	 * @param best_guess_label the best guess label of the image search annotation
+	 * @param full_matching_images the full matching images of the image search annotation
+	 * @param similar_images the similar images of the image search annotation
+	 */
+	public ImageSearchAnnotation(Set<String> best_guess_label,
+								Set<String> full_matching_images,
+								Set<String> similar_images
+	) {
+		setScore(score);
+		setBestGuessLabel(best_guess_label);
+		setFullMatchingImages(full_matching_images);
+		setSimilarImages(similar_images);
+	}
+
+	/**
+	 * Generates a key for the image search annotation
+	 *
+	 * @return the key for the image search annotation
+	 */
+	@Override
+	public String generateKey() {
+		return "imagesearchannotation::"+UUID.randomUUID();
+	}
+}
