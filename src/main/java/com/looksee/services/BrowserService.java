@@ -2262,7 +2262,7 @@ public class BrowserService {
 				log.warn("Unable to get browser connection to build page elements : "+page_url);
 				continue;
 			}
-			catch(FiveZeroThreeException e) {
+			catch(ServiceUnavailableException e) {
 				log.warn("503 exception occurred while accessing "+page_url);
 			}
 			catch(WebDriverException | GridException e) {
@@ -2291,11 +2291,11 @@ public class BrowserService {
 	 * @return
 	 * @throws MalformedURLException 
 	 */
-	public List<ElementState> buildPageElementsWithoutNavigation(PageState page_state, 
-																 List<String> xpaths, 
-															 	 long audit_id, 
-															 	 int page_height,
-															 	 Browser browser
+	public List<ElementState> buildPageElementsWithoutNavigation(PageState page_state,
+																List<String> xpaths,
+																long audit_id,
+																int page_height,
+																Browser browser
 	) throws MalformedURLException {
 		assert page_state != null;
 
@@ -2312,7 +2312,7 @@ public class BrowserService {
 	
 	@Retry(name="webdriver")
 	private boolean openBrowserAndBuildElementStates(List<ElementState> elements,
-													Map<String, ElementState> elements_mapped, 
+													Map<String, ElementState> elements_mapped,
 													PageState page_state,
 													List<String> xpaths,
 													long audit_id,
@@ -2326,7 +2326,7 @@ public class BrowserService {
 			browser = getConnection(BrowserType.CHROME, BrowserEnvironment.DISCOVERY);
 			browser.navigateTo(page_url);
 			if(browser.is503Error()) {
-				throw new FiveZeroThreeException("503 Error encountered. Starting over..");
+				throw new ServiceUnavailableException("503 Error encountered. Starting over..");
 			}
 			browser.removeDriftChat();
 			
@@ -2343,7 +2343,7 @@ public class BrowserService {
 			log.warn("Unable to get browser connection to build page elements : "+page_url);
 			return false;
 		}
-		catch(FiveZeroThreeException e) {
+		catch(ServiceUnavailableException e) {
 			log.warn("503 exception occurred while accessing "+page_url);
 		}	
 		finally {

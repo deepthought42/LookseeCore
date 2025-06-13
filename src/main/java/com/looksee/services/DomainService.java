@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.looksee.models.AuditRecord;
+import com.looksee.models.Competitor;
 import com.looksee.models.DesignSystem;
 import com.looksee.models.Domain;
 import com.looksee.models.DomainAuditRecord;
@@ -23,6 +24,8 @@ import com.looksee.models.TestAction;
 import com.looksee.models.TestRecord;
 import com.looksee.models.TestUser;
 import com.looksee.models.repository.AuditRecordRepository;
+import com.looksee.models.repository.CompetitorRepository;
+import com.looksee.models.repository.DesignSystemRepository;
 import com.looksee.models.repository.DomainRepository;
 
 import lombok.NoArgsConstructor;
@@ -53,6 +56,12 @@ public class DomainService {
 
 	@Autowired
 	private AuditRecordRepository audit_record_repo;
+
+	@Autowired
+	private CompetitorRepository competitor_repo;
+
+	@Autowired
+	private DesignSystemRepository design_system_repo;
 
 	/**
 	 * Retrieves all domains
@@ -456,5 +465,13 @@ public class DomainService {
 		assert !page_url.isEmpty();
 		
 		return audit_record_repo.getMostRecentPageAuditRecord(page_url);
+	}
+
+	public Competitor addCompetitor(long domain_id, long competitor_id) {
+		return competitor_repo.addCompetitor(domain_id, competitor_id);
+	}
+
+	public List<Competitor> getCompetitors(long domain_id) {
+		return competitor_repo.getCompetitors(domain_id);
 	}
 }
