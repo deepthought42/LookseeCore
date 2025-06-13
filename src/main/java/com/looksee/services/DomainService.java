@@ -15,8 +15,14 @@ import com.looksee.models.Domain;
 import com.looksee.models.DomainAuditRecord;
 import com.looksee.models.Element;
 import com.looksee.models.Form;
+import com.looksee.models.PageAuditRecord;
+import com.looksee.models.PageLoadAnimation;
 import com.looksee.models.PageState;
+import com.looksee.models.Test;
+import com.looksee.models.TestAction;
+import com.looksee.models.TestRecord;
 import com.looksee.models.TestUser;
+import com.looksee.models.repository.AuditRecordRepository;
 import com.looksee.models.repository.DomainRepository;
 
 import lombok.NoArgsConstructor;
@@ -44,6 +50,9 @@ public class DomainService {
 
 	@Autowired
 	private DomainRepository domain_repo;
+
+	@Autowired
+	private AuditRecordRepository audit_record_repo;
 
 	/**
 	 * Retrieves all domains
@@ -418,5 +427,34 @@ public class DomainService {
 	 */
 	public void addTestUser(long domain_id, long test_user_id) {
 		domain_repo.addTestUser(domain_id, test_user_id);
+	}
+
+
+	public Set<TestAction> getActions(long account_id, String url) {
+		return domain_repo.getActions(account_id, url);
+	}
+
+	public Set<Test> getTests(long account_id, String url) {
+		return domain_repo.getTests(account_id, url);
+	}
+	
+	public Set<TestRecord> getTestRecords(long account_id, String url) {
+		return domain_repo.getTestRecords(account_id, url);
+	}
+
+	public Set<PageLoadAnimation> getAnimations(long account_id, String url) {
+		return domain_repo.getAnimations(account_id, url);
+	}
+
+	public Set<Domain> getDomainsForAccount(long account_id) {
+		return domain_repo.getDomainsForAccount(account_id);
+	}
+	
+
+	public Optional<PageAuditRecord> getMostRecentPageAuditRecord(String page_url) {
+		assert page_url != null;
+		assert !page_url.isEmpty();
+		
+		return audit_record_repo.getMostRecentPageAuditRecord(page_url);
 	}
 }

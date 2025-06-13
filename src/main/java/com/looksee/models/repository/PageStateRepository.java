@@ -1,6 +1,8 @@
 package com.looksee.models.repository;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
@@ -192,4 +194,162 @@ public interface PageStateRepository extends Neo4jRepository<PageState, Long> {
 	 */
 	@Query("MATCH (s:Step)-[:ENDS_WITH]->(page:PageState) WHERE id(s)=$step_id RETURN page")
 	public PageState getEndPageForStep(@Param("step_id") long step_id);
+
+	@Deprecated
+	@Query("MATCH (:Account{username:$user_id})-[]->(d:Domain{url:$url}) MATCH (d)-[]->(p:PageState) MATCH a=(p)-[h:HAS]->() WHERE $screenshot_checksum IN p.screenshot_checksums RETURN a")
+	public List<PageState> findByScreenshotChecksumsContainsForUserAndDomain(@Param("user_id") String user_id, @Param("url") String url, @Param("screenshot_checksum") String checksum );
+	
+	/**
+	 * Retrieves page states for a domain audit record.
+	 *
+	 * @param domain_audit_id the ID of the domain audit record
+	 * @return set of page states associated with the domain audit record
+	 */
+	@Query("MATCH (domain_audit:DomainAuditRecord)-[]->(page_state:PageState) WHERE id(domain_audit)=$domain_audit_id RETURN page_state")
+	public Set<PageState> getPageStatesForDomainAuditRecord(@Param("domain_audit_id") long domain_audit_id);
+	
+	/**
+	 * Finds a page with a specific URL within a domain audit record.
+	 *
+	 * @param audit_record_id the ID of the audit record
+	 * @param page_url the URL of the page to find
+	 * @return the page state if found
+	 */
+	@Query("MATCH (audit_record:DomainAuditRecord) WITH audit_record WHERE id(audit_record)=$audit_record_id MATCH (audit_record)-[:FOR]->(page:PageState) WHERE page.url=$page_url RETURN page")
+	public PageState findPageWithUrl(@Param("audit_record_id") long audit_record_id, @Param("page_url") String page_url);
+
+	/**
+	 * Retrieves all page states for a domain.
+	 *
+	 * @param domain_id the ID of the domain
+	 * @return set of all page states associated with the domain
+	 */
+	@Query("MATCH (d:Domain)-[]->(p:PageState) WHERE id(d)=$domain_id RETURN p")
+	public Set<PageState> getPageStates(@Param("domain_id") long domain_id);
+
+	/**
+	 * Retrieves a specific page from a domain.
+	 *
+	 * @param domain_id the ID of the domain
+	 * @param page_id the ID of the page
+	 * @return Optional containing the page state if found
+	 */
+	@Query("MATCH (d:Domain)-[]->(p:PageState) WHERE id(d)=$domain_id AND id(p)=$page_id RETURN p")
+	public Optional<PageState> getPage(@Param("domain_id") long domain_id, @Param("page_id") long page_id);
+
+	/**
+	 * Adds a page to a domain if it doesn't already exist.
+	 *
+	 * @param domain_id the ID of the domain
+	 * @param page_id the ID of the page to add
+	 * @return the page state that was added to the domain
+	 */
+	@Query("MATCH (d:Domain) WITH d MATCH (p:PageState) WHERE id(d)=$domain_id AND id(p)=$page_id MERGE (d)-[:HAS]->(p) RETURN p")
+	public PageState addPage(@Param("domain_id") long domain_id, @Param("page_id") long page_id);
+	
+	/**
+	 * Retrieves all pages for a specific host.
+	 *
+	 * @param host the host to get pages for
+	 * @return set of all page states associated with the host
+	 */
+	@Query("MATCH (d:Domain{host:$host})-[:HAS]->(p:PageState) RETURN p")
+	public Set<PageState> getPages(@Param("host") String host);
+
+	/**
+	 * Retrieves a page state for a specific user, domain, and form key.
+	 *
+	 * @param user_id the ID of the user
+	 * @param url the URL of the domain
+	 * @param key the key of the form
+	 * @return the page state if found
+	 */
+	@Query("MATCH (:Account{user_id:$user_id})-[]->(d:Domain{url:$url}) MATCH (d)-[]->(p:Page) MATCH (p)-[]->(ps:PageState) MATCH (ps)-[]->(ps:PageState) MATCH (ps)-[:HAS]->(:Form{key:$key}) RETURN ps")
+	public PageState getPageState(@Param("user_id") String user_id, @Param("url") String url, @Param("key") String key);
+
+	/**
+	 * Adds a start page to a step.
+	 *
+	 * @param id the ID of the step
+	 * @param page_state_id the ID of the page state to add as start page
+	 * @return the page state that was added as start page
+	 */
+	@Query("MATCH (s:Step) WITH s MATCH (p:PageState) WHERE id(s)=$step_id AND id(p)=$page_state_id MERGE (s)-[:STARTS_WITH]->(p) RETURN p")
+	public PageState addStartPage(@Param("step_id") long id, @Param("page_state_id") long page_state_id);	
+
+	/**
+	 * Retrieves the start page for a login step.
+	 *
+	 * @param id the ID of the login step
+	 * @return the start page state of the login step
+	 */
+	@Query("MATCH (s:LoginStep)-[:STARTS_WITH]->(page:PageState) WHERE id(s)=$step_id RETURN page")
+	public PageState getStartPage(@Param("step_id") long id);
+	
+	/**
+	 * Adds an end page to a step.
+	 *
+	 * @param id the ID of the step
+	 * @param page_state_id the ID of the page state to add as end page
+	 * @return the page state that was added as end page
+	 */
+	@Query("MATCH (s:Step) WITH s MATCH (p:PageState) WHERE id(s)=$step_id AND id(p)=$page_state_id MERGE (s)-[:ENDS_WITH]->(p) RETURN p")
+	public PageState addEndPage(@Param("step_id") long id, @Param("page_state_id") long page_state_id);
+
+	/**
+	 * Retrieves the end page for a step.
+	 *
+	 * @param id the ID of the step
+	 * @return the end page state of the step
+	 */
+	@Query("MATCH (s:Step)-[:ENDS_WITH]->(page:PageState) WHERE id(s)=$step_id RETURN page")
+	public PageState getEndPage(@Param("step_id") long id);
+
+	/**
+	 * Retrieves the end page for a simple step by key.
+	 *
+	 * @param key the key of the simple step
+	 * @return the end page state of the simple step
+	 */
+	@Query("MATCH (:SimpleStep{key:$step_key})-[:STARTS_WITH]->(p:PageState) RETURN p")
+	public PageState getEndPage(@Param("step_key") String key);
+	
+	/**
+	 * Retrieves the start page for a simple step by key.
+	 *
+	 * @param key the key of the simple step
+	 * @return the start page state of the simple step
+	 */
+	@Query("MATCH (:SimpleStep{key:$step_key})-[:ENDS_WITH]->(p:PageState) RETURN p")
+	public PageState getStartPage(@Param("step_key") String key);
+	
+	/**
+	 * Retrieves the result page state for a test.
+	 *
+	 * @param test_key the key of the test
+	 * @param url the URL of the domain
+	 * @param user_id the ID of the user
+	 * @return the result page state
+	 */
+	@Query("MATCH (a:Account{user_id:$user_id})-[:HAS_DOMAIN]->(d:Domain{url:$url}) MATCH (d)-[:HAS_TEST]->(t:Test{key:$test_key}) MATCH (t)-[:HAS_RESULT]->(p:PageState) RETURN p")
+	public PageState getResult(@Param("test_key") String test_key, @Param("url") String url, @Param("user_id") String user_id);
+	
+	/**
+	 * Finds a page state by domain audit record and page state ID.
+	 *
+	 * @param domainAuditRecordId the ID of the domain audit record
+	 * @param page_state_id the ID of the page state
+	 * @return the page state if found
+	 */
+	@Query("MATCH (domain_audit:DomainAuditRecord) with domain_audit WHERE id(domain_audit)=$domain_audit_id MATCH (domain_audit)-[]->(page_audit:PageAuditRecord) MATCH (page_audit)-[]->(page_state:PageState) WHERE id(page_state)=$page_state_id RETURN page_state")
+	public PageState findByDomainAudit(@Param("domain_audit_id") long domainAuditRecordId, @Param("page_state_id") long page_state_id);
+	
+	/**
+	 * Retrieves the page state for a page audit record.
+	 *
+	 * @param page_audit_id the ID of the page audit record
+	 * @return the page state associated with the page audit record
+	 */
+	@Query("MATCH (page_audit:PageAuditRecord)-[]->(page_state:PageState) WHERE id(page_audit)=$page_audit_id RETURN page_state LIMIT 1")
+	public PageState getPageStateForAuditRecord(@Param("page_audit_id") long page_audit_id);
 }

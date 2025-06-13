@@ -41,7 +41,7 @@ public enum Action {
     /**
      * Represents an unknown action.
      */
-	UNKNOWN("unkown");
+	UNKNOWN("unknown");
 	
 	/**
 	 * The short name of the action.

@@ -12,14 +12,7 @@ import lombok.Setter;
 @Setter
 public class ColorContrastRecommendation extends Recommendation{
 
-	/**
-	 * The first color in RGB format
-	 */
 	private String color1Rgb;
-
-	/**
-	 * The second color in RGB format
-	 */
 	private String color2Rgb;
 	
 	/**

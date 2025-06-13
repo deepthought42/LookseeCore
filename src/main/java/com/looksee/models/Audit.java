@@ -28,62 +28,17 @@ import lombok.Setter;
 @Setter
 public class Audit extends LookseeObject {
 
-	/**
-	 * The category of the audit
-	 */
 	private String category;
-	/**
-	 * The subcategory of the audit
-	 */
 	private String subcategory;
-	/**
-	 * The name of the audit
-	 */
 	private String name;
-
-	/**
-	 * The level of the audit
-	 */
 	private String level;
-
-	/**
-	 * The points of the audit
-	 */
 	private int points;
-
-	/**
-	 * The total possible points of the audit
-	 */
 	private int totalPossiblePoints;
-
-	/**
-	 * The url of the audit
-	 */
 	private String url;
-
-	/**
-	 * The accessible flag of the audit
-	 */
 	private boolean accessible;
-
-	/**
-	 * The description of the audit
-	 */
 	private String description;
-
-	/**
-	 * The why it matters of the audit
-	 */
 	private String whyItMatters;
-	
-	/**
-	 * The messages of the audit
-	 */
 	private Set<UXIssueMessage> messages;
-	
-	/**
-	 * The labels of the audit
-	 */
 	private Set<String> labels;
 
 	/**

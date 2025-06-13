@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.looksee.models.Account;
 import com.looksee.models.Audit;
 import com.looksee.models.AuditRecord;
 import com.looksee.models.DesignSystem;
@@ -20,7 +21,10 @@ import com.looksee.models.PageState;
 import com.looksee.models.UXIssueMessage;
 import com.looksee.models.enums.AuditCategory;
 import com.looksee.models.enums.ExecutionStatus;
+import com.looksee.models.enums.JourneyStatus;
+import com.looksee.models.repository.AccountRepository;
 import com.looksee.models.repository.AuditRecordRepository;
+import com.looksee.models.repository.AuditRepository;
 
 import io.github.resilience4j.retry.annotation.Retry;
 import lombok.NoArgsConstructor;
@@ -41,6 +45,12 @@ public class AuditRecordService {
 	@Autowired
 	private PageStateService page_state_service;
 	
+	@Autowired
+	private AuditRepository audit_repo;
+
+	@Autowired
+	private AccountRepository account_repo;
+
 	/**
 	 * Save an audit record
 	 *
@@ -731,5 +741,76 @@ public class AuditRecordService {
 		assert !key.isEmpty();
 
 		return page_state_service.findPageWithKey(audit_record_id, key);
+	}
+
+	public Optional<Account> getAccount(long audit_record_id) {
+		return account_repo.getAccount(audit_record_id);
+	}
+
+	/**
+	 * Update the progress for the appropriate {@linkplain AuditCategory}
+	 * @param auditRecordId
+	 * @param category
+	 * @param account_id
+	 * @param domain_id
+	 * @param progress
+	 * @param message
+	 * @return
+	 */
+	public void updateAuditProgress(long audit_record_id,
+									double content_progress,
+									double info_architecture_progress,
+									double aesthetic_progress,
+									double data_extraction_progress)
+	{
+		AuditRecord audit_record = findById(audit_record_id).get();
+		audit_record.setDataExtractionProgress(data_extraction_progress);
+		audit_record.setStatus(ExecutionStatus.RUNNING_AUDITS);
+
+		audit_record.setContentAuditProgress( content_progress );
+		audit_record.setAestheticAuditProgress( aesthetic_progress);
+		audit_record.setInfoArchitectureAuditProgress( info_architecture_progress );
+		
+		audit_record_repo.updateProgress(audit_record_id, content_progress, info_architecture_progress, aesthetic_progress, data_extraction_progress);
+	}
+
+	@Deprecated
+	public Optional<AuditRecord> getMostRecentAuditRecordForDomain(String host) {
+		assert host != null;
+		assert !host.isEmpty();
+		
+		return audit_record_repo.getMostRecentAuditRecordForDomain(host);
+	}
+	
+	public Optional<AuditRecord> getMostRecentAuditRecordForDomain(long id) {
+		return audit_record_repo.getMostRecentAuditRecordForDomain(id);
+	}
+
+	public Set<Audit> getAllAuditsForDomainAudit(long domain_audit_record_id) {
+		return audit_repo.getAllAuditsForDomainAudit(domain_audit_record_id);
+	}
+
+    public boolean updateAuditScores(long audit_record_id,
+									double content_score,
+									double info_architecture_score,
+									double aesthetic_score) {
+		try{
+	audit_record_repo.updateScores(audit_record_id, content_score, info_architecture_score, aesthetic_score);
+			return true;
+		}catch(Exception e){
+			return false;
+		}
+    }
+
+	public int getNumberOfJourneysWithStatus(long domain_audit_id, JourneyStatus candidate) {
+		return audit_record_repo.getNumberOfJourneysWithStatus(domain_audit_id, candidate.toString());
+	}
+
+	public int getNumberOfJourneys(long domain_audit_id) {
+		return audit_record_repo.getNumberOfJourneys(domain_audit_id);
+	}
+
+	public PageState findPage(long audit_record_id) {
+		return page_state_service.getPageStateForAuditRecord(audit_record_id);
 	}
 }

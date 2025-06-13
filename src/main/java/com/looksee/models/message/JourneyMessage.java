@@ -16,24 +16,9 @@ import lombok.Setter;
 @Setter
 public class JourneyMessage extends Message {
 
-	/**
-	 * The journey
-	 */
 	private Journey journey;
-
-	/**
-	 * The status
-	 */
 	private JourneyStatus status;
-
-	/**
-	 * The browser type
-	 */
 	private BrowserType browser;
-
-	/**
-	 * The audit record id
-	 */
 	private long auditRecordId;
 
 	/**
