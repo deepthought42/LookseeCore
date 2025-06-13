@@ -125,4 +125,13 @@ public interface StepRepository extends Neo4jRepository<Step, Long>{
 	 */
 	@Query("MATCH (map:DomainMap)-[*2]-(step:Step{candidate_key:$key}) WHERE id(map)=$domain_map_id RETURN step LIMIT 1")
 	public Step findByCandidateKey(@Param("key") String candidate_key, @Param("domain_map_id") long domain_map_id);
+
+	/**
+	 * Finds steps with a start page
+	 *
+	 * @param page_state_id the ID of the page state
+	 * @return the steps
+	 */
+	@Query("MATCH (p:PageState) WITH p WHERE id(p)=$page_state_id MATCH (step:Step)-[:STARTS_WITH]->(p:PageState) RETURN step")
+	public List<Step> getStepsWithStartPage(@Param("page_state_id") long page_state_id);
 }

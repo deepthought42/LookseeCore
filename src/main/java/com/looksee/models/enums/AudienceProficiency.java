@@ -37,6 +37,7 @@ public enum AudienceProficiency {
      * Represents an unknown audience.
      */
 	UNKNOWN("UNKNOWN");
+    
 	private String shortName;
 
 	AudienceProficiency (String shortName) {

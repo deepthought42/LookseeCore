@@ -438,4 +438,15 @@ public class PageStateService {
 		
 		return page_state_repo.findPageWithKey(audit_record_id, key);
 	}
+
+	/**
+	 * Get the page state for an audit record
+	 * @param audit_record_id the id of the audit record
+	 * @return the page state
+	 *
+	 * precondition: audit_record_id > 0
+	 */
+    public PageState getPageStateForAuditRecord(long audit_record_id) {
+        return page_state_repo.getPageStateForAuditRecord(audit_record_id);
+    }
 }
