@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.looksee.models.Account;
 import com.looksee.models.AuditRecord;
-import com.looksee.models.DiscoveryRecord;
 import com.looksee.models.Domain;
 import com.looksee.models.PageAuditRecord;
 import com.looksee.models.repository.AccountRepository;
@@ -59,10 +58,6 @@ public class AccountService {
 	
 	public void removeDomain(long account_id, long domain_id) {
 		account_repo.removeDomain(account_id, domain_id);
-	}
-	
-	public Set<DiscoveryRecord> getDiscoveryRecordsByMonth(String username, int month) {
-		return account_repo.getDiscoveryRecordsByMonth(username, month);
 	}
 
 	public int getTestCountByMonth(String username, int month) {

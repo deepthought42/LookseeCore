@@ -12,6 +12,7 @@ import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 
 import com.looksee.exceptions.ExistingRuleException;
+import com.looksee.models.Domain;
 import com.looksee.models.Element;
 import com.looksee.models.ElementState;
 import com.looksee.models.PageState;
@@ -469,4 +470,15 @@ public class ElementStateService {
 	public ElementState findByDomainAuditAndKey(long domain_audit_id, ElementState element) throws Exception {
 		return element_repo.findByDomainAuditAndKey(domain_audit_id, element.getKey());
 	}
+	
+	@Deprecated
+	public boolean doesElementExistInOtherPageStateWithLowerScrollOffset(Element element){
+		return false;
+	}
+
+	@Deprecated
+	public ElementState getParentElement(String user_id, Domain domain, String page_key, String element_state_key) {
+		return element_repo.getParentElement(user_id, domain, page_key, element_state_key);
+	}
+
 }
