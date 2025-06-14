@@ -8,6 +8,7 @@
 
 	<properties>
 		<selenium-version>4.10.0</selenium-version>
+		<selenium-server-version>3.141.59</selenium-server-version>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -204,11 +205,29 @@
 			<version>${selenium-version}</version>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-api -->
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
-			<artifactId>selenium-api</artifactId>
+			<artifactId>selenium-remote-driver</artifactId>
 			<version>${selenium-version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-support</artifactId>
+			<version>${selenium-version}</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-server -->
+		<dependency>
+		    <groupId>org.seleniumhq.selenium</groupId>
+		    <artifactId>selenium-server</artifactId>
+		    <version>${selenium-server-version}</version>
+		    <exclusions>
+			    <exclusion>
+			        <groupId>javax.servlet</groupId>
+			        <artifactId>servlet-api</artifactId>
+			    </exclusion>
+			</exclusions>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/com.assertthat/selenium-shutterbug -->
