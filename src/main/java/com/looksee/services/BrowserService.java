@@ -2106,19 +2106,18 @@ public class BrowserService {
 		ElementState element_state = new ElementState(
 											element.ownText().trim(),
 											element.text(),
-											xpath, 
-											element.tagName(), 
-											attributes, 
-											rendered_css_values, 
-											screenshot_url, 
-											location.getX(), 
-											location.getY(), 
-											dimension.getWidth(), 
-											dimension.getHeight(), 
+											xpath,
+											element.tagName(),
+											attributes,
+											rendered_css_values,
+											screenshot_url,
+											location.getX(),
+											location.getY(),
+											dimension.getWidth(),
+											dimension.getHeight(),
 											classification,
 											element.outerHtml(),
-											web_elem.isDisplayed(),
-											css_selector, 
+											css_selector,
 											foreground_color,
 											rendered_css_values.get("background-color"),
 											false);
@@ -2198,7 +2197,6 @@ public class BrowserService {
 													dimension.getHeight(),
 													classification,
 													element.outerHtml(),
-													web_elem.isDisplayed(),
 													css_selector,
 													foreground_color,
 													background_color,
@@ -2245,7 +2243,7 @@ public class BrowserService {
 				browser = getConnection(BrowserType.CHROME, BrowserEnvironment.DISCOVERY);
 				browser.navigateTo(page_url);
 				if(browser.is503Error()) {
-					throw new FiveZeroThreeException("503 Error encountered. Starting over..");
+					throw new ServiceUnavailableException("503 Error encountered. Starting over..");
 				}
 				browser.removeDriftChat();
 				
@@ -2265,10 +2263,10 @@ public class BrowserService {
 			catch(ServiceUnavailableException e) {
 				log.warn("503 exception occurred while accessing "+page_url);
 			}
-			catch(WebDriverException | GridException e) {
+			catch(WebDriverException e) {
 				log.warn("Webdriver exception occurred ... "+page_url);
 				//e.printStackTrace();
-			}	
+			}
 			finally {
 				if(browser != null) {
 					browser.close();
@@ -2289,7 +2287,7 @@ public class BrowserService {
 	 * @param height TODO
 	 * @param audit_record TODO
 	 * @return
-	 * @throws MalformedURLException 
+	 * @throws MalformedURLException
 	 */
 	public List<ElementState> buildPageElementsWithoutNavigation(PageState page_state,
 																List<String> xpaths,
@@ -2355,7 +2353,7 @@ public class BrowserService {
 	}
 	
 	/**
-	 * identify and collect data for elements within the Document Object Model 
+	 * identify and collect data for elements within the Document Object Model
 	 * @param audit_record_id TODO
 	 * @param url TODO
 	 * @param url
@@ -2432,7 +2430,8 @@ public class BrowserService {
 						element_screenshot = browser.getElementScreenshot(web_element);
 						String screenshot_checksum = ImageUtils.getChecksum(element_screenshot);
 						
-						element_screenshot_url = GoogleCloudStorage.saveImage(element_screenshot, host, screenshot_checksum, BrowserType.create(browser.getBrowserName()));
+						element_screenshot_url = googleCloudStorage.saveImage(element_screenshot,
+						host, screenshot_checksum, BrowserType.create(browser.getBrowserName()));
 					}
 					catch( Exception e) {
 						//do nothing
@@ -2506,33 +2505,33 @@ public class BrowserService {
 
 					//retrieve image labels
 					Set<Label> labels = CloudVisionUtils.extractImageLabels(element_screenshot);
-					ElementState element_state = buildImageElementState(xpath, 
-																	   attributes, 
-																	   element, 
-																	   web_element, 
-																	   classification, 
-																	   rendered_css_props, 
-																	   element_screenshot_url,
-																	   css_selector,
-																	   landmark_info_set,
-																	   faces,
-																	   image_search_set,
-																	   logos,
-																	   labels,
-																	   img_safe_search_annotation);
+					ElementState element_state = buildImageElementState(xpath,
+																		attributes,
+																		element,
+																		web_element,
+																		classification,
+																		rendered_css_props,
+																		element_screenshot_url,
+																		css_selector,
+																		landmark_info_set,
+																		faces,
+																		image_search_set,
+																		logos,
+																		labels,
+																		img_safe_search_annotation);
 					
 					element_states_map.put(xpath, element_state);
 					visited_elements.add(element_state);
 				}
 				else {
-					ElementState element_state = buildElementState(xpath, 
-																   attributes, 
-																   element, 
-																   web_element, 
-																   classification, 
-																   rendered_css_props, 
-																   element_screenshot_url,
-																   css_selector);
+					ElementState element_state = buildElementState(xpath,
+																	attributes,
+																	element,
+																	web_element,
+																	classification,
+																	rendered_css_props,
+																	element_screenshot_url,
+																	css_selector);
 					element_states_map.put(xpath, element_state);
 					visited_elements.add(element_state);
 				}

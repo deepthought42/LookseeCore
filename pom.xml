@@ -204,6 +204,13 @@
 			<version>${selenium-version}</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-api -->
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-api</artifactId>
+			<version>${selenium-version}</version>
+		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/com.assertthat/selenium-shutterbug -->
 		
 		<dependency>
