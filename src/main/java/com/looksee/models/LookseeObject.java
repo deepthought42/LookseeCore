@@ -25,22 +25,11 @@ import lombok.Setter;
 @Setter
 public abstract class LookseeObject {
 	
-	/**
-	 * The id of the object
-	 */
 	@GeneratedValue
     @Id
 	private Long id;
-
-	/**
-	 * The key of the object
-	 */
-	@Property
 	private String key;
 	
-	/**
-	 * The time the object is created at
-	 */
 	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
 	@Property
