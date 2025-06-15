@@ -91,14 +91,12 @@ public class BrowserService {
 	/**
 	 * Retrieves a new browser connection
 	 *
-	 * @param browser the browser
+	 * @param browser the browser (must not be null)
 	 * @param browser_env the browser environment
 	 *
 	 * @return new {@link Browser} instance
 	 * @throws MalformedURLException
-	 *
-	 * precondition: browser != null;
-	 * precondition: !browser_name.isEmpty();
+	 * @throws IllegalArgumentException if browser is null
 	 */
 	public Browser getConnection(BrowserType browser, BrowserEnvironment browser_env) throws MalformedURLException {
 		assert browser != null;
@@ -109,28 +107,24 @@ public class BrowserService {
 	/**
  	 * Constructs an {@link Element} from a JSOUP {@link Element element}
  	 *
-	 * @param xpath the xpath
-	 * @param attributes the attributes
-	 * @param element the element
-	 * @param classification the classification
-	 * @param rendered_css_values the rendered css values
+	 * @param xpath the xpath (must not be null or empty)
+	 * @param attributes the attributes (must not be null)
+	 * @param element the element (must not be null)
+	 * @param classification the classification (must not be null)
+	 * @param rendered_css_values the rendered css values (must not be null)
 	 * @param screenshot_url the screenshot url
 	 * @param css_selector the css selector
 	 * @param element_size the element size
 	 * @param element_location the element location
 	 *
-	 * precondition: xpath != null
-	 * precondition: !xpath.isEmpty()
-	 * precondition: attributes != null
-	 * precondition: element != null
-	 * precondition: classification != null
-	 * precondition: rendered_css_values != null
-	 * precondition: css_values != null
-	 * precondition: screenshot != null
-	 *
 	 * @return {@link ElementState} based on {@link WebElement} and other params
 	 * @throws IOException if an error occurs while reading the screenshot
 	 * @throws MalformedURLException if the url is malformed
+	 * @throws IllegalArgumentException if xpath is null or empty
+	 * @throws IllegalArgumentException if attributes is null
+	 * @throws IllegalArgumentException if element is null
+	 * @throws IllegalArgumentException if classification is null
+	 * @throws IllegalArgumentException if rendered_css_values is null
 	 */
 	public static ElementState buildElementState(
 			String xpath,
@@ -263,11 +257,10 @@ public class BrowserService {
 	 * Generalizes HTML source by removing comments along with script, link, style, and iframe tags.
 	 * Also removes attributes. The goal of this method is to strip out any dynamic data that could cause problems
 	 *
-	 * @param src the html string to generalize
+	 * @param src the html string to generalize (must not be null)
 	 *
 	 * @return the generalized html string
-	 *
-	 * precondition: src != null
+	 * @throws IllegalArgumentException if src is null
 	 */
 	public static String generalizeSrc(String src) {
 		assert src != null;
@@ -314,11 +307,10 @@ public class BrowserService {
 	/**
 	 * Removes HTML comments from html string
 	 *
-	 * @param html the html string to remove comments from
+	 * @param html the html string to remove comments from (must not be null)
 	 *
 	 * @return html string without comments
-	 *
-	 * precondition: html != null
+	 * @throws IllegalArgumentException if html is null
 	 */
 	public static String removeComments(String html) {
 		assert html != null;
@@ -344,8 +336,8 @@ public class BrowserService {
 	 * 	chat client from page if it exists. Finally it builds a {@link PageState}
 	 * 
 	 *Constructs a page object that contains all child elements that are considered to be potentially expandable.
-	 * @param url the {@link URL}
-	 * @param browser the {@link Browser}
+	 * @param url the {@link URL} (must not be null)
+	 * @param browser the {@link Browser} (must not be null)
 	 * @param isSecure true if the page is secure, false otherwise
 	 * @param httpStatus the http status code
 	 * @param audit_record_id the audit record id
@@ -354,9 +346,8 @@ public class BrowserService {
 	 * @throws StorageException
 	 * @throws IOException
 	 * @throws NullPointerException
-	 *
-	 * precondition: browser != null
-	 * precondition: url != null
+	 * @throws IllegalArgumentException if browser is null
+	 * @throws IllegalArgumentException if url is null
 	 */
 	public PageState buildPageState( URL url,
 									Browser browser,
@@ -441,18 +432,17 @@ public class BrowserService {
 	 * identify and collect data for elements within the Document Object Model
 	 *
 	 * @param domain_audit_id the domain audit id
-	 * @param page_state the {@link PageState}
-	 * @param xpaths the xpaths
-	 * @param browser the {@link Browser}
+	 * @param page_state the {@link PageState} (must not be null)
+	 * @param xpaths the xpaths (must not be null)
+	 * @param browser the {@link Browser} (must not be null)
 	 *
 	 * @return {@link List list} of {@link ElementState element states}
 	 *
 	 * @throws Exception if an error occurs while getting the element states
 	 * @throws XPathExpressionException if an error occurs while evaluating the xpath
-	 *
-	 * precondition: xpaths != null
-	 * precondition: browser != null
-	 * precondition: page_state != null
+	 * @throws IllegalArgumentException if xpaths is null
+	 * @throws IllegalArgumentException if browser is null
+	 * @throws IllegalArgumentException if page_state is null
 	 */
 	public List<ElementState> getDomElementStates(
 			PageState page_state,
@@ -554,13 +544,11 @@ public class BrowserService {
 		return visited_elements;
 	}
 
-
 	/**
 	 * Checks if element tag is 'img'
-	 * @param web_element the web element to check
+	 * @param web_element the web element to check (must not be null)
 	 * @return true if the element tag is 'img', otherwise false
-	 *
-	 * precondition: web_element != null
+	 * @throws IllegalArgumentException if web_element is null
 	 */
 	@Deprecated
 	private boolean isImageElement(WebElement web_element) {
@@ -1010,18 +998,14 @@ public class BrowserService {
 	/**
 	 * generates a unique xpath for this element.
 	 *
-	 * @param element the {@link WebElement} to generate an xpath for
+	 * @param element the {@link WebElement} to generate an xpath for (must not be null)
 	 * @param driver the {@link WebDriver} to use
 	 * @param attributes the {@link Map} of attributes to use
 	 *
 	 * @return an xpath that identifies this element uniquely
-	 *
-	 * <b>Preconditions:</b>
-	 * <ul>
-	 *   <li>element != null</li>
-	 *   <li>driver != null</li>
-	 *   <li>attributes != null</li>
-	 * </ul>
+	 * @throws IllegalArgumentException if element is null
+	 * @throws IllegalArgumentException if driver is null
+	 * @throws IllegalArgumentException if attributes is null
 	 */
 	public String generateXpath(WebElement element,
 								WebDriver driver,
@@ -1074,17 +1058,16 @@ public class BrowserService {
 	/**
 	 * generates a unique xpath for this element.
 	 *
-	 * @param element the element to generate an xpath for
-	 * @param doc the document to use
-	 * @param attributes the attributes to use
-	 * @param xpath_cnt the xpath count
+	 * @param element the element to generate an xpath for (must not be null)
+	 * @param doc the document to use (must not be null)
+	 * @param attributes the attributes to use (must not be null)
+	 * @param xpath_cnt the xpath count (must not be null)
 	 *
 	 * @return an xpath that identifies this element uniquely
-	 *
-	 * precondition: element != null
-	 * precondition: doc != null
-	 * precondition: attributes != null
-	 * precondition: xpath_cnt != null
+	 * @throws IllegalArgumentException if element is null
+	 * @throws IllegalArgumentException if doc is null
+	 * @throws IllegalArgumentException if attributes is null
+	 * @throws IllegalArgumentException if xpath_cnt is null
 	 */
 	@Deprecated
 	public static String generateXpathUsingJsoup(Element element,
@@ -1222,10 +1205,9 @@ public class BrowserService {
 
 	/**
 	 * Removes auto-generated values from a string
-	 * @param trimmed_values the string to remove auto-generated values from
+	 * @param trimmed_values the string to remove auto-generated values from (must not be null)
 	 * @return the string with auto-generated values removed
-	 *
-	 * precondition: trimmed_values != null
+	 * @throws IllegalArgumentException if trimmed_values is null
 	 */
 	private static String removeAutoGeneratedValues(String trimmed_values) {
 		String[] values = trimmed_values.split(" ");
@@ -1241,10 +1223,9 @@ public class BrowserService {
 
 	/**
 	 * Checks if a value is auto-generated
-	 * @param val the value to check
+	 * @param val the value to check (must not be null)
 	 * @return true if the value is auto-generated, otherwise false
-	 *
-	 * precondition: val != null
+	 * @throws IllegalArgumentException if val is null
 	 */
 	private static boolean isAutoGenerated(String val) {
 		//check if value ends in a number
@@ -1331,10 +1312,9 @@ public class BrowserService {
 	/**
 	 * Finds templates in a list of elements
 	 *
-	 * @param element_list the list of elements to find templates in
+	 * @param element_list the list of elements to find templates in (must not be null)
 	 * @return the map of templates
-	 *
-	 * precondition: element_list != null
+	 * @throws IllegalArgumentException if element_list is null
 	 */
 	public Map<String, Template> findTemplates(List<com.looksee.models.Element> element_list){
 		//create a map for the various duplicate elements
@@ -1419,12 +1399,10 @@ public class BrowserService {
 
 	/**
 	 * Checks if Attributes contains keywords indicative of a slider
-	 * @param attributes
+	 * @param attributes the attributes to check (must not be null or empty)
 	 *
 	 * @return true if any of keywords present, otherwise false
-	 *
-	 * precondition: attributes != null
-	 * precondition: !attributes.isEmpty()
+	 * @throws IllegalArgumentException if attributes is null or empty
 	 */
 	public static boolean doesAttributesContainSliderKeywords(Map<String, List<String>> attributes) {
 		assert attributes != null;
@@ -1466,10 +1444,9 @@ public class BrowserService {
 	
 	/**
 	 * Reduces a list of templates to a list of parent templates
-	 * @param list_elements_list the list of templates to reduce
+	 * @param list_elements_list the list of templates to reduce (must not be null)
 	 * @return the reduced list of templates
-	 *
-	 * precondition: list_elements_list != null
+	 * @throws IllegalArgumentException if list_elements_list is null
 	 */
 	public Map<String, Template> reduceTemplatesToParents(Map<String, Template> list_elements_list) {
 		Map<String, Template> element_map = new HashMap<>();
@@ -2066,13 +2043,13 @@ public class BrowserService {
 	 * @param rendered_css_values
 	 * @param screenshot_url TODO
 	 * @param css_selector TODO
-	 * @pre xpath != null && !xpath.isEmpty()
-	 * @pre attributes != null
-	 * @pre element != null
-	 * @pre classification != null
-	 * @pre rendered_css_values != null
-	 * @pre css_values != null
-	 * @pre screenshot != null
+	 * @precondition xpath != null && !xpath.isEmpty()
+	 * @precondition attributes != null
+	 * @precondition element != null
+	 * @precondition classification != null
+	 * @precondition rendered_css_values != null
+	 * @precondition css_values != null
+	 * @precondition screenshot != null
 	 *
 	 * @return {@link ElementState} based on {@link WebElement} and other params
 	 * @throws IOException
@@ -2127,25 +2104,27 @@ public class BrowserService {
 	
 	/**
  	 * Constructs an {@link Element} from a JSOUP {@link Element element}
- 	 * 
-	 * @param xpath
-	 * @param attributes
-	 * @param element
-	 * @param web_elem
-	 * @param classification
-	 * @param rendered_css_values
-	 * @param screenshot_url TODO
-	 * @param css_selector TODO
-	 * @pre xpath != null && !xpath.isEmpty()
-	 * @pre attributes != null
-	 * @pre element != null
-	 * @pre classification != null
-	 * @pre rendered_css_values != null
-	 * @pre css_values != null
-	 * @pre screenshot != null
-	 * 
+ 	 *
+	 * @param xpath the xpath of the element
+	 * @param attributes the attributes of the element
+	 * @param element the element
+	 * @param web_elem the web element
+	 * @param classification the classification of the element
+	 * @param rendered_css_values the rendered css values of the element
+	 * @param screenshot_url the screenshot url of the element
+	 * @param css_selector the css selector of the element
+	 *
 	 * @return {@link ElementState} based on {@link WebElement} and other params
 	 * @throws IOException
+	 *
+	 * @precondition xpath != null && !xpath.isEmpty()
+	 * @precondition attributes != null
+	 * @precondition element != null
+	 * @precondition classification != null
+	 * @precondition rendered_css_values != null
+	 * @precondition css_values != null
+	 * @precondition screenshot != null
+	 *
 	 */
 	public static ElementState buildImageElementState(
 			String xpath,
@@ -2280,14 +2259,20 @@ public class BrowserService {
 	
 	/**
 	 * Process used by the web crawler to build {@link PageElement} list based on the xpaths on the page
-	 * @param xpaths TODO
-	 * @param audit_id TODO
-	 * @param url TODO
-	 * @param url
-	 * @param height TODO
-	 * @param audit_record TODO
-	 * @return
+	 * @param xpaths the xpaths to build the page elements for
+	 * @param audit_id the audit id
+	 * @param url the url
+	 * @param height the height
+	 * @param audit_record the audit record
+	 * @return the list of element states
 	 * @throws MalformedURLException
+	 * 
+	 * @precondition xpaths != null
+	 * @precondition page_state != null
+	 * @precondition browser != null
+	 * @precondition audit_id != null
+	 * @precondition page_height != null
+	 * @precondition audit_record != null
 	 */
 	public List<ElementState> buildPageElementsWithoutNavigation(PageState page_state,
 																List<String> xpaths,
@@ -2296,6 +2281,8 @@ public class BrowserService {
 																Browser browser
 	) throws MalformedURLException {
 		assert page_state != null;
+		assert xpaths != null;
+		assert browser != null;
 
 		List<ElementState> elements = new ArrayList<>();
 		Map<String, ElementState> elements_mapped = new HashMap<>();
@@ -2365,10 +2352,10 @@ public class BrowserService {
 	 * @throws IOException
 	 * @throws XPathExpressionException 
 	 * 
-	 * @pre xpaths != null
-	 * @pre browser != null
-	 * @pre element_states_map != null
-	 * @pre page_state != null
+	 * @precondition xpaths != null
+	 * @precondition browser != null
+	 * @precondition element_states_map != null
+	 * @precondition page_state != null
 	 */
 	private List<ElementState> getDomElementStates(
 			PageState page_state, 
@@ -2692,6 +2679,17 @@ public class BrowserService {
 		return icon_urls;
 	}
 
+	/**
+	 * Retrieves the page source from a {@link Browser}
+	 * 
+	 * @param browser the browser (must not be null)
+	 * @param sanitized_url the sanitized url (must not be null)
+	 * 
+	 * @return the page source
+	 * @throws MalformedURLException if the url is malformed
+	 * @throws IllegalArgumentException if browser is null
+	 * @throws IllegalArgumentException if sanitized_url is null
+	 */
 	public String getPageSource(Browser browser, URL sanitized_url) throws MalformedURLException {
 		assert browser != null;
 		assert sanitized_url != null;
@@ -2699,7 +2697,13 @@ public class BrowserService {
 		return browser.getSource();
 	}
 	
-	
+	/**
+	 * Calculates the SHA-256 hash of a string
+	 * 
+	 * @param value the value to hash (must not be null)
+	 * 
+	 * @return the SHA-256 hash
+	 */
 	private static String calculateSha256(String value) {
 		return org.apache.commons.codec.digest.DigestUtils.sha256Hex(value);
 	}

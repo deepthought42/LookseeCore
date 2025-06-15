@@ -44,7 +44,7 @@ public class Page extends LookseeObject {
 	private List<Element> elements;
 	
 	@Relationship(type = "HAS")
-	private List<PageState> page_states;
+	private List<PageState> pageStates;
 
 	/**
 	 * Default constructor that initializes empty lists for elements and page states.
@@ -276,7 +276,7 @@ public class Page extends LookseeObject {
 	 * @return true if the page state was added successfully
 	 */
 	public boolean addPageState(PageState page_state_record) {
-		return this.page_states.add(page_state_record);
+		return this.pageStates.add(page_state_record);
 	}
 }
 

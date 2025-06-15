@@ -22,6 +22,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.type.DateTime;
 import com.looksee.models.enums.TestStatus;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 /**
  * Defines the path of a test, the result and the expected values to determine if a test was 
@@ -67,63 +70,19 @@ public class Test extends LookseeObject {
 	@Relationship(type = "HAS_RESULT")
 	private PageState result;
 	
-	public Test(){}
-	
 	/**
 	 * Constructs a test object
 	 * 
-	 * @param path_keys the keys of the path
-	 * @param path_objects the objects of the path
-	 * @param result the result of the test
-	 * @param spansMultipleDomains whether the test spans multiple domains
-	 * @throws MalformedURLException
-	 * 
-	 * @pre path_keys != null
-	 * @pre !path_keys.isEmpty()
-	 * @pre path_objects != null
-	 * @pre !path_objects.isEmpty()
-	 */
-	public Test(List<String> path_keys,
-				List<LookseeObject> path_objects,
-				PageState result,
-				String name,
-				boolean is_running,
-				boolean spansMultipleDomains) throws MalformedURLException{
-		assert path_keys != null;
-		assert !path_keys.isEmpty();
-		assert path_objects != null;
-		assert !path_objects.isEmpty();
-		
-		setPathKeys(path_keys);
-		setPathObjects(path_objects);
-		setResult(result);
-		setRecords(new ArrayList<TestRecord>());
-		setStatus(TestStatus.UNVERIFIED);
-		setSpansMultipleDomains(spansMultipleDomains);
-		setLastRunTimestamp(new Date());
-		setName(generateTestName());
-		setBrowserStatuses(new HashMap<String, String>());
-		setArchived(false);
-		setIsRunning(false);
-		setKey(generateKey());
-		setRunTime(0L);
-	}
-	
-	/**
-	 * Constructs a test object
-	 * 
-	 * @param path_keys the keys of the path
-	 * @param path_objects the objects of the path
+	 * @param path_keys the keys of the path (must not be null or empty)
+	 * @param path_objects the objects of the path (must not be null or empty)
 	 * @param result the result of the test
 	 * @param name the name of the test
 	 * @param is_running whether the test is running
 	 * @param spansMultipleDomains whether the test spans multiple domains
 	 * @throws MalformedURLException
 	 * 
-	 * @pre path_keys != null
-	 * @pre !path_keys.isEmpty()
-	 * @pre path_objects != null
-	 * @pre !path_objects.isEmpty()
+	 * @throws IllegalArgumentException if path_keys is null or empty
+	 * @throws IllegalArgumentException if path_objects is null or empty
 	 */
 	public Test(List<String> path_keys,
 				List<LookseeObject> path_objects,
@@ -142,13 +101,13 @@ public class Test extends LookseeObject {
 		setRecords(new ArrayList<TestRecord>());
 		setStatus(TestStatus.UNVERIFIED);
 		setSpansMultipleDomains(spansMultipleDomains);
-		setLastRunTimestamp(new Date());
+		setLastRunTime(new Date());
 		setName(name);
-		setBrowserStatuses(new HashMap<String, String>());
-		setIsRunning(is_running);
+		setBrowserPassingStatuses(new HashMap<String, String>());
+		setRunning(is_running);
 		setArchived(false);
 		setKey(generateKey());
-		setRunTime(0L);
+		setRunTimeLength(0L);
 	}
 	
 	/**
@@ -240,7 +199,7 @@ public class Test extends LookseeObject {
 	 * @param path_obj the path object to add
 	 */
 	public void addPathObject(LookseeObject path_obj) {
-		this.path_objects.add(path_obj);
+		this.pathObjects.add(path_obj);
 	}
 
 	/**
@@ -250,7 +209,7 @@ public class Test extends LookseeObject {
 	 */
 	@JsonIgnore
 	public List<LookseeObject> getPathObjects() {
-		return this.path_objects;
+		return this.pathObjects;
 	}
 
 	/**
@@ -260,19 +219,19 @@ public class Test extends LookseeObject {
 	 */
 	@JsonIgnore
 	public void setPathObjects(List<LookseeObject> path_objects) {
-		this.path_objects = path_objects;
+		this.pathObjects = path_objects;
 	}
 	
 	/**
-	 * 
-	 * @param browser_name name of browser (ie 'chrome', 'firefox')
+	 * Sets the browser passing status for a test
+	 *
+	 * @param browser_name name of browser (ie 'chrome', 'firefox') (must not be null)
 	 * @param status boolean indicating passing or failing
-	 * 
-	 * @pre browser_name != null
+	 * @throws IllegalArgumentException if browser_name is null
 	 */
 	public void setBrowserStatus(String browser_name, String status){
 		assert browser_name != null;
-		getBrowserStatuses().put(browser_name, status);
+		getBrowserPassingStatuses().put(browser_name, status);
 	}
 	
 	/**
@@ -297,7 +256,7 @@ public class Test extends LookseeObject {
 	 * Generates a key using both path and result in order to guarantee uniqueness of key as well 
 	 * as easy identity of {@link Test} when generated in the wild via discovery
 	 * 
-	 * @return
+	 * @return the key
 	 */
 	public String generateKey() {
 		String path_key =  String.join("", getPathKeys());
@@ -309,21 +268,23 @@ public class Test extends LookseeObject {
 	/**
 	 * Clone {@link Test} object
 	 * 
-	 * @param path
-	 * @return
-	 * @throws MalformedURLException 
+	 * @param test the test to clone
+	 * @return the cloned test
+	 * @throws MalformedURLException
 	 */
 	public static Test clone(Test test) throws MalformedURLException{
 		Test clone_test = new Test(new ArrayList<String>(test.getPathKeys()),
 									new ArrayList<LookseeObject>(test.getPathObjects()),
 									test.getResult(), 
-									test.getSpansMultipleDomains());
+									test.getName(),
+									test.isRunning(),
+									test.isSpansMultipleDomains());
 
-		clone_test.setBrowserStatuses(test.getBrowserStatuses());
+		clone_test.setBrowserPassingStatuses(test.getBrowserPassingStatuses());
 		clone_test.setGroups(new HashSet<>(test.getGroups()));
-		clone_test.setLastRunTimestamp(test.getLastRunTimestamp());
+		clone_test.setLastRunTime(test.getLastRunTime());
 		clone_test.setStatus(test.getStatus());
-		clone_test.setRunTime(test.getRunTime());
+		clone_test.setRunTimeLength(test.getRunTimeLength());
 		
 		return clone_test;
 	}
@@ -338,7 +299,7 @@ public class Test extends LookseeObject {
 		String test_name = "";
 		int page_state_idx = 0;
 		int element_action_cnt = 0;
-		for(LookseeObject obj : this.path_objects){
+		for(LookseeObject obj : this.pathObjects){
 			if(obj instanceof PageState && page_state_idx < 1){
 				String path = (new URL(((PageState)obj).getUrl())).getPath().trim();
 				path = path.replace("/", " ");

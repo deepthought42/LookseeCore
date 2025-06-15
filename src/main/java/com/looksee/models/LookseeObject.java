@@ -17,8 +17,6 @@ import lombok.Setter;
 
 /**
  * Universal object that contains values that are expected to exist on all persistable objects within the database
- * @author brand
- *
  */
 @Node
 @Getter
@@ -33,6 +31,7 @@ public abstract class LookseeObject {
 	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
 	@Property
+	@Getter
 	private LocalDateTime createdAt;
 	
 	/**

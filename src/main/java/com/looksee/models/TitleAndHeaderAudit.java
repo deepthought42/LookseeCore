@@ -45,9 +45,6 @@ public class TitleAndHeaderAudit implements IExecutablePageStateAudit {
 	 * {@inheritDoc}
 	 *
 	 * Identifies colors used on page, the color scheme type used, and the ultimately the score for how the colors used conform to scheme
-	 *
-	 * @throws MalformedURLException
-	 * @throws URISyntaxException
 	 */
 	@Override
 	public Audit execute(PageState page_state, AuditRecord audit_record, DesignSystem design_system) {
@@ -74,16 +71,16 @@ public class TitleAndHeaderAudit implements IExecutablePageStateAudit {
 		String description = "";
 
 		Audit audit = new Audit(AuditCategory.INFORMATION_ARCHITECTURE,
-								 AuditSubcategory.SEO,
-								 AuditName.TITLES,
-								 points_earned,
-								 new HashSet<>(),
-								 AuditLevel.PAGE,
-								 max_points,
-								 page_state.getUrl(),
-								 why_it_matters, 
-								 description, 
-								 true);
+								AuditSubcategory.SEO,
+								AuditName.TITLES,
+								points_earned,
+								new HashSet<>(),
+								AuditLevel.PAGE,
+								max_points,
+								page_state.getUrl(),
+								why_it_matters,
+								description,
+								true);
 		
 		audit_service.save(audit);
 		audit_service.addAllIssues(audit.getId(), issue_messages);
@@ -93,7 +90,7 @@ public class TitleAndHeaderAudit implements IExecutablePageStateAudit {
 	/**
 	 * Generates a score for headers found on the page
 	 * 
-	 * @param page_state
+	 * @param page_state the page state to score
 	 * @return
 	 */
 	private Score scoreHeadings(PageState page_state) {
@@ -123,7 +120,7 @@ public class TitleAndHeaderAudit implements IExecutablePageStateAudit {
 	/**
 	 * INCOMPLETE: PLEASE FINISH ME
 	 * 
-	 * @param page_state
+	 * @param page_state the page state to score
 	 * @return
 	 */
 	private Score scoreOrderedListHeaders(PageState page_state) {
@@ -155,7 +152,7 @@ public class TitleAndHeaderAudit implements IExecutablePageStateAudit {
 	/**
 	 * Generates score based on if text elements have an associated header
 	 * 
-	 * @param page_state
+	 * @param page_state the page state to score
 	 * @return
 	 */
 	private Score scoreTextElementHeaders(PageState page_state) {
@@ -211,7 +208,7 @@ public class TitleAndHeaderAudit implements IExecutablePageStateAudit {
 	/**
 	 * Generates score based on if favicon is present
 	 * 
-	 * @param page_state
+	 * @param page_state the page state to score
 	 * @return
 	 * 
 	 * @pre page_state != null
@@ -260,10 +257,10 @@ public class TitleAndHeaderAudit implements IExecutablePageStateAudit {
 			String recommendation = "Create an icon that is 16x16 for your brand logo and include it as your favicon by inclding the following code in your head tag <link rel=\"shortcut icon\" href=\"your_favicon.ico\" type=\"image/x-icon\"> . Don't forget to put the location of your favicon in place of the href value";
 
 			PageStateIssueMessage favicon_issue = new PageStateIssueMessage(
-															null, 
-															description, 
+															null,
+															description,
 															recommendation,
-															Priority.HIGH, 
+															Priority.HIGH,
 															AuditCategory.INFORMATION_ARCHITECTURE,
 															labels,
 															ada_compliance,
@@ -274,7 +271,7 @@ public class TitleAndHeaderAudit implements IExecutablePageStateAudit {
 			favicon_issue = (PageStateIssueMessage) issue_message_service.save(favicon_issue);
 			issue_message_service.addPage(favicon_issue.getId(), page_state.getId());
 			issue_messages.add(favicon_issue);
-			points += 0;			
+			points += 0;
 		}
 		
 		return new Score(points, max_points, issue_messages);
@@ -282,7 +279,7 @@ public class TitleAndHeaderAudit implements IExecutablePageStateAudit {
 
 	/**
 	 * Checks if a {@link PageState} has a favicon defined
-	 * @param page
+	 * @param page_src the source code of the page
 	 * @return
 	 */
 	public static boolean hasFavicon(String page_src) {
@@ -300,7 +297,7 @@ public class TitleAndHeaderAudit implements IExecutablePageStateAudit {
 
 	/**
 	 * Generate a score for page titles across all pages in this domain
-	 * @param domain
+	 * @param page_state the page state to score
 	 * @return
 	 */
 	private Score scorePageTitles(PageState page_state) {
