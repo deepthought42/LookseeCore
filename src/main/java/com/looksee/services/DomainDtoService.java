@@ -24,7 +24,7 @@ import com.looksee.models.repository.PageStateRepository;
 import com.looksee.utils.AuditUtils;
 
 /**
- * Service for building domain DTOs
+ * Service for building domain DTOs.
  */
 @Service
 public class DomainDtoService {
@@ -46,7 +46,7 @@ public class DomainDtoService {
 	 * @param domain the domain to build a DTO for
 	 * @return the domain DTO
 	 * 
-	 * @pre domain != null
+	 * precondition: domain != null
 	 */
 	public DomainDto build(Domain domain) {
 		assert domain != null;

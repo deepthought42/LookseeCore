@@ -1550,7 +1550,7 @@ public class BrowserService {
 	 * @param element the element to test
 	 * @return true if the element is a top level element, false otherwise
 	 *
-	 * precondition: element != null
+	 * precondition:: element != null
 	 */
 	private boolean isTopLevelElement(Element element) {
 		assert element != null;
@@ -1726,7 +1726,7 @@ public class BrowserService {
 	 * @param src the source code to extract the body from
 	 * @return the body
 	 *
-	 * precondition: src != null
+	 * precondition:: src != null
 	 */
 	public static String extractBody(String src) {
 		assert src != null;
@@ -1791,7 +1791,7 @@ public class BrowserService {
 	 * @param html_doc the document to extract script urls from
 	 * @return a set of script urls
 	 *
-	 * precondition: html_doc != null
+	 * precondition:: html_doc != null
 	 */
 	public static Set<String> extractScriptUrls(Document html_doc) {
 		assert html_doc != null;
@@ -1813,7 +1813,7 @@ public class BrowserService {
 	 * @param html_doc the document to extract icon links from
 	 * @return a set of icon urls
 	 *
-	 * precondition: html_doc != null
+	 * precondition:: html_doc != null
 	 */
 	public static Set<String> extractIconLinks(Document html_doc) {
 		Elements icon_tags = html_doc.getElementsByTag("link");
@@ -1838,12 +1838,11 @@ public class BrowserService {
 	 * @throws MalformedURLException if the url is malformed
 	 * @throws IOException if an error occurs while extracting the screenshot
 	 *
-	 * precondition: element_states != null
-	 * precondition: page_state != null
-	 * precondition: browser != null
-	 * precondition: host != null
+	 * precondition:: element_states != null
+	 * precondition:: page_state != null
+	 * precondition:: browser != null
+	 * precondition:: host != null
 	 */
-	
 	public List<ElementState> enrichElementStates(List<ElementState> element_states,
 													PageState page_state,
 													Browser browser,
@@ -1880,21 +1879,22 @@ public class BrowserService {
 	}
 	
 	
-	/*
+	/**
 	 * Enrich an element state with screenshot, rendered css values, and attributes
 	 * @param browser the browser
 	 * @param web_element the web element
 	 * @param element_state the element state
 	 * @param page_screenshot the page screenshot
 	 * @param host the host
+	 * 
 	 * @return the enriched element state
 	 * @throws IOException if an error occurs while extracting the screenshot
 	 *
-	 * precondition: browser != null
-	 * precondition: web_element != null
-	 * precondition: element_state != null
-	 * precondition: page_screenshot != null
-	 * precondition: host != null
+	 * precondition:: browser != null
+	 * precondition:: web_element != null
+	 * precondition:: element_state != null
+	 * precondition:: page_screenshot != null
+	 * precondition:: host != null
 	 */
 	public ElementState enrichElementState(Browser browser,
 											WebElement web_element,
@@ -1970,12 +1970,12 @@ public class BrowserService {
 	 * @return the enriched element state or the original element state if it
 	 * is not an image element
 	 *
-	 * precondition: element_state != null
-	 * precondition: page_state != null
-	 * precondition: browser != null
-	 * precondition: host != null
-	 * precondition: element_state is an instance of ImageElementState
-	 * precondition: element_state.getScreenshotUrl() is not empty
+	 * precondition:: element_state != null
+	 * precondition:: page_state != null
+	 * precondition:: browser != null
+	 * precondition:: host != null
+	 * precondition:: element_state is an instance of ImageElementState
+	 * precondition:: element_state.getScreenshotUrl() is not empty
 	 */
 	public ElementState enrichImageElement(ElementState element_state,
 											PageState page_state,
@@ -2035,25 +2035,23 @@ public class BrowserService {
 	/**
  	 * Constructs an {@link Element} from a JSOUP {@link Element element}
  	 * 
-	 * @param xpath
-	 * @param attributes
-	 * @param element
-	 * @param web_elem
-	 * @param classification
-	 * @param rendered_css_values
-	 * @param screenshot_url TODO
-	 * @param css_selector TODO
-	 * @precondition xpath != null && !xpath.isEmpty()
-	 * @precondition attributes != null
-	 * @precondition element != null
-	 * @precondition classification != null
-	 * @precondition rendered_css_values != null
-	 * @precondition css_values != null
-	 * @precondition screenshot != null
+	 * @param xpath	the xpath of the element
+	 * @param attributes	the attributes of the element
+	 * @param element	the element
+	 * @param web_elem	the web element
+	 * @param classification	the classification of the element
+	 * @param rendered_css_values	the rendered css values of the element
+	 * @param screenshot_url	the screenshot url of the element
+	 * @param css_selector	the css selector of the element
+	 * 
+	 * precondition: xpath != null && !xpath.isEmpty()
+	 * precondition: attributes != null
+	 * precondition: element != null
+	 * precondition: classification != null
+	 * precondition: rendered_css_values != null
+	 * precondition: screenshot_url != null
 	 *
 	 * @return {@link ElementState} based on {@link WebElement} and other params
-	 * @throws IOException
-	 * @throws MalformedURLException
 	 */
 	public static ElementState buildElementState(
 			String xpath,
@@ -2115,15 +2113,13 @@ public class BrowserService {
 	 * @param css_selector the css selector of the element
 	 *
 	 * @return {@link ElementState} based on {@link WebElement} and other params
-	 * @throws IOException
 	 *
-	 * @precondition xpath != null && !xpath.isEmpty()
-	 * @precondition attributes != null
-	 * @precondition element != null
-	 * @precondition classification != null
-	 * @precondition rendered_css_values != null
-	 * @precondition css_values != null
-	 * @precondition screenshot != null
+	 * precondition: xpath != null && !xpath.isEmpty()
+	 * precondition: attributes != null
+	 * precondition: element != null
+	 * precondition: classification != null
+	 * precondition: rendered_css_values != null
+	 * precondition: screenshot_url != null
 	 *
 	 */
 	public static ElementState buildImageElementState(
@@ -2190,15 +2186,12 @@ public class BrowserService {
 	}
 	
 	/**
-	 * Process used by the web crawler to build {@link PageElement} list based on the xpaths on the page
-	 * @param xpaths TODO
-	 * @param audit_id TODO
-	 * @param url TODO
-	 * @param url
-	 * @param height TODO
-	 * @param audit_record TODO
-	 * @return
-	 * @throws MalformedURLException 
+	 * Process used by the web crawler to build {@link ElementState} list based on the xpaths on the page
+	 * @param xpaths	the xpaths to build the page elements for
+	 * @param audit_id	the audit id
+	 * @param url	the url
+	 * @param page_height	the page height
+	 * @return the list of element states
 	 */
 	public List<ElementState> buildPageElements(PageState page_state,
 												List<String> xpaths,
@@ -2258,21 +2251,19 @@ public class BrowserService {
 	}
 	
 	/**
-	 * Process used by the web crawler to build {@link PageElement} list based on the xpaths on the page
+	 * Process used by the web crawler to build {@link ElementState} list based on the xpaths on the page
 	 * @param xpaths the xpaths to build the page elements for
 	 * @param audit_id the audit id
 	 * @param url the url
-	 * @param height the height
-	 * @param audit_record the audit record
+	 * @param page_height the page height
+	 * @param browser the browser
 	 * @return the list of element states
-	 * @throws MalformedURLException
 	 * 
-	 * @precondition xpaths != null
-	 * @precondition page_state != null
-	 * @precondition browser != null
-	 * @precondition audit_id != null
-	 * @precondition page_height != null
-	 * @precondition audit_record != null
+	 * precondition: xpaths != null
+	 * precondition: page_state != null
+	 * precondition: browser != null
+	 * precondition: audit_id != null
+	 * precondition: page_height != null
 	 */
 	public List<ElementState> buildPageElementsWithoutNavigation(PageState page_state,
 																List<String> xpaths,
@@ -2341,29 +2332,27 @@ public class BrowserService {
 	
 	/**
 	 * identify and collect data for elements within the Document Object Model
-	 * @param audit_record_id TODO
-	 * @param url TODO
-	 * @param url
-	 * @param page_height TODO
-	 * @param page_source
-	 * @param rule_sets TODO
-	 * @param reviewed_xpaths
-	 * @return
-	 * @throws IOException
-	 * @throws XPathExpressionException 
+	 * @param page_state	the page state
+	 * @param xpaths	the xpaths
+	 * @param browser	the browser
+	 * @param element_states_map	the element states map
+	 * @param audit_record_id	the audit record id
+	 * @param url	the url
+	 * @param page_height	the page height
+	 * @return the list of element states
 	 * 
-	 * @precondition xpaths != null
-	 * @precondition browser != null
-	 * @precondition element_states_map != null
-	 * @precondition page_state != null
+	 * precondition: xpaths != null
+	 * precondition: browser != null
+	 * precondition: element_states_map != null
+	 * precondition: page_state != null
 	 */
 	private List<ElementState> getDomElementStates(
-			PageState page_state, 
-			List<String> xpaths, 
-			Browser browser, 
-			Map<String, ElementState> element_states_map, 
-			long audit_record_id, 
-			URL url, 
+			PageState page_state,
+			List<String> xpaths,
+			Browser browser,
+			Map<String, ElementState> element_states_map,
+			long audit_record_id,
+			URL url,
 			int page_height
 	) {
 		assert xpaths != null;

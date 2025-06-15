@@ -1,7 +1,5 @@
 package com.looksee.models;
 
-import java.util.List;
-
 import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
@@ -11,7 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Defines a name and color used to group {@link Test}s
+ * Defines a name and color used to group {@link Test}s.
  */
 @Node
 @Getter
@@ -31,8 +29,6 @@ public class Group extends LookseeObject {
 	 * Construct a new grouping
 	 * 
 	 * @param name 		name of the group
-	 * @param test		{@link List} of {@link Test}s
-	 * @param description describes group
 	 */
 	public Group(String name){
 		setName(name);
@@ -44,8 +40,7 @@ public class Group extends LookseeObject {
 	 * Construct a new grouping
 	 *
 	 * @param name 		name of the group
-	 * @param test		{@link List} of {@link Test}s
-	 * @param description describes group
+	 * @param desc		description of the group
 	 */
 	public Group(String name, String desc){
 		setName(name);

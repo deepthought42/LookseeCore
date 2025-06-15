@@ -82,7 +82,7 @@ public interface DesignSystemRepository extends Neo4jRepository<DesignSystem, Lo
 	 * Updates the allowed image characteristics of a design system for a domain
 	 *
 	 * @param domain_id the ID of the domain
-	 * @param image_characteristics the new allowed image characteristics
+	 * @param allowed_image_characteristics the new allowed image characteristics
 	 * @return the updated design system
 	 */
 	@Query("MATCH (d:Domain)-[]->(setting:DesignSystem) WHERE id(d)=$domain_id SET setting.allowed_image_characteristics=$image_characteristics RETURN setting")
