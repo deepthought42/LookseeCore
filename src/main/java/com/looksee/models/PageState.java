@@ -51,6 +51,7 @@ public class PageState extends LookseeObject {
 
 	@Autowired
 	private GoogleCloudStorage googleCloudStorage;
+	
 	private long auditRecordId;
 	private String src;
 	private String generalizedSrc;

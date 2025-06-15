@@ -33,6 +33,7 @@ import lombok.Setter;
 public class Element extends LookseeObject implements Comparable<Element> {
 	@SuppressWarnings("unused")
 	private static Logger log = LoggerFactory.getLogger(Element.class);
+	
 	private String classification;
 	private String name;
 	private String xpath;

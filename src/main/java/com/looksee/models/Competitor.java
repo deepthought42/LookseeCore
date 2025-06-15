@@ -7,7 +7,6 @@ import org.springframework.data.neo4j.core.schema.Relationship;
 /**
  * Defines the type of package paid for, which domains are registered and which Users belong to the account
  */
-@NoArgsConstructor
 @Getter
 @Setter
 @Node
@@ -19,6 +18,10 @@ public class Competitor extends LookseeObject{
 	
 	@Relationship("USES")
 	private Brand brand;
+
+	public Competitor(){
+		super();
+	}
 
 	/**
 	 * Constructs a new competitor
