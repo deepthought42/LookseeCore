@@ -298,4 +298,14 @@ public class StepService {
 		
 		return step_repo.getElementState(step_key);
 	}
+
+	/**
+	 * Checks if page state is listed as a the start page for a journey step
+	 * 
+	 * @param page_state
+	 * @return
+	 */
+	public List<Step> getStepsWithStartPage(PageState page_state) {
+		return step_repo.getStepsWithStartPage(page_state.getId());
+	}
 }

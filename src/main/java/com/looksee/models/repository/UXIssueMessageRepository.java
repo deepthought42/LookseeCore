@@ -1,5 +1,7 @@
 package com.looksee.models.repository;
 
+import java.util.Set;
+
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
 import org.springframework.data.repository.query.Param;
@@ -58,4 +60,13 @@ public interface UXIssueMessageRepository extends Neo4jRepository<UXIssueMessage
 	 */
 	@Query("MATCH (uim:UXIssueMessage) WITH uim MATCH (e:PageState) WHERE id(uim)=$issue_id AND id(e)=$page_id MERGE (uim)-[r:FOR]->(e) RETURN r")
 	public void addPage(@Param("issue_id") long issue_id, @Param("page_id") long page_id);
+
+	/**
+	 * Finds all UX issue messages for a page audit record
+	 *
+	 * @param audit_record_id the ID of the page audit record
+	 * @return the UX issue messages
+	 */
+	@Query("MATCH (audit_record:PageAuditRecord)-[]-(audit:Audit)  MATCH (audit)-[:HAS]-(issue:UXIssueMessage) WHERE id(audit_record)=$audit_record_id RETURN issue")
+	public Set<UXIssueMessage> getIssues(@Param("audit_record_id") long audit_record_id);
 }

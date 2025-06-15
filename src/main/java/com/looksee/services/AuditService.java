@@ -31,10 +31,12 @@ import com.looksee.models.enums.ObservationType;
 import com.looksee.models.repository.AuditRepository;
 
 import io.github.resilience4j.retry.annotation.Retry;
+import lombok.NoArgsConstructor;
 
 /**
  * Contains business logic for interacting with and managing audits
  */
+@NoArgsConstructor
 @Service
 @Retry(name = "neoforj")
 public class AuditService {

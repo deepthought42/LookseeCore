@@ -31,6 +31,23 @@ public class PageAuditDto {
 	private String message;
 	private String status;
 	
+	/**
+	 * Constructor for {@link PageAuditDto}
+	 *
+	 * @param id the id of the page audit
+	 * @param url the url of the page
+	 * @param content_score the content score
+	 * @param content_progress the content progress
+	 * @param info_architecture_score the information architecture score
+	 * @param info_architecture_progress the information architecture progress
+	 * @param accessibility_score the accessibility score
+	 * @param accessibility_progress the accessibility progress
+	 * @param aesthetics_score the aesthetics score
+	 * @param aesthetics_progress the aesthetics progress
+	 * @param data_extraction_progress the data extraction progress
+	 * @param message the message
+	 * @param status the status
+	 */
 	public PageAuditDto(
 			long id,
 			String url,

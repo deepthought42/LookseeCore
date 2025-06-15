@@ -85,7 +85,7 @@ public enum AuditSubcategory {
     /**
      * Represents the information architecture subcategory.
      */
-	NAVIGATION("Navigation"), 
+	NAVIGATION("Navigation"),
 
 	/**
      * Represents the information architecture subcategory.

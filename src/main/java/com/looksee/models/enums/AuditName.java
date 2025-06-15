@@ -102,8 +102,13 @@ public enum AuditName {
 	/**
 	 * Analyzes text complexity and readability scores
 	 */
-	READING_COMPLEXITY("Reading_Complexity");
-	
+	READING_COMPLEXITY("Reading_Complexity"),
+
+	/**
+	 * Evaluates the security of the website
+	 */
+	ENCRYPTED("ENCRYPTED");
+
 	/**
 	 * The human-readable name of the audit type
 	 */

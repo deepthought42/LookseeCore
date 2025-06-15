@@ -10,13 +10,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.looksee.gcp.GoogleCloudStorage;
 import com.looksee.models.Audit;
 import com.looksee.models.ElementState;
+import com.looksee.models.PageAuditRecord;
 import com.looksee.models.PageState;
 import com.looksee.models.Screenshot;
 import com.looksee.models.enums.AuditName;
 import com.looksee.models.enums.ElementClassification;
+import com.looksee.models.repository.AuditRecordRepository;
 import com.looksee.models.repository.ElementStateRepository;
 import com.looksee.models.repository.PageStateRepository;
 
@@ -37,7 +38,7 @@ public class PageStateService {
 	private ElementStateRepository element_state_repo;
 
 	@Autowired
-	private GoogleCloudStorage googleCloudStorage;
+	private AuditRecordRepository audit_record_repo;
 
 	/**
 	 * Save a {@link PageState} object and its associated objects
@@ -437,5 +438,30 @@ public class PageStateService {
 		assert !key.isEmpty();
 		
 		return page_state_repo.findPageWithKey(audit_record_id, key);
+	}
+
+	/**
+	 * Get the page state for an audit record
+	 * @param audit_record_id the id of the audit record
+	 * @return the page state
+	 *
+	 * precondition: audit_record_id > 0
+	 */
+    public PageState getPageStateForAuditRecord(long audit_record_id) {
+        return page_state_repo.getPageStateForAuditRecord(audit_record_id);
+    }
+
+	/**
+	 * Retrieves an {@link PageAuditRecord} for the page with the given id
+	 * @param id
+	 * @return
+	 */
+	public PageAuditRecord getAuditRecord(long id) {
+		
+		return audit_record_repo.getAuditRecord(id);
+	}
+
+	public int getElementStateCount(long page_id) {
+		return element_state_repo.getElementStateCount(page_id);
 	}
 }
