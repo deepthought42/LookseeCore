@@ -24,7 +24,6 @@ public class TestAction extends LookseeObject {
 	 * Creates a new test action with the given name and value
 	 *
 	 * @param action_name the name of the action
-	 * @param value the value of the action
 	 */
 	public TestAction(String action_name) {
 		this.name = action_name;
@@ -33,8 +32,10 @@ public class TestAction extends LookseeObject {
 	}
 	
 	/**
-	 * 
-	 * @param action_name
+	 * Creates a new test action with the given name and value
+	 *
+	 * @param action_name the name of the action
+	 * @param value the value of the action
 	 */
 	public TestAction(String action_name, String value) {
 		setName(action_name);

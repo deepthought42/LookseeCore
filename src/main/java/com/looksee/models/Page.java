@@ -24,8 +24,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.looksee.services.BrowserService;
 
 /**
- * A reference to a web page
- *
+ * A reference to a web page that contains information about the page's state,
+ * including its URL, title, source code, and associated elements.
  */
 public class Page extends LookseeObject {
 	private static Logger log = LoggerFactory.getLogger(Page.class);
@@ -41,7 +41,9 @@ public class Page extends LookseeObject {
 	@Relationship(type = "HAS")
 	private List<PageState> page_states;
 
-
+	/**
+	 * Default constructor that initializes empty lists for elements and page states.
+	 */
 	public Page() {
 		super();
 		setElements(new ArrayList<>());
@@ -50,20 +52,14 @@ public class Page extends LookseeObject {
 	
 
 	/**
-	 * Creates a page instance that is meant to contain information about a
-	 * state of a webpage
+	 * Creates a page instance that contains information about a state of a webpage.
 	 *
-	 * @param url
-	 * @param elements
-	 * @param full_page_screenshot_url TODO
-	 * @param full_page_checksum TODO
-	 * @param title TODO
-	 * @param screenshot
-	 * @throws MalformedURLException
-	 * @throws IOException
-	 *
-	 * @pre elements != null
-	 * @pre screenshot_url != null;
+	 * @param elements the list of elements on the page
+	 * @param src the source code of the page
+	 * @param title the title of the page
+	 * @param url the URL of the page
+	 * @param path the file path of the page
+	 * @throws IllegalArgumentException if any parameter is null
 	 */
 	public Page(List<Element> elements, String src, String title, String url, String path)
 	{
@@ -85,13 +81,10 @@ public class Page extends LookseeObject {
 	
 
 	/**
-	 * Gets counts for all tags based on {@link Element}s passed
+	 * Gets counts for all tags based on the provided elements.
 	 *
-	 * @param page_elements
-	 *            list of {@link Element}s
-	 *
-	 * @return Hash of counts for all tag names in list of {@ElementState}s
-	 *         passed
+	 * @param tags the set of elements to count
+	 * @return a map containing counts for all tag names in the provided elements
 	 */
 	public Map<String, Integer> countTags(Set<Element> tags) {
 		Map<String, Integer> elem_cnts = new HashMap<String, Integer>();
@@ -110,11 +103,9 @@ public class Page extends LookseeObject {
 	/**
 	 * Compares two images pixel by pixel.
 	 *
-	 * @param imgA
-	 *            the first image.
-	 * @param imgB
-	 *            the second image.
-	 * @return whether the images are both the same or not.
+	 * @param imgA the first image
+	 * @param imgB the second image
+	 * @return true if the images are identical, false otherwise
 	 */
 	public static boolean compareImages(BufferedImage imgA, BufferedImage imgB) {
 		// The images must be the same size.
@@ -139,14 +130,10 @@ public class Page extends LookseeObject {
 	}
 
 	/**
-	 * Checks if Pages are equal
+	 * Checks if this page is equal to another object.
 	 *
-	 * @param page
-	 *            the {@link Page} object to compare current page to
-	 *
-	 * @pre page != null
-	 * @return boolean value
-	 *
+	 * @param o the object to compare with
+	 * @return true if the objects are equal, false otherwise
 	 */
 	@Override
 	public boolean equals(Object o) {
@@ -161,7 +148,9 @@ public class Page extends LookseeObject {
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Creates a deep copy of this page.
+	 *
+	 * @return a new Page instance with the same data
 	 */
 	@Override
 	public Page clone() {
@@ -171,20 +160,43 @@ public class Page extends LookseeObject {
 		return page;
 	}
 
+	/**
+	 * Gets the list of elements on this page.
+	 *
+	 * @return the list of elements
+	 */
 	@JsonIgnore
 	public List<Element> getElements() {
 		return this.elements;
 	}
 
+	/**
+	 * Sets the list of elements for this page.
+	 *
+	 * @param elements the list of elements to set
+	 */
 	@JsonIgnore
 	public void setElements(List<Element> elements) {
 		this.elements = elements;
 	}
 
+	/**
+	 * Adds a single element to this page.
+	 *
+	 * @param element the element to add
+	 */
 	public void addElement(Element element) {
 		this.elements.add(element);
 	}
 
+	/**
+	 * Generates a checksum for an image from a URL.
+	 *
+	 * @param digest the message digest algorithm to use
+	 * @param url the URL of the image
+	 * @return the hexadecimal string representation of the checksum
+	 * @throws IOException if there is an error reading the image
+	 */
 	public String getFileChecksum(MessageDigest digest, String url) throws IOException {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		BufferedImage buff_img = ImageIO.read(new URL(url));
@@ -201,10 +213,11 @@ public class Page extends LookseeObject {
 	}
 
 	/**
-	 * 
-	 * @param buff_img
-	 * @return
-	 * @throws IOException
+	 * Generates a SHA-256 checksum for a buffered image.
+	 *
+	 * @param buff_img the buffered image to generate checksum for
+	 * @return the hexadecimal string representation of the SHA-256 checksum
+	 * @throws IOException if there is an error processing the image
 	 */
 	public static String getFileChecksum(BufferedImage buff_img) throws IOException {
 		assert buff_img != null;
@@ -228,70 +241,125 @@ public class Page extends LookseeObject {
 	}
 
 	/**
-	 * {@inheritDoc}
-	 * @throws IOException
-	 * @throws NoSuchAlgorithmException
+	 * Generates a unique key for this page based on its source template.
 	 *
-	 * @pre page != null
+	 * @return a unique key string for this page
 	 */
 	public String generateKey() {
 		String src_template = BrowserService.extractTemplate(getSrc());
 		return "pagestate::" + org.apache.commons.codec.digest.DigestUtils.sha256Hex(src_template);
 	}
 
+	/**
+	 * Gets the source code of this page.
+	 *
+	 * @return the page source code
+	 */
 	public String getSrc() {
 		return src;
 	}
 
+	/**
+	 * Sets the source code of this page.
+	 *
+	 * @param src the source code to set
+	 */
 	public void setSrc(String src) {
 		this.src = src;
 	}
 
+	/**
+	 * Adds multiple elements to this page, avoiding duplicates.
+	 *
+	 * @param elements the list of elements to add
+	 */
 	public void addElements(List<Element> elements) {
 		//check for duplicates before adding
 		for(Element element : elements) {
-			if(!this.elements.contains(element)) {				
+			if(!this.elements.contains(element)) {
 				this.elements.add(element);
 			}
 		}
 	}
 
+	/**
+	 * Gets the title of this page.
+	 *
+	 * @return the page title
+	 */
 	public String getTitle() {
 		return title;
 	}
 
+	/**
+	 * Sets the list of page states for this page.
+	 *
+	 * @param page_states the list of page states to set
+	 */
 	public void setPageStates(List<PageState> page_states) {
 		this.page_states = page_states;
 	}
 
+	/**
+	 * Gets the list of page states for this page.
+	 *
+	 * @return the list of page states
+	 */
 	public List<PageState> getPageStates(){
 		return this.page_states;
 	}
 	
+	/**
+	 * Adds a page state to this page.
+	 *
+	 * @param page_state_record the page state to add
+	 * @return true if the page state was added successfully
+	 */
 	public boolean addPageState(PageState page_state_record) {
 		return this.page_states.add(page_state_record);
 	}
 	
+	/**
+	 * Sets the title of this page.
+	 *
+	 * @param title the title to set
+	 */
 	public void setTitle(String title) {
 		this.title = title;
 	}
 
-
+	/**
+	 * Gets the URL of this page.
+	 *
+	 * @return the page URL
+	 */
 	public String getUrl() {
 		return url;
 	}
 
-
+	/**
+	 * Sets the URL of this page.
+	 *
+	 * @param url the URL to set
+	 */
 	public void setUrl(String url) {
 		this.url = url;
 	}
 
-
+	/**
+	 * Gets the file path of this page.
+	 *
+	 * @return the page file path
+	 */
 	public String getPath() {
 		return path;
 	}
 
-
+	/**
+	 * Sets the file path of this page.
+	 *
+	 * @param path the file path to set
+	 */
 	public void setPath(String path) {
 		this.path = path;
 	}

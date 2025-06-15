@@ -23,6 +23,9 @@ import com.looksee.models.repository.AuditRepository;
 import com.looksee.models.repository.PageStateRepository;
 import com.looksee.utils.AuditUtils;
 
+/**
+ * Service for building domain DTOs
+ */
 @Service
 public class DomainDtoService {
 	@SuppressWarnings("unused")
@@ -38,9 +41,10 @@ public class DomainDtoService {
 	private PageStateRepository page_state_repo;
 	
 	/**
-	 * 
-	 * @param domain
-	 * @return
+	 * Builds a domain DTO for the given domain
+	 *
+	 * @param domain the domain to build a DTO for
+	 * @return the domain DTO
 	 * 
 	 * @pre domain != null
 	 */
@@ -54,21 +58,21 @@ public class DomainDtoService {
 		
 		if (!audit_record_opt.isPresent()) {
 			return new DomainDto(domain.getId(), 
-								 domain.getUrl(), 
-								 0, 
-								 0, 
-								 0, 
-								 1.0, 
-								 0, 
-								 1.0, 
-								 0, 
-								 1.0, 
-								 0, 
-								 1.0, 
-								 false, 
-								 1.0, 
-								 "",
-								 ExecutionStatus.COMPLETE);
+								domain.getUrl(), 
+								0, 
+								0, 
+								0, 
+								1.0, 
+								0, 
+								1.0, 
+								0, 
+								1.0, 
+								0, 
+								1.0, 
+								false, 
+								1.0, 
+								"",
+								ExecutionStatus.COMPLETE);
 		}
 		
 		// get most recent audit record for this domain
@@ -157,21 +161,21 @@ public class DomainDtoService {
 		*/
 
 		
-		return new DomainDto(domain.getId(), 
-							  domain.getUrl(), 
-							  page_count, 
-							  audited_pages, 
-							  content_score,
-							  content_progress, 
-							  info_arch_score, 
-							  info_architecture_progress, 
-							  accessibility_score, 
-							  100.0,
-							  aesthetics_score, 
-							  aesthetic_progress, 
-							  is_audit_running, 
-							  data_extraction_progress,
-							  domain_audit.getStatusMessage(),
-							  status);
+		return new DomainDto(domain.getId(),
+							domain.getUrl(),
+							page_count,
+							audited_pages,
+							content_score,
+							content_progress,
+							info_arch_score,
+							info_architecture_progress,
+							accessibility_score,
+							100.0,
+							aesthetics_score,
+							aesthetic_progress,
+							is_audit_running,
+							data_extraction_progress,
+							domain_audit.getStatusMessage(),
+							status);
 	}
 }

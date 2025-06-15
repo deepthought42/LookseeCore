@@ -41,7 +41,7 @@ public interface TestUserRepository extends Neo4jRepository<TestUser, Long> {
 	 * @return the test user
 	 */
 	@Query("MATCH (s:Step) WITH s MATCH (user:TestUser) WHERE id(s)=$step_id AND id(user)=$user_id MERGE (s)-[:USES]->(user) RETURN user")
-	public TestUser addTestUser(@Param("step_id") long id, @Param("user_id") long user_id);
+	public TestUser addTestUser(@Param("step_id") long step_id, @Param("user_id") long user_id);
 
 	/**
 	 * Finds a test user for a step
@@ -50,5 +50,5 @@ public interface TestUserRepository extends Neo4jRepository<TestUser, Long> {
 	 * @return the test user
 	 */
 	@Query("MATCH (s:LoginStep)-[:USES]->(user:TestUser) WHERE id(s)=$step_id RETURN user")
-	public TestUser getTestUser(@Param("step_id") long id);
+	public TestUser getTestUser(@Param("step_id") long step_id);
 }

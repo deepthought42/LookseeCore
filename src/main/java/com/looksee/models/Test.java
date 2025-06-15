@@ -28,6 +28,9 @@ import com.looksee.models.enums.TestStatus;
  * successful or not
  *
  */
+@Getter
+@Setter
+@NoArgsConstructor
 @Node
 public class Test extends LookseeObject {
     @SuppressWarnings("unused")
@@ -37,29 +40,29 @@ public class Test extends LookseeObject {
     @Id
 	private Long id;
 	
-	private String key; 
+	private String key;
 	private String name;
 	private TestStatus status;
 	private boolean isUseful = false;
 	private boolean spansMultipleDomains = false;
-	private boolean is_running;
+	private boolean isRunning;
 	private boolean archived;
-	private Date last_run_time;
-	private long run_time_length;
-	private List<String> path_keys;
+	private Date lastRunTime;
+	private long runTimeLength;
+	private List<String> pathKeys;
 
 	@CompositeProperty
-	private Map<String, String> browser_passing_statuses = new HashMap<>();
+	private Map<String, String> browserPassingStatuses = new HashMap<>();
 	
 	@Relationship(type = "HAS_TEST_RECORD")
-	private List<TestRecord> records = new ArrayList<>();
+	private List<TestRecord> records;
 	
 	@Relationship(type = "HAS_GROUP")
 	private Set<Group> groups = new HashSet<>();
 
 	@JsonIgnore
 	@Relationship(type = "HAS_PATH_OBJECT")
-	private List<LookseeObject> path_objects = new ArrayList<>();
+	private List<LookseeObject> pathObjects = new ArrayList<>();
 	
 	@Relationship(type = "HAS_RESULT")
 	private PageState result;
@@ -69,9 +72,10 @@ public class Test extends LookseeObject {
 	/**
 	 * Constructs a test object
 	 * 
-	 * @param path used to determine what the expected path should be
- 	 * @param result
-	 * @param domain
+	 * @param path_keys the keys of the path
+	 * @param path_objects the objects of the path
+	 * @param result the result of the test
+	 * @param spansMultipleDomains whether the test spans multiple domains
 	 * @throws MalformedURLException
 	 * 
 	 * @pre path_keys != null
@@ -79,7 +83,12 @@ public class Test extends LookseeObject {
 	 * @pre path_objects != null
 	 * @pre !path_objects.isEmpty()
 	 */
-	public Test(List<String> path_keys, List<LookseeObject> path_objects, PageState result, boolean spansMultipleDomains) throws MalformedURLException{
+	public Test(List<String> path_keys,
+				List<LookseeObject> path_objects,
+				PageState result,
+				String name,
+				boolean is_running,
+				boolean spansMultipleDomains) throws MalformedURLException{
 		assert path_keys != null;
 		assert !path_keys.isEmpty();
 		assert path_objects != null;
@@ -103,17 +112,25 @@ public class Test extends LookseeObject {
 	/**
 	 * Constructs a test object
 	 * 
-	 * @param path used to determine what the expected path should be
- 	 * @param result
-	 * @param domain
-	 * @throws MalformedURLException 
+	 * @param path_keys the keys of the path
+	 * @param path_objects the objects of the path
+	 * @param result the result of the test
+	 * @param name the name of the test
+	 * @param is_running whether the test is running
+	 * @param spansMultipleDomains whether the test spans multiple domains
+	 * @throws MalformedURLException
 	 * 
 	 * @pre path_keys != null
 	 * @pre !path_keys.isEmpty()
 	 * @pre path_objects != null
 	 * @pre !path_objects.isEmpty()
 	 */
-	public Test(List<String> path_keys, List<LookseeObject> path_objects, PageState result, String name, boolean is_running, boolean spansMultipleDomains) throws MalformedURLException{
+	public Test(List<String> path_keys,
+				List<LookseeObject> path_objects,
+				PageState result,
+				String name,
+				boolean is_running,
+				boolean spansMultipleDomains) throws MalformedURLException{
 		assert path_keys != null;
 		assert !path_keys.isEmpty();
 		assert path_objects != null;
@@ -137,10 +154,14 @@ public class Test extends LookseeObject {
 	/**
 	 * Checks if a {@code TestRecord} snapshot of a {@code Test} is passing or not
 	 * 
-	 * @param record
-	 * @return
+	 * @param expected_page the expected page state
+	 * @param new_result_page the new result page state
+	 * @param last_test_passing_status the last test passing status
+	 * @return the test status
 	 */
-	public static TestStatus isTestPassing(PageState expected_page, PageState new_result_page, TestStatus last_test_passing_status){
+	public static TestStatus isTestPassing(PageState expected_page,
+											PageState new_result_page,
+											TestStatus last_test_passing_status){
 		assert expected_page != null;
 		assert new_result_page != null;
 		assert last_test_passing_status != null;
@@ -174,152 +195,69 @@ public class Test extends LookseeObject {
 		
 		return false;
 	}
-
-	public TestStatus getStatus(){
-		return this.status;
-	}
 	
-	public void setStatus(TestStatus status){
-		this.status = status;
-	}
-	
-	public String getKey(){
-		return this.key;
-	}
-	
-	public void setKey(String key){
-		this.key = key;
-	}
-	
-	public String getName(){
-		return this.name;
-	}
-	
-	public void setName(String name){
-		this.name = name;
-	}
-	
-	public List<String> getPathKeys(){
-		return this.path_keys;
-	}
-	
-	public void setPathKeys(List<String> path_keys){
-		this.path_keys = path_keys;
-	}
-	
+	/**
+	 * Adds a path key to the test
+	 *
+	 * @param key the path key to add
+	 * @return true if the path key was added, false otherwise
+	 */
 	public boolean addPathKey(String key) {
-		return this.path_keys.add(key);
+		return this.pathKeys.add(key);
 	}
 	
+	/**
+	 * Adds a record to the test
+	 *
+	 * @param record the record to add
+	 */
 	public void addRecord(TestRecord record){
 		this.records.add(record);
 	}
 	
-	public List<TestRecord> getRecords(){
-		return this.records;
-	}
-	
-	public void setRecords(List<TestRecord> records){
-		this.records = records;
-	}
-	
 	/**
-	 * @return result of running the test. Can be either null or have a {@link PageState} set
+	 * Adds a group to the test
+	 *
+	 * @param group the group to add
 	 */
-	public PageState getResult(){
-		return this.result;
-	}
-	
-	/**
-	 * @param result_page expected {@link PageState} state after running through path
-	 */
-	public void setResult(PageState result_page){
-		this.result = result_page;
-	}
-
-	public boolean isUseful() {
-		return isUseful;
-	}
-
-	public void setUseful(boolean isUseful) {
-		this.isUseful = isUseful;
-	}
-
-	public boolean getSpansMultipleDomains() {
-		return spansMultipleDomains;
-	}
-
-	public void setSpansMultipleDomains(boolean spansMultipleDomains) {
-		this.spansMultipleDomains = spansMultipleDomains;
-	}
-
-	public Set<Group> getGroups() {
-		return groups;
-	}
-
-	public void setGroups(Set<Group> groups) {
-		this.groups = groups;
-	}
-	
 	public void addGroup(Group group){
 		this.groups.add(group);
 	}
 	
+	/**
+	 * Removes a group from the test
+	 *
+	 * @param group the group to remove
+	 */
 	public void removeGroup(Group group) {
 		//remove edge between test and group
 		this.groups.remove(group);
 	}
 	
 	/**
-	 * @return date timestamp of when test was last ran
+	 * Adds a path object to the test
+	 *
+	 * @param path_obj the path object to add
 	 */
-	public Date getLastRunTimestamp(){
-		return this.last_run_time;
-	}
-	
-	/**
-	 * sets date timestamp of when test was last ran
-	 * 
-	 * @param timestamp of last run as a {@link DateTime}
-	 */
-	public void setLastRunTimestamp(Date timestamp){
-		this.last_run_time = timestamp;
-	}
-
-	public void setRunTime(long pathCrawlRunTime) {
-		this.run_time_length = pathCrawlRunTime;
-		
-	}
-	
-	public long getRunTime() {
-		return this.run_time_length;
-	}
-
-	public boolean isRunning() {
-		return is_running;
-	}
-
-	public void setIsRunning(boolean is_running) {
-		this.is_running = is_running;
-	}
-
-	public Map<String, String> getBrowserStatuses() {
-		return browser_passing_statuses;
-	}
-
-	public void setBrowserStatuses(Map<String, String> browser_passing_statuses) {
-		this.browser_passing_statuses = browser_passing_statuses;
-	}
-
 	public void addPathObject(LookseeObject path_obj) {
 		this.path_objects.add(path_obj);
 	}
 
+	/**
+	 * Gets the path objects of the test
+	 *
+	 * @return the path objects
+	 */
 	@JsonIgnore
 	public List<LookseeObject> getPathObjects() {
 		return this.path_objects;
 	}
 
+	/**
+	 * Sets the path objects of the test
+	 *
+	 * @param path_objects the path objects to set
+	 */
 	@JsonIgnore
 	public void setPathObjects(List<LookseeObject> path_objects) {
 		this.path_objects = path_objects;
@@ -338,8 +276,9 @@ public class Test extends LookseeObject {
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Gets the first page state in the test
+	 *
+	 * @return the first page state
 	 */
 	public PageState firstPage() {
 		for(String key : this.getPathKeys()){
@@ -376,9 +315,9 @@ public class Test extends LookseeObject {
 	 */
 	public static Test clone(Test test) throws MalformedURLException{
 		Test clone_test = new Test(new ArrayList<String>(test.getPathKeys()),
-									   new ArrayList<LookseeObject>(test.getPathObjects()),
-									   test.getResult(), 
-									   test.getSpansMultipleDomains());
+									new ArrayList<LookseeObject>(test.getPathObjects()),
+									test.getResult(), 
+									test.getSpansMultipleDomains());
 
 		clone_test.setBrowserStatuses(test.getBrowserStatuses());
 		clone_test.setGroups(new HashSet<>(test.getGroups()));
@@ -388,58 +327,56 @@ public class Test extends LookseeObject {
 		
 		return clone_test;
 	}
-
-	public boolean isArchived() {
-		return archived;
-	}
-
-	public void setArchived(boolean is_archived) {
-		this.archived = is_archived;
-	}
 	
+	/**
+	 * Generates a name for the test
+	 *
+	 * @return the test name
+	 * @throws MalformedURLException if the URL is malformed
+	 */
 	public String generateTestName() throws MalformedURLException {
 		String test_name = "";
-			int page_state_idx = 0;
-			int element_action_cnt = 0;
-			for(LookseeObject obj : this.path_objects){
-				if(obj instanceof PageState && page_state_idx < 1){
-					String path = (new URL(((PageState)obj).getUrl())).getPath().trim();
-					path = path.replace("/", " ");
-					path = path.trim();
-					if("/".equals(path) || path.isEmpty()){
-						path = "home";
-					}
-					test_name +=  path + " page ";
-					page_state_idx++;
+		int page_state_idx = 0;
+		int element_action_cnt = 0;
+		for(LookseeObject obj : this.path_objects){
+			if(obj instanceof PageState && page_state_idx < 1){
+				String path = (new URL(((PageState)obj).getUrl())).getPath().trim();
+				path = path.replace("/", " ");
+				path = path.trim();
+				if("/".equals(path) || path.isEmpty()){
+					path = "home";
 				}
-				else if(obj instanceof Element){
-					if(element_action_cnt > 0){
-						test_name += "> ";
-					}
-					
-					Element element = (Element)obj;
-					String tag_name = element.getName();
-					
-					if(element.getAttribute("id") != null){
-						tag_name = element.getAttribute("id");
-					}
-					else{
-						if("a".equals(tag_name)){
-							tag_name = "link";
-						}
-					}
-					test_name += tag_name + " ";
-					element_action_cnt++;
+				test_name +=  path + " page ";
+				page_state_idx++;
+			}
+			else if(obj instanceof Element){
+				if(element_action_cnt > 0){
+					test_name += "> ";
 				}
-				else if(obj instanceof TestAction){
-					TestAction action = ((TestAction)obj);
-					test_name += action.getName() + " ";
-					if(action.getValue() != null ){
-						test_name += action.getValue() + " ";
+				
+				Element element = (Element)obj;
+				String tag_name = element.getName();
+				
+				if(element.getAttribute("id") != null){
+					tag_name = element.getAttribute("id");
+				}
+				else{
+					if("a".equals(tag_name)){
+						tag_name = "link";
 					}
+				}
+				test_name += tag_name + " ";
+				element_action_cnt++;
+			}
+			else if(obj instanceof TestAction){
+				TestAction action = ((TestAction)obj);
+				test_name += action.getName() + " ";
+				if(action.getValue() != null ){
+					test_name += action.getValue() + " ";
 				}
 			}
-			
-			return test_name.trim();
+		}
+		
+		return test_name.trim();
 	}
 }

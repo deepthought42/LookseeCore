@@ -33,58 +33,22 @@ import lombok.Setter;
 public class Element extends LookseeObject implements Comparable<Element> {
 	@SuppressWarnings("unused")
 	private static Logger log = LoggerFactory.getLogger(Element.class);
-
-	/**
-	 * The classification of the element
-	 */
 	private String classification;
-
-	/**
-	 * The name of the element
-	 */
 	private String name;
-
-	/**
-	 * The xpath of the element
-	 */
 	private String xpath;
-
-	/**
-	 * The css selector of the element
-	 */
 	private String cssSelector;
-
-	/**
-	 * The template of the element
-	 */
 	private String template;
-	
-	/**
-	 * The text of the element
-	 */
 	private String text;
-	
-	/**
-	 * The attributes of the element
-	 */
+
 	@CompositeProperty
 	private Map<String, String> attributes = new HashMap<>();
 	
-	/**
-	 * The pre-render css values of the element
-	 */
 	@CompositeProperty
 	private Map<String, String> preRenderCssValues = new HashMap<>();
 	
-	/**
-	 * The rules of the element
-	 */
 	@Relationship(type = "HAS", direction = Direction.OUTGOING)
 	private Set<Rule> rules = new HashSet<>();
-
-	/**
-	 * The child elements of the element
-	 */
+	
 	@Relationship(type = "HAS_CHILD", direction = Direction.OUTGOING)
 	private List<Element> childElements = new ArrayList<>();
 

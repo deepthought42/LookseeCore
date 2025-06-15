@@ -42,7 +42,7 @@ public class Group extends LookseeObject {
 	
 	/**
 	 * Construct a new grouping
-	 * 
+	 *
 	 * @param name 		name of the group
 	 * @param test		{@link List} of {@link Test}s
 	 * @param description describes group
@@ -53,6 +53,11 @@ public class Group extends LookseeObject {
 		setKey(generateKey());
 	}
 
+	/**
+	 * Sets the name of the group
+	 *
+	 * @param name the name of the group
+	 */
 	public void setName(String name) {
 		String formatted_name = name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
 		this.name = formatted_name;
