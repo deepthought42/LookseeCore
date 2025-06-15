@@ -19,7 +19,17 @@ public class AuditProgressUpdate extends Message {
 	private AuditLevel level;
 	private double progress;
 	private String message;
-		
+	
+	/**
+	 * Constructor for {@link AuditProgressUpdate}
+	 *
+	 * @param account_id the id of the account
+	 * @param progress the audit progress
+	 * @param message the audit message
+	 * @param category the audit category
+	 * @param level the audit level
+	 * @param page_audit_id the id of the page audit
+	 */
 	public AuditProgressUpdate(
 			long account_id,
 			double progress,
@@ -35,5 +45,4 @@ public class AuditProgressUpdate extends Message {
 		setLevel(level);
 		setPageAuditId(page_audit_id);
 	}
-
 }

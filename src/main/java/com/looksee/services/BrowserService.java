@@ -2044,7 +2044,8 @@ public class BrowserService {
 	 * @param screenshot_url	the screenshot url of the element
 	 * @param css_selector	the css selector of the element
 	 * 
-	 * precondition: xpath != null && !xpath.isEmpty()
+	 * precondition: xpath != null
+	 * precondition: !xpath.isEmpty()
 	 * precondition: attributes != null
 	 * precondition: element != null
 	 * precondition: classification != null
@@ -2114,7 +2115,8 @@ public class BrowserService {
 	 *
 	 * @return {@link ElementState} based on {@link WebElement} and other params
 	 *
-	 * precondition: xpath != null && !xpath.isEmpty()
+	 * precondition: xpath != null
+	 * precondition: !xpath.isEmpty()
 	 * precondition: attributes != null
 	 * precondition: element != null
 	 * precondition: classification != null
@@ -2252,15 +2254,16 @@ public class BrowserService {
 	
 	/**
 	 * Process used by the web crawler to build {@link ElementState} list based on the xpaths on the page
+	 *
+	 * @param page_state the page state
 	 * @param xpaths the xpaths to build the page elements for
 	 * @param audit_id the audit id
-	 * @param url the url
 	 * @param page_height the page height
 	 * @param browser the browser
 	 * @return the list of element states
-	 * 
-	 * precondition: xpaths != null
+	 *
 	 * precondition: page_state != null
+	 * precondition: xpaths != null
 	 * precondition: browser != null
 	 * precondition: audit_id != null
 	 * precondition: page_height != null

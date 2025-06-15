@@ -5,18 +5,29 @@ import java.util.List;
 
 import com.looksee.models.enums.AnimationType;
 
+import lombok.Getter;
+import lombok.Setter;
+
+/**
+ * Represents an animation
+ */
+@Getter
+@Setter
 public class Animation extends LookseeObject {
 
-	private List<String> image_urls;
-	private List<String> image_checksums;
-	private AnimationType animation_type;
+	private List<String> imageUrls;
+	private List<String> imageChecksums;
+	private AnimationType animationType;
 	
 	public Animation(){}
 
 	/**
-	 * 
-	 * @param image_urls 
-	 * 
+	 * Constructor for {@link Animation}
+	 *
+	 * @param image_urls the list of image URLs
+	 * @param image_checksums the list of image checksums
+	 * @param type the type of animation
+	 *
 	 * @pre image_urls != null
 	 */
 	public Animation(List<String> image_urls, List<String> image_checksums, AnimationType type) {
@@ -27,38 +38,17 @@ public class Animation extends LookseeObject {
 		setKey(generateKey());
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String generateKey() {
 		String key = "";
-		Collections.sort(image_urls);
-		for(String url : image_urls){
+		Collections.sort(imageUrls);
+		for(String url : imageUrls){
 			key += url;
 		}
 		
 		return "animation:"+org.apache.commons.codec.digest.DigestUtils.sha256Hex(key);
-	}
-
-	public List<String> getImageChecksums() {
-		return image_checksums;
-	}
-
-	public void setImageChecksums(List<String> image_checksums) {
-		this.image_checksums = image_checksums;
-	}
-
-	public AnimationType getAnimationType() {
-		return animation_type;
-	}
-
-	public void setAnimationType(AnimationType animation_type) {
-		this.animation_type = animation_type;
-	}
-
-	public List<String> getImageUrls() {
-		return image_urls;
-	}
-
-	public void setImageUrls(List<String> image_urls) {
-		this.image_urls = image_urls;
 	}
 }
