@@ -20,42 +20,18 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Domain extends LookseeObject{
-	
-	/**
-	 * The url of the domain
-	 */
+
 	private String url;
-
-	/**
-	 * The logo url of the domain
-	 */
 	private String logoUrl;
-
-	/**
-	 * The entrypoint url of the domain
-	 */
 	private String entrypointUrl;
-
-	/**
-	 * The sitemap of the domain
-	 */
 	private List<String> sitemap;
 
-	/**
-	 * The pages of the domain
-	 */
 	@Relationship(type = "HAS")
 	private List<PageState> pages;
 	
-	/**
-	 * The audit records of the domain
-	 */
 	@Relationship(type = "HAS")
 	private Set<DomainAuditRecord> auditRecords;
 
-	/**
-	 * The design system of the domain
-	 */
 	@Relationship(type="USES")
 	private DesignSystem designSystem;
 	

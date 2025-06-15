@@ -23,10 +23,15 @@ import org.springframework.data.neo4j.core.schema.Relationship;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.looksee.services.BrowserService;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * A reference to a web page that contains information about the page's state,
  * including its URL, title, source code, and associated elements.
  */
+@Getter
+@Setter
 public class Page extends LookseeObject {
 	private static Logger log = LoggerFactory.getLogger(Page.class);
 
@@ -251,24 +256,6 @@ public class Page extends LookseeObject {
 	}
 
 	/**
-	 * Gets the source code of this page.
-	 *
-	 * @return the page source code
-	 */
-	public String getSrc() {
-		return src;
-	}
-
-	/**
-	 * Sets the source code of this page.
-	 *
-	 * @param src the source code to set
-	 */
-	public void setSrc(String src) {
-		this.src = src;
-	}
-
-	/**
 	 * Adds multiple elements to this page, avoiding duplicates.
 	 *
 	 * @param elements the list of elements to add
@@ -281,33 +268,6 @@ public class Page extends LookseeObject {
 			}
 		}
 	}
-
-	/**
-	 * Gets the title of this page.
-	 *
-	 * @return the page title
-	 */
-	public String getTitle() {
-		return title;
-	}
-
-	/**
-	 * Sets the list of page states for this page.
-	 *
-	 * @param page_states the list of page states to set
-	 */
-	public void setPageStates(List<PageState> page_states) {
-		this.page_states = page_states;
-	}
-
-	/**
-	 * Gets the list of page states for this page.
-	 *
-	 * @return the list of page states
-	 */
-	public List<PageState> getPageStates(){
-		return this.page_states;
-	}
 	
 	/**
 	 * Adds a page state to this page.
@@ -318,51 +278,5 @@ public class Page extends LookseeObject {
 	public boolean addPageState(PageState page_state_record) {
 		return this.page_states.add(page_state_record);
 	}
-	
-	/**
-	 * Sets the title of this page.
-	 *
-	 * @param title the title to set
-	 */
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	/**
-	 * Gets the URL of this page.
-	 *
-	 * @return the page URL
-	 */
-	public String getUrl() {
-		return url;
-	}
-
-	/**
-	 * Sets the URL of this page.
-	 *
-	 * @param url the URL to set
-	 */
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-	/**
-	 * Gets the file path of this page.
-	 *
-	 * @return the page file path
-	 */
-	public String getPath() {
-		return path;
-	}
-
-	/**
-	 * Sets the file path of this page.
-	 *
-	 * @param path the file path to set
-	 */
-	public void setPath(String path) {
-		this.path = path;
-	}
-
 }
 

@@ -3,6 +3,8 @@ package com.looksee.models;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
 
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Defines the type of package paid for, which domains are registered and which Users belong to the account
