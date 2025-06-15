@@ -36,9 +36,9 @@ import lombok.NoArgsConstructor;
 /**
  * Contains business logic for interacting with and managing audits
  */
+@NoArgsConstructor
 @Service
 @Retry(name = "neoforj")
-@NoArgsConstructor
 public class AuditService {
 	private static Logger log = LoggerFactory.getLogger(AuditService.class);
 

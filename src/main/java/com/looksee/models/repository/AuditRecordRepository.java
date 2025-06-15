@@ -526,9 +526,9 @@ public interface AuditRecordRepository extends Neo4jRepository<AuditRecord, Long
 	 *
 	 * @param audit_record_id the ID of the audit record
 	 * @param content_progress the new content progress
-	 * @param ia_progress the new information architecture progress
+	 * @param info_architecture_progress the new information architecture progress
 	 * @param aesthetic_progress the new aesthetic progress
-	 * @param data_progress the new data extraction progress
+	 * @param data_extraction_progress the new data extraction progress
 	 */
 	@Query("MATCH (a:AuditRecord) WHERE id(a)=$audit_record_id SET a.contentProgress=$content_progress, a.infoArchitectureProgress=$ia_progress, a.aestheticProgress=$aesthetic_progress, a.dataExtractionProgress=$data_progress RETURN a")
     public void updateProgress(@Param("audit_record_id") long audit_record_id, 
@@ -542,12 +542,12 @@ public interface AuditRecordRepository extends Neo4jRepository<AuditRecord, Long
 	 *
 	 * @param audit_record_id the ID of the audit record
 	 * @param content_score the new content score
-	 * @param ia_score the new information architecture score
+	 * @param info_architecture_score the new information architecture score (IA)
 	 * @param aesthetic_score the new aesthetic score
 	 */
 	@Query("MATCH (a:AuditRecord) WHERE id(a)=$audit_record_id SET a.contentScore=$content_score, a.infoArchitectureScore=$ia_score, a.aestheticScore=$aesthetic_score, a.dataExtractionProgress=$data_progress RETURN a")
-	public void updateScores(@Param("audit_record_id") long audit_record_id, 
-							@Param("content_score") double content_score, 
+	public void updateScores(@Param("audit_record_id") long audit_record_id,
+							@Param("content_score") double content_score,
 							@Param("info_architecture_score") double info_architecture_score,
 							@Param("aesthetic_score") double aesthetic_score);
 

@@ -24,15 +24,29 @@ public enum AuditStatus {
 	
 	private String shortName;
 
+    /**
+     * Constructor for {@link AuditStatus}
+     *
+     * @param shortName the short name of the audit status
+     */
     AuditStatus (String shortName) {
         this.shortName = shortName;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return shortName;
     }
 
+    /**
+     * Creates an {@linkplain AuditStatus} from a string value
+     *
+     * @param value the value
+     * @return the {@link AuditStatus}
+     */
     @JsonCreator
     public static AuditStatus create (String value) {
         for(AuditStatus v : values()) {
@@ -43,6 +57,11 @@ public enum AuditStatus {
         throw new IllegalArgumentException();
     }
 
+    /**
+     * Get the short name of the audit status
+     *
+     * @return the short name of the audit status
+     */
     public String getShortName() {
         return shortName;
     }

@@ -74,10 +74,20 @@ public class AuditUpdateDto {
 		setStatus(status);
 	}
 
+	/**
+	 * Get the status of the audit
+	 *
+	 * @return the status of the audit
+	 */
 	public ExecutionStatus getStatus() {
 		return ExecutionStatus.create(status);
 	}
 
+	/**
+	 * Set the status of the audit
+	 *
+	 * @param status the status of the audit
+	 */
 	public void setStatus(ExecutionStatus status) {
 		this.status = status.getShortName();
 	}

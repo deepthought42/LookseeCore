@@ -95,7 +95,7 @@ public class BrowserService {
 	 * @param browser_env the browser environment
 	 *
 	 * @return new {@link Browser} instance
-	 * @throws MalformedURLException
+	 * @throws MalformedURLException if the url is malformed
 	 * @throws IllegalArgumentException if browser is null
 	 */
 	public Browser getConnection(BrowserType browser, BrowserEnvironment browser_env) throws MalformedURLException {
@@ -189,7 +189,7 @@ public class BrowserService {
 	 * @param element_location the element location
 	 *
 	 * @return {@link ElementState} based on {@link WebElement} and other params
-	 * @throws IOException
+	 * @throws IOException if an error occurs while building the element state
 	 */
 	public static ElementState buildImageElementState(
 			String xpath,
@@ -343,11 +343,10 @@ public class BrowserService {
 	 * @param audit_record_id the audit record id
 	 *
 	 * @return page {@linkplain PageState}
-	 * @throws StorageException
-	 * @throws IOException
-	 * @throws NullPointerException
-	 * @throws IllegalArgumentException if browser is null
-	 * @throws IllegalArgumentException if url is null
+	 * @throws StorageException if an error occurs while saving the page state
+	 * @throws IOException if an error occurs while building the page state
+	 * @throws NullPointerException if an error occurs while building the page state
+	 * @throws IllegalArgumentException if browser is null or url is null
 	 */
 	public PageState buildPageState( URL url,
 									Browser browser,
@@ -2194,6 +2193,12 @@ public class BrowserService {
 	 * @param url	the url
 	 * @param page_height	the page height
 	 * @return the list of element states
+	 * @throws MalformedURLException if the url is malformed
+	 *
+	 * precondition: xpaths != null
+	 * precondition: audit_id != null
+	 * precondition: url != null and is valid
+	 * precondition: page_height != null and is positive
 	 */
 	public List<ElementState> buildPageElements(PageState page_state,
 												List<String> xpaths,
@@ -2261,7 +2266,8 @@ public class BrowserService {
 	 * @param page_height the page height
 	 * @param browser the browser
 	 * @return the list of element states
-	 *
+	 * @throws MalformedURLException if the url is malformed
+	 *s
 	 * precondition: page_state != null
 	 * precondition: xpaths != null
 	 * precondition: browser != null
@@ -2288,7 +2294,26 @@ public class BrowserService {
 		return elements;
 	}
 	
-	
+	/**
+	 * Open a browser and build element states
+	 *
+	 * @param elements the list of element states
+	 * @param elements_mapped the map of element states
+	 * @param page_state the page state
+	 * @param xpaths the list of xpaths
+	 * @param audit_id the audit id
+	 * @param page_height the page height
+	 *
+	 * @return true if the element states were built successfully, false otherwise
+	 * @throws MalformedURLException if the url is malformed
+	 *
+	 * precondition: elements != null
+	 * precondition: elements_mapped != null
+	 * precondition: page_state != null
+	 * precondition: xpaths != null
+	 * precondition: audit_id != null
+	 * precondition: page_height != null and is positive
+	 */
 	@Retry(name="webdriver")
 	private boolean openBrowserAndBuildElementStates(List<ElementState> elements,
 													Map<String, ElementState> elements_mapped,
@@ -2574,14 +2599,12 @@ public class BrowserService {
 		}
 		return filtered_elements;
 	}
-
-
-	/** MESSAGE GENERATION METHODS **/
 	
 	/**
 	 * Retrieves transparency value from rgba string
-	 * @param css_value
-	 * @return
+	 * 
+	 * @param css_value the css value to check
+	 * @return true if the css value has transparency, false otherwise
 	 */
 	private boolean hasTransparency(String css_value) {
 		assert css_value != null;
@@ -2603,8 +2626,8 @@ public class BrowserService {
 	/**
 	 * Checks if {@link Element element} is a part of a slideshow container
 	 * 
-	 * @param element
-	 * @return
+	 * @param element the element to check
+	 * @return true if the element is a part of a slideshow container, false otherwise
 	 */
 	private static boolean isSliderElement(Element element) {
 		for(org.jsoup.nodes.Attribute attr : element.attributes()) {
@@ -2616,12 +2639,23 @@ public class BrowserService {
 		return false;
 	}
 
-
+	/**
+	 * Checks if {@link Element element} is a top level element
+	 * 
+	 * @param element the element to check
+	 * @return true if the element is a top level element, false otherwise
+	 */
 	private boolean isTopLevelElement() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
+	/**
+	 * Extracts metadata from a string
+	 * 
+	 * @param src the string to extract metadata from
+	 * @return the set of metadata
+	 */
 	public static Set<String> extractMetadata(String src) {
 		Document html_doc = Jsoup.parse(src);
 		Elements meta_tags = html_doc.getElementsByTag("meta");
@@ -2633,6 +2667,12 @@ public class BrowserService {
 		return meta_tag_html;
 	}
 
+	/**
+	 * Extracts stylesheets from a string
+	 * 
+	 * @param src the string to extract stylesheets from
+	 * @return the set of stylesheets
+	 */
 	public static Set<String> extractStylesheets(String src) {
 		Document html_doc = Jsoup.parse(src);
 		Elements link_tags = html_doc.getElementsByTag("link");
@@ -2644,6 +2684,12 @@ public class BrowserService {
 		return stylesheet_urls;
 	}
 
+	/**
+	 * Extracts script urls from a string
+	 * 
+	 * @param src the string to extract script urls from
+	 * @return the set of script urls
+	 */
 	public static Set<String> extractScriptUrls(String src) {
 		Document html_doc = Jsoup.parse(src);
 		Elements script_tags = html_doc.getElementsByTag("script");
@@ -2658,6 +2704,12 @@ public class BrowserService {
 		return script_urls;
 	}
 
+	/**
+	 * Extracts icon links from a string
+	 * 
+	 * @param src the string to extract icon links from
+	 * @return the set of icon links
+	 */
 	public static Set<String> extractIconLinks(String src) {
 		Document html_doc = Jsoup.parse(src);
 		Elements icon_tags = html_doc.getElementsByTag("link");
