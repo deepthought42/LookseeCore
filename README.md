@@ -66,8 +66,8 @@ Add the following dependency to your project:
 ```xml
 <dependency>
     <groupId>com.looksee</groupId>
-    <artifactId>looksee-objects</artifactId>
-    <version>${looksee.version}</version>
+    <artifactId>core</artifactId>
+    <version>0.0.1</version>
 </dependency>
 ```
 
