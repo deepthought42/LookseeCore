@@ -5,9 +5,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import lombok.NoArgsConstructor;
+
 /**
  * Implementation of the PubSubPageCreatedPublisher interface.
  */
+@NoArgsConstructor
 @Component
 public class PubSubPageCreatedPublisherImpl extends PubSubPublisher {
 

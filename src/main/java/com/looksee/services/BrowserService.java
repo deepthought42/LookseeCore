@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -31,6 +32,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.InvalidSelectorException;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
@@ -65,12 +67,12 @@ import com.looksee.utils.BrowserUtils;
 import com.looksee.utils.ElementStateUtils;
 import com.looksee.utils.ImageUtils;
 
+import io.github.resilience4j.retry.annotation.Retry;
 import lombok.NoArgsConstructor;
 import us.codecraft.xsoup.Xsoup;
 
 /**
  * A collection of methods for interacting with the {@link Browser} session object
- *
  */
 @NoArgsConstructor
 @Service
@@ -88,14 +90,12 @@ public class BrowserService {
 	/**
 	 * Retrieves a new browser connection
 	 *
-	 * @param browser the browser
+	 * @param browser the browser (must not be null)
 	 * @param browser_env the browser environment
 	 *
 	 * @return new {@link Browser} instance
-	 * @throws MalformedURLException
-	 *
-	 * precondition: browser != null;
-	 * precondition: !browser_name.isEmpty();
+	 * @throws MalformedURLException if the url is malformed
+	 * @throws IllegalArgumentException if browser is null
 	 */
 	public Browser getConnection(BrowserType browser, BrowserEnvironment browser_env) throws MalformedURLException {
 		assert browser != null;
@@ -106,28 +106,24 @@ public class BrowserService {
 	/**
  	 * Constructs an {@link Element} from a JSOUP {@link Element element}
  	 *
-	 * @param xpath the xpath
-	 * @param attributes the attributes
-	 * @param element the element
-	 * @param classification the classification
-	 * @param rendered_css_values the rendered css values
+	 * @param xpath the xpath (must not be null or empty)
+	 * @param attributes the attributes (must not be null)
+	 * @param element the element (must not be null)
+	 * @param classification the classification (must not be null)
+	 * @param rendered_css_values the rendered css values (must not be null)
 	 * @param screenshot_url the screenshot url
 	 * @param css_selector the css selector
 	 * @param element_size the element size
 	 * @param element_location the element location
 	 *
-	 * precondition: xpath != null
-	 * precondition: !xpath.isEmpty()
-	 * precondition: attributes != null
-	 * precondition: element != null
-	 * precondition: classification != null
-	 * precondition: rendered_css_values != null
-	 * precondition: css_values != null
-	 * precondition: screenshot != null
-	 *
 	 * @return {@link ElementState} based on {@link WebElement} and other params
 	 * @throws IOException if an error occurs while reading the screenshot
 	 * @throws MalformedURLException if the url is malformed
+	 * @throws IllegalArgumentException if xpath is null or empty
+	 * @throws IllegalArgumentException if attributes is null
+	 * @throws IllegalArgumentException if element is null
+	 * @throws IllegalArgumentException if classification is null
+	 * @throws IllegalArgumentException if rendered_css_values is null
 	 */
 	public static ElementState buildElementState(
 			String xpath,
@@ -192,7 +188,7 @@ public class BrowserService {
 	 * @param element_location the element location
 	 *
 	 * @return {@link ElementState} based on {@link WebElement} and other params
-	 * @throws IOException
+	 * @throws IOException if an error occurs while building the element state
 	 */
 	public static ElementState buildImageElementState(
 			String xpath,
@@ -260,11 +256,10 @@ public class BrowserService {
 	 * Generalizes HTML source by removing comments along with script, link, style, and iframe tags.
 	 * Also removes attributes. The goal of this method is to strip out any dynamic data that could cause problems
 	 *
-	 * @param src the html string to generalize
+	 * @param src the html string to generalize (must not be null)
 	 *
 	 * @return the generalized html string
-	 *
-	 * precondition: src != null
+	 * @throws IllegalArgumentException if src is null
 	 */
 	public static String generalizeSrc(String src) {
 		assert src != null;
@@ -311,11 +306,10 @@ public class BrowserService {
 	/**
 	 * Removes HTML comments from html string
 	 *
-	 * @param html the html string to remove comments from
+	 * @param html the html string to remove comments from (must not be null)
 	 *
 	 * @return html string without comments
-	 *
-	 * precondition: html != null
+	 * @throws IllegalArgumentException if html is null
 	 */
 	public static String removeComments(String html) {
 		assert html != null;
@@ -341,19 +335,17 @@ public class BrowserService {
 	 * 	chat client from page if it exists. Finally it builds a {@link PageState}
 	 * 
 	 *Constructs a page object that contains all child elements that are considered to be potentially expandable.
-	 * @param url the {@link URL}
-	 * @param browser the {@link Browser}
+	 * @param url the {@link URL} (must not be null)
+	 * @param browser the {@link Browser} (must not be null)
 	 * @param isSecure true if the page is secure, false otherwise
 	 * @param httpStatus the http status code
 	 * @param audit_record_id the audit record id
 	 *
 	 * @return page {@linkplain PageState}
-	 * @throws StorageException
-	 * @throws IOException
-	 * @throws NullPointerException
-	 *
-	 * precondition: browser != null
-	 * precondition: url != null
+	 * @throws StorageException if an error occurs while saving the page state
+	 * @throws IOException if an error occurs while building the page state
+	 * @throws NullPointerException if an error occurs while building the page state
+	 * @throws IllegalArgumentException if browser is null or url is null
 	 */
 	public PageState buildPageState( URL url,
 									Browser browser,
@@ -438,18 +430,17 @@ public class BrowserService {
 	 * identify and collect data for elements within the Document Object Model
 	 *
 	 * @param domain_audit_id the domain audit id
-	 * @param page_state the {@link PageState}
-	 * @param xpaths the xpaths
-	 * @param browser the {@link Browser}
+	 * @param page_state the {@link PageState} (must not be null)
+	 * @param xpaths the xpaths (must not be null)
+	 * @param browser the {@link Browser} (must not be null)
 	 *
 	 * @return {@link List list} of {@link ElementState element states}
 	 *
 	 * @throws Exception if an error occurs while getting the element states
 	 * @throws XPathExpressionException if an error occurs while evaluating the xpath
-	 *
-	 * precondition: xpaths != null
-	 * precondition: browser != null
-	 * precondition: page_state != null
+	 * @throws IllegalArgumentException if xpaths is null
+	 * @throws IllegalArgumentException if browser is null
+	 * @throws IllegalArgumentException if page_state is null
 	 */
 	public List<ElementState> getDomElementStates(
 			PageState page_state,
@@ -551,13 +542,11 @@ public class BrowserService {
 		return visited_elements;
 	}
 
-
 	/**
 	 * Checks if element tag is 'img'
-	 * @param web_element the web element to check
+	 * @param web_element the web element to check (must not be null)
 	 * @return true if the element tag is 'img', otherwise false
-	 *
-	 * precondition: web_element != null
+	 * @throws IllegalArgumentException if web_element is null
 	 */
 	@Deprecated
 	private boolean isImageElement(WebElement web_element) {
@@ -932,16 +921,14 @@ public class BrowserService {
 	 * Checks if {@link WebElement element} is visible in the current viewport window or not
 	 * 
 	 * @param browser {@link Browser browser} connection to use
+	 * @param position {@link Point position} where the element top left corner is located
 	 * @param size {@link Dimension size} of the element
 	 * 
 	 * @return true if element is rendered within viewport, otherwise false
 	 *
-	 * <b>Preconditions:</b>
-	 * <ul>
-	 *   <li>browser != null</li>
-	 *   <li>position != null</li>
-	 *   <li>size != null</li>
-	 * </ul>
+	 * precondition: browser != null
+	 * precondition: position != null
+	 * precondition: size != null
 	 */
 	public static boolean doesElementFitInViewport(Browser browser,
 													Point position,
@@ -1007,18 +994,14 @@ public class BrowserService {
 	/**
 	 * generates a unique xpath for this element.
 	 *
-	 * @param element the {@link WebElement} to generate an xpath for
+	 * @param element the {@link WebElement} to generate an xpath for (must not be null)
 	 * @param driver the {@link WebDriver} to use
 	 * @param attributes the {@link Map} of attributes to use
 	 *
 	 * @return an xpath that identifies this element uniquely
-	 *
-	 * <b>Preconditions:</b>
-	 * <ul>
-	 *   <li>element != null</li>
-	 *   <li>driver != null</li>
-	 *   <li>attributes != null</li>
-	 * </ul>
+	 * @throws IllegalArgumentException if element is null
+	 * @throws IllegalArgumentException if driver is null
+	 * @throws IllegalArgumentException if attributes is null
 	 */
 	public String generateXpath(WebElement element,
 								WebDriver driver,
@@ -1071,17 +1054,16 @@ public class BrowserService {
 	/**
 	 * generates a unique xpath for this element.
 	 *
-	 * @param element the element to generate an xpath for
-	 * @param doc the document to use
-	 * @param attributes the attributes to use
-	 * @param xpath_cnt the xpath count
+	 * @param element the element to generate an xpath for (must not be null)
+	 * @param doc the document to use (must not be null)
+	 * @param attributes the attributes to use (must not be null)
+	 * @param xpath_cnt the xpath count (must not be null)
 	 *
 	 * @return an xpath that identifies this element uniquely
-	 *
-	 * precondition: element != null
-	 * precondition: doc != null
-	 * precondition: attributes != null
-	 * precondition: xpath_cnt != null
+	 * @throws IllegalArgumentException if element is null
+	 * @throws IllegalArgumentException if doc is null
+	 * @throws IllegalArgumentException if attributes is null
+	 * @throws IllegalArgumentException if xpath_cnt is null
 	 */
 	@Deprecated
 	public static String generateXpathUsingJsoup(Element element,
@@ -1153,6 +1135,7 @@ public class BrowserService {
 	/**
 	 * generates a unique xpath for this element.
 	 *
+	 * @param xpath the xpath to generate a css selector for
 	 * @return an xpath that identifies this element uniquely
 	 */
 	public static String generateCssSelectorFromXpath(String xpath){
@@ -1171,8 +1154,9 @@ public class BrowserService {
 
 	/**
 	 * combines list of sub selectors into cohesive css_selector
-	 * @param selectors
-	 * @return
+	 *
+	 * @param selectors the list of selectors to combine
+	 * @return the combined css selector
 	 */
 	private static String buildCssSelector(List<String> selectors) {
 		String css_selector = "";
@@ -1192,6 +1176,7 @@ public class BrowserService {
 	/**
 	 * Transforms an xpath selector to a css selector
 	 * @param xpath_selector the xpath selector to transform
+	 *
 	 * @return the css selector
 	 */
 	public static String transformXpathSelectorToCss(String xpath_selector) {
@@ -1219,10 +1204,9 @@ public class BrowserService {
 
 	/**
 	 * Removes auto-generated values from a string
-	 * @param trimmed_values the string to remove auto-generated values from
+	 * @param trimmed_values the string to remove auto-generated values from (must not be null)
 	 * @return the string with auto-generated values removed
-	 *
-	 * precondition: trimmed_values != null
+	 * @throws IllegalArgumentException if trimmed_values is null
 	 */
 	private static String removeAutoGeneratedValues(String trimmed_values) {
 		String[] values = trimmed_values.split(" ");
@@ -1238,10 +1222,9 @@ public class BrowserService {
 
 	/**
 	 * Checks if a value is auto-generated
-	 * @param val the value to check
+	 * @param val the value to check (must not be null)
 	 * @return true if the value is auto-generated, otherwise false
-	 *
-	 * precondition: val != null
+	 * @throws IllegalArgumentException if val is null
 	 */
 	private static boolean isAutoGenerated(String val) {
 		//check if value ends in a number
@@ -1251,7 +1234,11 @@ public class BrowserService {
 	/**
 	 * generates a unique xpath for this element.
 	 *
-	 * @return an xpath that identifies this element uniquely
+	 * @param element the element to generate the attributes map for
+	 *
+	 * @return the attributes map
+	 *
+	 * precondition: element != null
 	 */
 	public static Map<String, String> generateAttributesMapUsingJsoup(Element element){
 		Map<String, String> attributes = new HashMap<>();
@@ -1271,6 +1258,11 @@ public class BrowserService {
 	 * @param xpath_cnt the xpath count
 	 *
 	 * @return the unique xpath
+	 *
+	 * precondition: elem != null
+	 * precondition: xpath != null
+	 * precondition: doc != null
+	 * precondition: xpath_cnt != null
 	 */
 	public static String uniqifyXpath(Element elem, String xpath, Document doc, Map<String, Integer> xpath_cnt){
 		try {
@@ -1300,6 +1292,10 @@ public class BrowserService {
 	 * @param elem the {@link WebElement}
 	 *
 	 * @return the unique xpath
+	 *
+	 * precondition: elem != null
+	 * precondition: xpath != null
+	 * precondition: driver != null
 	 */
 	public static String uniqifyXpath(WebElement elem, String xpath, WebDriver driver){
 		try {
@@ -1328,8 +1324,9 @@ public class BrowserService {
 	/**
 	 * Finds templates in a list of elements
 	 *
-	 * @param element_list the list of elements to find templates in
+	 * @param element_list the list of elements to find templates in (must not be null)
 	 * @return the map of templates
+	 * @throws IllegalArgumentException if element_list is null
 	 *
 	 * precondition: element_list != null
 	 */
@@ -1344,7 +1341,6 @@ public class BrowserService {
 		}
 
 		//iterate over all elements in list
-		
 		Map<String, Boolean> identified_templates = new HashMap<String, Boolean>();
 		for(int idx1 = 0; idx1 < parents_only_element_list.size()-1; idx1++){
 			com.looksee.models.Element element1 = parents_only_element_list.get(idx1);
@@ -1416,12 +1412,10 @@ public class BrowserService {
 
 	/**
 	 * Checks if Attributes contains keywords indicative of a slider
-	 * @param attributes
+	 * @param attributes the attributes to check (must not be null or empty)
 	 *
 	 * @return true if any of keywords present, otherwise false
-	 *
-	 * precondition: attributes != null
-	 * precondition: !attributes.isEmpty()
+	 * @throws IllegalArgumentException if attributes is null or empty
 	 */
 	public static boolean doesAttributesContainSliderKeywords(Map<String, List<String>> attributes) {
 		assert attributes != null;
@@ -1463,10 +1457,9 @@ public class BrowserService {
 	
 	/**
 	 * Reduces a list of templates to a list of parent templates
-	 * @param list_elements_list the list of templates to reduce
+	 * @param list_elements_list the list of templates to reduce (must not be null)
 	 * @return the reduced list of templates
-	 *
-	 * precondition: list_elements_list != null
+	 * @throws IllegalArgumentException if list_elements_list is null
 	 */
 	public Map<String, Template> reduceTemplatesToParents(Map<String, Template> list_elements_list) {
 		Map<String, Template> element_map = new HashMap<>();
@@ -1498,8 +1491,11 @@ public class BrowserService {
 	 * Organism - Contains at least 2 molecules or at least 1 molecule and 1 atom or at least 1 organism, Must not be an immediate child of body
 	 * Template - An Immediate child of the body tag or the descendant such that the element is the first to have sibling elements
 	 *
-	 * @param template
-	 * @return
+	 * @param template the template to classify
+	 *
+	 * @return the template type
+	 *
+	 * precondition: template != null
 	 */
 	public TemplateType classifyTemplate(String template){
 		Document html_doc = Jsoup.parseBodyFragment(template);
@@ -1515,10 +1511,7 @@ public class BrowserService {
 	 *
 	 * @return the template type
 	 *
-	 * <b>Preconditions:</b>
-	 * <ul>
-	 *   <li>root_element != null</li>
-	 * </ul>
+	 * precondition: root_element != null
 	 */
 	private TemplateType classifyUsingChildren(Element root_element) {
 		assert root_element != null;
@@ -1570,7 +1563,7 @@ public class BrowserService {
 	 * @param element the element to test
 	 * @return true if the element is a top level element, false otherwise
 	 *
-	 * precondition: element != null
+	 * precondition:: element != null
 	 */
 	private boolean isTopLevelElement(Element element) {
 		assert element != null;
@@ -1746,7 +1739,7 @@ public class BrowserService {
 	 * @param src the source code to extract the body from
 	 * @return the body
 	 *
-	 * precondition: src != null
+	 * precondition:: src != null
 	 */
 	public static String extractBody(String src) {
 		assert src != null;
@@ -1811,7 +1804,7 @@ public class BrowserService {
 	 * @param html_doc the document to extract script urls from
 	 * @return a set of script urls
 	 *
-	 * precondition: html_doc != null
+	 * precondition:: html_doc != null
 	 */
 	public static Set<String> extractScriptUrls(Document html_doc) {
 		assert html_doc != null;
@@ -1833,7 +1826,7 @@ public class BrowserService {
 	 * @param html_doc the document to extract icon links from
 	 * @return a set of icon urls
 	 *
-	 * precondition: html_doc != null
+	 * precondition:: html_doc != null
 	 */
 	public static Set<String> extractIconLinks(Document html_doc) {
 		Elements icon_tags = html_doc.getElementsByTag("link");
@@ -1858,12 +1851,11 @@ public class BrowserService {
 	 * @throws MalformedURLException if the url is malformed
 	 * @throws IOException if an error occurs while extracting the screenshot
 	 *
-	 * precondition: element_states != null
-	 * precondition: page_state != null
-	 * precondition: browser != null
-	 * precondition: host != null
+	 * precondition:: element_states != null
+	 * precondition:: page_state != null
+	 * precondition:: browser != null
+	 * precondition:: host != null
 	 */
-	
 	public List<ElementState> enrichElementStates(List<ElementState> element_states,
 													PageState page_state,
 													Browser browser,
@@ -1900,21 +1892,22 @@ public class BrowserService {
 	}
 	
 	
-	/*
+	/**
 	 * Enrich an element state with screenshot, rendered css values, and attributes
 	 * @param browser the browser
 	 * @param web_element the web element
 	 * @param element_state the element state
 	 * @param page_screenshot the page screenshot
 	 * @param host the host
+	 * 
 	 * @return the enriched element state
 	 * @throws IOException if an error occurs while extracting the screenshot
 	 *
-	 * precondition: browser != null
-	 * precondition: web_element != null
-	 * precondition: element_state != null
-	 * precondition: page_screenshot != null
-	 * precondition: host != null
+	 * precondition:: browser != null
+	 * precondition:: web_element != null
+	 * precondition:: element_state != null
+	 * precondition:: page_screenshot != null
+	 * precondition:: host != null
 	 */
 	public ElementState enrichElementState(Browser browser,
 											WebElement web_element,
@@ -1990,12 +1983,12 @@ public class BrowserService {
 	 * @return the enriched element state or the original element state if it
 	 * is not an image element
 	 *
-	 * precondition: element_state != null
-	 * precondition: page_state != null
-	 * precondition: browser != null
-	 * precondition: host != null
-	 * precondition: element_state is an instance of ImageElementState
-	 * precondition: element_state.getScreenshotUrl() is not empty
+	 * precondition:: element_state != null
+	 * precondition:: page_state != null
+	 * precondition:: browser != null
+	 * precondition:: host != null
+	 * precondition:: element_state is an instance of ImageElementState
+	 * precondition:: element_state.getScreenshotUrl() is not empty
 	 */
 	public ElementState enrichImageElement(ElementState element_state,
 											PageState page_state,
@@ -2049,5 +2042,737 @@ public class BrowserService {
 			}
 		}
 		return element_state;
+	}
+
+
+	/**
+ 	 * Constructs an {@link Element} from a JSOUP {@link Element element}
+ 	 * 
+	 * @param xpath	the xpath of the element
+	 * @param attributes	the attributes of the element
+	 * @param element	the element
+	 * @param web_elem	the web element
+	 * @param classification	the classification of the element
+	 * @param rendered_css_values	the rendered css values of the element
+	 * @param screenshot_url	the screenshot url of the element
+	 * @param css_selector	the css selector of the element
+	 * 
+	 * precondition: xpath != null
+	 * precondition: !xpath.isEmpty()
+	 * precondition: attributes != null
+	 * precondition: element != null
+	 * precondition: classification != null
+	 * precondition: rendered_css_values != null
+	 * precondition: screenshot_url != null
+	 *
+	 * @return {@link ElementState} based on {@link WebElement} and other params
+	 * 
+	 * @throws IOException if an error occurs while building the element state
+	 */
+	public static ElementState buildElementState(
+			String xpath,
+			Map<String, String> attributes,
+			Element element,
+			WebElement web_elem,
+			ElementClassification classification,
+			Map<String, String> rendered_css_values,
+			String screenshot_url,
+			String css_selector
+	) throws IOException{
+		assert xpath != null && !xpath.isEmpty();
+		assert attributes != null;
+		assert element != null;
+		assert classification != null;
+		assert rendered_css_values != null;
+		assert screenshot_url != null;
+		
+		Point location = web_elem.getLocation();
+		Dimension dimension = web_elem.getSize();
+		
+		String foreground_color = rendered_css_values.get("color");
+		if(foreground_color == null || foreground_color.trim().isEmpty()) {
+			foreground_color = "rgb(0,0,0)";
+		}
+		
+		ElementState element_state = new ElementState(
+											element.ownText().trim(),
+											element.text(),
+											xpath,
+											element.tagName(),
+											attributes,
+											rendered_css_values,
+											screenshot_url,
+											location.getX(),
+											location.getY(),
+											dimension.getWidth(),
+											dimension.getHeight(),
+											classification,
+											element.outerHtml(),
+											css_selector,
+											foreground_color,
+											rendered_css_values.get("background-color"),
+											false);
+		
+		return element_state;
+	}
+	
+	/**
+ 	 * Constructs an {@link Element} from a JSOUP {@link Element element}
+ 	 *
+	 * @param xpath the xpath of the element
+	 * @param attributes the attributes of the element
+	 * @param element the element
+	 * @param web_elem the web element
+	 * @param classification the classification of the element
+	 * @param rendered_css_values the rendered css values of the element
+	 * @param screenshot_url the screenshot url of the element
+	 * @param css_selector the css selector of the element
+	 * @param landmark_info_set the landmark info set
+	 * @param faces the faces
+	 * @param image_search_set the image search set
+	 * @param logos the logos
+	 * @param labels the labels
+	 * @param safe_search_annotation the safe search annotation
+	 *
+	 * @return {@link ElementState} based on {@link WebElement} and other params
+	 * @throws IOException if an error occurs while building the element state
+	 *
+	 * precondition: xpath != null
+	 * precondition: !xpath.isEmpty()
+	 * precondition: attributes != null
+	 * precondition: element != null
+	 * precondition: classification != null
+	 * precondition: rendered_css_values != null
+	 * precondition: screenshot_url != null
+	 *
+	 */
+	public static ElementState buildImageElementState(
+			String xpath,
+			Map<String, String> attributes,
+			Element element,
+			WebElement web_elem,
+			ElementClassification classification,
+			Map<String, String> rendered_css_values,
+			String screenshot_url,
+			String css_selector,
+			Set<ImageLandmarkInfo> landmark_info_set,
+			Set<ImageFaceAnnotation> faces,
+			ImageSearchAnnotation image_search_set,
+			Set<Logo> logos,
+			Set<Label> labels,
+			ImageSafeSearchAnnotation safe_search_annotation
+	) throws IOException{
+		assert xpath != null && !xpath.isEmpty();
+		assert attributes != null;
+		assert element != null;
+		assert classification != null;
+		assert rendered_css_values != null;
+		assert screenshot_url != null;
+		
+		Point location = web_elem.getLocation();
+		Dimension dimension = web_elem.getSize();
+		
+		String foreground_color = rendered_css_values.get("color");
+		if(foreground_color == null || foreground_color.trim().isEmpty()) {
+			foreground_color = "rgb(0,0,0)";
+		}
+		
+		String background_color = rendered_css_values.get("background-color");
+		if(background_color == null) {
+			background_color = "rgb(255,255,255)";
+		}
+		
+		ElementState element_state = new ImageElementState(
+													element.ownText().trim(),
+													element.text(),
+													xpath,
+													element.tagName(),
+													attributes,
+													rendered_css_values,
+													screenshot_url,
+													location.getX(),
+													location.getY(),
+													dimension.getWidth(),
+													dimension.getHeight(),
+													classification,
+													element.outerHtml(),
+													css_selector,
+													foreground_color,
+													background_color,
+													landmark_info_set,
+													faces,
+													image_search_set,
+													logos,
+													labels,
+													safe_search_annotation);
+		
+		return element_state;
+	}
+	
+	/**
+	 * Process used by the web crawler to build {@link ElementState} list based on the xpaths on the page
+	 * @param page_state the page state
+	 * @param xpaths	the xpaths to build the page elements for
+	 * @param audit_id	the audit id
+	 * @param url	the url
+	 * @param page_height	the page height
+	 * @return the list of element states
+	 * @throws MalformedURLException if the url is malformed
+	 *
+	 * precondition: xpaths != null
+	 * precondition: audit_id != null
+	 * precondition: url != null and is valid
+	 * precondition: page_height != null and is positive
+	 */
+	public List<ElementState> buildPageElements(PageState page_state,
+												List<String> xpaths,
+												long audit_id,
+												URL url,
+												int page_height
+	) throws MalformedURLException {
+		assert page_state != null;
+
+		List<ElementState> elements = new ArrayList<>();
+		Map<String, ElementState> elements_mapped = new HashMap<>();
+		boolean rendering_incomplete = true;
+		URL sanitized_url = new URL(BrowserUtils.sanitizeUserUrl( page_state.getUrl() ));
+		String page_url = sanitized_url.toString();
+		
+		int cnt = 0;
+		do {
+			Browser browser = null;
+			
+			try {
+				browser = getConnection(BrowserType.CHROME, BrowserEnvironment.DISCOVERY);
+				browser.navigateTo(page_url);
+				if(browser.is503Error()) {
+					throw new ServiceUnavailableException("503 Error encountered. Starting over..");
+				}
+				browser.removeDriftChat();
+				
+				//get ElementState List by asking multiple bots to build xpaths in parallel
+				//for each xpath then extract element state
+				elements = getDomElementStates(page_state, xpaths, browser, elements_mapped, audit_id, sanitized_url, page_height);
+				break;
+			}
+			catch (NullPointerException e) {
+				log.warn("NPE thrown during element state extraction");
+				//e.printStackTrace();
+			}
+			catch(MalformedURLException e) {
+				log.warn("Unable to get browser connection to build page elements : "+page_url);
+				continue;
+			}
+			catch(ServiceUnavailableException e) {
+				log.warn("503 exception occurred while accessing "+page_url);
+			}
+			catch(WebDriverException e) {
+				log.warn("Webdriver exception occurred ... "+page_url);
+				//e.printStackTrace();
+			}
+			finally {
+				if(browser != null) {
+					browser.close();
+				}
+			}
+			cnt++;
+		}while(rendering_incomplete && cnt < 10000);
+
+		return elements;
+	}
+	
+	/**
+	 * Process used by the web crawler to build {@link ElementState} list based on the xpaths on the page
+	 *
+	 * @param page_state the page state
+	 * @param xpaths the xpaths to build the page elements for
+	 * @param audit_id the audit id
+	 * @param page_height the page height
+	 * @param browser the browser
+	 * @return the list of element states
+	 * @throws MalformedURLException if the url is malformed
+	 *s
+	 * precondition: page_state != null
+	 * precondition: xpaths != null
+	 * precondition: browser != null
+	 * precondition: audit_id != null
+	 * precondition: page_height != null
+	 */
+	public List<ElementState> buildPageElementsWithoutNavigation(PageState page_state,
+																List<String> xpaths,
+																long audit_id,
+																int page_height,
+																Browser browser
+	) throws MalformedURLException {
+		assert page_state != null;
+		assert xpaths != null;
+		assert browser != null;
+
+		List<ElementState> elements = new ArrayList<>();
+		Map<String, ElementState> elements_mapped = new HashMap<>();
+		//boolean rendering_incomplete = true;
+		URL sanitized_url = new URL(BrowserUtils.sanitizeUserUrl( page_state.getUrl() ));
+		
+		elements = getDomElementStates(page_state, xpaths, browser, elements_mapped, audit_id, sanitized_url, page_height);
+
+		return elements;
+	}
+	
+	/**
+	 * Open a browser and build element states
+	 *
+	 * @param elements the list of element states
+	 * @param elements_mapped the map of element states
+	 * @param page_state the page state
+	 * @param xpaths the list of xpaths
+	 * @param audit_id the audit id
+	 * @param page_height the page height
+	 *
+	 * @return true if the element states were built successfully, false otherwise
+	 * @throws MalformedURLException if the url is malformed
+	 *
+	 * precondition: elements != null
+	 * precondition: elements_mapped != null
+	 * precondition: page_state != null
+	 * precondition: xpaths != null
+	 * precondition: audit_id != null
+	 * precondition: page_height != null and is positive
+	 */
+	@Retry(name="webdriver")
+	private boolean openBrowserAndBuildElementStates(List<ElementState> elements,
+													Map<String, ElementState> elements_mapped,
+													PageState page_state,
+													List<String> xpaths,
+													long audit_id,
+													int page_height
+    ) throws MalformedURLException {
+		URL sanitized_url = new URL(BrowserUtils.sanitizeUserUrl( page_state.getUrl() ));
+		String page_url = sanitized_url.toString();
+		Browser browser = null;
+		
+		try {
+			browser = getConnection(BrowserType.CHROME, BrowserEnvironment.DISCOVERY);
+			browser.navigateTo(page_url);
+			if(browser.is503Error()) {
+				throw new ServiceUnavailableException("503 Error encountered. Starting over..");
+			}
+			browser.removeDriftChat();
+			
+			//get ElementState List by asking multiple bots to build xpaths in parallel
+			//for each xpath then extract element state
+			elements = getDomElementStates(page_state, xpaths, browser, elements_mapped, audit_id, sanitized_url, page_height);
+			return false;
+		}
+		catch (NullPointerException e) {
+			log.warn("NPE thrown during element state extraction");
+			//e.printStackTrace();
+		}
+		catch(MalformedURLException e) {
+			log.warn("Unable to get browser connection to build page elements : "+page_url);
+			return false;
+		}
+		catch(ServiceUnavailableException e) {
+			log.warn("503 exception occurred while accessing "+page_url);
+		}	
+		finally {
+			if(browser != null) {
+				browser.close();
+			}
+		}
+		return true;
+	}
+	
+	/**
+	 * identify and collect data for elements within the Document Object Model
+	 * @param page_state	the page state
+	 * @param xpaths	the xpaths
+	 * @param browser	the browser
+	 * @param element_states_map	the element states map
+	 * @param audit_record_id	the audit record id
+	 * @param url	the url
+	 * @param page_height	the page height
+	 * @return the list of element states
+	 * 
+	 * precondition: xpaths != null
+	 * precondition: browser != null
+	 * precondition: element_states_map != null
+	 * precondition: page_state != null
+	 */
+	private List<ElementState> getDomElementStates(
+			PageState page_state,
+			List<String> xpaths,
+			Browser browser,
+			Map<String, ElementState> element_states_map,
+			long audit_record_id,
+			URL url,
+			int page_height
+	) {
+		assert xpaths != null;
+		assert browser != null;
+		assert element_states_map != null;
+		assert page_state != null;
+		
+		List<ElementState> visited_elements = new ArrayList<>();
+		List<ElementState> filtered_elements = new ArrayList<>();
+		Map<String, Boolean> overlapped_elements = new HashMap<>();
+
+		String body_src = extractBody(page_state.getSrc());
+		
+		Document html_doc = Jsoup.parse(body_src);
+		String host = url.getHost();
+				
+		for(String xpath : xpaths) {
+			if(element_states_map.containsKey(xpath)) {
+				continue;
+			}
+			
+			try {
+				WebElement web_element = browser.findElement(xpath);
+				if(web_element == null) {
+					continue;
+				}
+				Dimension element_size = web_element.getSize();
+				Point element_location = web_element.getLocation();
+				browser.scrollToElement(xpath, web_element);
+				if(element_location.getY() >= page_height || element_size.getHeight() >= page_height) {
+					continue;
+				}
+				
+				//check if element is visible in pane and if not then continue to next element xpath
+				if( !web_element.isDisplayed()
+						|| !hasWidthAndHeight(element_size)
+						|| doesElementHaveNegativePosition(element_location)) {
+					continue;
+				}
+				
+				String css_selector = generateCssSelectorFromXpath(xpath);
+				String element_screenshot_url = "";
+
+				BufferedImage element_screenshot = null;
+				
+				if(!BrowserUtils.isLargerThanViewport(element_size, page_state.getViewportWidth(), page_state.getViewportHeight())) {
+					try {
+							
+						//extract element screenshot from full page screenshot
+						//BufferedImage element_screenshot = page_screenshot.getSubimage(element_location.getX(), element_location.getY(), width, height);
+						element_screenshot = browser.getElementScreenshot(web_element);
+						String screenshot_checksum = ImageUtils.getChecksum(element_screenshot);
+						
+						element_screenshot_url = googleCloudStorage.saveImage(element_screenshot,
+						host, screenshot_checksum, BrowserType.create(browser.getBrowserName()));
+					}
+					catch( Exception e) {
+						//do nothing
+						/*
+						log.warn("element height :: "+element_size.getHeight());
+						log.warn("Element Y location ::  "+ element_location.getY());
+						log.warn("element width :: "+element_size.getWidth());
+						log.warn("Element X location ::  "+ element_location.getX());
+						*/
+						try {
+							BufferedImage full_page_screenshot = ImageIO.read(new URL(page_state.getFullPageScreenshotUrl()));
+							int width = element_size.getWidth();
+							int height = element_size.getHeight();
+							
+							if( (element_location.getX() + element_size.getWidth()) > full_page_screenshot.getWidth() ) {
+								width = full_page_screenshot.getWidth() - element_location.getX()-1;
+							}
+							
+							if( (element_location.getY() + element_size.getHeight()) > full_page_screenshot.getHeight() ) {
+								height = full_page_screenshot.getHeight() - element_location.getY()-1;
+							}
+							
+							element_screenshot = full_page_screenshot.getSubimage(element_location.getX(), element_location.getY(), width, height);
+						}
+						catch(Exception e1){
+							e1.printStackTrace();
+						}
+						//e.printStackTrace();
+					}
+				}
+				else {
+					//TODO: extract image from full page screenshot manually
+				}
+				
+				
+				Map<String, String> rendered_css_props = Browser.loadCssProperties(web_element, browser.getDriver());
+				Map<String, String> attributes = browser.extractAttributes(web_element);
+
+				ElementClassification classification = null;
+				List<WebElement> children = getChildElements(web_element);
+				
+				if(children.isEmpty()) {
+					classification = ElementClassification.LEAF;
+				}
+				else {
+					classification = ElementClassification.ANCESTOR;
+				}
+				
+				//load json element
+				Elements elements = Xsoup.compile(xpath).evaluate(html_doc).getElements();
+				if(elements.size() == 0) {
+					log.warn("NO ELEMENTS WITH XPATH FOUND :: "+xpath);
+				}
+								
+				Element element = elements.first();
+				
+
+				if(isImageElement(web_element) && element_screenshot != null) {
+					//retrieve image landmark properties from google cloud vision
+					Set<ImageLandmarkInfo> landmark_info_set = CloudVisionUtils.extractImageLandmarks(element_screenshot);
+					
+					//retrieve image faces properties from google cloud vision
+					Set<ImageFaceAnnotation> faces = CloudVisionUtils.extractImageFaces(element_screenshot);
+					
+					//retrieve image reverse image search properties from google cloud vision
+					ImageSearchAnnotation image_search_set = CloudVisionUtils.searchWebForImageUsage(element_screenshot);
+					ImageSafeSearchAnnotation img_safe_search_annotation = CloudVisionUtils.detectSafeSearch(element_screenshot);
+					
+					//retrieve image logos from google cloud vision
+					Set<Logo> logos = new HashSet<>();//CloudVisionUtils.extractImageLogos(element_screenshot);
+
+					//retrieve image labels
+					Set<Label> labels = CloudVisionUtils.extractImageLabels(element_screenshot);
+					ElementState element_state = buildImageElementState(xpath,
+																		attributes,
+																		element,
+																		web_element,
+																		classification,
+																		rendered_css_props,
+																		element_screenshot_url,
+																		css_selector,
+																		landmark_info_set,
+																		faces,
+																		image_search_set,
+																		logos,
+																		labels,
+																		img_safe_search_annotation);
+					
+					element_states_map.put(xpath, element_state);
+					visited_elements.add(element_state);
+				}
+				else {
+					ElementState element_state = buildElementState(xpath,
+																	attributes,
+																	element,
+																	web_element,
+																	classification,
+																	rendered_css_props,
+																	element_screenshot_url,
+																	css_selector);
+					element_states_map.put(xpath, element_state);
+					visited_elements.add(element_state);
+				}
+				
+				//filter all elements that have dimensions that are within another element and have a lower z-index
+				for(ElementState element1: visited_elements) {
+					if(filtered_elements.contains(element1)) {
+						continue;
+					}
+					boolean overlap_exists = false;
+					for(ElementState element2: visited_elements) {
+						if(element1.getKey().equals(element2.getKey()) || overlapped_elements.containsKey(element2.getKey())) {
+							continue;
+						}
+						
+						//boolean values for equality of element1 and element2 x and y value
+						boolean x_overlap = element1.getXLocation() >= element2.getXLocation() && (element1.getXLocation()+element1.getWidth()) <= (element2.getXLocation()+element2.getWidth());
+						boolean y_overlap = element1.getYLocation() >= element2.getYLocation() && (element1.getYLocation()+element1.getHeight()) <= (element2.getYLocation()+element2.getHeight());
+						
+						//log.warn("element1 z-index :: "+element1.getRenderedCssValues().get("z-index"));
+						//log.warn("element2 z-index :: "+element2.getRenderedCssValues().get("z-index"));
+
+						String element1_z_index = element1.getRenderedCssValues().get("z-index");
+						if(element1_z_index.contentEquals("auto")) {
+							element1_z_index = "0";
+						}
+						String element2_z_index = element2.getRenderedCssValues().get("z-index");
+						if(element2_z_index.contentEquals("auto")) {
+							element2_z_index = "0";
+						}
+						boolean z_index_overlap = Integer.parseInt(element1_z_index) < Integer.parseInt(element2_z_index);
+						if(x_overlap && y_overlap && z_index_overlap) {
+							overlap_exists = true;
+							break;
+						}
+					}
+					
+					if(!overlap_exists) {
+						filtered_elements.add(element1);
+					}
+					else {
+						overlapped_elements.put(element1.getKey(), Boolean.TRUE);
+					}
+				}
+			}
+			catch(NoSuchElementException e) {
+				//log.warn("No such element found :: "+xpath+"       ;;    on page : "+page_state.getUrl());
+				element_states_map.put(xpath, null);
+			}
+			catch (StaleElementReferenceException e) {
+				log.warn("Stale element exception thrown while retrieving element with xpath :: "+xpath +"; On page with url ::  "+page_state.getUrl());
+				element_states_map.put(xpath, null);
+			}
+			catch(NullPointerException e) {
+				log.warn("There was an NPE error finding element with xpath .... "+xpath + "   ;;   ON page :: "+page_state.getUrl());
+				//e.printStackTrace();
+			} catch (IOException e) {
+				log.warn("IOException occurred while building elements");
+				//e.printStackTrace();
+			}
+		}
+		return filtered_elements;
+	}
+	
+	/**
+	 * Retrieves transparency value from rgba string
+	 * 
+	 * @param css_value the css value to check
+	 * @return true if the css value has transparency, false otherwise
+	 */
+	private boolean hasTransparency(String css_value) {
+		assert css_value != null;
+		assert !css_value.isEmpty();
+		
+		assert css_value.startsWith("rgba(");
+		if(css_value.startsWith("rgb(")) {
+			return false;
+		}
+		
+		css_value = css_value.replace("rgba(", "");
+		css_value = css_value.replace(")", "");
+		String[] rgba = css_value.split(",");
+		double transparency_value = Double.parseDouble(rgba[3].trim());
+
+		return transparency_value < 1.0;
+	}
+
+	/**
+	 * Checks if {@link Element element} is a part of a slideshow container
+	 * 
+	 * @param element the element to check
+	 * @return true if the element is a part of a slideshow container, false otherwise
+	 */
+	private static boolean isSliderElement(Element element) {
+		for(org.jsoup.nodes.Attribute attr : element.attributes()) {
+			if(attr.getValue().toLowerCase().contains("slider") || attr.getKey().toLowerCase().contains("slider")) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+
+	/**
+	 * Checks if {@link Element element} is a top level element
+	 * 
+	 * @param element the element to check
+	 * @return true if the element is a top level element, false otherwise
+	 */
+	private boolean isTopLevelElement() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	/**
+	 * Extracts metadata from a string
+	 * 
+	 * @param src the string to extract metadata from
+	 * @return the set of metadata
+	 */
+	public static Set<String> extractMetadata(String src) {
+		Document html_doc = Jsoup.parse(src);
+		Elements meta_tags = html_doc.getElementsByTag("meta");
+		Set<String> meta_tag_html = new HashSet<String>();
+		
+		for(Element meta_tag : meta_tags) {
+			meta_tag_html.add(meta_tag.outerHtml());
+		}
+		return meta_tag_html;
+	}
+
+	/**
+	 * Extracts stylesheets from a string
+	 * 
+	 * @param src the string to extract stylesheets from
+	 * @return the set of stylesheets
+	 */
+	public static Set<String> extractStylesheets(String src) {
+		Document html_doc = Jsoup.parse(src);
+		Elements link_tags = html_doc.getElementsByTag("link");
+		Set<String> stylesheet_urls = new HashSet<String>();
+		
+		for(Element link_tag : link_tags) {
+			stylesheet_urls.add(link_tag.absUrl("href"));
+		}
+		return stylesheet_urls;
+	}
+
+	/**
+	 * Extracts script urls from a string
+	 * 
+	 * @param src the string to extract script urls from
+	 * @return the set of script urls
+	 */
+	public static Set<String> extractScriptUrls(String src) {
+		Document html_doc = Jsoup.parse(src);
+		Elements script_tags = html_doc.getElementsByTag("script");
+		Set<String> script_urls = new HashSet<String>();
+		
+		for(Element script_tag : script_tags) {
+			String src_url = script_tag.absUrl("src");
+			if(src_url != null && !src_url.isEmpty()) {
+				script_urls.add(script_tag.absUrl("src"));
+			}
+		}
+		return script_urls;
+	}
+
+	/**
+	 * Extracts icon links from a string
+	 * 
+	 * @param src the string to extract icon links from
+	 * @return the set of icon links
+	 */
+	public static Set<String> extractIconLinks(String src) {
+		Document html_doc = Jsoup.parse(src);
+		Elements icon_tags = html_doc.getElementsByTag("link");
+		Set<String> icon_urls = new HashSet<String>();
+		
+		for(Element icon_tag : icon_tags) {
+			if(icon_tag.attr("rel").contains("icon")){
+				icon_urls.add(icon_tag.absUrl("href"));
+			}
+		}
+		return icon_urls;
+	}
+
+	/**
+	 * Retrieves the page source from a {@link Browser}
+	 * 
+	 * @param browser the browser (must not be null)
+	 * @param sanitized_url the sanitized url (must not be null)
+	 * 
+	 * @return the page source
+	 * @throws MalformedURLException if the url is malformed
+	 * @throws IllegalArgumentException if browser is null
+	 * @throws IllegalArgumentException if sanitized_url is null
+	 */
+	public String getPageSource(Browser browser, URL sanitized_url) throws MalformedURLException {
+		assert browser != null;
+		assert sanitized_url != null;
+		
+		return browser.getSource();
+	}
+	
+	/**
+	 * Calculates the SHA-256 hash of a string
+	 * 
+	 * @param value the value to hash (must not be null)
+	 * 
+	 * @return the SHA-256 hash
+	 */
+	private static String calculateSha256(String value) {
+		return org.apache.commons.codec.digest.DigestUtils.sha256Hex(value);
 	}
 }

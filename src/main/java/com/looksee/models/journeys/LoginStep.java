@@ -52,6 +52,17 @@ public class LoginStep extends Step{
 	@Relationship(type = "SUBMIT")
 	private ElementState submitElement;
 	
+	/**
+	 * Constructor for {@link LoginStep}
+	 *
+	 * @param start_page the start page
+	 * @param end_page the end page
+	 * @param username_element the username element
+	 * @param password_element the password element
+	 * @param submit_btn the submit button
+	 * @param user the test user
+	 * @param status the status of the journey
+	 */
 	public LoginStep(PageState start_page,
 					PageState end_page,
 					ElementState username_element,

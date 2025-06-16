@@ -5,9 +5,12 @@ import java.util.List;
 
 import com.looksee.models.journeys.Step;
 
+import lombok.NoArgsConstructor;
+
 /**
  * Utility class for list operations.
  */
+@NoArgsConstructor
 public class ListUtils {
 	/**
 	 * Clones a list of steps.

@@ -31,13 +31,16 @@ import com.looksee.models.enums.ObservationType;
 import com.looksee.models.repository.AuditRepository;
 
 import io.github.resilience4j.retry.annotation.Retry;
+import lombok.NoArgsConstructor;
 
 /**
  * Contains business logic for interacting with and managing audits
  */
+@NoArgsConstructor
 @Service
 @Retry(name = "neoforj")
 public class AuditService {
+	@SuppressWarnings("unused")
 	private static Logger log = LoggerFactory.getLogger(AuditService.class);
 
 	@Autowired
@@ -293,10 +296,7 @@ public class AuditService {
 	 * @param audits the set of audits
 	 * @return the collection of UX issues
 	 *
-	 * <p><b>Preconditions:</b>
-	 * <ul>
-	 *   <li>audits != null</li>
-	 * </ul>
+	 * precondition: audits != null
 	 */
 	public Collection<UXIssueMessage> retrieveUXIssues(Set<Audit> audits) {
 		assert audits != null;
@@ -331,10 +331,7 @@ public class AuditService {
 	 * @param issue_set the set of UX issue messages
 	 * @return the collection of simple elements
 	 *
-	 * <p><b>Preconditions:</b>
-	 * <ul>
-	 *   <li>issue_set != null</li>
-	 * </ul>
+	 * precondition: issue_set != null
 	 */
 	public Collection<SimpleElement> retrieveElementSet(Collection<? extends UXIssueMessage> issue_set) {
 		assert issue_set != null;
@@ -393,11 +390,8 @@ public class AuditService {
 	 * @param id the id of the audit
 	 * @param issue_ids the ids of the issues
 	 *
-	 * <p><b>Preconditions:</b>
-	 * <ul>
-	 *   <li>id > 0</li>
-	 *   <li>issue_ids != null</li>
-	 * </ul>
+	 * precondition: id > 0
+	 * precondition: issue_ids != null
 	 */
 	public void addAllIssues(long id, List<Long> issue_ids) {
 		assert id > 0;
@@ -413,10 +407,7 @@ public class AuditService {
 	 * @param score the score of the issues
 	 * @return the collection of element states
 	 * 
-	 * <p><b>Preconditions:</b>
-	 * <ul>
-	 *   <li>audit_name != null</li>
-	 * </ul>
+	 * precondition: audit_name != null
 	 */
 	public List<ElementState> getIssuesByNameAndScore(AuditName audit_name, int score) {
 		assert audit_name != null;
@@ -431,10 +422,7 @@ public class AuditService {
 	 * @param score the score of the issues
 	 * @return the collection of element states
 	 *
-	 * <p><b>Preconditions:</b>
-	 * <ul>
-	 *   <li>audit_name != null</li>
-	 * </ul>
+	 * precondition: audit_name != null
 	 */
 	public List<ElementState> findGoodExample(AuditName audit_name, int score) {
 		assert audit_name != null;
@@ -448,11 +436,8 @@ public class AuditService {
 	 * @param category the subcategory of the audits
 	 * @return the count of audits
 	 * 
-	 * <p><b>Preconditions:</b>
-	 * <ul>
-	 *   <li>audits != null</li>
-	 *   <li>category != null</li>
-	 * </ul>
+	 * precondition: audits != null
+	 * precondition: category != null
 	 */
 	public int countAuditBySubcategory(Set<Audit> audits, AuditSubcategory category) {
 		assert audits != null;
@@ -472,11 +457,8 @@ public class AuditService {
 	 * @param name the name of the audit
 	 * @return the count of issues
 	 *
-	 * <p><b>Preconditions:</b>
-	 * <ul>
-	 *   <li>audits != null</li>
-	 *   <li>name != null</li>
-	 * </ul>
+	 * precondition: audits != null
+	 * precondition: name != null
 	 */
 	public int countIssuesByAuditName(Set<Audit> audits, AuditName name) {
 		assert audits != null;

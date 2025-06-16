@@ -14,9 +14,12 @@ import org.openqa.selenium.WebElement;
 import com.looksee.models.ColorData;
 import com.looksee.models.ElementState;
 
+import lombok.NoArgsConstructor;
+
 /**
  * Utility class for filtering and enriching element states.
  */
+@NoArgsConstructor
 public class ElementStateUtils {
 	
 	/**

@@ -1,0 +1,7 @@
+{
+    "editor.autoImport": false,
+    "java.saveActions.organizeImports": false,
+    "java.completion.importOrder": [],
+    "java.sources.organizeImports.starThreshold": 999,
+    "java.sources.organizeImports.staticStarThreshold": 999
+} 

@@ -17,7 +17,11 @@ import com.looksee.models.Element;
 import com.looksee.models.Form;
 import com.looksee.models.PageLoadAnimation;
 import com.looksee.models.PageState;
+import com.looksee.models.Test;
+import com.looksee.models.TestAction;
+import com.looksee.models.TestRecord;
 import com.looksee.models.TestUser;
+import com.looksee.models.journeys.Redirect;
 
 import io.github.resilience4j.retry.annotation.Retry;
 
@@ -330,4 +334,54 @@ public interface DomainRepository extends Neo4jRepository<Domain, Long> {
 	 */
 	@Query("MATCH (d:Domain) WITH d MATCH (user:TestUser) WHERE id(d)=$domain_id AND id(user)=$test_user_id MERGE (d)-[:HAS_TEST_USER]->(user) RETURN user")
 	public void addTestUser(@Param("domain_id") long domain_id, @Param("test_user_id") long test_user_id);
+
+	/**
+	 * Finds all tests for a domain
+	 *
+	 * @param account_id the ID of the account
+	 * @param host the host of the domain
+	 * @return the tests
+	 */
+	@Query("MATCH(account:Account)-[]-(d:Domain{host:$domain_host}) MATCH (d)-[:HAS_TEST]->(t:Test) MATCH a=(t)-[:HAS_RESULT]->(p) MATCH b=(t)-[]->() MATCH c=(p)-[]->() OPTIONAL MATCH y=(t)-->(:Group) WHERE id(account)=$account_id RETURN a,b,y,c as d")
+	public Set<Test> getTests(@Param("account_id") long account_id, @Param("domain_host") String host);
+
+	/**
+	 * Finds all redirects for a domain
+	 *
+	 * @param account_id the ID of the account
+	 * @param host the host of the domain
+	 * @return the redirects
+	 */
+	@Query("MATCH (account:Account)-[:HAS_DOMAIN]->(d:Domain{url:$url}) MATCH (d)-[:HAS_TEST]->(t:Test) MATCH (t)-[:HAS_PATH_OBJECT]->(a:Redirect) WHERE id(account)=$account_id RETURN a")
+	public Set<Redirect> getRedirects(@Param("account_id") long account_id, @Param("url") String host);
+	
+	/**
+	 * Finds all test records for a domain
+	 *
+	 * @param account_id the ID of the account
+	 * @param url the URL of the domain
+	 * @return the test records
+	 */
+	@Query("MATCH (account:Account)-[:HAS_DOMAIN]->(d:Domain{url:$url}) MATCH (d)-[:HAS_TEST]->(t:Test) MATCH b=(t)-[:HAS_TEST_RECORD]->(tr) WHERE id(account)=$account_id RETURN tr")
+	public Set<TestRecord> getTestRecords(@Param("account_id") long account_id, @Param("url") String url);
+	
+	/**
+	 * Finds all domains for an account
+	 *
+	 * @param account_id the ID of the account
+	 * @return the domains
+	 */
+	@Query("MATCH (account:Account)-[:HAS]->(domain:Domain) WHERE id(account)=$account_id RETURN domain")
+	Set<Domain> getDomainsForAccount(@Param("account_id") long account_id);
+
+	/**
+	 * Finds all actions for a domain
+	 *
+	 * @param account_id the ID of the account
+	 * @param url the URL of the domain
+	 * @return the actions
+	 */
+	@Query("MATCH(account:Account)-[]-(d:Domain{url:$url}) MATCH (d)-[:HAS_TEST]->(t:Test) MATCH (t)-[:HAS_PATH_OBJECT]->(a:Action) WHERE id(account)=$account_id RETURN a")
+	public Set<TestAction> getActions(@Param("account_id") long account_id, @Param("url") String url);
+
 }

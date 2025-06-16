@@ -1,5 +1,20 @@
 package com.looksee.models;
 
+import com.assertthat.selenium_shutterbug.core.Capture;
+import com.assertthat.selenium_shutterbug.core.Shutterbug;
+import com.google.api.gax.rpc.ApiException;
+import com.looksee.utils.ImageUtils;
+import cz.vutbr.web.css.CSSFactory;
+import cz.vutbr.web.css.CombinedSelector;
+import cz.vutbr.web.css.Declaration;
+import cz.vutbr.web.css.NodeData;
+import cz.vutbr.web.css.RuleSet;
+import cz.vutbr.web.css.StyleSheet;
+import cz.vutbr.web.csskit.RuleFontFaceImpl;
+import cz.vutbr.web.csskit.RuleKeyframesImpl;
+import cz.vutbr.web.csskit.RuleMediaImpl;
+import cz.vutbr.web.domassign.StyleMap;
+
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
@@ -18,7 +33,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.zip.GZIPInputStream;
-
 import javax.imageio.ImageIO;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -26,7 +40,9 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -55,25 +71,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Node;
-
-import com.assertthat.selenium_shutterbug.core.Capture;
-import com.assertthat.selenium_shutterbug.core.Shutterbug;
-import com.google.api.gax.rpc.ApiException;
-import com.looksee.utils.ImageUtils;
-
-import cz.vutbr.web.css.CSSFactory;
-import cz.vutbr.web.css.CombinedSelector;
-import cz.vutbr.web.css.Declaration;
-import cz.vutbr.web.css.NodeData;
-import cz.vutbr.web.css.RuleSet;
-import cz.vutbr.web.css.StyleSheet;
-import cz.vutbr.web.csskit.RuleFontFaceImpl;
-import cz.vutbr.web.csskit.RuleKeyframesImpl;
-import cz.vutbr.web.csskit.RuleMediaImpl;
-import cz.vutbr.web.domassign.StyleMap;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import ru.yandex.qatools.ashot.AShot;
 import ru.yandex.qatools.ashot.shooting.ShootingStrategies;
 
@@ -96,6 +93,7 @@ public class Browser {
 	private static final String JS_GET_VIEWPORT_HEIGHT = "var height = undefined;  if (window.innerHeight) {height = window.innerHeight;}  else if (document.documentElement && document.documentElement.clientHeight) {height = document.documentElement.clientHeight;}  else { var b = document.getElementsByTagName('body')[0]; if (b.clientHeight) {height = b.clientHeight;}};return height;";
 	
 	/**
+	 * Constructor for {@link Browser}
 	 *
 	 * @param hub_node_url the url of the selenium hub node
 	 * @param browser  the name of the browser to use
@@ -1011,6 +1009,9 @@ public class Browser {
 	 * Retrieve coordinates of {@link WebElement} in the current viewport
 	 *
 	 * @param element {@link WebElement}
+	 * @param x_offset the x offset
+	 * @param y_offset the y offset
+	 * 
 	 * @return {@link Point} coordinates
 	 *
 	 * precondition: element != null
@@ -1255,6 +1256,10 @@ public class Browser {
 	 *
 	 * @param url the url to read
 	 * @return the url
+	 *
+	 * @throws IOException if an error occurs while reading the url
+	 * @throws NoSuchAlgorithmException if an error occurs while reading the url
+	 * @throws KeyManagementException if an error occurs while reading the url
 	 */
 	public static String URLReader(URL url) throws IOException, NoSuchAlgorithmException, KeyManagementException {
         SSLContext sc = SSLContext.getDefault();

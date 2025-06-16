@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.looksee.models.Domain;
+import com.looksee.models.Element;
 import com.looksee.models.ElementState;
 import com.looksee.models.rules.Rule;
 
@@ -265,4 +266,163 @@ public interface ElementStateRepository extends Neo4jRepository<ElementState, Lo
 	 * @return the element state
 	 */
 	@Query("MATCH p=(d:DomainAuditRecord)-[]->(n:PageState) WHERE id(d)=$domain_audit_id MATCH a=(n)-[]-(e:ElementState{key:$element_key}) RETURN e LIMIT 1")
-	public ElementState findByDomainAuditAndKey(@Param("domain_audit_id") long domain_audit_id, @Param("element_key") String element_key);}
+	public ElementState findByDomainAuditAndKey(@Param("domain_audit_id") long domain_audit_id, @Param("element_key") String element_key);
+
+	/**
+	 * Retrieves all element states associated with a specific form within a domain and page state.
+	 * The query traverses from Account through Domain, Page, PageState to find the form and its elements.
+	 *
+	 * @param user_id The unique identifier of the user account
+	 * @param url The domain URL to search within
+	 * @param form_key The unique key identifying the form
+	 * @return List of ElementState objects associated with the form
+	 */
+	@Query("MATCH (:Account{user_id:$user_id})-[]->(d:Domain{url:$url}) MATCH (d)-[]->(p:Page) MATCH (p)-[]->(ps:PageState) MATCH (ps)-[]->(ps:PageState) MATCH (ps)-[]->(f:Form{key:$form_key}) Match (f)-[:HAS]->(e:ElementState) RETURN e")
+	public List<ElementState> getElementStates(@Param("user_id") String user_id, @Param("url") String url, @Param("form_key") String form_key);
+
+	/**
+	 * Retrieves the submit element associated with a specific form within a domain and page state.
+	 *
+	 * @param user_id The unique identifier of the user account
+	 * @param url The domain URL to search within
+	 * @param form_key The unique key identifying the form
+	 * @return The ElementState representing the submit element of the form
+	 */
+	@Query("MATCH (:Account{user_id:$user_id})-[]->(d:Domain{url:$url}) MATCH (d)-[]->(p:Page) MATCH (p)-[]->(ps:PageState) MATCH (ps)-[]->(f:Form{key:$form_key}) Match (f)-[:HAS_SUBMIT]->(e) RETURN e")
+	public ElementState getSubmitElement(@Param("user_id") String user_id, @Param("url") String url, @Param("form_key") String form_key);
+	
+	/**
+	 * Retrieves the form element that defines a specific form within a domain and page state.
+	 *
+	 * @param user_id The unique identifier of the user account
+	 * @param url The domain URL to search within
+	 * @param form_key The unique key identifying the form
+	 * @return The ElementState representing the form element
+	 */
+	@Query("MATCH (:Account{user_id:$user_id})-[]->(d:Domain{url:$url}) MATCH (d)-[]->(p:Page) MATCH (p)-[]->(ps:PageState) MATCH (ps)-[]->(f:Form{key:$form_key}) Match (f)-[:DEFINED_BY]->(e) RETURN e")
+	public ElementState getFormElement(@Param("user_id") String user_id, @Param("url") String url, @Param("form_key") String form_key);
+
+	/**
+	 * Associates an element state with a step by creating a HAS relationship.
+	 *
+	 * @param id The ID of the step
+	 * @param element_state_id The ID of the element state to associate
+	 * @return The associated ElementState
+	 */
+	@Query("MATCH (s:Step) WITH s MATCH (p:ElementState) WHERE id(s)=$step_id AND id(p)=$element_state_id MERGE (s)-[:HAS]->(p) RETURN p")
+	public ElementState addElementState(@Param("step_id") long id, @Param("element_state_id") long element_state_id);
+
+	/**
+	 * Retrieves the element state associated with a specific element interaction step.
+	 *
+	 * @param step_key The unique key identifying the element interaction step
+	 * @return The ElementState associated with the step
+	 */
+	@Query("MATCH (:ElementInteractionStep{key:$step_key})-[:HAS]->(e:ElementState) RETURN e")
+	public ElementState getElementStateForStep(@Param("step_key") String step_key);
+
+	/**
+	 * Associates a username input element with a step by creating a USERNAME_INPUT relationship.
+	 *
+	 * @param id The ID of the step
+	 * @param element_id The ID of the element state to associate as username input
+	 * @return The associated ElementState
+	 */
+	@Query("MATCH (s:Step) WITH s MATCH (e:ElementState) WHERE id(s)=$step_id AND id(e)=$element_id MERGE (s)-[:USERNAME_INPUT]->(e) RETURN e")
+	public ElementState addUsernameElement(@Param("step_id") long id, @Param("element_id") long element_id);
+	
+	/**
+	 * Retrieves the username input element associated with a login step.
+	 *
+	 * @param id The ID of the login step
+	 * @return The ElementState representing the username input element
+	 */
+	@Query("MATCH (s:LoginStep)-[:USERNAME_INPUT]->(e:ElementState) WHERE id(s)=$step_id RETURN e")
+	public ElementState getUsernameElement(@Param("step_id") long id);
+	
+	/**
+	 * Associates a password input element with a step by creating a PASSWORD_INPUT relationship.
+	 *
+	 * @param id The ID of the step
+	 * @param element_id The ID of the element state to associate as password input
+	 * @return The associated ElementState
+	 */
+	@Query("MATCH (s:Step) WITH s MATCH (e:ElementState) WHERE id(s)=$step_id AND id(e)=$element_id MERGE (s)-[:PASSWORD_INPUT]->(e) RETURN e")
+	public ElementState addPasswordElement(@Param("step_id") long id, @Param("element_id") long element_id);
+	
+	/**
+	 * Retrieves the password input element associated with a login step.
+	 *
+	 * @param id The ID of the login step
+	 * @return The ElementState representing the password input element
+	 */
+	@Query("MATCH (s:LoginStep)-[:PASSWORD_INPUT]->(e:ElementState) WHERE id(s)=$step_id RETURN e")
+	public ElementState getPasswordElement(@Param("step_id") long id);
+	
+	/**
+	 * Associates a submit element with a step by creating a SUBMIT relationship.
+	 *
+	 * @param id The ID of the step
+	 * @param element_id The ID of the element state to associate as submit element
+	 * @return The associated ElementState
+	 */
+	@Query("MATCH (s:Step) WITH s MATCH (e:ElementState) WHERE id(s)=$step_id AND id(e)=$element_id MERGE (s)-[:SUBMIT]->(e) RETURN e")
+	public ElementState addSubmitElement(@Param("step_id") long id, @Param("element_id") long element_id);
+
+	/**
+	 * Retrieves the submit element associated with a login step.
+	 *
+	 * @param id The ID of the login step
+	 * @return The ElementState representing the submit element
+	 */
+	@Query("MATCH (s:LoginStep)-[:SUBMIT]->(e:ElementState) WHERE id(s)=$step_id RETURN e")
+	public ElementState getSubmitElement(@Param("step_id") long id);
+	
+	/**
+	 * Retrieves the element state associated with a simple step.
+	 * @deprecated This method is deprecated and should not be used in new code
+	 *
+	 * @param step_key The unique key identifying the simple step
+	 * @return The ElementState associated with the step
+	 */
+	@Deprecated
+	@Query("MATCH (:SimpleStep{key:$step_key})-[:HAS]->(e:ElementState) RETURN e")
+	public ElementState getElementState(@Param("step_key") String step_key);
+
+	/**
+	 * Retrieves the element state associated with a UX issue message.
+	 *
+	 * @param id The ID of the UX issue message
+	 * @return The ElementState associated with the UX issue message
+	 */
+	@Query("MATCH (uim:UXIssueMessage)-[:FOR]->(e:ElementState) WHERE id(uim)=$id RETURN e")
+	public ElementState getElement(@Param("id") long id);
+
+	/**
+	 * Retrieves the good example element state associated with a UX issue message.
+	 *
+	 * @param issue_id The ID of the UX issue message
+	 * @return The ElementState representing the good example
+	 */
+	@Query("MATCH (uim:UXIssueMessage)-[:EXAMPLE]->(e:ElementState) WHERE id(uim)=$id RETURN e")
+	public ElementState getGoodExample(@Param("id") long issue_id);
+
+	/**
+	 * Retrieves all element states and their relationships for a specific domain and user.
+	 *
+	 * @param url The domain URL to search within
+	 * @param username The username of the account
+	 * @return Set of Element objects containing element states and their relationships
+	 */
+	@Query("MATCH (:Account{username:$username})-[:HAS_DOMAIN]-(d:Domain{url:$url}) MATCH (d)-[]->(t:Test) MATCH (t)-[]->(e:ElementState) OPTIONAL MATCH b=(e)-->() RETURN b")
+	public Set<Element> getElementStates(@Param("url") String url, @Param("username") String username);
+
+	/**
+	 * Counts the number of distinct element states associated with a page state.
+	 *
+	 * @param page_id The ID of the page state
+	 * @return The count of distinct element states
+	 */
+	@Query("MATCH (p:PageState)-[:HAS]->(e:ElementState) WHERE id(p)=$page_state_id RETURN DISTINCT COUNT(e)")
+	public int getElementStateCount(@Param("page_state_id") long page_id);
+}

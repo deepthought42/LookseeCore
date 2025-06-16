@@ -8,10 +8,13 @@ import org.springframework.stereotype.Service;
 import com.looksee.models.journeys.Journey;
 import com.looksee.models.repository.JourneyRepository;
 
+import lombok.NoArgsConstructor;
+
 /**
  * Journey service contains business logic for interacting with and managing 
  * journeys
  */
+@NoArgsConstructor
 @Service
 public class JourneyService {
 	@SuppressWarnings("unused")

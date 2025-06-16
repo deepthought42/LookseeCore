@@ -45,89 +45,22 @@ import lombok.Setter;
 public class ElementState extends LookseeObject implements Comparable<ElementState> {
 	private static Logger log = LoggerFactory.getLogger(ElementState.class);
 
-	/**
-	 * The classification of the element
-	 */
 	private String classification;
-
-	/**
-	 * The outer html of the element
-	 */
 	private String outerHtml;
-
-	/**
-	 * The name of the element
-	 */
 	private String name;
-
-	/**
-	 * The owned text of the element
-	 */
 	private String ownedText;
-
-	/**
-	 * The all text of the element
-	 */
 	private String allText;
-	
-	/**
-	 * The css selector of the element
-	 */
 	private String cssSelector;
-	
-	/**
-	 * The xpath of the element
-	 */
 	private String xpath;
-
-	/**
-	 * The screenshot url of the element
-	 */
 	private String screenshotUrl;
-
-	/**
-	 * The background color of the element
-	 */
 	private String backgroundColor;
-
-	/**
-	 * The foreground color of the element
-	 */
 	private String foregroundColor;
-
-	/**
-	 * The x location of the element
-	 */
 	private int xLocation;
-
-	/**
-	 * The y location of the element
-	 */
 	private int yLocation;
-
-	/**
-	 * The width of the element
-	 */
 	private int width;
-
-	/**
-	 * The height of the element
-	 */
 	private int height;
-
-	/**
-	 * The text contrast of the element
-	 */
 	private double textContrast;
-
-	/**
-	 * The non-text contrast of the element
-	 */
 	private double nonTextContrast;
-
-	/**
-	 * Whether the element is an image
-	 */
 	private boolean imageFlagged;
 	
 	/**

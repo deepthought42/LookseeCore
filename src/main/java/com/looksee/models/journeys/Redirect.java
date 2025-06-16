@@ -22,26 +22,21 @@ public class Redirect extends Step {
 	/**
 	 * The start URL
 	 */
-	@Getter
 	private String startUrl;
 
 	/**
 	 * The URLs to redirect to
 	 */
-	@Getter
 	private List<String> urls;
 
 	/**
 	 * The image checksums
 	 */
-	@Getter
-	@Setter
 	private List<String> imageChecksums;
 
 	/**
 	 * The image URLs
 	 */
-	@Getter
 	private List<String> imageUrls;
 
 	/**

@@ -14,89 +14,28 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ImageFaceAnnotation extends LookseeObject{
-	/**
-	 * The locale of the image face annotation
-	 */
-	private String locale;
 	
-	/**
-	 * The score of the image face annotation
-	 */
+	private String locale;
 	private float score;
 	
-	/**
-	 * The x1 of the image face annotation
-	 */
 	private int x1;
-
-	/**
-	 * The y1 of the image face annotation
-	 */
 	private int y1;
 	
-	/**
-	 * The x2 of the image face annotation
-	 */
 	private int x2;
-	
-	/**
-	 * The y2 of the image face annotation
-	 */
 	private int y2;
 	
-	/**
-	 * The x3 of the image face annotation
-	 */
 	private int x3;
-	
-	/**
-	 * The y3 of the image face annotation
-	 */
 	private int y3;
 	
-	/**
-	 * The x4 of the image face annotation
-	 */
 	private int x4;
-	
-	/**
-	 * The y4 of the image face annotation
-	 */
 	private int y4;
 	
-	/**
-	 * The joy likelihood of the image face annotation
-	 */
     private String joyLikelihood;
-	
-	/**
-	 * The sorrow likelihood of the image face annotation
-	 */
     private String sorrowLikelihood;
-
-	/**
-	 * The anger likelihood of the image face annotation
-	 */
     private String angerLikelihood;
-	
-	/**
-	 * The surprise likelihood of the image face annotation
-	 */
     private String surpriseLikelihood;
-	
-	/**
-	 * The under exposed likelihood of the image face annotation
-	 */
     private String underExposedLikelihood;
-	
-	/**
-	 * The blurred likelihood of the image face annotation
-	 */
     private String blurredLikelihood;
-	
-	/**
-	 * The headwear likelihood of the image face annotation
-	 */
     private String headwearLikelihood;
     
 	/**
@@ -126,6 +65,18 @@ public class ImageFaceAnnotation extends LookseeObject{
 		setHeadwearLikelihood("");
     }
 
+	/**
+	 * Constructor for {@link ImageFaceAnnotation}
+	 *
+	 * @param angerLikelihood the likelihood of anger
+	 * @param joyLikelihood the likelihood of joy
+	 * @param blurredLikelihood the likelihood of blurred
+	 * @param headwearLikelihood the likelihood of headwear
+	 * @param sorrowLikelihood the likelihood of sorrow
+	 * @param surpriseLikelihood the likelihood of surprise
+	 * @param underExposedLikelihood the likelihood of under exposed
+	 * @param bounding_poly the bounding poly
+	 */
 	public ImageFaceAnnotation(Likelihood angerLikelihood,
 								Likelihood joyLikelihood,
 								Likelihood blurredLikelihood,
@@ -165,6 +116,4 @@ public class ImageFaceAnnotation extends LookseeObject{
 	public String generateKey() {
 		return "imagefaceannotation::"+UUID.randomUUID();
 	}
-	
-	
 }

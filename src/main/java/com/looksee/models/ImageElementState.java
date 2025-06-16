@@ -1,18 +1,15 @@
 package com.looksee.models;
 
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
-import org.springframework.data.neo4j.core.schema.Node;
-import org.springframework.data.neo4j.core.schema.Relationship;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.looksee.gcp.ImageSafeSearchAnnotation;
 import com.looksee.models.enums.ElementClassification;
-
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.neo4j.core.schema.Node;
+import org.springframework.data.neo4j.core.schema.Relationship;
 
 /**
  * Represents the state of an image element in a web page, including its visual properties,
@@ -38,49 +35,23 @@ import lombok.Setter;
 @Node
 public class ImageElementState extends ElementState {
 	
-	/**
-	 * The logos of the image element state
-	 */
 	@Relationship(type="HAS")
 	private Set<Logo> logos;
 	
-	/**
-	 * The labels of the image element state
-	 */
 	@Relationship(type="HAS")
 	private Set<Label> labels;
 	
-	/**
-	 * The landmark info set of the image element state
-	 */
 	@Relationship(type="HAS")
 	private Set<ImageLandmarkInfo> landmarkInfoSet;
 	
-	/**
-	 * The faces of the image element state
-	 */
 	@Relationship(type="HAS")
 	private Set<ImageFaceAnnotation> faces;
 	
-	/**
-	 * The image search set of the image element state
-	 */
 	@Relationship(type="HAS")
 	private ImageSearchAnnotation imageSearchSet;
 	
-	/**
-	 * The adult of the image element state
-	 */
 	private String adult;
-	
-	/**
-	 * The racy of the image element state
-	 */
 	private String racy;
-	
-	/**
-	 * The violence of the image element state
-	 */
 	private String violence;
 	
 	/**
@@ -104,9 +75,9 @@ public class ImageElementState extends ElementState {
 	 * @param tagName the tag name of the element
 	 * @param attributes the attributes of the element
 	 * @param rendered_css_values the rendered css values of the element
-	 * @param screenshot_url
-	 * @param x
-	 * @param y
+	 * @param screenshot_url the screenshot url of the element
+	 * @param x the x coordinate of the element
+	 * @param y the y coordinate of the element
 	 * @param width the width of the element
 	 * @param height the height of the element
 	 * @param classification the classification of the element

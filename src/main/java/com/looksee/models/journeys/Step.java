@@ -15,6 +15,7 @@ import com.looksee.models.enums.StepType;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 /**
  * A Step is the increment of work that start with a {@link PageState} contians
@@ -36,6 +37,7 @@ import lombok.Setter;
     @JsonSubTypes.Type(value = LoginStep.class, name = "LOGIN"),
     @JsonSubTypes.Type(value = LandingStep.class, name = "LANDING")
 })
+@NoArgsConstructor
 public abstract class Step extends LookseeObject{
 	/**
 	 * The page that the step starts with

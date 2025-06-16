@@ -4,15 +4,19 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.looksee.models.Element;
 
+import lombok.NoArgsConstructor;
+
 
 /**
  * Defines a min/max value or length {@link Rule} on a {@link Element}
  */
+@NoArgsConstructor
 public class NumericRule extends Rule{
-	public NumericRule(){}
 	
 	/**
-	 * @param type
+	 * Constructor for {@link NumericRule}
+	 *
+	 * @param type the type of the rule
 	 * @param value the length of the value allowed written as a {@linkplain String}. (eg. "3" -> length 3)
 	 */
 	public NumericRule(RuleType type, String value){

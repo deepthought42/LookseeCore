@@ -14,9 +14,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.looksee.models.rules.Rule;
 import com.looksee.models.rules.RuleFactory;
 
+import lombok.NoArgsConstructor;
+
 /**
  * A deserializer for {@link Rule} objects
  */
+@NoArgsConstructor
 public class RuleDeserializer extends JsonDeserializer<Rule> {
 	private static Logger log = LoggerFactory.getLogger(RuleDeserializer.class);
  

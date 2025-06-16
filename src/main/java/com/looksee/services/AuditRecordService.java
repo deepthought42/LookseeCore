@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.looksee.models.Account;
 import com.looksee.models.Audit;
 import com.looksee.models.AuditRecord;
 import com.looksee.models.DesignSystem;
@@ -20,7 +21,10 @@ import com.looksee.models.PageState;
 import com.looksee.models.UXIssueMessage;
 import com.looksee.models.enums.AuditCategory;
 import com.looksee.models.enums.ExecutionStatus;
+import com.looksee.models.enums.JourneyStatus;
+import com.looksee.models.repository.AccountRepository;
 import com.looksee.models.repository.AuditRecordRepository;
+import com.looksee.models.repository.AuditRepository;
 
 import io.github.resilience4j.retry.annotation.Retry;
 import lombok.NoArgsConstructor;
@@ -41,6 +45,12 @@ public class AuditRecordService {
 	@Autowired
 	private PageStateService page_state_service;
 	
+	@Autowired
+	private AuditRepository audit_repo;
+
+	@Autowired
+	private AccountRepository account_repo;
+
 	/**
 	 * Save an audit record
 	 *
@@ -731,5 +741,128 @@ public class AuditRecordService {
 		assert !key.isEmpty();
 
 		return page_state_service.findPageWithKey(audit_record_id, key);
+	}
+
+	/**
+	 * Get the account for an audit record
+	 *
+	 * @param audit_record_id the id of the audit record
+	 * @return the account
+	 */
+	public Optional<Account> getAccount(long audit_record_id) {
+		return account_repo.getAccount(audit_record_id);
+	}
+
+	/**
+	 * Update the progress for all audit categories
+	 *
+	 * @param audit_record_id the id of the audit record
+	 * @param content_progress the content audit progress
+	 * @param info_architecture_progress the information architecture audit progress
+	 * @param aesthetic_progress the aesthetic audit progress
+	 * @param data_extraction_progress the data extraction progress
+	 */
+	public void updateAuditProgress(long audit_record_id,
+									double content_progress,
+									double info_architecture_progress,
+									double aesthetic_progress,
+									double data_extraction_progress)
+	{
+		AuditRecord audit_record = findById(audit_record_id).get();
+		audit_record.setDataExtractionProgress(data_extraction_progress);
+		audit_record.setStatus(ExecutionStatus.RUNNING_AUDITS);
+
+		audit_record.setContentAuditProgress( content_progress );
+		audit_record.setAestheticAuditProgress( aesthetic_progress);
+		audit_record.setInfoArchitectureAuditProgress( info_architecture_progress );
+		
+		audit_record_repo.updateProgress(audit_record_id, content_progress, info_architecture_progress, aesthetic_progress, data_extraction_progress);
+	}
+
+	/**
+	 * Get the most recent audit record for a domain by id
+	 *
+	 * @param id the id of the domain
+	 * @return the most recent audit record for the domain
+	 */
+	public Optional<AuditRecord> getMostRecentAuditRecordForDomain(long id) {
+		return audit_record_repo.getMostRecentAuditRecordForDomain(id);
+	}
+
+	/**
+	 * Get the most recent audit record for a domain by host
+	 *
+	 * @param host the host of the domain
+	 * @return the most recent audit record for the domain
+	 * @deprecated Use {@link #getMostRecentAuditRecordForDomain(long)} instead
+	 */
+	@Deprecated
+	public Optional<AuditRecord> getMostRecentAuditRecordForDomain(String host) {
+		assert host != null;
+		assert !host.isEmpty();
+		
+		return audit_record_repo.getMostRecentAuditRecordForDomain(host);
+	}
+
+	/**
+	 * Get all audits for a domain audit
+	 *
+	 * @param domain_audit_record_id the id of the domain audit record
+	 * @return the set of audits for the domain audit
+	 */
+	public Set<Audit> getAllAuditsForDomainAudit(long domain_audit_record_id) {
+		return audit_repo.getAllAuditsForDomainAudit(domain_audit_record_id);
+	}
+
+	/**
+	 * Update the audit scores for an audit record
+	 *
+	 * @param audit_record_id the id of the audit record
+	 * @param content_score the content score
+	 * @param info_architecture_score the information architecture score
+	 * @param aesthetic_score the aesthetic score
+	 * @return true if the update was successful, false otherwise
+	 */
+    public boolean updateAuditScores(long audit_record_id,
+									double content_score,
+									double info_architecture_score,
+									double aesthetic_score) {
+		try{
+	audit_record_repo.updateScores(audit_record_id, content_score, info_architecture_score, aesthetic_score);
+			return true;
+		}catch(Exception e){
+			return false;
+		}
+    }
+
+	/**
+	 * Get the number of journeys with a specific status for a domain audit
+	 *
+	 * @param domain_audit_id the id of the domain audit
+	 * @param candidate the journey status to count
+	 * @return the number of journeys with the specified status
+	 */
+	public int getNumberOfJourneysWithStatus(long domain_audit_id, JourneyStatus candidate) {
+		return audit_record_repo.getNumberOfJourneysWithStatus(domain_audit_id, candidate.toString());
+	}
+
+	/**
+	 * Get the total number of journeys for a domain audit
+	 *
+	 * @param domain_audit_id the id of the domain audit
+	 * @return the total number of journeys
+	 */
+	public int getNumberOfJourneys(long domain_audit_id) {
+		return audit_record_repo.getNumberOfJourneys(domain_audit_id);
+	}
+
+	/**
+	 * Find a page for an audit record
+	 *
+	 * @param audit_record_id the id of the audit record
+	 * @return the page state
+	 */
+	public PageState findPage(long audit_record_id) {
+		return page_state_service.getPageStateForAuditRecord(audit_record_id);
 	}
 }

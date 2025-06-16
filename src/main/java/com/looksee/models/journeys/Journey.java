@@ -109,6 +109,10 @@ public class Journey extends LookseeObject {
 	
 	/**
 	 * generates a key using key values of each step in order
+	 *
+	 * @return the candidate key
+	 *
+	 * precondition: steps != null
 	 */
 	public String generateCandidateKey() {
 		List<String> ordered_keys = getSteps().stream()
@@ -129,7 +133,10 @@ public class Journey extends LookseeObject {
 
 	/**
 	 * Sets {@link Step} sequence and updates ordered ID list
-	 * @param steps
+	 *
+	 * @param steps the steps to set
+	 *
+	 * precondition: steps != null
 	 */
 	public void setSteps(List<Step> steps) {
 		this.steps = steps;
@@ -145,6 +152,8 @@ public class Journey extends LookseeObject {
 	 * Adds a step to the journey
 	 * @param step the step to add
 	 * @return true if the step was added, false otherwise
+	 *
+	 * precondition: step != null
 	 */
 	public boolean addStep(SimpleStep step) {
 		return this.steps.add(step);

@@ -381,6 +381,8 @@ public class ColorPaletteUtils {
 	 *
 	 * @param colors the {@link List} of {@link ColorData}s
 	 * @return the {@link List} of {@link PaletteColor}s
+	 * 
+	 * precondition: colors != null
 	 */
 	public static List<PaletteColor> extractPalette(List<ColorData> colors) {
 		assert colors != null;
@@ -406,10 +408,7 @@ public class ColorPaletteUtils {
 	 * @param colors the {@link List} of {@link ColorData}s
 	 * @return the {@link List} of {@link PaletteColor}s
 	 *
-	 * <b>Preconditions:</b>
-	 * <ul>
-	 *   <li>colors != null</li>
-	 * </ul>
+	 * precondition: colors != null
 	 */
 	public static List<PaletteColor> extractColors(List<ColorData> colors) {
 		assert colors != null;
@@ -430,10 +429,7 @@ public class ColorPaletteUtils {
 	 * @param color_sets the {@link Set} of {@link Set} of {@link ColorData}s
 	 * @return the {@link Set} of {@link ColorData}s
 	 *
-	 * <b>Preconditions:</b>
-	 * <ul>
-	 *   <li>color_sets != null</li>
-	 * </ul>
+	 * precondition: color_sets != null
 	 */
 	private static Set<ColorData> identifyPrimaryColors(Set<Set<ColorData>> color_sets) {
 		assert color_sets != null;
@@ -452,10 +448,7 @@ public class ColorPaletteUtils {
 	 * @param colors the {@link List} of {@link ColorData}s
 	 * @return the {@link Set} of {@link ColorData}s
 	 *
-	 * <b>Preconditions:</b>
-	 * <ul>
-	 *   <li>colors != null</li>
-	 * </ul>
+	 * precondition: colors != null
 	 */
 	public static Set<ColorData> identifyColorSet(List<ColorData> colors) {
 		assert colors != null;
@@ -567,11 +560,8 @@ public class ColorPaletteUtils {
 	 * @param color2 the second {@link ColorData}
 	 * @return true if the colors are similar, otherwise false
 	 *
-	 * <b>Preconditions:</b>
-	 * <ul>
-	 *   <li>color1 != null</li>
-	 *   <li>color2 != null</li>
-	 * </ul>
+	 * precondition: color1 != null
+	 * precondition: color2 != null
 	 */
 	public static boolean isSimilar(ColorData color1, ColorData color2) {
 		assert color1 != null;
@@ -596,11 +586,8 @@ public class ColorPaletteUtils {
 	 *
 	 * @return true if the difference between the 2 hues is less 5 degrees, otherwise false
 	 *
-	 * <b>Preconditions:</b>
-	 * <ul>
-	 *   <li>color1 != null</li>
-	 *   <li>color2 != null</li>
-	 * </ul>
+	 * precondition: color1 != null
+	 * precondition: color2 != null
 	 */
 	public static boolean isSimilarHue(ColorData color1, ColorData color2) {
 		assert color1 != null;
@@ -624,10 +611,7 @@ public class ColorPaletteUtils {
 	 * @param color the {@link ColorData}
 	 * @return true if the color is grayscale, otherwise false
 	 *
-	 * <b>Preconditions:</b>
-	 * <ul>
-	 *   <li>color != null</li>
-	 * </ul>
+	 * precondition: color != null
 	 */
 	public static boolean isGrayScale(ColorData color) {
 		assert color != null;

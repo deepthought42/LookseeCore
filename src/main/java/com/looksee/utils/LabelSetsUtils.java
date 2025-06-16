@@ -4,9 +4,12 @@ import org.springframework.stereotype.Service;
 
 import com.looksee.models.enums.FormType;
 
+import lombok.NoArgsConstructor;
+
 /**
  * Utility class for label sets.
  */
+@NoArgsConstructor
 @Service
 public class LabelSetsUtils {
 

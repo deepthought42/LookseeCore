@@ -52,139 +52,44 @@ public class PageState extends LookseeObject {
 	@Autowired
 	private GoogleCloudStorage googleCloudStorage;
 
-	/**
-	 * The audit record id of the page state
-	 */
+	@Getter
+	@Setter
 	private long auditRecordId;
 
-	/**
-	 * The source of the page state
-	 */
+	@Getter
+	@Setter
 	private String src;
-
-	/**
-	 * The generalized source of the page state
-	 */
+	
+	@Getter
+	@Setter
 	private String generalizedSrc;
 
-	/**
-	 * The url of the page state
-	 */
+	@Getter
+	@Setter
 	private String url;
-
-	/**
-	 * The url after loading of the page state
-	 */
 	private String urlAfterLoading;
-
-	/**
-	 * The viewport screenshot url of the page state
-	 */
 	private String viewportScreenshotUrl;
-
-	/**
-	 * The full page screenshot url of the page state
-	 */
 	private String fullPageScreenshotUrl;
-
-	/**
-	 * The page name of the page state
-	 */
 	private String pageName;
-
-	/**
-	 * The browser of the page state
-	 */
 	private BrowserType browser;
-
-	/**
-	 * The title of the page state
-	 */
 	private String title;
-
-	/**
-	 * Whether the page state is login required
-	 */
 	private boolean loginRequired;
-
-	/**
-	 * Whether the page state is secured
-	 */
 	private boolean secured;
-
-	/**
-	 * Whether the page state is element extraction complete
-	 */
 	private boolean elementExtractionComplete;
-	
-	/**
-	 * Whether the page state is interactive element extraction complete
-	 */
 	private boolean interactiveElementExtractionComplete;
-	
-	/**
-	 * The scroll x offset of the page state
-	 */
 	private long scrollXOffset;
-
-	/**
-	 * The scroll y offset of the page state
-	 */
 	private long scrollYOffset;
-	
-	/**
-	 * The viewport width of the page state
-	 */
 	private int viewportWidth;
-
-	/**
-	 * The viewport height of the page state
-	 */
 	private int viewportHeight;
-
-	/**
-	 * The full page height of the page state
-	 */
 	private int fullPageWidth;
-
-	/**
-	 * The full page width of the page state
-	 */
 	private int fullPageHeight;
-
-	/**
-	 * The http status of the page state
-	 */
 	private int httpStatus;
-
-	/**
-	 * The metadata of the page state
-	 */
 	private Set<String> scriptUrls;
-
-	/**
-	 * The favicon url of the page state
-	 */
 	private Set<String> stylesheetUrls;
-
-	/**
-	 * The stylesheet urls of the page state
-	 */
 	private Set<String> metadata;
-
-	/**
-	 * The favicon url of the page state
-	 */
 	private Set<String> faviconUrl;
-
-	/**
-	 * The elements of the page state
-	 */
 	private Set<String> keywords;
-	
-	/**
-	 * The keywords of the page state
-	 */
+
 	@JsonIgnore
 	@Relationship(type = "HAS", direction = Direction.OUTGOING)
 	private List<ElementState> elements;
@@ -408,10 +313,11 @@ public class PageState extends LookseeObject {
 	 * Generates a checksum for a buffered image
 	 *
 	 * @param buff_img buffered image
+	 * @return checksum of the buffered image
 	 *
-	 * @return checksum
-	 *
-	 * @throws IOException
+	 * precondition: buff_img != null
+	 * @throws IOException if the buffered image is not found
+	 * @throws NoSuchAlgorithmException if the algorithm is not found
 	 */
 	public static String getFileChecksum(BufferedImage buff_img) throws IOException, NoSuchAlgorithmException {
 		assert buff_img != null;
@@ -472,7 +378,7 @@ public class PageState extends LookseeObject {
 	 * Custom setter for src
 	 *
 	 * @param src src
-	 * @throws IOException
+	 * @throws IOException if the src is not found
 	 */
 	public void setSrc(String src) throws IOException {
 		String path_key = BrowserService.extractHost(this.getUrl()) + "/pages/" + getKey();

@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -15,13 +16,11 @@ import lombok.Setter;
 @ConfigurationProperties(prefix = "gcs.bucket")
 @ConstructorBinding
 @AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class GoogleCloudStorageProperties {
-    
-    @Getter
-    @Setter
-    private String bucketName;
 
-    @Getter
-    @Setter
+    private String bucketName;
     private String publicUrl;
 }

@@ -45,6 +45,14 @@ public class StepService {
 	@Autowired
 	private LandingStepRepository landing_step_repo;
 	
+	/**
+	 * Find a step by key
+	 * @param step_key the key of the step
+	 * @return the step
+	 *
+	 * precondition: step_key != null
+	 * precondition: !step_key.isEmpty()
+	 */
 	public Step findByKey(String step_key) {
 		return step_repo.findByKey(step_key);
 	}
@@ -116,13 +124,9 @@ public class StepService {
 			
 			addEndPage(new_login_step.getId(), login_step.getEndPage().getId());
 			new_login_step.setEndPage(login_step.getEndPage());
-			
 			new_login_step.setUsernameElement(login_step.getUsernameElement());
-			
 			new_login_step.setPasswordElement(login_step.getPasswordElement());
-
 			new_login_step.setSubmitElement(login_step.getSubmitElement());
-
 			new_login_step.setTestUser(login_step.getTestUser());
 
 			return new_login_step;
@@ -172,12 +176,13 @@ public class StepService {
 	/**
 	 * Checks if page state is listed as a the start page for a journey step
 	 * 
-	 * @param page_state
-	 * @param domain_map_id TODO
-	 * @return
+	 * @param page_state the page state
+	 * @param domain_map_id the id of the domain map
+	 * @return the steps with start page
 	 * 
 	 * precondition: page_state != null
 	 * precondition: page_state.getId() != null
+	 * precondition: domain_map_id > 0
 	 */
 	public List<Step> getStepsWithStartPage(PageState page_state, long domain_map_id) {
 		assert page_state != null;
@@ -297,5 +302,21 @@ public class StepService {
 		assert !step_key.isEmpty();
 		
 		return step_repo.getElementState(step_key);
+	}
+
+	/**
+	 * Checks if page state is listed as a the start page for a journey step
+	 * 
+	 * @param page_state the page state
+	 * @return the steps with start page
+	 *
+	 * precondition: page_state != null
+	 * precondition: page_state.getId() != null
+	 */
+	public List<Step> getStepsWithStartPage(PageState page_state) {
+		assert page_state != null;
+		assert page_state.getId() != null;
+		
+		return step_repo.getStepsWithStartPage(page_state.getId());
 	}
 }
