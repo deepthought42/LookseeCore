@@ -10,23 +10,23 @@ import com.looksee.models.Form;
 import com.looksee.models.LookseeObject;
 import com.looksee.models.Test;
 import com.looksee.models.TestRecord;
-import com.looksee.models.audit.Audit;
-import com.looksee.models.audit.AuditRecord;
-import com.looksee.models.audit.AuditStats;
-import com.looksee.models.audit.UXIssueMessage;
-import com.looksee.models.dto.DomainDto;
-import com.looksee.models.dto.TestCreatedDto;
-import com.looksee.models.dto.TestDto;
-import com.looksee.models.dto.TestRecordDto;
+import com.looksee.models.Audit;
+import com.looksee.models.AuditRecord;
+import com.looksee.models.UXIssueMessage;
 import com.looksee.models.enums.ExecutionStatus;
+import com.looksee.models.dto.DomainDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.pusher.rest.Pusher;
 
+import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Value;
+
 /**
  * Defines methods for emitting data to subscribed clients
  */
+@Service
 public class MessageBroadcaster {
 	private static Logger log = LoggerFactory.getLogger(MessageBroadcaster.class);
 	
@@ -41,10 +41,14 @@ public class MessageBroadcaster {
 
 	@Value("${pusher.cluster}")
 	private String cluster;
+
+	private Pusher pusher;
 	
-	private static Pusher pusher = new Pusher(appId, key, secret);
-	
-	static{
+	/**
+	 * constructor for the message broadcaster
+	 */
+	public MessageBroadcaster() {
+		pusher = new Pusher(appId, key, secret);
 		pusher.setCluster(cluster);
 		pusher.setEncrypted(true);
 	}
@@ -52,10 +56,11 @@ public class MessageBroadcaster {
 	/**
      * Message emitter that sends {@link Test} to all registered clients
      * 
-     * @param test {@link Test} to be emitted to clients
+     * @param host the host of the test
+     * @param audit {@link Audit} to be emitted to clients
      * @throws JsonProcessingException
      */
-	public static void broadcastAudit(String host, Audit audit) throws JsonProcessingException {
+	public void broadcastAudit(String host, Audit audit) throws JsonProcessingException {
         //Object to JSON in String
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
@@ -75,7 +80,7 @@ public class MessageBroadcaster {
 	 * @param account {@link Account} to be emitted to clients
 	 * @throws JsonProcessingException if there is an error converting the account to a JSON string
 	 */
-	public static void broadcastSubscriptionExceeded(Account account) throws JsonProcessingException {
+	public void broadcastSubscriptionExceeded(Account account) throws JsonProcessingException {
         //Object to JSON in String
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
@@ -89,9 +94,11 @@ public class MessageBroadcaster {
      * Message emitter that sends {@link Test} to all registered clients
      * 
      * @param test {@link Test} to be emitted to clients
+     * @param host the host of the test
+     * @param user_id the user id of the test
      * @throws JsonProcessingException if there is an error converting the test to a JSON string
      */
-	public static void broadcastDiscoveredTest(Test test, String host, String user_id) throws JsonProcessingException {
+	public void broadcastDiscoveredTest(Test test, String host, String user_id) throws JsonProcessingException {
         //Object to JSON in String
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
@@ -103,10 +110,11 @@ public class MessageBroadcaster {
     /**
      * Message emitter that sends {@link Form} to all registered clients
      * 
-     * @param test {@link Test} to be emitted to clients
+     * @param form {@link Form} to be emitted to clients
+     * @param domain_id the id of the domain
      * @throws JsonProcessingException if there is an error converting the form to a JSON string
      */
-	public static void broadcastDiscoveredForm(Form form, long domain_id) throws JsonProcessingException {
+	public void broadcastDiscoveredForm(Form form, long domain_id) throws JsonProcessingException {
 		log.info("Broadcasting discovered form !!!");
 		
         //Object to JSON in String
@@ -121,10 +129,11 @@ public class MessageBroadcaster {
 	/**
      * Message emitter that sends {@link Test} to all registered clients
      * 
-     * @param test {@link Test} to be emitted to clients
+	 * @param test {@link Test} to be emitted to clients
+	 * @param host the host of the test
      * @throws JsonProcessingException if there is an error converting the test to a JSON string
      */
-	public static void broadcastTest(Test test, String host) throws JsonProcessingException {
+	public void broadcastTest(Test test, String host) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
 
@@ -143,10 +152,12 @@ public class MessageBroadcaster {
 	/**
      * Message emitter that sends {@link Test} to all registered clients
      * 
-     * @param test {@link Test} to be emitted to clients
+	 * @param path_object {@link LookseeObject} to be emitted to clients
+	 * @param host the host of the path object
+	 * @param user_id the user id of the path object
      * @throws JsonProcessingException if there is an error converting the path object to a JSON string
      */
-	public static void broadcastPathObject(LookseeObject path_object, String host, String user_id) throws JsonProcessingException {	
+	public void broadcastPathObject(LookseeObject path_object, String host, String user_id) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
 
@@ -157,28 +168,12 @@ public class MessageBroadcaster {
 	}
 	
 	/**
-     * Message emitter that sends {@link TestStatus to all registered clients
-     * 
-     * @param test {@link Test} to be emitted to clients
-     * @throws JsonProcessingException if there is an error converting the test record to a JSON string
-     */
-	public static void broadcastTestStatus(String host, TestRecord record, Test test, String user_id) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JavaTimeModule());
-
-        //Object to JSON in String
-        String test_json = mapper.writeValueAsString(new TestRecordDto(record, test.getKey()));
-        
-		pusher.trigger(user_id+host, "test-run", test_json);
-	}
-	
-	/**
      * Message emitter that sends {@link DiscoveryRecord} to all registered clients
      * 
      * @param record {@link DiscoveryRecord} to be emitted to clients
      * @throws JsonProcessingException if there is an error converting the discovery record to a JSON string
      */
-	public static void broadcastDiscoveryStatus(DiscoveryRecord record) throws JsonProcessingException {
+	public void broadcastDiscoveryStatus(DiscoveryRecord record) throws JsonProcessingException {
 		log.info("broadcasting discovery status");
 		
         ObjectMapper mapper = new ObjectMapper();
@@ -191,33 +186,12 @@ public class MessageBroadcaster {
 	}
 
 	/**
-	 * Uses Pusher service to broadcast json representing {@link Test} to browser extension for the user with
-	 *   the given username
-	 * @param test_dto representation of {@link Test} that complies with format for browser extensions
-	 * @param username username of User
-	 * @throws JsonProcessingException if there is an error converting the test dto to a JSON string
+	 * send {@link DomainDto} to the users pusher channel
+	 * @param user_id id of the user
+	 * @param domain {@link Domain} to be emitted to clients
+	 * @throws JsonProcessingException if there is an error converting the domain dto to a JSON string
 	 */
-	public static void broadcastIdeTest(TestDto test_dto, String username) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JavaTimeModule());
-
-        //Object to JSON in String
-        String test_json = mapper.writeValueAsString(test_dto);
-        
-		pusher.trigger(username, "edit-test", test_json);
-	}
-
-	public static void broadcastTestCreatedConfirmation(Test test, String username) throws JsonProcessingException {
-		TestCreatedDto test_created_dto = new TestCreatedDto(test);
-		
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JavaTimeModule());
-
-		String test_confirmation_json = mapper.writeValueAsString(test_created_dto);
-		pusher.trigger(username, "test-created", test_confirmation_json);
-	}
-
-	public static void sendDomainAdded(String user_id, Domain domain) throws JsonProcessingException {
+	public void sendDomainAdded(String user_id, Domain domain) throws JsonProcessingException {
 		/*
 		DomainDto domain_dto = new DomainDto( domain.getId(), 
 											  domain.getUrl(), 
@@ -247,21 +221,11 @@ public class MessageBroadcaster {
 	}
 
 	/**
-	 * send {@link AuditStats} to the users pusher channel
-	 * @param user_id id of the user
-	 * @param audit_record {@link AuditStats} to be emitted to clients
-	 * @throws JsonProcessingException if there is an error converting the audit record to a JSON string
+	 * send {@link UXIssueMessage} to the users pusher channel
+	 * @param page_id id of the page
+	 * @param issue {@link UXIssueMessage} to be emitted to clients
 	 */
-	public static void sendAuditStatUpdate(long user_id, AuditStats audit_record) throws JsonProcessingException {
-		
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JavaTimeModule());
-
-		String audit_record_json = mapper.writeValueAsString(audit_record);
-		pusher.trigger(user_id+"", "audit-stat-update", audit_record_json);
-	}
-
-	public static void sendIssueMessage(long page_id, UXIssueMessage issue) {
+	public void sendIssueMessage(String page_id, UXIssueMessage issue) {
 		ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
 
@@ -279,7 +243,7 @@ public class MessageBroadcaster {
 	 * @param domain_dto {@link DomainDto} to be emitted to clients
 	 * @throws JsonProcessingException if there is an error converting the domain dto to a JSON string
 	 */
-	public static void sendAuditRecord(String user_id, DomainDto domain_dto) throws JsonProcessingException {
+	public void sendAuditRecord(String user_id, DomainDto domain_dto) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
 
