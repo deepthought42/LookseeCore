@@ -33,6 +33,19 @@ public class DomainDto {
 	private String status;
 
 	/**
+	 * constructor for the domain dto
+	 * @param id the id of the domain
+	 * @param url the url of the domain
+	 * @param progress the progress of the domain
+	 */
+	public DomainDto(long id, String url, double progress) {
+		this.id = id;
+		this.url = url;
+		this.contentProgress = progress;
+	}
+	
+	
+	/**
 	 * Constructs a new DomainDto with the specified fields.
 	 *
 	 * @param id the id of the domain
