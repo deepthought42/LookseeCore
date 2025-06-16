@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import com.looksee.models.ElementState;
 import com.looksee.models.Form;
 import com.looksee.models.PageState;
+import lombok.NoArgsConstructor;
 
 /**
  * Utility class for processing and analyzing web page states and their elements.
@@ -22,6 +23,7 @@ import com.looksee.models.PageState;
  * - For PageState inputs, return Forms containing only Elements from that PageState
  * - For any returned Form, include only Elements with XPaths that are descendants of the form Element's XPath
  */
+@NoArgsConstructor
 public class PageUtils {
 	@SuppressWarnings("unused")
 	private static Logger log = LoggerFactory.getLogger(PageUtils.class);
