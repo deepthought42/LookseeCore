@@ -1,10 +1,10 @@
-# LookseeObjects
+# Looksee Core
 
 A core library containing POJOs (Plain Old Java Objects), Services, and Repository objects used across all Look-see microservices. This library provides the foundational data models and business logic for the Look-see platform.
 
 ## Overview
 
-LookseeObjects is a Java library that provides the core data models and services for the Look-see platform. It handles various aspects of web application analysis, including:
+Looksee Core is a Java library that provides the core data models and services for the Look-see platform. It handles various aspects of web application analysis, including:
 
 - Domain and page state management
 - Browser automation and interaction
