@@ -438,28 +438,85 @@ public class DomainService {
 		domain_repo.addTestUser(domain_id, test_user_id);
 	}
 
-
+	/**
+	 * Retrieves all test actions for a given account and URL
+	 *
+	 * @param account_id The ID of the account to retrieve test actions for
+	 * @param url The URL to retrieve test actions for
+	 * @return A set of all test actions for the given account and URL
+	 * 
+	 * precondition: account_id > 0
+	 * precondition: url != null
+	 * precondition: !url.isEmpty()
+	 */
 	public Set<TestAction> getActions(long account_id, String url) {
 		return domain_repo.getActions(account_id, url);
 	}
 
+	/**
+	 * Retrieves all tests for a given account and URL
+	 *
+	 * @param account_id The ID of the account to retrieve tests for
+	 * @param url The URL to retrieve tests for
+	 * @return A set of all tests for the given account and URL
+	 * 
+	 * precondition: account_id > 0
+	 * precondition: url != null
+	 * precondition: !url.isEmpty()
+	 */
 	public Set<Test> getTests(long account_id, String url) {
 		return domain_repo.getTests(account_id, url);
 	}
 	
+	/**
+	 * Retrieves all test records for a given account and URL
+	 *
+	 * @param account_id The ID of the account to retrieve test records for
+	 * @param url The URL to retrieve test records for
+	 * @return A set of all test records for the given account and URL
+	 * 
+	 * precondition: account_id > 0
+	 * precondition: url != null
+	 * precondition: !url.isEmpty()
+	 */
 	public Set<TestRecord> getTestRecords(long account_id, String url) {
 		return domain_repo.getTestRecords(account_id, url);
 	}
 
+	/**
+	 * Retrieves all page load animations for a given account and URL
+	 *
+	 * @param account_id The ID of the account to retrieve page load animations for
+	 * @param url The URL to retrieve page load animations for
+	 * @return A set of all page load animations for the given account and URL
+	 * 
+	 * precondition: account_id > 0
+	 * precondition: url != null
+	 * precondition: !url.isEmpty()
+	 */
 	public Set<PageLoadAnimation> getAnimations(long account_id, String url) {
 		return domain_repo.getAnimations(account_id, url);
 	}
 
+	/**
+	 * Retrieves all domains for a given account ID
+	 *
+	 * @param account_id The ID of the account to retrieve domains for
+	 * @return A set of all domains for the given account ID
+	 */
 	public Set<Domain> getDomainsForAccount(long account_id) {
 		return domain_repo.getDomainsForAccount(account_id);
 	}
 	
-
+	/**
+	 * Retrieves the most recent page audit record for a given page URL
+	 *
+	 * @param page_url The URL of the page to retrieve the most recent audit record for
+	 * @return An optional containing the most recent page audit record, or empty if no record exists
+	 *
+	 * precondition: page_url != null
+	 * precondition: !page_url.isEmpty()
+	 */
 	public Optional<PageAuditRecord> getMostRecentPageAuditRecord(String page_url) {
 		assert page_url != null;
 		assert !page_url.isEmpty();
@@ -467,10 +524,23 @@ public class DomainService {
 		return audit_record_repo.getMostRecentPageAuditRecord(page_url);
 	}
 
+	/**
+	 * Adds a competitor to a domain
+	 *
+	 * @param domain_id The ID of the domain to add the competitor to
+	 * @param competitor_id The ID of the competitor to add to the domain
+	 * @return The added competitor
+	 */
 	public Competitor addCompetitor(long domain_id, long competitor_id) {
 		return competitor_repo.addCompetitor(domain_id, competitor_id);
 	}
 
+	/**
+	 * Retrieves all competitors for a given domain ID
+	 *
+	 * @param domain_id The ID of the domain to retrieve competitors for
+	 * @return A list of all competitors for the given domain ID
+	 */
 	public List<Competitor> getCompetitors(long domain_id) {
 		return competitor_repo.getCompetitors(domain_id);
 	}

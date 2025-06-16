@@ -25,11 +25,14 @@ import com.looksee.services.UXIssueMessageService;
 import com.looksee.utils.BrowserUtils;
 import com.looksee.utils.ElementStateUtils;
 
+import lombok.NoArgsConstructor;
+
 
 /**
  * Responsible for executing an audit on the hyperlinks on a page for the information architecture audit category
  */
 @Component
+@NoArgsConstructor
 public class TitleAndHeaderAudit implements IExecutablePageStateAudit {
 	private static Logger log = LoggerFactory.getLogger(TitleAndHeaderAudit.class);
 	
@@ -38,8 +41,6 @@ public class TitleAndHeaderAudit implements IExecutablePageStateAudit {
 	
 	@Autowired
 	private UXIssueMessageService issue_message_service;
-	
-	public TitleAndHeaderAudit() {}
 	
 	/**
 	 * {@inheritDoc}
@@ -91,7 +92,9 @@ public class TitleAndHeaderAudit implements IExecutablePageStateAudit {
 	 * Generates a score for headers found on the page
 	 * 
 	 * @param page_state the page state to score
-	 * @return
+	 * @return the score for the text element headers
+	 *
+	 * precondition: page_state != null
 	 */
 	private Score scoreHeadings(PageState page_state) {
 		assert page_state != null;
@@ -121,7 +124,9 @@ public class TitleAndHeaderAudit implements IExecutablePageStateAudit {
 	 * INCOMPLETE: PLEASE FINISH ME
 	 * 
 	 * @param page_state the page state to score
-	 * @return
+	 * @return the score for the ordered list headers
+	 *
+	 * precondition: page_state != null
 	 */
 	private Score scoreOrderedListHeaders(PageState page_state) {
 		assert page_state != null;
@@ -153,7 +158,9 @@ public class TitleAndHeaderAudit implements IExecutablePageStateAudit {
 	 * Generates score based on if text elements have an associated header
 	 * 
 	 * @param page_state the page state to score
-	 * @return
+	 * @return the score for the text element headers
+	 *
+	 * precondition: page_state != null
 	 */
 	private Score scoreTextElementHeaders(PageState page_state) {
 		assert page_state != null;
@@ -209,9 +216,9 @@ public class TitleAndHeaderAudit implements IExecutablePageStateAudit {
 	 * Generates score based on if favicon is present
 	 * 
 	 * @param page_state the page state to score
-	 * @return
-	 * 
-	 * @pre page_state != null
+	 * @return the score for the favicon
+	 *
+	 * precondition: page_state != null
 	 */
 	private Score scoreFavicon(PageState page_state) {
 		assert page_state != null;
@@ -280,7 +287,9 @@ public class TitleAndHeaderAudit implements IExecutablePageStateAudit {
 	/**
 	 * Checks if a {@link PageState} has a favicon defined
 	 * @param page_src the source code of the page
-	 * @return
+	 * @return true if the page has a favicon defined, false otherwise
+	 *
+	 * precondition: page_src != null
 	 */
 	public static boolean hasFavicon(String page_src) {
 		assert page_src != null;
@@ -298,7 +307,9 @@ public class TitleAndHeaderAudit implements IExecutablePageStateAudit {
 	/**
 	 * Generate a score for page titles across all pages in this domain
 	 * @param page_state the page state to score
-	 * @return
+	 * @return the score for the page titles
+	 *
+	 * precondition: page_state != null
 	 */
 	private Score scorePageTitles(PageState page_state) {
 		assert page_state != null;

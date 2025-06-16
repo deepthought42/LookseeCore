@@ -4,6 +4,7 @@ import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -11,6 +12,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@NoArgsConstructor
 @Node
 public class Competitor extends LookseeObject{
 
@@ -20,10 +22,6 @@ public class Competitor extends LookseeObject{
 	
 	@Relationship("USES")
 	private Brand brand;
-
-	public Competitor(){
-		super();
-	}
 
 	/**
 	 * Constructs a new competitor

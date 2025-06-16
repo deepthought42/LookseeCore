@@ -36,7 +36,7 @@ public class SentenceIssueMessage extends ElementStateIssueMessage {
 	 * @param title the title of the sentence issue message
 	 * @param points_awarded the points awarded of the sentence issue message
 	 * @param max_points the max points of the sentence issue message
-	 * @param word_count
+	 * @param word_count the word count of the sentence issue message
 	 */
 	public SentenceIssueMessage(
 			Priority priority,

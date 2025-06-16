@@ -22,11 +22,13 @@ import com.looksee.models.repository.ElementStateRepository;
 import com.looksee.models.repository.PageStateRepository;
 
 import io.github.resilience4j.retry.annotation.Retry;
+import lombok.NoArgsConstructor;
 
 /**
  * Service layer object for interacting with {@link PageState} database layer
  */
 @Service
+@NoArgsConstructor
 public class PageStateService {
 	@SuppressWarnings("unused")
 	private static Logger log = LoggerFactory.getLogger(PageStateService.class.getName());
@@ -42,9 +44,9 @@ public class PageStateService {
 
 	/**
 	 * Save a {@link PageState} object and its associated objects
-	 * @param page_state
-	 * @return
-	 * @throws Exception
+	 * @param page_state the page state to save
+	 * @return the saved page state
+	 * @throws Exception if the page state is null
 	 *
 	 * precondition: page_state != null
 	 */
@@ -63,14 +65,17 @@ public class PageStateService {
 	
 	/**
 	 * Save a {@link PageState} object and its associated objects
-	 * @param page_state
-	 * @return
-	 * @throws Exception 
-	 * 
+	 * @param audit_record_id the id of the audit record
+	 * @param page_state the page state to save
+	 * @return the saved page state
+	 * @throws Exception if the page state is null
+	 *
 	 * precondition: page_state != null
+	 * precondition: audit_record_id > 0
 	 */
 	@Retry(name = "neoforj")
 	public PageState save(long audit_record_id, PageState page_state) throws Exception {
+		assert audit_record_id > 0;
 		assert page_state != null;
 		
 		PageState page_state_record = page_state_repo.findPageWithKey(audit_record_id, page_state.getKey());
@@ -83,9 +88,12 @@ public class PageStateService {
 	}
 	
 	/**
-	 * 
-	 * @param page_key
-	 * @return
+	 * Find a page state by key
+	 * @param page_key the key of the page state
+	 * @return the page state
+	 *
+	 * precondition: page_key != null
+	 * precondition: !page_key.isEmpty()
 	 */
 	public PageState findByKey(String page_key) {
 		PageState page_state = page_state_repo.findByKey(page_key);
@@ -453,14 +461,23 @@ public class PageStateService {
 
 	/**
 	 * Retrieves an {@link PageAuditRecord} for the page with the given id
-	 * @param id
-	 * @return
+	 * @param id the id of the page audit record
+	 * @return the page audit record
+	 *
+	 * precondition: id > 0
 	 */
 	public PageAuditRecord getAuditRecord(long id) {
 		
 		return audit_record_repo.getAuditRecord(id);
 	}
 
+	/**
+	 * Retrieves the number of element states for the page with the given id
+	 * @param page_id the id of the page
+	 * @return the number of element states
+	 *
+	 * precondition: page_id > 0
+	 */
 	public int getElementStateCount(long page_id) {
 		return element_state_repo.getElementStateCount(page_id);
 	}

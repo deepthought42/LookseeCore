@@ -10,7 +10,13 @@ import org.springframework.stereotype.Repository;
 import com.looksee.models.Brand;
 import com.looksee.models.Competitor;
 
+import io.github.resilience4j.retry.annotation.Retry;
+
+/**
+ * Repository interface for Spring Data Neo4j to handle interactions with {@link Competitor} objects
+ */
 @Repository
+@Retry(name = "neoforj")
 public interface CompetitorRepository extends Neo4jRepository<Competitor, Long> {
 
 	/**

@@ -195,6 +195,14 @@ public interface PageStateRepository extends Neo4jRepository<PageState, Long> {
 	@Query("MATCH (s:Step)-[:ENDS_WITH]->(page:PageState) WHERE id(s)=$step_id RETURN page")
 	public PageState getEndPageForStep(@Param("step_id") long step_id);
 
+	/**
+	 * Finds page states by screenshot checksums for a user and domain
+	 *
+	 * @param user_id the ID of the user
+	 * @param url the URL of the domain
+	 * @param checksum the checksum of the screenshot
+	 * @return the page states
+	 */
 	@Deprecated
 	@Query("MATCH (:Account{username:$user_id})-[]->(d:Domain{url:$url}) MATCH (d)-[]->(p:PageState) MATCH a=(p)-[h:HAS]->() WHERE $screenshot_checksum IN p.screenshot_checksums RETURN a")
 	public List<PageState> findByScreenshotChecksumsContainsForUserAndDomain(@Param("user_id") String user_id, @Param("url") String url, @Param("screenshot_checksum") String checksum );

@@ -18,11 +18,8 @@ public class CompareImages {
 	 * @param img2Url the second image URL
 	 * @return true if the images are the same, false otherwise
 	 *
-	 * <b>Preconditions:</b>
-	 * <ul>
-	 *   <li>img1Url != null</li>
-	 *   <li>img2Url != null</li>
-	 * </ul>
+	 * precondition: img1Url != null
+	 * precondition: img2Url != null
 	 */
 	public static boolean imagesMatch(String img1Url, String img2Url) {
 		assert img1Url != null && img2Url != null;

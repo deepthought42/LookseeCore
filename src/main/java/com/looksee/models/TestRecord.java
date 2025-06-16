@@ -46,6 +46,25 @@ public class TestRecord extends LookseeObject {
 	@Relationship(type = "HAS_RESULT", direction = Relationship.Direction.OUTGOING)
 	private PageState result;
 	
+	/**
+	 * Constructor for {@link TestRecord}
+	 *
+	 * @param ranAt the date the test was run
+	 * @param status the status of the test
+	 * @param browser_name the name of the browser
+	 * @param result the result of the test
+	 * @param runTime the time the test was run
+	 * @param pathKeys the keys of the path
+	 *
+	 * precondition: ranAt != null
+	 * precondition: status != null
+	 * precondition: browser_name != null
+	 * precondition: !browser_name.isEmpty()
+	 * precondition: result != null
+	 * precondition: runTime > 0
+	 * precondition: pathKeys != null
+	 * precondition: !pathKeys.isEmpty()
+	 */
 	public TestRecord(Date ranAt,
 					TestStatus status,
 					String browser_name,
@@ -53,6 +72,15 @@ public class TestRecord extends LookseeObject {
 					long runTime,
 					List<String> pathKeys)
 	{
+		assert ranAt != null;
+		assert status != null;
+		assert browser_name != null;
+		assert !browser_name.isEmpty();
+		assert result != null;
+		assert runTime > 0;
+		assert pathKeys != null;
+		assert !pathKeys.isEmpty();
+
 		setRanAt(ranAt);
 		setResult(result);
 		setRunTime(runTime);

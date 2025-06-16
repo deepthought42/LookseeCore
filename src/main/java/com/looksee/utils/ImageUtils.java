@@ -28,10 +28,12 @@ import com.looksee.models.PageState;
 import com.looksee.models.enums.BrowserType;
 
 import io.github.resilience4j.retry.annotation.Retry;
+import lombok.NoArgsConstructor;
 
 /**
  * Utility class for image operations.
  */
+@NoArgsConstructor
 public class ImageUtils {
 	private static Logger log = LoggerFactory.getLogger(ImageUtils.class);
 
@@ -46,7 +48,7 @@ public class ImageUtils {
 	 * precondition: height > 0
 	 * precondition: width > 0
 	 */
-	 public static BufferedImage resize(BufferedImage img, int height, int width) {
+	public static BufferedImage resize(BufferedImage img, int height, int width) {
 		assert img != null;
 		assert height > 0;
 		assert width > 0;
@@ -247,8 +249,14 @@ public class ImageUtils {
 	 * @param max maximum range value
 	 * 
 	 * @return random integer within the range provided
+	 *
+	 * precondition: min >= 0
+	 * precondition: max > min
 	 */
 	private static int getRandomNumberUsingNextInt(int min, int max) {
+		assert min >= 0;
+		assert max > min;
+		
 	    Random random = new Random();
 	    return random.nextInt(max - min) + min;
 	}
@@ -289,10 +297,13 @@ public class ImageUtils {
 	}
 	
 	/**
-	 * 
-	 * @param buff_img
-	 * @return
-	 * @throws IOException
+	 * Generates a checksum for a buffered image
+	 *
+	 * @param buff_img the buffered image to generate a checksum for
+	 * @return the checksum
+	 *
+	 * precondition: buff_img != null
+	 * @throws IOException if an error occurs
 	 */
 	public static String getChecksum(BufferedImage buff_img) throws IOException {
 		assert buff_img != null;
@@ -316,6 +327,21 @@ public class ImageUtils {
 
 	}
 
+	/**
+	 * Creates a composite image from the onload screenshot and element states
+	 *
+	 * @param onload_screenshot the onload screenshot
+	 * @param element_states the element states
+	 * @param page_state the page state
+	 * @param browser the browser
+	 * @return the composite image
+	 *
+	 * precondition: onload_screenshot != null
+	 * precondition: element_states != null
+	 * precondition: page_state != null
+	 * precondition: browser != null
+	 * @throws IOException if an error occurs
+	 */
 	public static BufferedImage createComposite(BufferedImage onload_screenshot,
 												List<ElementState> element_states,
 												PageState page_state,
@@ -345,6 +371,20 @@ public class ImageUtils {
 		return composite_image;
 	}
 	
+	/**
+	 * Checks if the rows of the current and original screenshots are matching
+	 *
+	 * @param current_screenshot the current screenshot
+	 * @param current_screenshot_row the row of the current screenshot
+	 * @param original_image the original image
+	 * @param original_screenshot_row the row of the original image
+	 * @return true if the rows are matching, false otherwise
+	 *
+	 * precondition: current_screenshot != null
+	 * precondition: original_image != null
+	 * precondition: current_screenshot_row >= 0
+	 * precondition: original_screenshot_row >= 0
+	 */
 	public static boolean areRowsMatching(BufferedImage current_screenshot,
 			int current_screenshot_row,
 			BufferedImage original_image,
@@ -361,6 +401,22 @@ public class ImageUtils {
 		return true;
 	}
 	
+	/**
+	 * Checks if the windows of the current and original screenshots are matching
+	 *
+	 * @param current_screenshot the current screenshot
+	 * @param current_screenshot_row the row of the current screenshot
+	 * @param original_image the original image
+	 * @param original_screenshot_row the row of the original image
+	 * @param window_height the height of the window
+	 * @return true if the windows are matching, false otherwise
+	 *
+	 * precondition: current_screenshot != null
+	 * precondition: original_image != null
+	 * precondition: current_screenshot_row >= 0
+	 * precondition: original_screenshot_row >= 0
+	 * precondition: window_height > 0
+	 */
 	public static boolean areWindowsMatching(BufferedImage current_screenshot, 
 											int current_screenshot_row,
 											BufferedImage original_image, 
@@ -416,6 +472,19 @@ public class ImageUtils {
 	}
 	
 	// convert BufferedImage to byte[]
+	/**
+	 * Converts a buffered image to a byte array
+	 *
+	 * @param bi the buffered image to convert
+	 * @param format the format to convert to
+	 * @return the byte array
+	 *
+	 * precondition: bi != null
+	 * precondition: format != null
+	 * precondition: !format.isEmpty()
+	 *
+	 * @throws IOException if an error occurs
+	 */
     public static byte[] toByteArray(BufferedImage bi, String format)
         throws IOException {
 
@@ -426,6 +495,15 @@ public class ImageUtils {
 
     }
 
+	/**
+	 * Reads an image from a URL
+	 *
+	 * @param full_page_screenshot_url the URL of the image to read
+	 * @return the buffered image
+	 *
+	 * precondition: full_page_screenshot_url != null
+	 * @throws IOException if an error occurs
+	 */
 	@Retry(name="gcp")
 	public static BufferedImage readImageFromURL(URL full_page_screenshot_url) throws IOException {
 		return ImageIO.read( full_page_screenshot_url );

@@ -9,21 +9,27 @@ import java.util.UUID;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * Defines the type of package paid for, which domains are registered and which Users belong to the account
  */
+@Getter
+@Setter
+@NoArgsConstructor
 @Node
 public class Account extends LookseeObject{
 
-	private String user_id;
+	private String userId;
 	private String email;
-	private String customer_token;
-	private String subscription_token;
-	private String subscription_type;
-	private String last_domain_url;
-	private List<String> onboarded_steps;
-	private String api_token;
+	private String customerToken;
+	private String subscriptionToken;
+	private String subscriptionType;
+	private String lastDomainUrl;
+	private List<String> onboardedSteps;
+	private String apiToken;
 	private String name;
 	
 	@Relationship(type = "HAS")
@@ -32,96 +38,81 @@ public class Account extends LookseeObject{
 	@Relationship(type = "HAS")
 	private Set<AuditRecord> audits = new HashSet<>();
 
-	public Account(){
-		super();
-	}
-
 	/**
+	 * Constructor for {@link Account}
 	 *
-	 * @param username
-	 * @param customer_token
-	 * @param subscription_token
+	 * @param userId the user_id of the account
+	 * @param email the email of the account
+	 * @param customerToken the customer_token of the account
+	 * @param subscriptionToken the subscription_token of the account
 	 *
-	 * @pre users != null
+	 * precondition: userId != null
+	 * precondition: email != null
+	 * precondition: customerToken != null
+	 * precondition: subscriptionToken != null
 	 */
 	public Account(
-			String user_id, 
-			String email, 
-			String customer_token, 
-			String subscription_token
+			String userId,
+			String email,
+			String customerToken,
+			String subscriptionToken
 	){
 		super();
-		setUserId(user_id);
+		setUserId(userId);
 		setEmail(email);
-		setCustomerToken(customer_token);
-		setSubscriptionToken(subscription_token);
+		setCustomerToken(customerToken);
+		setSubscriptionToken(subscriptionToken);
 		setOnboardedSteps(new ArrayList<String>());
 		setName("");
 	}
 
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getCustomerToken() {
-		return customer_token;
-	}
-
-	public void setCustomerToken(String customer_token) {
-		this.customer_token = customer_token;
-	}
-
-	public String getSubscriptionToken() {
-		return subscription_token;
-	}
-
-	public void setSubscriptionToken(String subscription_token) {
-		this.subscription_token = subscription_token;
-	}
-
-	public void setLastDomain(String domain_url) {
-		this.last_domain_url = domain_url;
-	}
-
-	public String getLastDomain(){
-		return this.last_domain_url;
-	}
-
-	public List<String> getOnboardedSteps() {
-		return onboarded_steps;
-	}
-
+	/**
+	 * Sets the onboarded steps for the account
+	 *
+	 * @param onboarded_steps the onboarded steps for the account
+	 *
+	 * precondition: onboarded_steps != null
+	 */
 	public void setOnboardedSteps(List<String> onboarded_steps) {
 		if(onboarded_steps == null){
-			this.onboarded_steps = new ArrayList<String>();
+			this.onboardedSteps = new ArrayList<String>();
 		}
 		else{
-			this.onboarded_steps = onboarded_steps;
+			this.onboardedSteps = onboarded_steps;
 		}
 	}
 
+	/**
+	 * Adds an onboarding step to the account
+	 *
+	 * @param step_name the name of the onboarding step
+	 *
+	 * precondition: step_name != null
+	 */
 	public void addOnboardingStep(String step_name) {
-		if(!this.onboarded_steps.contains(step_name)){
-			this.onboarded_steps.add(step_name);
+		if(!this.onboardedSteps.contains(step_name)){
+			this.onboardedSteps.add(step_name);
 		}
 	}
 
-	public Set<Domain> getDomains(){
-		return this.domains;
-	}
-
-	public void setDomains(Set<Domain> domains){
-		this.domains = domains;
-	}
-
+	/**
+	 * Adds a domain to the account
+	 *
+	 * @param domain the domain to add
+	 *
+	 * precondition: domain != null
+	 */
 	public void addDomain(Domain domain) {
 		this.domains.add(domain);
 	}
 
+	/**
+	 * Removes a domain from the account
+	 *
+	 * @param domain the domain to remove
+	 *
+	 * precondition: domain != null
+	 */
 	public void removeDomain(Domain domain) {
 		boolean domain_found = false;
 		for(Domain curr_domain : this.domains){
@@ -136,50 +127,22 @@ public class Account extends LookseeObject{
 		}
 	}
 
-	public Set<AuditRecord> getAuditRecords() {
-		return audits;
-	}
-
-	public void setAuditRecords(Set<AuditRecord> audits) {
-		this.audits = audits;
-	}
-
+	/**
+	 * Adds an audit record to the account
+	 *
+	 * @param record the audit record to add
+	 *
+	 * precondition: record != null
+	 */
 	public void addAuditRecord(AuditRecord record) {
 		this.audits.add(record);
 	}
 
-	public String getSubscriptionType() {
-		return subscription_type;
-	}
-
-	public void setSubscriptionType(String subscription_type) {
-		this.subscription_type = subscription_type;
-	}
-
-	public String getApiToken() {
-		return api_token;
-	}
-
-	public void setApiToken(String api_token) {
-		this.api_token = api_token;
-	}
-
-	public String getUserId() {
-		return user_id;
-  	}
-
-  	public void setUserId(String user_id) {
-  		this.user_id = user_id;
-	}
-
-	public String getName() {
-		return name;
-	}
-	
-	public void setName(String name) {
-		this.name = name;
-	}
-
+	/**
+	 * Generates a key for the account
+	 *
+	 * @return the key for the account
+	 */
 	@Override
 	public String generateKey() {
 		return UUID.randomUUID().toString();

@@ -471,13 +471,47 @@ public class ElementStateService {
 		return element_repo.findByDomainAuditAndKey(domain_audit_id, element.getKey());
 	}
 	
+	/**
+	 * Checks if an element exists in another page state with a lower scroll offset
+	 *
+	 * @param element the element to check
+	 * @return true if the element exists in another page state with a lower scroll offset, false otherwise
+	 *
+	 * precondition: element != null
+	 */
 	@Deprecated
 	public boolean doesElementExistInOtherPageStateWithLowerScrollOffset(Element element){
+		assert element != null;
 		return false;
 	}
 
+	/**
+	 * Gets the parent element for a given element
+	 *
+	 * @param user_id the id of the user
+	 * @param domain the domain
+	 * @param page_key the key of the page
+	 * @param element_state_key the key of the element
+	 * @return the parent element
+	 *
+	 * precondition: user_id != null
+	 * precondition: user_id is not empty
+	 * precondition: domain != null
+	 * precondition: page_key != null
+	 * precondition: page_key is not empty
+	 * precondition: element_state_key != null
+	 * precondition: element_state_key is not empty
+	 */
 	@Deprecated
 	public ElementState getParentElement(String user_id, Domain domain, String page_key, String element_state_key) {
+		assert user_id != null;
+		assert !user_id.isEmpty();
+		assert domain != null;
+		assert page_key != null;
+		assert !page_key.isEmpty();
+		assert element_state_key != null;
+		assert !element_state_key.isEmpty();
+
 		return element_repo.getParentElement(user_id, domain, page_key, element_state_key);
 	}
 

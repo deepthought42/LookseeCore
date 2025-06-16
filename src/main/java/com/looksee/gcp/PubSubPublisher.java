@@ -6,9 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.cloud.spring.pubsub.core.PubSubTemplate;
 
+import lombok.NoArgsConstructor;
+
 /**
  * Abstract class for publishing to PubSub.
  */
+@NoArgsConstructor
 public abstract class PubSubPublisher {
     @Autowired
     private PubSubTemplate pubSubTemplate;
@@ -26,6 +29,10 @@ public abstract class PubSubPublisher {
      * @param audit_record_json the message to publish
      *
      * precondition: audit_record_json != null
+     * @throws ExecutionException if an error occurs
+     * @throws InterruptedException if the thread is interrupted
+     *
+     * precondition: pubSubTemplate != null
      */
     public void publish(String audit_record_json) throws ExecutionException, InterruptedException {
         assert audit_record_json != null;

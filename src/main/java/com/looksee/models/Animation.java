@@ -6,6 +6,7 @@ import java.util.List;
 import com.looksee.models.enums.AnimationType;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -13,14 +14,13 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@NoArgsConstructor
 public class Animation extends LookseeObject {
 
 	private List<String> imageUrls;
 	private List<String> imageChecksums;
 	private AnimationType animationType;
 	
-	public Animation(){}
-
 	/**
 	 * Constructor for {@link Animation}
 	 *
@@ -28,7 +28,9 @@ public class Animation extends LookseeObject {
 	 * @param image_checksums the list of image checksums
 	 * @param type the type of animation
 	 *
-	 * @pre image_urls != null
+	 * precondition: image_urls != null
+	 * precondition: image_checksums != null
+	 * precondition: type != null
 	 */
 	public Animation(List<String> image_urls, List<String> image_checksums, AnimationType type) {
 		assert image_urls != null;

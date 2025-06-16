@@ -17,10 +17,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Recommendation extends LookseeObject{
-
-	/**
-	 * The description of the recommendation
-	 */
 	private String description;
 
 	/**

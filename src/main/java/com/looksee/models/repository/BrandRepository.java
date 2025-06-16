@@ -14,5 +14,11 @@ import io.github.resilience4j.retry.annotation.Retry;
 @Repository
 @Retry(name = "neoforj")
 public interface BrandRepository extends Neo4jRepository<Brand, Long> {
+	/**
+	 * Finds a {@link Brand} by its key
+	 *
+	 * @param key the key of the brand
+	 * @return the brand
+	 */
 	public Brand findByKey(@Param("key") String key);
 }

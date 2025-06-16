@@ -158,6 +158,12 @@ public class Element extends LookseeObject implements Comparable<Element> {
 	}
 	
 	/** GETTERS AND SETTERS  **/
+
+	/**
+	 * Checks if the element is part of a form
+	 *
+	 * @return true if the element is part of a form, false otherwise
+	 */
 	public boolean isPartOfForm() {
 		return this.getXpath().contains("form");
 	}

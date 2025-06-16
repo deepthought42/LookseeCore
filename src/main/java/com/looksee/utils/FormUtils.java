@@ -60,13 +60,14 @@ public class FormUtils {
 	/**
 	 * locates and returns the form submit button
 	 * 
-	 * @return
-	 * @throws Exception
-	 * 
+	 * @return the form submit button
+	 *
+	 * precondition: nested_elements != null
 	 * precondition: user_id != null
 	 * precondition: !user_id.isEmpty()
 	 * precondition: form_elem != null
 	 * precondition: browser != null;
+	 * @throws Exception if an error occurs
 	 */
 	public static ElementState findFormSubmitButton(List<ElementState> nested_elements) throws Exception {
 		assert nested_elements != null;

@@ -73,10 +73,21 @@ public class DiscoveryRecord extends LookseeObject {
 		setKey(generateKey());
 	}
 
+	/**
+	 * Generates a key for the discovery record
+	 *
+	 * @return the key for the discovery record
+	 */
 	public String generateKey() {
 		return getDomainUrl()+":"+UUID.randomUUID().toString();
 	}
 
+	/**
+	 * Adds an expanded path key to the discovery record
+	 *
+	 * @param expanded_path_key the expanded path key to add
+	 * @return true if the expanded path key was added, false otherwise
+	 */
 	public boolean addExpandedPathKey(String expanded_path_key) {
 		if(!this.expandedPathKeys.contains(expanded_path_key)){
 			return this.expandedPathKeys.add(expanded_path_key);

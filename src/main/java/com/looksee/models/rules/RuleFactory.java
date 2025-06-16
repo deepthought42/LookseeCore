@@ -1,8 +1,11 @@
 package com.looksee.models.rules;
 
+import lombok.NoArgsConstructor;
+
 /**
  * A factory for creating rules
  */
+@NoArgsConstructor
 public class RuleFactory {
 
 	/**
@@ -11,6 +14,11 @@ public class RuleFactory {
 	 * @param type the type of the rule
 	 * @param value the value of the rule
 	 * @return the rule
+	 *
+	 * precondition: type != null
+	 * precondition: !type.isEmpty()
+	 * precondition: value != null
+	 * precondition: !value.isEmpty()
 	 */
 	public static Rule build(String type, String value){
 		if(type.equalsIgnoreCase(RuleType.ALPHABETIC_RESTRICTION.toString())){

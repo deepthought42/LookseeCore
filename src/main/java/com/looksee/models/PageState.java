@@ -313,10 +313,11 @@ public class PageState extends LookseeObject {
 	 * Generates a checksum for a buffered image
 	 *
 	 * @param buff_img buffered image
+	 * @return checksum of the buffered image
 	 *
-	 * @return checksum
-	 *
-	 * @throws IOException
+	 * precondition: buff_img != null
+	 * @throws IOException if the buffered image is not found
+	 * @throws NoSuchAlgorithmException if the algorithm is not found
 	 */
 	public static String getFileChecksum(BufferedImage buff_img) throws IOException, NoSuchAlgorithmException {
 		assert buff_img != null;
@@ -377,7 +378,7 @@ public class PageState extends LookseeObject {
 	 * Custom setter for src
 	 *
 	 * @param src src
-	 * @throws IOException
+	 * @throws IOException if the src is not found
 	 */
 	public void setSrc(String src) throws IOException {
 		String path_key = BrowserService.extractHost(this.getUrl()) + "/pages/" + getKey();

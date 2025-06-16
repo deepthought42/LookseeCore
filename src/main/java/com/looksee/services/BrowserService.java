@@ -73,7 +73,6 @@ import us.codecraft.xsoup.Xsoup;
 
 /**
  * A collection of methods for interacting with the {@link Browser} session object
- *
  */
 @NoArgsConstructor
 @Service
@@ -922,16 +921,14 @@ public class BrowserService {
 	 * Checks if {@link WebElement element} is visible in the current viewport window or not
 	 * 
 	 * @param browser {@link Browser browser} connection to use
+	 * @param position {@link Point position} where the element top left corner is located
 	 * @param size {@link Dimension size} of the element
 	 * 
 	 * @return true if element is rendered within viewport, otherwise false
 	 *
-	 * <b>Preconditions:</b>
-	 * <ul>
-	 *   <li>browser != null</li>
-	 *   <li>position != null</li>
-	 *   <li>size != null</li>
-	 * </ul>
+	 * precondition: browser != null
+	 * precondition: position != null
+	 * precondition: size != null
 	 */
 	public static boolean doesElementFitInViewport(Browser browser,
 													Point position,
@@ -1138,6 +1135,7 @@ public class BrowserService {
 	/**
 	 * generates a unique xpath for this element.
 	 *
+	 * @param xpath the xpath to generate a css selector for
 	 * @return an xpath that identifies this element uniquely
 	 */
 	public static String generateCssSelectorFromXpath(String xpath){
@@ -1156,8 +1154,9 @@ public class BrowserService {
 
 	/**
 	 * combines list of sub selectors into cohesive css_selector
-	 * @param selectors
-	 * @return
+	 *
+	 * @param selectors the list of selectors to combine
+	 * @return the combined css selector
 	 */
 	private static String buildCssSelector(List<String> selectors) {
 		String css_selector = "";
@@ -1177,6 +1176,7 @@ public class BrowserService {
 	/**
 	 * Transforms an xpath selector to a css selector
 	 * @param xpath_selector the xpath selector to transform
+	 *
 	 * @return the css selector
 	 */
 	public static String transformXpathSelectorToCss(String xpath_selector) {
@@ -1234,7 +1234,11 @@ public class BrowserService {
 	/**
 	 * generates a unique xpath for this element.
 	 *
-	 * @return an xpath that identifies this element uniquely
+	 * @param element the element to generate the attributes map for
+	 *
+	 * @return the attributes map
+	 *
+	 * precondition: element != null
 	 */
 	public static Map<String, String> generateAttributesMapUsingJsoup(Element element){
 		Map<String, String> attributes = new HashMap<>();
@@ -1254,6 +1258,11 @@ public class BrowserService {
 	 * @param xpath_cnt the xpath count
 	 *
 	 * @return the unique xpath
+	 *
+	 * precondition: elem != null
+	 * precondition: xpath != null
+	 * precondition: doc != null
+	 * precondition: xpath_cnt != null
 	 */
 	public static String uniqifyXpath(Element elem, String xpath, Document doc, Map<String, Integer> xpath_cnt){
 		try {
@@ -1283,6 +1292,10 @@ public class BrowserService {
 	 * @param elem the {@link WebElement}
 	 *
 	 * @return the unique xpath
+	 *
+	 * precondition: elem != null
+	 * precondition: xpath != null
+	 * precondition: driver != null
 	 */
 	public static String uniqifyXpath(WebElement elem, String xpath, WebDriver driver){
 		try {
@@ -1314,6 +1327,8 @@ public class BrowserService {
 	 * @param element_list the list of elements to find templates in (must not be null)
 	 * @return the map of templates
 	 * @throws IllegalArgumentException if element_list is null
+	 *
+	 * precondition: element_list != null
 	 */
 	public Map<String, Template> findTemplates(List<com.looksee.models.Element> element_list){
 		//create a map for the various duplicate elements
@@ -1326,7 +1341,6 @@ public class BrowserService {
 		}
 
 		//iterate over all elements in list
-		
 		Map<String, Boolean> identified_templates = new HashMap<String, Boolean>();
 		for(int idx1 = 0; idx1 < parents_only_element_list.size()-1; idx1++){
 			com.looksee.models.Element element1 = parents_only_element_list.get(idx1);
@@ -1477,8 +1491,11 @@ public class BrowserService {
 	 * Organism - Contains at least 2 molecules or at least 1 molecule and 1 atom or at least 1 organism, Must not be an immediate child of body
 	 * Template - An Immediate child of the body tag or the descendant such that the element is the first to have sibling elements
 	 *
-	 * @param template
-	 * @return
+	 * @param template the template to classify
+	 *
+	 * @return the template type
+	 *
+	 * precondition: template != null
 	 */
 	public TemplateType classifyTemplate(String template){
 		Document html_doc = Jsoup.parseBodyFragment(template);
@@ -1494,10 +1511,7 @@ public class BrowserService {
 	 *
 	 * @return the template type
 	 *
-	 * <b>Preconditions:</b>
-	 * <ul>
-	 *   <li>root_element != null</li>
-	 * </ul>
+	 * precondition: root_element != null
 	 */
 	private TemplateType classifyUsingChildren(Element root_element) {
 		assert root_element != null;
@@ -2052,6 +2066,8 @@ public class BrowserService {
 	 * precondition: screenshot_url != null
 	 *
 	 * @return {@link ElementState} based on {@link WebElement} and other params
+	 * 
+	 * @throws IOException if an error occurs while building the element state
 	 */
 	public static ElementState buildElementState(
 			String xpath,
@@ -2111,8 +2127,15 @@ public class BrowserService {
 	 * @param rendered_css_values the rendered css values of the element
 	 * @param screenshot_url the screenshot url of the element
 	 * @param css_selector the css selector of the element
+	 * @param landmark_info_set the landmark info set
+	 * @param faces the faces
+	 * @param image_search_set the image search set
+	 * @param logos the logos
+	 * @param labels the labels
+	 * @param safe_search_annotation the safe search annotation
 	 *
 	 * @return {@link ElementState} based on {@link WebElement} and other params
+	 * @throws IOException if an error occurs while building the element state
 	 *
 	 * precondition: xpath != null
 	 * precondition: !xpath.isEmpty()
@@ -2188,6 +2211,7 @@ public class BrowserService {
 	
 	/**
 	 * Process used by the web crawler to build {@link ElementState} list based on the xpaths on the page
+	 * @param page_state the page state
 	 * @param xpaths	the xpaths to build the page elements for
 	 * @param audit_id	the audit id
 	 * @param url	the url

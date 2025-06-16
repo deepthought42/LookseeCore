@@ -75,9 +75,9 @@ public class ImageElementState extends ElementState {
 	 * @param tagName the tag name of the element
 	 * @param attributes the attributes of the element
 	 * @param rendered_css_values the rendered css values of the element
-	 * @param screenshot_url
-	 * @param x
-	 * @param y
+	 * @param screenshot_url the screenshot url of the element
+	 * @param x the x coordinate of the element
+	 * @param y the y coordinate of the element
 	 * @param width the width of the element
 	 * @param height the height of the element
 	 * @param classification the classification of the element

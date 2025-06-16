@@ -15,6 +15,14 @@ public class JourneyMappingProgressMessage extends DomainAuditMessage {
 	private int candidateCount;
 	private int completedCount;
 		
+	/**
+	 * Constructor for {@link JourneyMappingProgressMessage}
+	 *
+	 * @param account_id the id of the account
+	 * @param audit_record_id the id of the audit record
+	 * @param candidate_count the number of candidates
+	 * @param completed_count the number of completed candidates
+	 */
 	public JourneyMappingProgressMessage(
 			long account_id,
 			long audit_record_id,

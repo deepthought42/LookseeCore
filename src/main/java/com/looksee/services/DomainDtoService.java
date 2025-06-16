@@ -23,9 +23,12 @@ import com.looksee.models.repository.AuditRepository;
 import com.looksee.models.repository.PageStateRepository;
 import com.looksee.utils.AuditUtils;
 
+import lombok.NoArgsConstructor;
+
 /**
  * Service for building domain DTOs.
  */
+@NoArgsConstructor
 @Service
 public class DomainDtoService {
 	@SuppressWarnings("unused")
@@ -57,20 +60,20 @@ public class DomainDtoService {
 		int page_count = 0;
 		
 		if (!audit_record_opt.isPresent()) {
-			return new DomainDto(domain.getId(), 
-								domain.getUrl(), 
-								0, 
-								0, 
-								0, 
-								1.0, 
-								0, 
-								1.0, 
-								0, 
-								1.0, 
-								0, 
-								1.0, 
-								false, 
-								1.0, 
+			return new DomainDto(domain.getId(),
+								domain.getUrl(),
+								0,
+								0,
+								0,
+								1.0,
+								0,
+								1.0,
+								0,
+								1.0,
+								0,
+								1.0,
+								false,
+								1.0,
 								"",
 								ExecutionStatus.COMPLETE);
 		}

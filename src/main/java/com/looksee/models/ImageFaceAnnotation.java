@@ -65,6 +65,18 @@ public class ImageFaceAnnotation extends LookseeObject{
 		setHeadwearLikelihood("");
     }
 
+	/**
+	 * Constructor for {@link ImageFaceAnnotation}
+	 *
+	 * @param angerLikelihood the likelihood of anger
+	 * @param joyLikelihood the likelihood of joy
+	 * @param blurredLikelihood the likelihood of blurred
+	 * @param headwearLikelihood the likelihood of headwear
+	 * @param sorrowLikelihood the likelihood of sorrow
+	 * @param surpriseLikelihood the likelihood of surprise
+	 * @param underExposedLikelihood the likelihood of under exposed
+	 * @param bounding_poly the bounding poly
+	 */
 	public ImageFaceAnnotation(Likelihood angerLikelihood,
 								Likelihood joyLikelihood,
 								Likelihood blurredLikelihood,

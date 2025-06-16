@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import com.looksee.models.Audit;
@@ -17,6 +18,7 @@ import com.looksee.models.enums.AuditSubcategory;
  * Utility class for PDF document operations
  */
 @Service
+@NoArgsConstructor
 public class PDFDocUtils {
 	
 	/**
@@ -25,12 +27,8 @@ public class PDFDocUtils {
 	 * @param audits the audits
 	 * @return the top four categories that need improvement
 	 *
-	 * <p><b>Preconditions:</b>
-	 * <ul>
-	 *   <li>audits is not null</li>
-	 *   <li>audits is not empty</li>
-	 * </ul>
-	 *
+	 * precondition: audits != null
+	 * precondition: !audits.isEmpty()
 	 */
 	public static List<AuditSubcategory> getTopFourCategoriesThatNeedImprovement(Set<Audit> audits) {
 		assert audits != null;

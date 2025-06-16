@@ -40,6 +40,12 @@ public class GoogleCloudStorage {
     private final String publicUrl;
 
 	//private static String bucket_name     = "look-see-data";
+	/**
+	 * Constructor for {@link GoogleCloudStorage}
+	 *
+	 * @param storage the storage to use
+	 * @param gcsProperties the properties to use
+	 */
 	public GoogleCloudStorage(Storage storage, GoogleCloudStorageProperties gcsProperties) {
         this.storage = storage;
         this.bucketName = gcsProperties.getBucketName();
@@ -48,10 +54,14 @@ public class GoogleCloudStorage {
 
 	/**
 	 * Uploads HTML content to Google Cloud Storage
-	 * @param content
-	 * @param key
-	 * @return
-	 * @throws IOException
+	 * @param content the content to upload
+	 * @param key the key to use
+	 * @return the URL of the uploaded content
+	 * @throws IOException if an error occurs
+	 *
+	 * precondition: content != null
+	 * precondition: key != null
+	 * precondition: !key.isEmpty()
 	 */
 	public String uploadHtmlContent(String content, String key) throws IOException {
         BlobId blobId = BlobId.of(bucketName, key);
@@ -68,8 +78,11 @@ public class GoogleCloudStorage {
 
 	/**
 	 * Retrieves HTML content from Google Cloud Storage
-	 * @param gcsUrl
-	 * @return
+	 * @param gcsUrl the URL of the content to retrieve
+	 * @return the content
+	 *
+	 * precondition: gcsUrl != null
+	 * precondition: !gcsUrl.isEmpty()
 	 */
     public String getHtmlContent(String gcsUrl) {
         String key = gcsUrl.replace(publicUrl + "/", "");
@@ -79,12 +92,18 @@ public class GoogleCloudStorage {
 	
 	/**
 	 * Saves an image to Google Cloud Storage
-	 * @param image
-	 * @param domain
-	 * @param checksum
-	 * @param browser
-	 * @return
-	 * @throws IOException
+	 * @param image the image to save
+	 * @param domain the domain of the image
+	 * @param checksum the checksum of the image
+	 * @param browser the browser of the image
+	 * @return the URL of the saved image
+	 * @throws IOException if an error occurs
+	 *
+	 * precondition: image != null
+	 * precondition: domain != null
+	 * precondition: !domain.isEmpty()
+	 * precondition: checksum != null
+	 * precondition: !checksum.isEmpty()
 	 */
 	public String saveImage(BufferedImage image,
 							String domain,
@@ -130,11 +149,16 @@ public class GoogleCloudStorage {
 	
 	/**
 	 * Retrieves an image from Google Cloud Storage
-	 * @param domain
-	 * @param element_key
-	 * @param browser
-	 * @return
-	 * @throws IOException
+	 * @param domain the domain of the image
+	 * @param element_key the key of the image
+	 * @param browser the browser of the image
+	 * @return the image
+	 * @throws IOException if an error occurs
+	 *
+	 * precondition: domain != null
+	 * precondition: !domain.isEmpty()
+	 * precondition: element_key != null
+	 * precondition: !element_key.isEmpty()
 	 */
 	public BufferedImage getImage(String domain,
 										 String element_key,
@@ -159,9 +183,12 @@ public class GoogleCloudStorage {
 	
 	/**
 	 * Retrieves an image from a URL
-	 * @param image_url
-	 * @return
-	 * @throws IOException
+	 * @param image_url the URL of the image to retrieve
+	 * @return the image
+	 * @throws IOException if an error occurs
+	 *
+	 * precondition: image_url != null
+	 * precondition: !image_url.isEmpty()
 	 */
 	public BufferedImage getImage(String image_url) throws IOException {
 		assert image_url != null;

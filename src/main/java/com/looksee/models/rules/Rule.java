@@ -6,11 +6,18 @@ import com.looksee.models.Element;
 import com.looksee.models.LookseeObject;
 import com.looksee.models.serializer.RuleDeserializer;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 /**
  * Defines rule to be used to evaluate if a {@link Element} has a value that satisfies the 
  * rule based on its {@link RuleType}
  */
+@Getter
+@Setter
 @JsonDeserialize(using = RuleDeserializer.class)
+@NoArgsConstructor
 public abstract class Rule extends LookseeObject {
 
 	private String value;
@@ -35,24 +42,6 @@ public abstract class Rule extends LookseeObject {
 	}
 	
 	/**
-	 * Gets the value of the rule
-	 *
-	 * @return the value of the rule
-	 */
-	public String getValue(){
-		return this.value;
-	}
-
-	/**
-	 * Sets the value of the rule
-	 *
-	 * @param value the value of the rule
-	 */
-	public void setValue(String value) {
-		this.value = value;
-	}
-	
-	/**
 	 * evaluates the rule to determine if it is satisfied
 	 *
 	 * @param val the element to evaluate the rule against
@@ -60,7 +49,7 @@ public abstract class Rule extends LookseeObject {
 	 *
 	 * precondition: val != null
 	 */
-	abstract Boolean evaluate(Element val);
+	public abstract Boolean evaluate(Element val);
 
 	/**
 	 * Generates a key for the rule

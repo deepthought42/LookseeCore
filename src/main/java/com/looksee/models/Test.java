@@ -79,8 +79,17 @@ public class Test extends LookseeObject {
 	 * @param name the name of the test
 	 * @param is_running whether the test is running
 	 * @param spansMultipleDomains whether the test spans multiple domains
-	 * @throws MalformedURLException
+	 * @throws MalformedURLException if the URL is malformed
 	 * 
+	 * precondition: path_keys != null
+	 * precondition: !path_keys.isEmpty()
+	 * precondition: path_objects != null
+	 * precondition: !path_objects.isEmpty()
+	 * precondition: result != null
+	 * precondition: name != null
+	 * precondition: !name.isEmpty()
+	 * precondition: is_running != null
+	 * precondition: spansMultipleDomains != null
 	 * @throws IllegalArgumentException if path_keys is null or empty
 	 * @throws IllegalArgumentException if path_objects is null or empty
 	 */
@@ -94,6 +103,7 @@ public class Test extends LookseeObject {
 		assert !path_keys.isEmpty();
 		assert path_objects != null;
 		assert !path_objects.isEmpty();
+		assert result != null;
 		
 		setPathKeys(path_keys);
 		setPathObjects(path_objects);
@@ -270,9 +280,13 @@ public class Test extends LookseeObject {
 	 * 
 	 * @param test the test to clone
 	 * @return the cloned test
-	 * @throws MalformedURLException
+	 * @throws MalformedURLException if the URL is malformed
+	 *
+	 * precondition: test != null
 	 */
 	public static Test clone(Test test) throws MalformedURLException{
+		assert test != null;
+		
 		Test clone_test = new Test(new ArrayList<String>(test.getPathKeys()),
 									new ArrayList<LookseeObject>(test.getPathObjects()),
 									test.getResult(), 

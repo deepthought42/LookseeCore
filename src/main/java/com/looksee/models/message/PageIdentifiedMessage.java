@@ -17,6 +17,14 @@ public class PageIdentifiedMessage extends DomainAuditMessage {
 	private long pageId;
 	private String url;
 		
+	/**
+	 * Constructor for {@link PageIdentifiedMessage}
+	 *
+	 * @param account_id the id of the account
+	 * @param domain_audit_record_id the id of the domain audit record
+	 * @param page_id the id of the page
+	 * @param url the url of the page
+	 */
 	public PageIdentifiedMessage(
 			long account_id,
 			long domain_audit_record_id,

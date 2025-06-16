@@ -37,10 +37,13 @@ public class ColorUtils {
 	
 	/**
 	 * Reviews Text color contrast with relation to text size and weight to determine if it meets WCAG 2.1 color contrast guidelines 
-	 * @param contrast
-	 * @param font_size
-	 * @param is_bold
-	 * @return
+	 * @param contrast the contrast
+	 * @param font_size the font size
+	 * @param is_bold true if the text is bold, false otherwise
+	 * @return true if the text color contrast meets WCAG 2.1 color contrast guidelines, false otherwise
+	 *
+	 * precondition: contrast >= 0
+	 * precondition: font_size >= 0.0
 	 */
 	public static boolean textContrastMeetsWcag21AAA(double contrast, double font_size, boolean is_bold) {
 		return (font_size >= 18 || (font_size >= 14 && is_bold) && contrast >= 4.5) 
@@ -174,8 +177,8 @@ public class ColorUtils {
 	 * precondition: background_color != null
 	 */
 	public static ColorContrastRecommendation findCompliantNonTextBackgroundColor(ColorData element_color,
-																				  ColorData background_color,
-																				  boolean is_dark_theme) {
+																				ColorData background_color,
+																				boolean is_dark_theme) {
 		assert element_color != null;
 		assert background_color != null;
 		
