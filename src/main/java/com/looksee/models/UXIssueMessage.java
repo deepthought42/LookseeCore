@@ -25,66 +25,33 @@ import lombok.Setter;
 public class UXIssueMessage extends LookseeObject {
 	private static Logger log = LoggerFactory.getLogger(UXIssueMessage.class);
 
-	/**
-	 * The title of the UX issue message
-	 */
 	private String title;
-
-	/**
-	 * The description of the UX issue message
-	 */
 	private String description;
-
-	/**
-	 * The why it matters of the UX issue message
-	 */
 	private String whyItMatters;
-
-	/**
-	 * The recommendation of the UX issue message
-	 */
 	private String recommendation;
-	
-	/**
-	 * The priority of the UX issue message
-	 */
 	private String priority;
-	
-	/**
-	 * The type of the UX issue message
-	 */
 	private String type;
-	
-	/**
-	 * The category of the UX issue message
-	 */
 	private String category;
-	
-	/**
-	 * The WCAG compliance of the UX issue message
-	 */
 	private String wcagCompliance;
-	
-	/**
-	 * The labels of the UX issue message
-	 */
 	private Set<String> labels;
-	
-	/**
-	 * The points of the UX issue message
-	 */
 	private int points;
-	
-	/**
-	 * The max points of the UX issue message
-	 */
 	private int maxPoints;
-	
-	/**
-	 * The score of the UX issue message
-	 */
 	private int score;
 	
+	/**
+	 * constructor for the ux issue message
+	 * @param priority {@link Priority}
+	 * @param description description of the ux issue message
+	 * @param type {@link ObservationType}
+	 * @param category {@link AuditCategory}
+	 * @param wcagCompliance String with the WCAG compliance requirement
+	 * @param labels labels of the ux issue message
+	 * @param whyItMatters why it matters
+	 * @param title title of the ux issue message
+	 * @param points points of the ux issue message
+	 * @param maxPoints max points of the ux issue message
+	 * @param recommendation recommendation of the ux issue message
+	 */
 	public UXIssueMessage(
 			Priority priority,
 			String description,
