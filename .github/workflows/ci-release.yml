@@ -75,7 +75,7 @@ jobs:
           distribution: 'adopt'
           java-version: '17'
       
-      - name: Test with Maven
+      - name: Build with Maven
         run: mvn install -DskipTests
 
       - name: Create GitHub Release
@@ -84,6 +84,6 @@ jobs:
           tag_name: v${{ env.VERSION }}
           name: Release v${{ env.VERSION }}
           body_path: CHANGELOG.md
-          files: looksee-core-${{ env.VERSION }}.jar
+          files: core-${{ env.VERSION }}.jar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
