@@ -1,19 +1,18 @@
 name: Build and Release
 
 on:
-  pull_request:
+  push:
     branches:
       - main
-    types: [closed]
     paths-ignore:
       - '**.md'
       - 'docs/**'
+  workflow_dispatch:
 
 jobs:
   test:
     runs-on: ubuntu-latest
-    # This job runs only when a PR is merged to main
-    if: github.event.action == 'closed' && github.event.pull_request.merged == true
+    # This job runs only when code is pushed to main
 
     steps:
       - name: Checkout code
@@ -37,8 +36,7 @@ jobs:
 
   bump-version:
     needs: test
-    # Run only when PR is merged to main
-    if: github.event.action == 'closed' && github.event.pull_request.merged == true
+    # Run only when code is pushed to main
     runs-on: ubuntu-latest
     outputs:
       VERSION: ${{ steps.get_version.outputs.VERSION }}
@@ -80,8 +78,7 @@ jobs:
 
   github-release:
     needs: bump-version
-    # Run only when PR is merged to main
-    if: github.event.action == 'closed' && github.event.pull_request.merged == true
+    # Run only when code is pushed to main
     runs-on: ubuntu-latest
     permissions:
       contents: write
