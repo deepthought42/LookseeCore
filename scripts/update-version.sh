@@ -19,10 +19,10 @@ if [ "$UPDATED_VERSION" != "$NEW_VERSION" ]; then
   exit 1
 fi
 
-# Commit the version changes to master
-echo "📝 Committing version changes to master"
+# Commit the version changes to main
+echo "📝 Committing version changes to main"
 git add pom.xml
 git commit -m "bump version"
 git push origin main
 
-echo "🎉 Version bump completed and committed to master"
+echo "🎉 Version bump completed and committed to main"
