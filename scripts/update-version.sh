@@ -23,6 +23,6 @@ fi
 echo "📝 Committing version changes to master"
 git add pom.xml
 git commit -m "bump version"
-git push origin master
+git push origin main
 
 echo "🎉 Version bump completed and committed to master"
