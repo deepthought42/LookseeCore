@@ -18,3 +18,11 @@ if [ "$UPDATED_VERSION" != "$NEW_VERSION" ]; then
   echo "❌ Version update failed!"
   exit 1
 fi
+
+# Commit the version changes to master
+echo "📝 Committing version changes to master"
+git add pom.xml
+git commit -m "bump version"
+git push origin master
+
+echo "🎉 Version bump completed and committed to master"
