@@ -19,6 +19,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.pusher.rest.Pusher;
+import com.looksee.models.dto.AuditUpdateDto;
 
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Value;
@@ -249,5 +250,26 @@ public class MessageBroadcaster {
 
 		String domain_dto_json = mapper.writeValueAsString(domain_dto);
 		pusher.trigger(user_id, "audit-record", domain_dto_json);
+	}
+
+	/**
+	 * Sends {@linkplain AuditUpdateDto} to user via Pusher
+	 * @param channel_id the channel id to send the audit update to
+	 * @param audit_update the audit update to send
+	 * @throws JsonProcessingException if there is an error converting the audit update to a JSON string
+	 *
+	 * precondition: channel_id != null
+	 * precondition: channel_id is not empty
+	 * precondition: audit_update != null
+	 */
+	public void sendAuditUpdate(String channel_id, AuditUpdateDto audit_update) throws JsonProcessingException {
+		assert channel_id != null;
+		assert !channel_id.isEmpty();
+		assert audit_update != null;
+		
+		ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        String audit_record_json = mapper.writeValueAsString(audit_update);
+		pusher.trigger(channel_id, "audit-progress", audit_record_json);
 	}
 }
