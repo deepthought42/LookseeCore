@@ -62,6 +62,8 @@ jobs:
     # Run only when PR is merged to main
     if: github.event.action == 'closed' && github.event.pull_request.merged == true
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     env:
       VERSION: ${{ needs.bump-version.outputs.VERSION }}
 
