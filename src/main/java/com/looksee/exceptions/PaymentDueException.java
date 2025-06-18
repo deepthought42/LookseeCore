@@ -1,4 +1,4 @@
-package com.looksee.api.exception;
+package com.looksee.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
