@@ -41,7 +41,6 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
-      issues: read
     outputs:
       VERSION: ${{ steps.get_version.outputs.VERSION }}
 
