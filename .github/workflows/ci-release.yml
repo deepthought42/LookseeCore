@@ -38,6 +38,10 @@ jobs:
     needs: test
     # Run only when code is pushed to main
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: read
     outputs:
       VERSION: ${{ steps.get_version.outputs.VERSION }}
 
