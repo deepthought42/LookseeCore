@@ -89,7 +89,9 @@ jobs:
 
       - name: Extract new version from pom.xml
         id: get_version
-        run: echo "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> "$GITHUB_OUTPUT"
+        run: |
+          echo "--- $(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)"
+          echo "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> "$GITHUB_OUTPUT"
 
   github-release:
     needs: bump-version
@@ -118,7 +120,9 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
       
       - name: Build with Maven
-        run: mvn install -DskipTests
+        run: |
+          echo "--- $(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)"
+          mvn install -DskipTests
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
@@ -126,6 +130,6 @@ jobs:
           tag_name: v${{ env.VERSION }}
           name: Release v${{ env.VERSION }}
           body_path: CHANGELOG.md
-          files: target/core-${{ env.VERSION }}.jar
+          files: core-${{ env.VERSION }}.jar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
