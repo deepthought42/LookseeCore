@@ -123,6 +123,8 @@ jobs:
         run: |
           echo "--- $(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)"
           mvn install -DskipTests
+          echo "--- $(ls -la)"
+          echo "--- $(ls -la target)"
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
