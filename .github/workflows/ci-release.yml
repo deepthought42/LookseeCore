@@ -71,8 +71,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           npx semantic-release --dry-run > release.log
+          echo "release.log: $(cat release.log)"
           version=$(grep -oP 'next release version is \K[0-9]+\.[0-9]+\.[0-9]+' release.log)
           echo "version=$version" >> $GITHUB_OUTPUT
+          echo "Next version will be: $version"
 
       - name: Update pom.xml with new version
         run: |
