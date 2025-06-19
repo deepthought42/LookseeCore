@@ -99,6 +99,7 @@ jobs:
         id: semantic
         run: |
           npx semantic-release --dry-run > release.log
+          echo "--- $(cat release.log)"
           version=$(grep -oP 'next release version is \K[0-9]+\.[0-9]+\.[0-9]+' release.log)
           echo "version=$version" >> $GITHUB_OUTPUT
 
