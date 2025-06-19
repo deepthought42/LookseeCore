@@ -97,6 +97,8 @@ jobs:
 
       - name: Run semantic-release to get next version
         id: semantic
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           npx semantic-release --dry-run > release.log
           echo "--- $(cat release.log)"
