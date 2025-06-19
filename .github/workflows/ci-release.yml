@@ -72,6 +72,8 @@ jobs:
       issues: read
     outputs:
       VERSION: ${{ steps.get_version.outputs.VERSION }}
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - name: Restore cached code
@@ -100,8 +102,6 @@ jobs:
 
       - name: Run semantic-release to get next version
         id: semantic
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           npx semantic-release --dry-run > release.log
           version=$(grep -oP 'next release version is \K[0-9]+\.[0-9]+\.[0-9]+' release.log)
