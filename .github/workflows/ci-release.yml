@@ -120,7 +120,9 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
       
       - name: Build with Maven
-        run: mvn install -DskipTests
+        run: |
+          echo "--- $(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)"
+          mvn install -DskipTests
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
