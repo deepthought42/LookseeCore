@@ -145,6 +145,6 @@ jobs:
           tag_name: v${{ steps.semantic.outputs.version }}
           name: Release v${{ steps.semantic.outputs.version }}
           body_path: CHANGELOG.md
-          files: core-${{ steps.semantic.outputs.version }}.jar
+          files: target/core-${{ steps.semantic.outputs.version }}.jar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
