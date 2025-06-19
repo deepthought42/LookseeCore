@@ -86,6 +86,7 @@ jobs:
           git add pom.xml
           git commit -m "ci: bump pom.xml to version ${{ steps.semantic.outputs.version }} [skip ci]" || echo "No changes to commit"
           git push origin main
+          git log -n 1
 
       - name: Extract new version from pom.xml
         id: get_version
