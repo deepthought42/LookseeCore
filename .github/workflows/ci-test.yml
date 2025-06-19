@@ -89,6 +89,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           npx semantic-release --dry-run > release.log
+          version=$(grep -oP 'next release version is \K[0-9]+\.[0-9]+\.[0-9]+' release.log)
 
       - name: Extract new version from pom.xml
         id: get_version
