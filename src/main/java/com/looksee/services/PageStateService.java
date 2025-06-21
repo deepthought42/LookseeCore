@@ -1,15 +1,5 @@
 package com.looksee.services;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.looksee.models.Audit;
 import com.looksee.models.ElementState;
 import com.looksee.models.PageAuditRecord;
@@ -20,9 +10,16 @@ import com.looksee.models.enums.ElementClassification;
 import com.looksee.models.repository.AuditRecordRepository;
 import com.looksee.models.repository.ElementStateRepository;
 import com.looksee.models.repository.PageStateRepository;
-
 import io.github.resilience4j.retry.annotation.Retry;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 import lombok.NoArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Service layer object for interacting with {@link PageState} database layer

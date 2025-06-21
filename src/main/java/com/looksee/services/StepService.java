@@ -1,12 +1,5 @@
 package com.looksee.services;
 
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.looksee.models.ElementState;
 import com.looksee.models.PageState;
 import com.looksee.models.journeys.LandingStep;
@@ -18,8 +11,12 @@ import com.looksee.models.repository.LoginStepRepository;
 import com.looksee.models.repository.PageStateRepository;
 import com.looksee.models.repository.SimpleStepRepository;
 import com.looksee.models.repository.StepRepository;
-
 import io.github.resilience4j.retry.annotation.Retry;
+import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Contains business logic for interacting with and managing steps

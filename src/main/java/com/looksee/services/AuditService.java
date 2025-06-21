@@ -1,21 +1,5 @@
 package com.looksee.services;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import org.apache.commons.collections4.IterableUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.looksee.models.Audit;
 import com.looksee.models.ElementState;
 import com.looksee.models.ElementStateIssueMessage;
@@ -29,9 +13,22 @@ import com.looksee.models.enums.AuditName;
 import com.looksee.models.enums.AuditSubcategory;
 import com.looksee.models.enums.ObservationType;
 import com.looksee.models.repository.AuditRepository;
-
 import io.github.resilience4j.retry.annotation.Retry;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.NoArgsConstructor;
+import org.apache.commons.collections4.IterableUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Contains business logic for interacting with and managing audits

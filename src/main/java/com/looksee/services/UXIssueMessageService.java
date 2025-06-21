@@ -1,19 +1,18 @@
 package com.looksee.services;
 
+import com.looksee.models.ColorContrastIssueMessage;
+import com.looksee.models.ElementState;
+import com.looksee.models.UXIssueMessage;
+import com.looksee.models.enums.AuditName;
+import com.looksee.models.repository.ColorContrastIssueMessageRepository;
+import com.looksee.models.repository.UXIssueMessageRepository;
+import io.github.resilience4j.retry.annotation.Retry;
 import java.util.List;
-
+import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.looksee.models.ColorContrastIssueMessage;
-import com.looksee.models.ElementState;
-import com.looksee.models.UXIssueMessage;
-import com.looksee.models.repository.ColorContrastIssueMessageRepository;
-import com.looksee.models.repository.UXIssueMessageRepository;
-
-import io.github.resilience4j.retry.annotation.Retry;
 
 /**
  * Contains business logic for interacting with and managing UX issue messages
@@ -184,5 +183,32 @@ public class UXIssueMessageService {
 		assert page_id > 0;
 		
 		issue_message_repo.addPage(issue_id, page_id);
+	}
+
+	/**
+	 * Find {@link UXIssueMessage} by audit name and element id
+	 * @param audit_name the audit name
+	 * @param element_id the id of the element
+	 * @return the {@link UXIssueMessage}
+	 *
+	 * precondition: audit_name != null
+	 * precondition: element_id > 0
+	 */
+	public Set<UXIssueMessage> findByNameForElement(AuditName audit_name, long element_id) {
+		return issue_message_repo.findByNameForElement(audit_name, element_id);
+	}
+
+	/**
+	 * Check if an audit has been executed for an element
+	 * @param audit_name the audit name
+	 * @param element_id the id of the element
+	 * @return true if the audit has been executed, otherwise false
+	 *
+	 * precondition: audit_name != null
+	 * precondition: element_id > 0
+	 */
+	public boolean hasAuditBeenExecuted(AuditName audit_name, long element_id) {
+		int count = issue_message_repo.getNumberOfUXIssuesForElement(audit_name, element_id);
+		return count > 0;
 	}
 }
