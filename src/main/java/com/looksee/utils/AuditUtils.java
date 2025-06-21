@@ -1,29 +1,37 @@
 package com.looksee.utils;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import org.apache.commons.collections4.SetUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.looksee.models.Audit;
 import com.looksee.models.AuditRecord;
 import com.looksee.models.AuditScore;
+import com.looksee.models.CIEColorSpace;
+import com.looksee.models.ColorData;
+import com.looksee.models.ColorPaletteIssueMessage;
+import com.looksee.models.DesignSystem;
 import com.looksee.models.PageAuditRecord;
+import com.looksee.models.PaletteColor;
 import com.looksee.models.ReadingComplexityIssueMessage;
+import com.looksee.models.Score;
 import com.looksee.models.SentenceIssueMessage;
 import com.looksee.models.StockImageIssueMessage;
 import com.looksee.models.UXIssueMessage;
 import com.looksee.models.enums.AuditCategory;
 import com.looksee.models.enums.AuditName;
 import com.looksee.models.enums.AuditSubcategory;
-
+import com.looksee.models.enums.ColorScheme;
+import com.looksee.models.enums.Priority;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.NoArgsConstructor;
+import org.apache.commons.collections4.SetUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Utility class for auditing
@@ -798,7 +806,6 @@ public class AuditUtils {
 		Set<String> categories = new HashSet<>();
 		categories.add(AuditCategory.AESTHETICS.toString());
 		
-		
 		Set<UXIssueMessage> messages = new HashSet<>();
 		if(!non_compliant_colors.isEmpty()) {
 			String title = "Page colors don't conform to the brand";
@@ -808,7 +815,6 @@ public class AuditUtils {
 									" palette. However, keeping a cohesive color palette allows you to create" + 
 									" a webpage that is easy for everyone to read and interact with ";
 			
-			//for(String color : non_compliant_colors.keySet()) {
 			UXIssueMessage palette_issue_message = new ColorPaletteIssueMessage(
 																	Priority.HIGH,
 																	description,
@@ -817,7 +823,7 @@ public class AuditUtils {
 																	palette,
 																	AuditCategory.AESTHETICS,
 																	labels,
-																	ada_compliance, 
+																	ada_compliance,
 																	title,
 																	0,
 																	1);
@@ -839,7 +845,7 @@ public class AuditUtils {
 																	palette,
 																	AuditCategory.AESTHETICS,
 																	labels,
-																	ada_compliance, 
+																	ada_compliance,
 																	title,
 																	1,
 																	1);
@@ -1347,5 +1353,4 @@ public class AuditUtils {
 		
 		return color.getGreen();
 	}
-	
 }

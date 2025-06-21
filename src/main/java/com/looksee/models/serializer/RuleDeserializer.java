@@ -1,10 +1,5 @@
 package com.looksee.models.serializer;
 
-import java.io.IOException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.ObjectCodec;
@@ -13,8 +8,10 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.looksee.models.rules.Rule;
 import com.looksee.models.rules.RuleFactory;
-
+import java.io.IOException;
 import lombok.NoArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A deserializer for {@link Rule} objects
@@ -32,8 +29,6 @@ public class RuleDeserializer extends JsonDeserializer<Rule> {
 		JsonNode node = oc.readTree(jp);
 		final String type = node.get("type").asText();
 		final String value = node.get("value").asText();
-		log.warn("type :: "+type);
-		log.warn("value  ::   " + value);
 		return RuleFactory.build(type, value);
 	}
 }
