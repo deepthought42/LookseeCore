@@ -911,6 +911,21 @@ public class BrowserUtils {
 	
 	/**
 	 * Checks if an element is larger than the viewport
+	 * @param element_size the size of the element
+	 * @param viewportWidth the width of the viewport
+	 * @param viewportHeight the height of the viewport
+	 * @return true if the element is larger than the viewport, otherwise false
+	 *
+	 * precondition: element_size != null
+	 * precondition: viewportWidth > 0
+	 * precondition: viewportHeight > 0
+	 */
+	public static boolean isLargerThanViewport(Dimension element_size, int viewportWidth, int viewportHeight) {
+		return element_size.getWidth() > viewportWidth || element_size.getHeight() > viewportHeight;
+	}
+
+	/**
+	 * Checks if an element is larger than the viewport
 	 * @param element the element to check
 	 * @param viewportWidth the width of the viewport
 	 * @param viewportHeight the height of the viewport

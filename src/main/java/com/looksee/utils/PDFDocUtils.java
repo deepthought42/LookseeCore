@@ -1,18 +1,16 @@
 package com.looksee.utils;
 
+import com.looksee.models.Audit;
+import com.looksee.models.Score;
+import com.looksee.models.enums.AuditSubcategory;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import com.looksee.models.Audit;
-import com.looksee.models.Score;
-import com.looksee.models.enums.AuditSubcategory;
 
 /**
  * Utility class for PDF document operations

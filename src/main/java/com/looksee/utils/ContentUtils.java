@@ -1,9 +1,8 @@
 package com.looksee.utils;
 
+import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import lombok.NoArgsConstructor;
 
 /**
  * Utility class for content-related operations.
@@ -201,5 +200,13 @@ public class ContentUtils {
 			return "difficult";
 		}
 		return "unknown";
+	}
+
+	public static void main(String[] args) {
+		System.out.println(getReadingGradeLevel(90));
+		System.out.println(getReadingDifficultyRating(90));
+		System.out.println(getReadingDifficultyRatingByEducationLevel(90, "HS"));
+		System.out.println(getReadingDifficultyRatingByEducationLevel(90, "College"));
+		System.out.println(getReadingDifficultyRatingByEducationLevel(90, "Advanced"));
 	}
 }

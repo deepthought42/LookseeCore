@@ -1,5 +1,9 @@
 package com.looksee.utils;
 
+import com.looksee.models.ColorData;
+import com.looksee.models.ColorUsageStat;
+import com.looksee.models.ElementState;
+import com.looksee.models.recommend.ColorContrastRecommendation;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -8,18 +12,10 @@ import java.net.URL;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import javax.imageio.ImageIO;
-
+import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.looksee.models.ColorData;
-import com.looksee.models.ColorUsageStat;
-import com.looksee.models.ElementState;
-import com.looksee.models.recommend.ColorContrastRecommendation;
-
-import lombok.NoArgsConstructor;
 
 /**
  * Utility class for color-related operations.

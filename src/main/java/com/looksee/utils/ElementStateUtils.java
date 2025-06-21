@@ -1,20 +1,17 @@
 package com.looksee.utils;
 
+import com.looksee.models.ColorData;
+import com.looksee.models.ElementState;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
-
+import lombok.NoArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
-
-import com.looksee.models.ColorData;
-import com.looksee.models.ElementState;
-
-import lombok.NoArgsConstructor;
 
 /**
  * Utility class for filtering and enriching element states.
