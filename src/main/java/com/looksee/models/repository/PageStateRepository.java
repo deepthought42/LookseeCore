@@ -1,19 +1,18 @@
 package com.looksee.models.repository;
 
+import com.looksee.models.Audit;
+import com.looksee.models.ElementState;
+import com.looksee.models.PageAuditRecord;
+import com.looksee.models.PageState;
+import com.looksee.models.Screenshot;
+import io.github.resilience4j.retry.annotation.Retry;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
-import com.looksee.models.Audit;
-import com.looksee.models.PageState;
-import com.looksee.models.Screenshot;
-
-import io.github.resilience4j.retry.annotation.Retry;
 
 /**
  * Repository interface for Spring Data Neo4j to handle interactions with
@@ -360,4 +359,42 @@ public interface PageStateRepository extends Neo4jRepository<PageState, Long> {
 	 */
 	@Query("MATCH (page_audit:PageAuditRecord)-[]->(page_state:PageState) WHERE id(page_audit)=$page_audit_id RETURN page_state LIMIT 1")
 	public PageState getPageStateForAuditRecord(@Param("page_audit_id") long page_audit_id);
+
+	/**
+	 * Retrieves the link element states for a page state.
+	 *
+	 * @param page_state_id the ID of the page state
+	 * @return the link element states
+	 */
+	@Query("MATCH (p:PageState)-[:HAS]->(e:ElementState{name:'a'}) WHERE id(p)=$page_state_id RETURN DISTINCT e")
+	public List<ElementState> getLinkElementStates(@Param("page_state_id") long page_state_id);
+
+	/**
+	 * Retrieves the visible leaf elements for a page state.
+	 *
+	 * @param page_state_key the key of the page state
+	 * @return the visible leaf elements
+	 */
+	@Query("MATCH (p:PageState{key:$page_state_key})-[:HAS]->(e:ElementState{classification:'LEAF'}) where e.visible=true RETURN e")
+	public List<ElementState> getVisibleLeafElements(@Param("page_state_key") String page_state_key);
+
+	/**
+	 * Retrieves the element state for a page state.
+	 *
+	 * @param page_id the ID of the page state
+	 * @param element_id the ID of the element state
+	 * @return the element state
+	 */
+	@Query("MATCH (p:PageState)-[:HAS]->(element:ElementState) WHERE id(p)=$page_id AND id(element)=$element_id RETURN element ORDER BY p.created_at DESC LIMIT 1")
+	public Optional<ElementState> getElementState(@Param("page_id") long page_id, @Param("element_id") long element_id);
+
+	/**
+	 * Retrieves the page audit record for a page state.
+	 *
+	 * @param id the ID of the page state
+	 * @return the page audit record
+	 */
+	@Query("MATCH (a:PageAuditRecord)-[:FOR]->(ps:PageState) WHERE id(ps)=$id RETURN a ORDER BY a.created_at DESC LIMIT 1")
+	public PageAuditRecord getAuditRecord(@Param("id") long id);
+
 }

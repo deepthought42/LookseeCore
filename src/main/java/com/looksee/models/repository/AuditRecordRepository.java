@@ -1,14 +1,5 @@
 package com.looksee.models.repository;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
-import org.springframework.data.neo4j.repository.Neo4jRepository;
-import org.springframework.data.neo4j.repository.query.Query;
-import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
-
 import com.looksee.models.Audit;
 import com.looksee.models.AuditRecord;
 import com.looksee.models.DesignSystem;
@@ -17,8 +8,14 @@ import com.looksee.models.Label;
 import com.looksee.models.PageAuditRecord;
 import com.looksee.models.PageState;
 import com.looksee.models.UXIssueMessage;
-
 import io.github.resilience4j.retry.annotation.Retry;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import org.springframework.data.neo4j.repository.Neo4jRepository;
+import org.springframework.data.neo4j.repository.query.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 /**
  * Repository interface for Spring Data Neo4j to handle interactions with {@link Audit} objects.
@@ -569,4 +566,14 @@ public interface AuditRecordRepository extends Neo4jRepository<AuditRecord, Long
 	 */
 	@Query("MATCH (domain_audit:DomainAuditRecord)-[:CONTAINS]->(map:DomainMap) WHERE id(domain_audit)=$audit_record_id MATCH(map)-[:CONTAINS]->(journey:Journey) RETURN COUNT(journey)")
 	public int getNumberOfJourneys(@Param("audit_record_id") long audit_record_id);
+
+	/**
+	 * Finds the audit record for a page by ID.
+	 *
+	 * @param audit_record_id the ID of the audit record
+	 * @param page_id the ID of the page
+	 * @return the audit record if found, null otherwise
+	 */
+	@Query("MATCH (audit_record:DomainAuditRecord) WHERE id(audit_record)=$audit_record_id MATCH (audit_record)-[:FOR]->(page:PageState) WHERE id(page)=$page_id RETURN audit_record")
+	public AuditRecord findPageWithId(@Param("audit_record_id") long audit_record_id, @Param("page_id") long page_id);
 }

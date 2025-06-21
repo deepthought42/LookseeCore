@@ -1,14 +1,5 @@
 package com.looksee.models.repository;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
-import org.springframework.data.neo4j.repository.Neo4jRepository;
-import org.springframework.data.neo4j.repository.query.Query;
-import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
-
 import com.looksee.models.AuditRecord;
 import com.looksee.models.DesignSystem;
 import com.looksee.models.Domain;
@@ -22,8 +13,14 @@ import com.looksee.models.TestAction;
 import com.looksee.models.TestRecord;
 import com.looksee.models.TestUser;
 import com.looksee.models.journeys.Redirect;
-
 import io.github.resilience4j.retry.annotation.Retry;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import org.springframework.data.neo4j.repository.Neo4jRepository;
+import org.springframework.data.neo4j.repository.query.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 /**
  * Repository interface for Spring Data Neo4j to handle interactions with
@@ -383,5 +380,14 @@ public interface DomainRepository extends Neo4jRepository<Domain, Long> {
 	 */
 	@Query("MATCH(account:Account)-[]-(d:Domain{url:$url}) MATCH (d)-[:HAS_TEST]->(t:Test) MATCH (t)-[:HAS_PATH_OBJECT]->(a:Action) WHERE id(account)=$account_id RETURN a")
 	public Set<TestAction> getActions(@Param("account_id") long account_id, @Param("url") String url);
+
+	/**
+	 * Finds the most recent audit record for a domain
+	 *
+	 * @param url the URL of the domain
+	 * @return the most recent audit record
+	 */
+	@Query("MATCH (d:Domain{url:$url})-[]->(audit:DomainAuditRecord) RETURN audit ORDER BY audit.created_at DESC LIMIT 1")
+	public Optional<DomainAuditRecord> getMostRecentAuditRecord(@Param("url") String url);
 
 }

@@ -1,17 +1,15 @@
 package com.looksee.models.repository;
 
+import com.looksee.models.Audit;
+import com.looksee.models.ElementState;
+import com.looksee.models.UXIssueMessage;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
-import com.looksee.models.Audit;
-import com.looksee.models.ElementState;
-import com.looksee.models.UXIssueMessage;
 
 
 /**
@@ -356,5 +354,5 @@ public interface AuditRepository extends Neo4jRepository<Audit, Long> {
 	 * @return the audit if found, null otherwise
 	 */
 	@Query("MATCH (p:PageState{key:$page_state_key})-[*]->(a:Audit{subcategory:$subcategory}) RETURN a")
-	public Audit findAuditBySubCategory(@Param("subcategory") String subcategory, @Param("page_state_key") String page_state_key);	
+	public Audit findAuditBySubCategory(@Param("subcategory") String subcategory, @Param("page_state_key") String page_state_key);
 }
