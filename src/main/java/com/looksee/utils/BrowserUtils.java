@@ -1,6 +1,9 @@
 package com.looksee.utils;
 
+import com.google.cloud.storage.Storage;
+import com.google.cloud.storage.StorageOptions;
 import com.looksee.gcp.GoogleCloudStorage;
+import com.looksee.gcp.GoogleCloudStorageProperties;
 import com.looksee.models.Browser;
 import com.looksee.models.ColorData;
 import com.looksee.models.Domain;
@@ -20,6 +23,7 @@ import java.net.SocketTimeoutException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.security.NoSuchAlgorithmException;
 import java.security.cert.Certificate;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -49,8 +53,6 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-
 
 /**
  * Contains utility methods for browser operations
@@ -58,9 +60,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 @NoArgsConstructor
 public class BrowserUtils {
 	private static Logger log = LoggerFactory.getLogger(BrowserUtils.class);
-	
-	@Autowired
-	private GoogleCloudStorage storage;
 	
 	/**
 	 * Sanitizes a url
@@ -1327,7 +1326,7 @@ public class BrowserUtils {
 	 */
 	public static PageLoadAnimation getLoadingAnimation(Browser browser,
 														String host
-	) throws IOException {
+	) throws IOException, NoSuchAlgorithmException {
 		assert browser != null;
 		assert host != null;
 		assert !host.isEmpty();
@@ -1342,6 +1341,8 @@ public class BrowserUtils {
 		String last_checksum = null;
 		String new_checksum = null;
 
+		String bucketName = "web-images";
+		String publicUrl = "https://storage.googleapis.com/web-images";
 		do{
 			//get element screenshot
 			BufferedImage screenshot = browser.getViewportScreenshot();
@@ -1358,6 +1359,12 @@ public class BrowserUtils {
 				image_checksums.add(new_checksum);
 				animated_state_checksum_hash.put(new_checksum, Boolean.TRUE);
 				last_checksum = new_checksum;
+				GoogleCloudStorageProperties properties = new GoogleCloudStorageProperties();
+				properties.setBucketName(bucketName);
+				properties.setPublicUrl(publicUrl);
+				Storage storage_options = StorageOptions.getDefaultInstance().getService();
+
+				GoogleCloudStorage storage = new GoogleCloudStorage( storage_options, properties);
 				image_urls.add(storage.saveImage(screenshot,
 												host,
 												new_checksum,
