@@ -311,6 +311,17 @@ public interface AuditRepository extends Neo4jRepository<Audit, Long> {
 	public Optional<Audit> getAuditForAuditRecord(@Param("audit_record_id") long audit_record_id, @Param("audit_id") long audit_id);
 
 	/**
+	 * Retrieves an audit by its ID for a specific audit record.
+	 *
+	 * @param audit_record_id the ID of the audit record
+	 * @param audit_key the key of the audit
+	 * @return Optional containing the audit if found
+	 */
+	@Query("MATCH (ar:PageAuditRecord)-[:HAS]->(a:Audit{key:$audit_key}) WHERE id(ar)=$audit_record_id RETURN a")
+	public Optional<Audit> getAuditForAuditRecord(@Param("audit_record_id") long audit_record_id, @Param("audit_key") String audit_key);
+
+
+	/**
 	 * Retrieves all audits for a page audit record.
 	 *
 	 * @param audit_record_id the ID of the page audit record
