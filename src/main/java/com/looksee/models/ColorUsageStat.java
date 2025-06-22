@@ -12,29 +12,10 @@ import lombok.Setter;
 @Setter
 public class ColorUsageStat {
 
-	/**
-	 * The red value of the color usage stat
-	 */
 	private float red;
-
-	/**
-	 * The green value of the color usage stat
-	 */
 	private float green;
-
-	/**
-	 * The blue value of the color usage stat
-	 */
 	private float blue;
-
-	/**
-	 * The pixel percent of the color usage stat
-	 */
 	private double pixelPercent;
-
-	/**
-	 * The score of the color usage stat
-	 */
 	private float score;
 	
 	/**

@@ -1,19 +1,17 @@
 package com.looksee.models;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
-
-import org.springframework.data.neo4j.core.schema.Node;
-
 import com.looksee.models.enums.AuditLevel;
 import com.looksee.models.enums.AuditName;
 import com.looksee.models.enums.ExecutionStatus;
-
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.neo4j.core.schema.Node;
 
 /**
  * Record detailing an set of {@link Audit audits} and the outcomes of those
@@ -24,86 +22,32 @@ import lombok.Setter;
 @Node
 public class AuditRecord extends LookseeObject {
 	
-	/**
-	 * The status of the audit record
-	 */
 	private String status;
-
-	/**
-	 * The level of the audit record
-	 */
 	private String level;
-
-	/**
-	 * The url of the audit record
-	 */
 	private String url;
 
-	/**
-	 * The status message of the audit record
-	 */
 	private String statusMessage;
-	
-	/**
-	 * The target user age of the audit record
-	 */
 	private String targetUserAge;
 
-	/**
-	 * The start time of the audit record
-	 */
 	private LocalDateTime startTime;
-	
-	/**
-	 * The end time of the audit record
-	 */
 	private LocalDateTime endTime;
 	
-	/**
-	 * The content audit progress of the audit record
-	 */
 	private double contentAuditProgress;
-	
-	/**
-	 * The content audit score of the audit record
-	 */
 	private double contentAuditScore;
 
-	/**
-	 * The info architecture audit progress of the audit record
-	 */
 	private double infoArchitectureAuditProgress;
-	
-	/**
-	 * The aesthetic audit progress of the audit record
-	 */
 	private double infoArchScore;
 	
-	/**
-	 * The aesthetic audit progress of the audit record
-	 */
 	private double aestheticAuditProgress;
-	
-	/**
-	 * The aesthetic score of the audit record
-	 */
 	private double aestheticScore;
 
-	/**
-	 * The data extraction progress of the audit record
-	 */
 	private double dataExtractionProgress;
-	
-	/**
-	 * The audit labels of the audit record
-	 */
 	private Set<AuditName> auditLabels;
 
 	//DESIGN SYSTEM VALUES
-	/**
-	 * The colors of the audit record
-	 */
 	private List<String> colors;
+	private String targetUserEducation;
+
 	
 	/**
 	 * Constructs an empty {@link AuditRecord}
@@ -122,6 +66,9 @@ public class AuditRecord extends LookseeObject {
 		setAestheticScore(0.0);
 		setDataExtractionProgress(0.0);
 		setColors(new ArrayList<String>());
+		setTargetUserEducation("");
+		setTargetUserAge("");
+		setAuditLabels(new HashSet<>());
 	}
 	
 	/**
@@ -175,6 +122,9 @@ public class AuditRecord extends LookseeObject {
 		setEndTime(endTime);
 		setColors(new ArrayList<String>());
 		setUrl(url);
+		setTargetUserEducation("");
+		setTargetUserAge("");
+		setAuditLabels(new HashSet<>());
 	}
 
 	/**
