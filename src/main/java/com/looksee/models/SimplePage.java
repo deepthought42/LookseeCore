@@ -13,44 +13,13 @@ import lombok.Setter;
 @NoArgsConstructor
 public class SimplePage {
 
-	/**
-	 * The id of the simple page
-	 */
 	private long id;
-
-	/**
-	 * The url of the simple page
-	 */
 	private String url;
-
-	/**
-	 * The screenshot url of the simple page
-	 */
 	private String screenshotUrl;
-
-	/**
-	 * The full page screenshot url of the simple page
-	 */
 	private String fullPageScreenshotUrl;
-
-	/**
-	 * The width of the simple page
-	 */
 	private long width;
-
-	/**
-	 * The height of the simple page
-	 */
 	private long height;
-
-	/**
-	 * The html source of the simple page
-	 */
 	private String htmlSource;
-
-	/**
-	 * The key of the simple page
-	 */
 	private String key;
 	
 	/**

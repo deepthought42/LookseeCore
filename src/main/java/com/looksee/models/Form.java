@@ -1,19 +1,16 @@
 package com.looksee.models;
 
+import com.looksee.models.enums.FormType;
+import com.looksee.models.message.BugMessage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.data.neo4j.core.schema.Relationship;
-
-import com.looksee.models.enums.FormType;
-import com.looksee.models.message.BugMessage;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.neo4j.core.schema.Relationship;
 
 /**
  * Represents a form tag and its associated input elements in a web browser.
@@ -42,45 +39,23 @@ import lombok.Setter;
 public class Form extends LookseeObject{
 	private static Logger log = LoggerFactory.getLogger(Form.class);
 
-	/**
-	 * The memory id of the form
-	 */
 	private Long memoryId;
-
-	/**
-	 * The name of the form
-	 */
 	private String name;
-    
-	/**
-	 * The type of the form
-	 */
 	private String type;
-	
-	/**
-	 * The bug messages of the form
-	 */
+
 	@Relationship(type = "HAS")
 	private List<BugMessage> bugMessages;
 	
-	/**
-	 * The form tag of the form
-	 */
 	@Relationship(type = "DEFINED_BY")
 	private ElementState formTag;
 	
-	/**
-	 * The form fields of the form
-	 */
 	@Relationship(type = "HAS")
 	private List<ElementState> formFields;
 
-	/**
-	 * The submit field of the form
-	 */
 	@Relationship(type = "HAS_SUBMIT")
 	private ElementState submitField;
-	
+
+
 	/**
 	 * Constructs a new {@link Form}
 	 *

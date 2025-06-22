@@ -1,5 +1,7 @@
 package com.looksee.models;
 
+import com.looksee.models.enums.ElementClassification;
+import com.looksee.models.rules.Rule;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -7,20 +9,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.neo4j.core.schema.CompositeProperty;
 import org.springframework.data.neo4j.core.schema.Relationship;
 import org.springframework.data.neo4j.core.schema.Relationship.Direction;
-
-import com.looksee.models.enums.ElementClassification;
-import com.looksee.models.rules.Rule;
-
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 /**
  * Contains all the pertinent information for an element on a page. A ElementState
@@ -52,6 +49,10 @@ public class Element extends LookseeObject implements Comparable<Element> {
 	
 	@Relationship(type = "HAS_CHILD", direction = Direction.OUTGOING)
 	private List<Element> childElements = new ArrayList<>();
+
+	@Relationship()
+	private List<ElementState> element_states = new ArrayList<>();
+	
 
 	
 	/**

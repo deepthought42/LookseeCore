@@ -3,7 +3,6 @@ package com.looksee.models;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,24 +12,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ImageSearchAnnotation extends LookseeObject{
-	/**
-	 * The score of the image search annotation
-	 */
 	private float score;
-
-	/**
-	 * The best guess label of the image search annotation
-	 */
 	private Set<String> bestGuessLabel;
-
-	/**
-	 * The full matching images of the image search annotation
-	 */
 	private Set<String> fullMatchingImages;
-
-	/**
-	 * The similar images of the image search annotation
-	 */
 	private Set<String> similarImages;
 	
 	/**

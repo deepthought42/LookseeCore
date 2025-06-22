@@ -1,10 +1,9 @@
 package com.looksee.models;
 
-import org.springframework.data.neo4j.core.schema.Node;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.neo4j.core.schema.Node;
 
 /**
  * Stores a screenshot
@@ -15,31 +14,11 @@ import lombok.Setter;
 @Node
 public class Screenshot extends LookseeObject {
 	
-	/**
-	 * The browser name of the screenshot
-	 */
 	private String browserName;
-
-	/**
-	 * The url of the screenshot
-	 */
 	private String screenshotUrl;
-
-	/**
-	 * The checksum of the screenshot
-	 */
 	private String checksum;
-
-	/**
-	 * The width of the screenshot
-	 */
 	private int width;
-
-	/**
-	 * The height of the screenshot
-	 */
 	private int height;
-	
 	
 	/**
 	 * Constructs a new {@link Screenshot}

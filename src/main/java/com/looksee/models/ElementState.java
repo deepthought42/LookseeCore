@@ -1,22 +1,19 @@
 package com.looksee.models;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.data.neo4j.core.schema.CompositeProperty;
-import org.springframework.data.neo4j.core.schema.Node;
-
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.looksee.models.enums.ElementClassification;
 import com.looksee.services.BrowserService;
-
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.neo4j.core.schema.CompositeProperty;
+import org.springframework.data.neo4j.core.schema.Node;
 
 /**
  * Represents the state of an HTML element on a webpage, including its properties and attributes
@@ -62,6 +59,7 @@ public class ElementState extends LookseeObject implements Comparable<ElementSta
 	private double textContrast;
 	private double nonTextContrast;
 	private boolean imageFlagged;
+	private boolean visible;
 	
 	/**
 	 * The rendered css values of the element

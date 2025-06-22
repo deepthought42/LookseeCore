@@ -1,6 +1,10 @@
 package com.looksee.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.looksee.gcp.GoogleCloudStorage;
+import com.looksee.models.enums.BrowserType;
+import com.looksee.services.BrowserService;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -12,9 +16,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import javax.imageio.ImageIO;
-
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.codec.binary.Hex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,14 +26,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
 import org.springframework.data.neo4j.core.schema.Relationship.Direction;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.looksee.gcp.GoogleCloudStorage;
-import com.looksee.models.enums.BrowserType;
-import com.looksee.services.BrowserService;
-
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * A reference to a web page that stores its state and content
@@ -52,20 +48,9 @@ public class PageState extends LookseeObject {
 	@Autowired
 	private GoogleCloudStorage googleCloudStorage;
 
-	@Getter
-	@Setter
 	private long auditRecordId;
-
-	@Getter
-	@Setter
-	private String src;
-	
-	@Getter
-	@Setter
+	private String src;	
 	private String generalizedSrc;
-
-	@Getter
-	@Setter
 	private String url;
 	private String urlAfterLoading;
 	private String viewportScreenshotUrl;
@@ -94,6 +79,7 @@ public class PageState extends LookseeObject {
 	@Relationship(type = "HAS", direction = Direction.OUTGOING)
 	private List<ElementState> elements;
 
+	
 	/**
 	 * Default constructor for PageState
 	 */

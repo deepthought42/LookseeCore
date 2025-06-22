@@ -1,15 +1,12 @@
 package com.looksee.models;
 
-import java.util.Set;
-
-import org.springframework.data.neo4j.core.schema.Node;
-
 import com.looksee.models.enums.AuditCategory;
 import com.looksee.models.enums.Priority;
-
+import java.util.Set;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.neo4j.core.schema.Node;
 
 /**
  * A observation of potential error for a given {@link Element element}
@@ -22,7 +19,7 @@ public class ReadingComplexityIssueMessage extends ElementStateIssueMessage {
 	/**
 	 * The ease of reading score of the reading complexity issue message
 	 */
-	private double ease_of_reading_score;
+	private double easeOfReadingScore;
 
 	/**
 	 * Constructs a new {@link ReadingComplexityIssueMessage}
@@ -72,7 +69,7 @@ public class ReadingComplexityIssueMessage extends ElementStateIssueMessage {
 	 * @return the ease of reading score of the reading complexity issue message
 	 */
 	public double getEaseOfReadingScore() {
-		return ease_of_reading_score;
+		return easeOfReadingScore;
 	}
 
 	/**
@@ -81,7 +78,7 @@ public class ReadingComplexityIssueMessage extends ElementStateIssueMessage {
 	 * @param ease_of_reading_score the ease of reading score of the reading complexity issue message
 	 */
 	public void setEaseOfReadingScore(double ease_of_reading_score) {
-		this.ease_of_reading_score = ease_of_reading_score;
+		this.easeOfReadingScore = ease_of_reading_score;
 	}
 
 }

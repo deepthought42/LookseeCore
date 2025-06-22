@@ -1,18 +1,15 @@
 package com.looksee.models;
 
 
+import com.looksee.models.enums.AuditCategory;
+import com.looksee.models.enums.ObservationType;
+import com.looksee.models.enums.Priority;
 import java.util.Set;
-
+import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
-
-import com.looksee.models.enums.AuditCategory;
-import com.looksee.models.enums.ObservationType;
-import com.looksee.models.enums.Priority;
-
-import lombok.NoArgsConstructor;
 
 
 /**
