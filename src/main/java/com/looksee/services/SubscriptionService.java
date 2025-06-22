@@ -117,7 +117,7 @@ public class SubscriptionService {
 	 * @param plan the subscription plan
 	 * @param domain_audit_cnt the number of domain audits
 	 * @return true if the account has exceeded the allowed number of domain audits, otherwise false
-	 *
+	 *	
 	 * precondition: plan != null
 	 * precondition: domain_audit_cnt >= 0
 	 */
