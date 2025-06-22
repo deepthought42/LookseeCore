@@ -1,13 +1,5 @@
 package com.looksee.gcp;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.cloud.language.v1.AnalyzeSyntaxRequest;
 import com.google.cloud.language.v1.AnalyzeSyntaxResponse;
 import com.google.cloud.language.v1.Document;
@@ -18,8 +10,13 @@ import com.google.cloud.language.v1.LanguageServiceClient;
 import com.google.cloud.language.v1.Sentence;
 import com.google.cloud.language.v1.Sentiment;
 import com.google.cloud.language.v1.Token;
-
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import lombok.NoArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Utility class for Google Cloud NLP operations.

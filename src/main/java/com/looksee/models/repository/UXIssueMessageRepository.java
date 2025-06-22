@@ -1,14 +1,13 @@
 package com.looksee.models.repository;
 
+import com.looksee.models.ElementState;
+import com.looksee.models.UXIssueMessage;
+import com.looksee.models.enums.AuditName;
 import java.util.Set;
-
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
-import com.looksee.models.ElementState;
-import com.looksee.models.UXIssueMessage;
 
 /**
  * Repository interface for Spring Data Neo4j to handle interactions with
@@ -69,4 +68,24 @@ public interface UXIssueMessageRepository extends Neo4jRepository<UXIssueMessage
 	 */
 	@Query("MATCH (audit_record:PageAuditRecord)-[]-(audit:Audit)  MATCH (audit)-[:HAS]-(issue:UXIssueMessage) WHERE id(audit_record)=$audit_record_id RETURN issue")
 	public Set<UXIssueMessage> getIssues(@Param("audit_record_id") long audit_record_id);
+
+	/**
+	 * Finds all UX issue messages for an element
+	 *
+	 * @param name the name of the audit
+	 * @param element_id the ID of the element
+	 * @return the UX issue messages
+	 */
+	@Query("MATCH w=(a:Audit)-[]->(ux:UXIssueMessage) MATCH y=(ux:UXIssueMessage)-[:FOR]->(e:ElementState) WHERE id(e)=$element_id AND a.name=$name RETURN ux")
+	public Set<UXIssueMessage> findByNameForElement(@Param("name") AuditName name, @Param("element_id") long element_id);
+
+	/**
+	 * Finds the number of UX issue messages for an element
+	 *
+	 * @param audit_name the name of the audit
+	 * @param element_id the ID of the element
+	 * @return the number of UX issue messages
+	 */
+	@Query("MATCH w=(a:Audit)-[]->(ux:UXIssueMessage) MATCH y=(ux:UXIssueMessage)-[:FOR]->(e:ElementState) WHERE id(e)=$element_id AND a.name=$name RETURN COUNT(ux)")
+	public int getNumberOfUXIssuesForElement(@Param("name") AuditName audit_name, @Param("element_id") long element_id);
 }

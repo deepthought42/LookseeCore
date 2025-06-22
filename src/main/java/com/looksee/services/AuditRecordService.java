@@ -1,15 +1,5 @@
 package com.looksee.services;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
-import org.apache.commons.collections4.IterableUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.looksee.models.Account;
 import com.looksee.models.Audit;
 import com.looksee.models.AuditRecord;
@@ -25,9 +15,16 @@ import com.looksee.models.enums.JourneyStatus;
 import com.looksee.models.repository.AccountRepository;
 import com.looksee.models.repository.AuditRecordRepository;
 import com.looksee.models.repository.AuditRepository;
-
 import io.github.resilience4j.retry.annotation.Retry;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import lombok.NoArgsConstructor;
+import org.apache.commons.collections4.IterableUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Contains business logic for interacting with and managing audits
@@ -864,5 +861,36 @@ public class AuditRecordService {
 	 */
 	public PageState findPage(long audit_record_id) {
 		return page_state_service.getPageStateForAuditRecord(audit_record_id);
+	}
+	
+	/**
+	 * Add {@link Audit} to {@link AuditRecord}
+	 *
+	 * @param audit_record_id the id of the audit record
+	 * @param audit the audit to add
+	 *
+	 * precondition: audit_record_id > 0
+	 * precondition: audit != null
+	 */
+	public void addAudit(long audit_record_id, Audit audit) {
+		//check if audit already exists for page state
+		Optional<Audit> audit_opt = audit_repo.getAuditForAuditRecord(audit_record_id, audit.getKey());
+		if(!audit_opt.isPresent()) {
+			audit_record_repo.addAudit(audit_record_id, audit.getId());
+		}
+	}
+	
+	/**
+	 * Retrieves {@link PageState} with given URL for {@link DomainAuditRecord}
+	 *
+	 * @param audit_record_id the id of the audit record
+	 * @param page_id the id of the page
+	 * @return the page state
+	 *
+	 * precondition: audit_record_id > 0
+	 * precondition: page_id > 0
+	 */
+	public AuditRecord findPageWithId(long audit_record_id, long page_id) {
+		return audit_record_repo.findPageWithId(audit_record_id, page_id);
 	}
 }

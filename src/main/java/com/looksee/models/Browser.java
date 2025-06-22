@@ -14,7 +14,6 @@ import cz.vutbr.web.csskit.RuleFontFaceImpl;
 import cz.vutbr.web.csskit.RuleKeyframesImpl;
 import cz.vutbr.web.csskit.RuleMediaImpl;
 import cz.vutbr.web.domassign.StyleMap;
-
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;

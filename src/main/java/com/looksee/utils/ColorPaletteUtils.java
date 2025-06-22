@@ -1,17 +1,5 @@
 package com.looksee.utils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.looksee.models.CIEColorSpace;
 import com.looksee.models.ColorData;
 import com.looksee.models.ColorPaletteIssueMessage;
@@ -22,8 +10,17 @@ import com.looksee.models.UXIssueMessage;
 import com.looksee.models.enums.AuditCategory;
 import com.looksee.models.enums.ColorScheme;
 import com.looksee.models.enums.Priority;
-
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import lombok.NoArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Utility class for color palette operations
@@ -177,7 +174,7 @@ public class ColorPaletteUtils {
 	 * @param colors the {@link List} of {@link ColorData}s
 	 * @return the {@link Map} of {@link String} to {@link Boolean}
 	 */
-	private static Map<String, Boolean> retrieveNonCompliantColors(List<String> palette, List<ColorData> colors) {
+	public static Map<String, Boolean> retrieveNonCompliantColors(List<String> palette, List<ColorData> colors) {
 		Map<String, Boolean> non_compliant_colors = new HashMap<>();
 
 		for(ColorData color: colors) {

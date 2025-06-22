@@ -3,11 +3,9 @@ package com.looksee.models;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
-
-import org.springframework.data.neo4j.core.schema.Relationship;
-
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.neo4j.core.schema.Relationship;
 
 /**
  * Stores image landmark info
@@ -16,21 +14,11 @@ import lombok.Setter;
 @Setter
 public class ImageLandmarkInfo extends LookseeObject{
 	
-	/**
-	 * The lat lng of the image landmark info
-	 */
+	private String description;
+	private double score;
+
 	@Relationship(type="EXISTS_AT")
 	private Set<LatLng> latLngSet;
-	
-	/**
-	 * The description of the image landmark info
-	 */
-	private String description;
-	
-	/**
-	 * The score of the image landmark info
-	 */
-	private double score;
 	
 	/**
 	 * Constructs a new {@link ImageLandmarkInfo}

@@ -1,16 +1,5 @@
 package com.looksee.services;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.retry.annotation.Retryable;
-import org.springframework.stereotype.Service;
-
 import com.looksee.exceptions.ExistingRuleException;
 import com.looksee.models.Domain;
 import com.looksee.models.Element;
@@ -18,8 +7,16 @@ import com.looksee.models.ElementState;
 import com.looksee.models.PageState;
 import com.looksee.models.repository.ElementStateRepository;
 import com.looksee.models.rules.Rule;
-
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.NoArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.retry.annotation.Retryable;
+import org.springframework.stereotype.Service;
 
 /**
  * Service for managing element states in the database
@@ -515,4 +512,28 @@ public class ElementStateService {
 		return element_repo.getParentElement(user_id, domain, page_key, element_state_key);
 	}
 
+	/**
+	 * Retrieves all visible leaf elements for a given page state
+	 * 
+	 * @param page_state_id the id of the page state
+	 * @return a list of visible leaf elements
+	 */
+	public List<ElementState> getVisibleLeafElements(long page_state_id) {
+		return element_repo.getVisibleLeafElements(page_state_id);
+	}
+	
+	/**
+	 * Saves a list of element states to the database
+	 * 
+	 * NOTE: This is best for a database with significant memory as the size of data can be difficult to process all at once
+	 * on smaller machines
+	 * 
+	 * @param element_states the list of element states to save
+	 * @return {@link List} of {@link ElementState} ids
+	 */
+	public List<ElementState> saveElements(List<ElementState> element_states) {
+		return element_states.parallelStream()
+									.map(element -> save(element))
+									.collect(Collectors.toList());
+	}
 }

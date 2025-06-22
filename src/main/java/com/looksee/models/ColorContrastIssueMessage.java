@@ -1,16 +1,13 @@
 package com.looksee.models;
 
-import java.util.Set;
-
-import org.springframework.data.neo4j.core.schema.Node;
-
 import com.looksee.models.enums.AuditCategory;
 import com.looksee.models.enums.ObservationType;
 import com.looksee.models.enums.Priority;
-
+import java.util.Set;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.neo4j.core.schema.Node;
 
 
 /**
@@ -21,26 +18,11 @@ import lombok.Setter;
 @Setter
 @Node
 public class ColorContrastIssueMessage extends ElementStateIssueMessage{
-	/**
-	 * The contrast of the color
-	 */
+
 	private double contrast;
-
-	/**
-	 * The foreground color of the color
-	 */
 	private String foregroundColor;
-
-	/**
-	 * The background color of the color
-	 */
 	private String backgroundColor;
-
-	/**
-	 * The font size of the color
-	 */
 	private String fontSize;
-	
 	
 	/**
 	 * Constructs new instance

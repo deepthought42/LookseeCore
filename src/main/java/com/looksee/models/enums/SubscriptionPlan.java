@@ -29,6 +29,10 @@ public enum SubscriptionPlan {
     /**
      * The agency subscription plan
      */
+	AGENCY_PRO("AGENCY_PRO"),
+    /**
+     * The agency premium subscription plan
+     */
 	AGENCY_PREMIUM("AGENCY_PREMIUM"),
     /**
      * The unlimited subscription plan

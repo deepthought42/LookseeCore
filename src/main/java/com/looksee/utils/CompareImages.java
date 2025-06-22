@@ -3,7 +3,6 @@ package com.looksee.utils;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.image.PixelGrabber;
-
 import lombok.NoArgsConstructor;
 
 /**
@@ -64,5 +63,13 @@ public class CompareImages {
 		}
 		
 		return false;
+	}
+	
+	/**
+	 * Main method for testing the {@link CompareImages} class
+	 * @param args the command line arguments
+	 */
+	public static void main(String args[]) {
+		imagesMatch("c://newslider1.jpg", "c://newslider1.jpg");
 	}
 }

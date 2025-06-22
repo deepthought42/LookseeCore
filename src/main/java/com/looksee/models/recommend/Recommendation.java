@@ -1,9 +1,7 @@
 package com.looksee.models.recommend;
 
-import java.util.UUID;
-
 import com.looksee.models.LookseeObject;
-
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

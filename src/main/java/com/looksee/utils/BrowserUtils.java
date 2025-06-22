@@ -1,6 +1,21 @@
 package com.looksee.utils;
 
+import com.google.cloud.storage.Storage;
+import com.google.cloud.storage.StorageOptions;
+import com.looksee.gcp.GoogleCloudStorage;
+import com.looksee.gcp.GoogleCloudStorageProperties;
+import com.looksee.models.Browser;
+import com.looksee.models.ColorData;
+import com.looksee.models.Domain;
+import com.looksee.models.ElementState;
+import com.looksee.models.ImageElementState;
+import com.looksee.models.PageLoadAnimation;
+import com.looksee.models.PageState;
+import com.looksee.models.enums.BrowserEnvironment;
+import com.looksee.models.enums.BrowserType;
+import com.looksee.services.BrowserService;
 import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -8,38 +23,36 @@ import java.net.SocketTimeoutException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.Certificate;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLException;
 import javax.net.ssl.SSLHandshakeException;
+import javax.net.ssl.SSLPeerUnverifiedException;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-
+import lombok.NoArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.openqa.grid.common.exception.GridException;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.Rectangle;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.looksee.models.Browser;
-import com.looksee.models.Domain;
-import com.looksee.models.ElementState;
-import com.looksee.models.ImageElementState;
-import com.looksee.models.PageState;
-
-import lombok.NoArgsConstructor;
-
 
 /**
  * Contains utility methods for browser operations
@@ -895,7 +908,7 @@ public class BrowserUtils {
 		
 		return href.startsWith("javascript:");
 	}
-
+	
 	/**
 	 * Checks if an element is larger than the viewport
 	 * @param element_size the size of the element
@@ -904,13 +917,13 @@ public class BrowserUtils {
 	 * @return true if the element is larger than the viewport, otherwise false
 	 *
 	 * precondition: element_size != null
+	 * precondition: viewportWidth > 0
+	 * precondition: viewportHeight > 0
 	 */
 	public static boolean isLargerThanViewport(Dimension element_size, int viewportWidth, int viewportHeight) {
-		assert element_size != null;
-		
 		return element_size.getWidth() > viewportWidth || element_size.getHeight() > viewportHeight;
 	}
-	
+
 	/**
 	 * Checks if an element is larger than the viewport
 	 * @param element the element to check
@@ -946,7 +959,7 @@ public class BrowserUtils {
 									String host,
 									String href,
 									boolean is_secure
-   ) throws MalformedURLException {
+	) throws MalformedURLException {
 		assert host != null;
 		assert !host.isEmpty();
 		
@@ -1156,5 +1169,232 @@ public class BrowserUtils {
 	 */
 	public static boolean isHidden(Point location, Dimension size) {
 		return location.getX()<=0 && location.getY()<=0 && size.getWidth()<=0 && size.getHeight()<=0;
+	}
+	
+	/**
+	 * Opens stylesheet content and searches for font-family css settings
+	 * 
+	 * @param stylesheet The stylesheet to extract font families from
+	 * @return A set of font families
+	 * 
+	 * precondition: stylesheet != null
+	 */
+	public static Collection<? extends String> extractFontFamiliesFromStylesheet(String stylesheet) {
+		assert stylesheet != null;
+		
+		Map<String, Boolean> font_families = new HashMap<>();
+
+		//extract text matching font-family:.*; from stylesheets
+		//for each match, extract entire string even if it's a list and add string to font-families list
+		String patternString = "font-family:(.*?)[?=;|}]";
+
+        Pattern pattern = Pattern.compile(patternString);
+        Matcher matcher = pattern.matcher(stylesheet);
+        while(matcher.find()) {
+        	String font_family_setting = matcher.group();
+        	if(font_family_setting.contains("inherit")) {
+        		continue;
+        	}
+        	font_family_setting = font_family_setting.replaceAll("'", "");
+        	font_family_setting = font_family_setting.replaceAll("\"", "");
+        	font_family_setting = font_family_setting.replaceAll(";", "");
+        	font_family_setting = font_family_setting.replaceAll(":", "");
+        	font_family_setting = font_family_setting.replaceAll(":", "");
+        	font_family_setting = font_family_setting.replaceAll("}", "");
+        	font_family_setting = font_family_setting.replaceAll("!important", "");
+        	font_family_setting = font_family_setting.replaceAll("font-family", "");
+        	
+        	font_families.put(font_family_setting.trim(), Boolean.TRUE);
+        }
+        
+        return font_families.keySet();
+	}
+
+	/**
+	 * Extracts set of colors declared as background or text color in the css
+	 * 
+	 * @param stylesheet the stylesheet to extract colors from
+	 * @return the set of colors declared as background or text color in the css
+	 * 
+	 * precondition: stylesheet != null
+	 */
+	public static Collection<? extends ColorData> extractColorsFromStylesheet(String stylesheet) {
+		assert stylesheet != null;
+		
+		List<ColorData> colors = new ArrayList<>();
+
+		//extract text matching font-family:.*; from stylesheets
+		//for each match, extract entire string even if it's a list and add string to font-families list
+       for(String prop_setting : extractCssPropertyDeclarations("background-color", stylesheet)) {
+    	   if(prop_setting.startsWith("#")) {
+    		   
+    		   Color color = hex2Rgb(prop_setting.trim().substring(1));
+    		   colors.add(new ColorData(color.getRed() + ","+color.getGreen()+","+color.getBlue()));
+    	   }
+    	   else if( prop_setting.startsWith("rgb") ){
+    		   colors.add(new ColorData(prop_setting));
+    	   }
+        }
+
+        for(String prop_setting : extractCssPropertyDeclarations("color", stylesheet)) {
+        	if(prop_setting.startsWith("#")) {
+     		   Color color = hex2Rgb(prop_setting.trim().substring(1));
+     		   colors.add(new ColorData(color.getRed() + ","+color.getGreen()+","+color.getBlue()));
+     	   }
+     	   else if( prop_setting.startsWith("rgb") ){
+     		   colors.add(new ColorData(prop_setting));
+     	   }
+        }
+        
+        return colors;
+	}
+
+	/**
+	 * Prints the https certificate information
+	 * @param con The https connection to print the certificate information for
+	 */
+	private static void print_https_cert(HttpsURLConnection con){
+		
+		if(con!=null){
+
+	    	try {
+	                
+			    System.out.println("Cipher Suite : " + con.getCipherSuite());
+			    System.out.println("\n");
+			                
+			    Certificate[] certs = con.getServerCertificates();
+			    for(Certificate cert : certs){
+			       System.out.println("Cert Type : " + cert.getType());
+			       System.out.println("Cert Hash Code : " + cert.hashCode());
+			       System.out.println("Cert Public Key Algorithm : "
+			                                    + cert.getPublicKey().getAlgorithm());
+			       System.out.println("Cert Public Key Format : "
+			                                    + cert.getPublicKey().getFormat());
+			       System.out.println("\n");
+			    }
+		                
+		    } catch (SSLPeerUnverifiedException e) {
+		        e.printStackTrace();
+		    }
+	    }
+   }
+
+	/**
+	 * Extracts the page source from the URL.
+	 * Attempts to connect to the browser service, then navigates to the url and extracts the source.
+	 * 
+	 * @param sanitized_url The sanitized URL that contains the page source
+	 * @param browser_service The browser service to use to extract the page source
+	 * @return {@code String} The page source
+	 * 
+	 * precondition: sanitized_url != null
+	 * precondition: browser_service != null
+	 */
+	public static String extractPageSrc(URL sanitized_url, BrowserService browser_service){
+		assert sanitized_url != null;
+		assert browser_service != null;
+
+		//Extract page source from url
+		int attempt_cnt = 0;
+		String page_src = "";
+		
+		do {
+			Browser browser = null;
+			try {
+				browser = browser_service.getConnection(BrowserType.CHROME, BrowserEnvironment.DISCOVERY);
+				browser.navigateTo(sanitized_url.toString());
+				
+				sanitized_url = new URL(browser.getDriver().getCurrentUrl());
+				page_src = browser_service.getPageSource(browser, sanitized_url);
+				attempt_cnt = 10000000;
+				break;
+			}
+			catch(MalformedURLException e) {
+				log.warn("Malformed URL exception occurred for  "+sanitized_url);
+				break;
+			}
+			catch(WebDriverException | GridException e) {
+				log.warn("failed to obtain page source during crawl of :: "+sanitized_url);
+			}
+			finally {
+				if(browser != null) {
+					browser.close();
+				}
+			}
+		} while (page_src.trim().isEmpty() && attempt_cnt < 1000);
+
+		return page_src;
+	}
+
+	
+	/**
+	 * Watches for an animation that occurs during page load
+	 * 
+	 * @param browser the browser to watch
+	 * @param host the host of the page
+	 * @return the page load animation
+	 * 
+	 * @throws IOException if there is an error reading the page source
+	 * @throws NoSuchAlgorithmException if the algorithm is not found
+	 * 
+	 * precondition: browser != null
+	 * precondition: host != null
+	 * precondition: host != empty
+	 */
+	public static PageLoadAnimation getLoadingAnimation(Browser browser,
+														String host
+	) throws IOException, NoSuchAlgorithmException {
+		assert browser != null;
+		assert host != null;
+		assert !host.isEmpty();
+		
+		List<String> image_checksums = new ArrayList<String>();
+		List<String> image_urls = new ArrayList<String>();
+		boolean transition_detected = false;
+		long start_ms = System.currentTimeMillis();
+		long total_time = System.currentTimeMillis();
+		
+		Map<String, Boolean> animated_state_checksum_hash = new HashMap<String, Boolean>();
+		String last_checksum = null;
+		String new_checksum = null;
+
+		String bucketName = "web-images";
+		String publicUrl = "https://storage.googleapis.com/web-images";
+		do{
+			//get element screenshot
+			BufferedImage screenshot = browser.getViewportScreenshot();
+			
+			//calculate screenshot checksum
+			new_checksum = PageState.getFileChecksum(screenshot);
+		
+			transition_detected = !new_checksum.equals(last_checksum);
+
+			if( transition_detected ){
+				if(animated_state_checksum_hash.containsKey(new_checksum)){
+					return null;
+				}
+				image_checksums.add(new_checksum);
+				animated_state_checksum_hash.put(new_checksum, Boolean.TRUE);
+				last_checksum = new_checksum;
+				GoogleCloudStorageProperties properties = new GoogleCloudStorageProperties();
+				properties.setBucketName(bucketName);
+				properties.setPublicUrl(publicUrl);
+				Storage storage_options = StorageOptions.getDefaultInstance().getService();
+
+				GoogleCloudStorage storage = new GoogleCloudStorage( storage_options, properties);
+				image_urls.add(storage.saveImage(screenshot,
+												host,
+												new_checksum,
+												BrowserType.create(browser.getBrowserName())));
+			}
+		}while((System.currentTimeMillis() - start_ms) < 1000 && (System.currentTimeMillis() - total_time) < 10000);
+		
+		if(!transition_detected && new_checksum.equals(last_checksum) && image_checksums.size()>2){
+			return new PageLoadAnimation(image_urls,
+										image_checksums,
+										BrowserUtils.sanitizeUrl(browser.getDriver().getCurrentUrl(), true));
+		}
+
+		return null;
 	}
 }

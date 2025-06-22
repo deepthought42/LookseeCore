@@ -1,17 +1,15 @@
 package com.looksee.utils;
 
+import com.looksee.models.ElementState;
+import com.looksee.models.Form;
+import com.looksee.models.PageState;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
+import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.looksee.models.ElementState;
-import com.looksee.models.Form;
-import com.looksee.models.PageState;
-import lombok.NoArgsConstructor;
 
 /**
  * Utility class for processing and analyzing web page states and their elements.

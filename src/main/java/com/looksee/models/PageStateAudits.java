@@ -1,7 +1,6 @@
 package com.looksee.models;
 
 import java.util.Set;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,15 +10,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PageStateAudits {
-	
-	/**
-	 * The page of the page state audits
-	 */
-	private SimplePage page;
 
-	/**
-	 * The audits of the page state audits
-	 */
+	private SimplePage page;
 	private Set<Audit> audits;
 	
 	/**

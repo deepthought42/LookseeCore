@@ -1,14 +1,12 @@
 package com.looksee.models;
 
-import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
-
 import com.looksee.models.enums.AuditCategory;
 import com.looksee.models.enums.AuditLevel;
 import com.looksee.models.enums.AuditName;
 import com.looksee.models.enums.AuditSubcategory;
-
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -40,7 +38,7 @@ public class Audit extends LookseeObject {
 	private String whyItMatters;
 	private Set<UXIssueMessage> messages;
 	private Set<String> labels;
-
+	
 	/**
 	 * Construct empty action object
 	 */

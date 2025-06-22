@@ -1,20 +1,16 @@
 package com.looksee.models.journeys;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.data.neo4j.core.schema.Node;
-import org.springframework.data.neo4j.core.schema.Relationship;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.looksee.models.LookseeObject;
 import com.looksee.models.enums.JourneyStatus;
-
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.Setter;
-
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.neo4j.core.schema.Node;
+import org.springframework.data.neo4j.core.schema.Relationship;
 
 /**
  * Represents the series of steps taken for an end to end journey

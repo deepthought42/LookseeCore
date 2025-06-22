@@ -9,14 +9,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class LatLng extends LookseeObject {
-	/**
-	 * The latitude of the lat lng
-	 */
 	private double latitude;
 
-	/**
-	 * The longitude of the lat lng
-	 */
 	private double longitude;
 	
 	/**

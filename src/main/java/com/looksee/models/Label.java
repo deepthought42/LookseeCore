@@ -9,14 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Label extends LookseeObject{
-	/**
-	 * The description of the label
-	 */
 	private String description;
-	
-	/**
-	 * The score of the label
-	 */	
 	private float score;
 	
 	/**

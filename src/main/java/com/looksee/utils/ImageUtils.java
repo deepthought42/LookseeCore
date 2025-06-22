@@ -1,5 +1,11 @@
 package com.looksee.utils;
 
+import com.looksee.models.ColorData;
+import com.looksee.models.ColorUsageStat;
+import com.looksee.models.ElementState;
+import com.looksee.models.PageState;
+import com.looksee.models.enums.BrowserType;
+import io.github.resilience4j.retry.annotation.Retry;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -14,21 +20,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-
 import javax.imageio.ImageIO;
-
+import lombok.NoArgsConstructor;
 import org.apache.commons.codec.binary.Hex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.looksee.models.ColorData;
-import com.looksee.models.ColorUsageStat;
-import com.looksee.models.ElementState;
-import com.looksee.models.PageState;
-import com.looksee.models.enums.BrowserType;
-
-import io.github.resilience4j.retry.annotation.Retry;
-import lombok.NoArgsConstructor;
 
 /**
  * Utility class for image operations.
@@ -508,5 +504,4 @@ public class ImageUtils {
 	public static BufferedImage readImageFromURL(URL full_page_screenshot_url) throws IOException {
 		return ImageIO.read( full_page_screenshot_url );
 	}
-	
 }

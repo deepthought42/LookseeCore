@@ -11,54 +11,16 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class SimpleElement {
-	/**
-	 * The key of the simple element
-	 */
+	
 	private String key;
-	
-	/**
-	 * The screenshot url of the simple element
-	 */
 	private String screenshotUrl;
-	
-	/**
-	 * The x location of the simple element
-	 */
 	private int xLocation;
-	
-	/**
-	 * The y location of the simple element
-	 */
 	private int yLocation;
-	
-	/**
-	 * The width of the simple element
-	 */
 	private int width;
-	
-	/**
-	 * The height of the simple element
-	 */
 	private int height;
-	
-	/**
-	 * The text of the simple element
-	 */
 	private String text;
-	
-	/**
-	 * The css selector of the simple element
-	 */
 	private String cssSelector;
-	
-	/**
-	 * The image flagged of the simple element
-	 */
 	private boolean imageFlagged;
-	
-	/**
-	 * The adult content of the simple element
-	 */
 	private boolean adultContent;
 	
 	/**

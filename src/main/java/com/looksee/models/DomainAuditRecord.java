@@ -1,19 +1,18 @@
 package com.looksee.models;
 
-import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
-
-import org.springframework.data.neo4j.core.schema.Node;
-import org.springframework.data.neo4j.core.schema.Relationship;
-
 import com.looksee.models.enums.AuditLevel;
 import com.looksee.models.enums.AuditName;
 import com.looksee.models.enums.ExecutionStatus;
-
+import com.looksee.models.enums.JourneyStatus;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.neo4j.core.schema.Node;
+import org.springframework.data.neo4j.core.schema.Relationship;
 
 /**
  * Record detailing an set of {@link Audit audits}.
@@ -27,11 +26,15 @@ import lombok.Setter;
 @Setter
 public class DomainAuditRecord extends AuditRecord {
 	
+	private int totalPages;
+	private Map<String, JourneyStatus> journeyStatusMap;
+	
 	/**
 	 * The page audit records of the domain audit record
 	 */
 	@Relationship(type = "HAS")
 	private Set<PageAuditRecord> pageAuditRecords;
+
 
 	/**
 	 * Constructs a new {@link DomainAuditRecord}

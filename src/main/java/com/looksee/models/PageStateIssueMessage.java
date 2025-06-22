@@ -1,17 +1,14 @@
 package com.looksee.models;
 
-import java.util.Set;
-
-import org.springframework.data.neo4j.core.schema.Node;
-import org.springframework.data.neo4j.core.schema.Relationship;
-
 import com.looksee.models.enums.AuditCategory;
 import com.looksee.models.enums.ObservationType;
 import com.looksee.models.enums.Priority;
-
+import java.util.Set;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.neo4j.core.schema.Node;
+import org.springframework.data.neo4j.core.schema.Relationship;
 
 /**
  * A observation of potential error for a given {@link Element element}
@@ -26,7 +23,7 @@ public class PageStateIssueMessage extends UXIssueMessage {
 	 * The page state of the page state issue message
 	 */
 	@Relationship(type = "FOR")
-	private PageState page_state;
+	private PageState pageState;
 	
 	/**
 	 * Constructs a new {@link PageStateIssueMessage}
@@ -75,7 +72,7 @@ public class PageStateIssueMessage extends UXIssueMessage {
 	 * @return the page state of the page state issue message
 	 */
 	public PageState getElements() {
-		return page_state;
+		return pageState;
 	}
 
 
@@ -85,6 +82,6 @@ public class PageStateIssueMessage extends UXIssueMessage {
 	 * @param page_state the page state of the page state issue message
 	 */
 	public void setPage(PageState page_state) {
-		this.page_state = page_state;
+		this.pageState = page_state;
 	}
 }

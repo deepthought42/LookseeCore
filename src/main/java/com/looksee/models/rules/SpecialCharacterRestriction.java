@@ -27,5 +27,5 @@ public class SpecialCharacterRestriction extends Rule {
 		Pattern pattern = Pattern.compile(getValue());
         Matcher matcher = pattern.matcher(elem.getText());
 		return !matcher.matches();
-	}	
+	}
 }

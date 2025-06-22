@@ -1,14 +1,13 @@
 package com.looksee.services;
 
+import com.looksee.models.journeys.Journey;
+import com.looksee.models.repository.JourneyRepository;
+import java.util.Optional;
+import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.looksee.models.journeys.Journey;
-import com.looksee.models.repository.JourneyRepository;
-
-import lombok.NoArgsConstructor;
 
 /**
  * Journey service contains business logic for interacting with and managing 
@@ -46,5 +45,41 @@ public class JourneyService {
 			}
 		}
 		return journey_record;
+	}
+
+	/**
+	 * Find a journey by id
+	 *
+	 * @param id the id of the journey
+	 * @return the journey
+	 *
+	 * precondition: id > 0
+	 */
+	public Optional<Journey> findById(long id) {
+		return journey_repo.findById(id);
+	}
+	
+	/**
+	 * Find a journey by key
+	 *
+	 * @param key the key of the journey
+	 * @return the journey
+	 *
+	 * precondition: key != null
+	 */
+	public Journey findByKey(String key) {
+		return journey_repo.findByKey(key);
+	}
+
+	/**
+	 * Find a journey by candidate key
+	 *
+	 * @param candidateKey the candidate key of the journey
+	 * @return the journey
+	 *
+	 * precondition: candidateKey != null
+	 */
+	public Journey findByCandidateKey(String candidateKey) {
+		return journey_repo.findByCandidateKey(candidateKey);
 	}
 }

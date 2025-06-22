@@ -1,20 +1,17 @@
 package com.looksee.models.repository;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
-import org.springframework.data.neo4j.repository.Neo4jRepository;
-import org.springframework.data.neo4j.repository.query.Query;
-import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
-
 import com.looksee.models.Domain;
 import com.looksee.models.Element;
 import com.looksee.models.ElementState;
 import com.looksee.models.rules.Rule;
-
 import io.github.resilience4j.retry.annotation.Retry;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import org.springframework.data.neo4j.repository.Neo4jRepository;
+import org.springframework.data.neo4j.repository.query.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 /**
  * Repository interface for Spring Data Neo4j to handle interactions with
@@ -425,4 +422,13 @@ public interface ElementStateRepository extends Neo4jRepository<ElementState, Lo
 	 */
 	@Query("MATCH (p:PageState)-[:HAS]->(e:ElementState) WHERE id(p)=$page_state_id RETURN DISTINCT COUNT(e)")
 	public int getElementStateCount(@Param("page_state_id") long page_id);
+
+	/**
+	 * Retrieves all visible leaf elements for a specific page state.
+	 *
+	 * @param page_state_id The ID of the page state
+	 * @return List of ElementState objects representing the visible leaf elements
+	 */
+	@Query("MATCH (p:PageState) WHERE id(p)=$page_state_id MATCH (p)-[:HAS]->(e:ElementState) where e.visible=true AND e.classification'LEAF' RETURN e")
+	public List<ElementState> getVisibleLeafElements(@Param("page_state_id") long page_state_id);
 }

@@ -1,15 +1,12 @@
 package com.looksee.models;
 
+import com.looksee.models.enums.TemplateType;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.springframework.data.neo4j.core.schema.Node;
-import org.springframework.data.neo4j.core.schema.Relationship;
-
-import com.looksee.models.enums.TemplateType;
-
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.neo4j.core.schema.Node;
+import org.springframework.data.neo4j.core.schema.Relationship;
 
 
 /**
@@ -20,19 +17,9 @@ import lombok.Setter;
 @Node
 public class Template extends LookseeObject {
 
-	/**
-	 * The type of the template
-	 */
 	private String type;
-
-	/**
-	 * The template of the template
-	 */
 	private String template;
 	
-	/**
-	 * The elements of the template
-	 */
 	@Relationship(type = "MATCHES")
 	private List<Element> elements;
 	

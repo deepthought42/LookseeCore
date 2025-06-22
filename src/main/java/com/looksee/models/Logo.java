@@ -1,9 +1,7 @@
 package com.looksee.models;
 
-import java.util.UUID;
-
 import com.google.cloud.vision.v1.BoundingPoly;
-
+import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,59 +11,19 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Logo extends LookseeObject{
-	/**
-	 * The description of the logo
-	 */
 	private String description;
-
-	/**
-	 * The locale of the logo
-	 */
 	private String locale;
-	
-	/**
-	 * The score of the logo
-	 */
 	private float score;
-	
-	/**
-	 * The x1 of the logo
-	 */
 	private int x1;
-
-	/**
-	 * The y1 of the logo
-	 */
 	private int y1;
 	
-	/**
-	 * The x2 of the logo
-	 */
 	private int x2;
-
-	/**
-	 * The y2 of the logo
-	 */
 	private int y2;
 	
-	/**
-	 * The x3 of the logo
-	 */
 	private int x3;
-
-	/**
-	 * The y3 of the logo
-	 */
 	private int y3;
 	
-	/**
-	 * The x4 of the logo
-	 */
 	private int x4;
-
-	/**
-	 * The y4 of the logo
-	 */
 	private int y4;
 	
 	/**

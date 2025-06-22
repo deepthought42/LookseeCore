@@ -1,12 +1,10 @@
 package com.looksee.models;
 
 import java.awt.Color;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import lombok.Getter;
 import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Represents an both rgb and hsb and luminosity values
@@ -15,59 +13,32 @@ public class ColorData extends LookseeObject{
 	@SuppressWarnings("unused")
 	private static Logger log = LoggerFactory.getLogger(ColorData.class);
 
-	/**
-	 * The usage percentage of the color
-	 */
 	@Getter
 	@Setter
 	private double usagePercent;
 
-	/**
-	 * The red value of the color
-	 */
 	@Getter
 	private int red;
 
-	/**
-	 * The green value of the color
-	 */
 	@Getter
 	private int green;
 
-	/**
-	 * The blue value of the color
-	 */
 	@Getter
 	private int blue;
-	
-	/**
-	 * The transparency of the color
-	 */
+
 	@Getter
 	@Setter
 	private double transparency;
 
-	/**
-	 * The brightness of the color
-	 */
 	@Getter
 	private double brightness;
 
-	/**
-	 * The hue of the color
-	 */
 	@Getter
 	private double hue;
 
-	/**
-	 * The saturation of the color
-	 */
 	@Getter
 	private double saturation;
 
-	/**
-	 * The luminosity of the color
-	 */
 	@Getter
 	@Setter
 	private double luminosity;
