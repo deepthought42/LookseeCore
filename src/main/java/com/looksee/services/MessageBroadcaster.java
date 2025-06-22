@@ -1,28 +1,24 @@
 package com.looksee.services;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.looksee.models.Account;
+import com.looksee.models.Audit;
+import com.looksee.models.AuditRecord;
 import com.looksee.models.DiscoveryRecord;
 import com.looksee.models.Domain;
 import com.looksee.models.Form;
 import com.looksee.models.LookseeObject;
 import com.looksee.models.Test;
-import com.looksee.models.TestRecord;
-import com.looksee.models.Audit;
-import com.looksee.models.AuditRecord;
 import com.looksee.models.UXIssueMessage;
-import com.looksee.models.enums.ExecutionStatus;
-import com.looksee.models.dto.DomainDto;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.pusher.rest.Pusher;
 import com.looksee.models.dto.AuditUpdateDto;
-
-import org.springframework.stereotype.Service;
+import com.looksee.models.dto.DomainDto;
+import com.pusher.rest.Pusher;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 /**
  * Defines methods for emitting data to subscribed clients
@@ -59,7 +55,7 @@ public class MessageBroadcaster {
      * 
      * @param host the host of the test
      * @param audit {@link Audit} to be emitted to clients
-     * @throws JsonProcessingException
+     * @throws JsonProcessingException if there is an error converting the audit to a JSON string
      */
 	public void broadcastAudit(String host, Audit audit) throws JsonProcessingException {
         //Object to JSON in String

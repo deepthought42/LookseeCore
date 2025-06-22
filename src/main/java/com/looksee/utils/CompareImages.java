@@ -65,6 +65,10 @@ public class CompareImages {
 		return false;
 	}
 	
+	/**
+	 * Main method for testing the {@link CompareImages} class
+	 * @param args the command line arguments
+	 */
 	public static void main(String args[]) {
 		imagesMatch("c://newslider1.jpg", "c://newslider1.jpg");
 	}

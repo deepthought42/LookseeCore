@@ -1177,8 +1177,7 @@ public class BrowserUtils {
 	 * @param stylesheet The stylesheet to extract font families from
 	 * @return A set of font families
 	 * 
-	 * @pre stylesheet != null;
-	 * 
+	 * precondition: stylesheet != null
 	 */
 	public static Collection<? extends String> extractFontFamiliesFromStylesheet(String stylesheet) {
 		assert stylesheet != null;
@@ -1214,8 +1213,10 @@ public class BrowserUtils {
 	/**
 	 * Extracts set of colors declared as background or text color in the css
 	 * 
-	 * @param stylesheet
-	 * @return
+	 * @param stylesheet the stylesheet to extract colors from
+	 * @return the set of colors declared as background or text color in the css
+	 * 
+	 * precondition: stylesheet != null
 	 */
 	public static Collection<? extends ColorData> extractColorsFromStylesheet(String stylesheet) {
 		assert stylesheet != null;
@@ -1286,8 +1287,8 @@ public class BrowserUtils {
 	 * @param browser_service The browser service to use to extract the page source
 	 * @return {@code String} The page source
 	 * 
-	 * @pre sanitized_url != null
-	 * @pre browser_service != null
+	 * precondition: sanitized_url != null
+	 * precondition: browser_service != null
 	 */
 	public static String extractPageSrc(URL sanitized_url, BrowserService browser_service){
 		assert sanitized_url != null;
@@ -1329,15 +1330,16 @@ public class BrowserUtils {
 	/**
 	 * Watches for an animation that occurs during page load
 	 * 
-	 * @param browser
-	 * @param host
-	 * @param user_id TODO
-	 * @return
-	 * @throws IOException
+	 * @param browser the browser to watch
+	 * @param host the host of the page
+	 * @return the page load animation
 	 * 
-	 * @pre browser != null
-	 * @pre host != null
-	 * @pre host != empty
+	 * @throws IOException if there is an error reading the page source
+	 * @throws NoSuchAlgorithmException if the algorithm is not found
+	 * 
+	 * precondition: browser != null
+	 * precondition: host != null
+	 * precondition: host != empty
 	 */
 	public static PageLoadAnimation getLoadingAnimation(Browser browser,
 														String host

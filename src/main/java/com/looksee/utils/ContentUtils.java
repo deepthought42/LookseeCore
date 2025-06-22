@@ -202,6 +202,10 @@ public class ContentUtils {
 		return "unknown";
 	}
 
+	/**
+	 * Main method for testing the {@link ContentUtils} class
+	 * @param args the command line arguments
+	 */
 	public static void main(String[] args) {
 		System.out.println(getReadingGradeLevel(90));
 		System.out.println(getReadingDifficultyRating(90));

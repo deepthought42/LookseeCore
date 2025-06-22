@@ -49,7 +49,7 @@ public class PageState extends LookseeObject {
 	private GoogleCloudStorage googleCloudStorage;
 
 	private long auditRecordId;
-	private String src;	
+	private String src;
 	private String generalizedSrc;
 	private String url;
 	private String urlAfterLoading;

@@ -598,16 +598,25 @@ public class AuditUtils {
 
 	/**
 	 * Calculates the {@link Audit} progress based on audits completed and the total pages
-	 * @param category
-	 * @param page_count
-	 * @param audit_list
-	 * @param audit_labels
-	 * @return
+	 * @param category the category to calculate the progress for
+	 * @param page_count the total number of pages
+	 * @param audit_list the list of audits to calculate the progress for
+	 * @param audit_labels the labels to calculate the progress for
+	 * @return the progress
+	 *
+	 * precondition: category != null
+	 * precondition: page_count >= 0
+	 * precondition: audit_list != null
+	 * precondition: audit_labels != null
 	 */
 	public static double calculateProgress(AuditCategory category,
 										int page_count,
 										Set<Audit> audit_list,
 										Set<AuditName> audit_labels) {
+		assert category != null;
+		assert page_count >= 0;
+		assert audit_list != null;
+		assert audit_labels != null;
 				
 		Map<AuditName, Integer> audit_count_map = new HashMap<>();
 		Set<AuditName> category_audit_labels = getAuditLabels(category, audit_labels);

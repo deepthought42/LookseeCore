@@ -512,19 +512,23 @@ public class ElementStateService {
 		return element_repo.getParentElement(user_id, domain, page_key, element_state_key);
 	}
 
-
+	/**
+	 * Retrieves all visible leaf elements for a given page state
+	 * 
+	 * @param page_state_id the id of the page state
+	 * @return a list of visible leaf elements
+	 */
 	public List<ElementState> getVisibleLeafElements(long page_state_id) {
 		return element_repo.getVisibleLeafElements(page_state_id);
 	}
 	
 	/**
-	 * Retrieves keys for all existing element states that are connected the the page with the given page state id
+	 * Saves a list of element states to the database
 	 * 
 	 * NOTE: This is best for a database with significant memory as the size of data can be difficult to process all at once
 	 * on smaller machines
 	 * 
-	 * @param page_state_id
-	 * @param element_states
+	 * @param element_states the list of element states to save
 	 * @return {@link List} of {@link ElementState} ids
 	 */
 	public List<ElementState> saveElements(List<ElementState> element_states) {

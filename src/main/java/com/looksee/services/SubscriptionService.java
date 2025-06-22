@@ -31,6 +31,9 @@ public class SubscriptionService {
 	@Value("${stripe.company_pro_price_id}")
 	private String company_pro_price_id;
 	
+	/**
+	 * Default constructor for {@link SubscriptionService}
+	 */
 	public SubscriptionService(){}
 	
 	/**
@@ -41,9 +44,13 @@ public class SubscriptionService {
 	 * 
 	 * @return true if user has exceeded limits for their {@link SubscriptionPlan}, otherwise false
 	 * 
-	 * @throws StripeException
+	 * precondition: plan != null
+	 * precondition: page_audit_cnt >= 0
 	 */
 	public boolean hasExceededSinglePageAuditLimit(SubscriptionPlan plan, int page_audit_cnt) {
+		assert plan != null;
+		assert page_audit_cnt >= 0;
+		
 		if(plan.equals(SubscriptionPlan.FREE) && page_audit_cnt >= 100){
 			return true;
 		}
@@ -71,15 +78,16 @@ public class SubscriptionService {
 	 *
 	 * @param plan the subscription plan
 	 * @param page_audit_count the number of page audits
-	 * @param acct {@link Account}
 	 *
 	 * @return true if user has exceeded limits for their {@link SubscriptionPlan}, otherwise false
 	 * 
-	 * @pre plan != null
-	 * 
-	 * @throws StripeException
+	 * precondition: plan != null
+	 * precondition: page_audit_count >= 0
 	 */
 	public boolean hasExceededDomainPageAuditLimit(SubscriptionPlan plan, int page_audit_count) {
+		assert plan != null;
+		assert page_audit_count >= 0;
+		
 		if(plan.equals(SubscriptionPlan.FREE) && page_audit_count >= 20){
 			return true;
 		}

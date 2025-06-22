@@ -82,7 +82,7 @@ public interface UXIssueMessageRepository extends Neo4jRepository<UXIssueMessage
 	/**
 	 * Finds the number of UX issue messages for an element
 	 *
-	 * @param name the name of the audit
+	 * @param audit_name the name of the audit
 	 * @param element_id the ID of the element
 	 * @return the number of UX issue messages
 	 */

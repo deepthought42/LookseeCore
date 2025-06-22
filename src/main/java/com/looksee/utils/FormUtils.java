@@ -1,14 +1,12 @@
 package com.looksee.utils;
 
+import com.looksee.models.ElementState;
+import com.looksee.models.enums.FormType;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.looksee.models.ElementState;
-import com.looksee.models.enums.FormType;
 
 /**
  * Utility class for classifying form types.
@@ -60,6 +58,7 @@ public class FormUtils {
 	/**
 	 * locates and returns the form submit button
 	 * 
+	 * @param nested_elements the nested elements
 	 * @return the form submit button
 	 *
 	 * precondition: nested_elements != null
@@ -67,9 +66,8 @@ public class FormUtils {
 	 * precondition: !user_id.isEmpty()
 	 * precondition: form_elem != null
 	 * precondition: browser != null;
-	 * @throws Exception if an error occurs
 	 */
-	public static ElementState findFormSubmitButton(List<ElementState> nested_elements) throws Exception {
+	public static ElementState findFormSubmitButton(List<ElementState> nested_elements) {
 		assert nested_elements != null;
 
 		Map<String, String> attributes = new HashMap<>();

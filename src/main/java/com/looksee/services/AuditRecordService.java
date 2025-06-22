@@ -865,8 +865,12 @@ public class AuditRecordService {
 	
 	/**
 	 * Add {@link Audit} to {@link AuditRecord}
-	 * @param audit_record_id
-	 * @param audit
+	 *
+	 * @param audit_record_id the id of the audit record
+	 * @param audit the audit to add
+	 *
+	 * precondition: audit_record_id > 0
+	 * precondition: audit != null
 	 */
 	public void addAudit(long audit_record_id, Audit audit) {
 		//check if audit already exists for page state
@@ -878,9 +882,13 @@ public class AuditRecordService {
 	
 	/**
 	 * Retrieves {@link PageState} with given URL for {@link DomainAuditRecord}
-	 * @param audit_record_id
-	 * @param current_url
-	 * @return
+	 *
+	 * @param audit_record_id the id of the audit record
+	 * @param page_id the id of the page
+	 * @return the page state
+	 *
+	 * precondition: audit_record_id > 0
+	 * precondition: page_id > 0
 	 */
 	public AuditRecord findPageWithId(long audit_record_id, long page_id) {
 		return audit_record_repo.findPageWithId(audit_record_id, page_id);
