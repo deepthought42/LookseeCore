@@ -1225,25 +1225,25 @@ public class BrowserUtils {
 
 		//extract text matching font-family:.*; from stylesheets
 		//for each match, extract entire string even if it's a list and add string to font-families list
-       for(String prop_setting : extractCssPropertyDeclarations("background-color", stylesheet)) {
-    	   if(prop_setting.startsWith("#")) {
-    		   
-    		   Color color = hex2Rgb(prop_setting.trim().substring(1));
-    		   colors.add(new ColorData(color.getRed() + ","+color.getGreen()+","+color.getBlue()));
-    	   }
-    	   else if( prop_setting.startsWith("rgb") ){
-    		   colors.add(new ColorData(prop_setting));
-    	   }
+		for(String prop_setting : extractCssPropertyDeclarations("background-color", stylesheet)) {
+			if(prop_setting.startsWith("#")) {
+				
+				Color color = hex2Rgb(prop_setting.trim().substring(1));
+				colors.add(new ColorData(color.getRed() + ","+color.getGreen()+","+color.getBlue()));
+			}
+			else if( prop_setting.startsWith("rgb") ){
+				colors.add(new ColorData(prop_setting));
+			}
         }
 
         for(String prop_setting : extractCssPropertyDeclarations("color", stylesheet)) {
-        	if(prop_setting.startsWith("#")) {
-     		   Color color = hex2Rgb(prop_setting.trim().substring(1));
-     		   colors.add(new ColorData(color.getRed() + ","+color.getGreen()+","+color.getBlue()));
-     	   }
-     	   else if( prop_setting.startsWith("rgb") ){
-     		   colors.add(new ColorData(prop_setting));
-     	   }
+			if(prop_setting.startsWith("#")) {
+				Color color = hex2Rgb(prop_setting.trim().substring(1));
+				colors.add(new ColorData(color.getRed() + ","+color.getGreen()+","+color.getBlue()));
+			}
+			else if( prop_setting.startsWith("rgb") ){
+				colors.add(new ColorData(prop_setting));
+			}
         }
         
         return colors;
@@ -1256,28 +1256,27 @@ public class BrowserUtils {
 	private static void print_https_cert(HttpsURLConnection con){
 		
 		if(con!=null){
-
-	    	try {
-	                
-			    System.out.println("Cipher Suite : " + con.getCipherSuite());
-			    System.out.println("\n");
-			                
-			    Certificate[] certs = con.getServerCertificates();
-			    for(Certificate cert : certs){
-			       System.out.println("Cert Type : " + cert.getType());
-			       System.out.println("Cert Hash Code : " + cert.hashCode());
-			       System.out.println("Cert Public Key Algorithm : "
-			                                    + cert.getPublicKey().getAlgorithm());
-			       System.out.println("Cert Public Key Format : "
-			                                    + cert.getPublicKey().getFormat());
-			       System.out.println("\n");
-			    }
-		                
-		    } catch (SSLPeerUnverifiedException e) {
-		        e.printStackTrace();
-		    }
-	    }
-   }
+			try {
+					
+				System.out.println("Cipher Suite : " + con.getCipherSuite());
+				System.out.println("\n");
+							
+				Certificate[] certs = con.getServerCertificates();
+				for(Certificate cert : certs){
+					System.out.println("Cert Type : " + cert.getType());
+					System.out.println("Cert Hash Code : " + cert.hashCode());
+					System.out.println("Cert Public Key Algorithm : "
+												+ cert.getPublicKey().getAlgorithm());
+					System.out.println("Cert Public Key Format : "
+												+ cert.getPublicKey().getFormat());
+					System.out.println("\n");
+				}
+						
+			} catch (SSLPeerUnverifiedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
 	/**
 	 * Extracts the page source from the URL.

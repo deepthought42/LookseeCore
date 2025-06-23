@@ -3,7 +3,7 @@ package com.looksee.models.enums;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 /**
- * Defines all {@link SubscriptionPlan subscription plans} that exist in the system
+ * Defines all subscription plans that exist in the system
  */
 public enum SubscriptionPlan {
     /**
