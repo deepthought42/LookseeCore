@@ -10,41 +10,14 @@ on:
   workflow_dispatch:
 
 jobs:
-  checkout:
+  test:
     runs-on: ubuntu-latest
-    outputs:
-      cache-key: ${{ steps.cache-key.outputs.value }}
+    # This job runs only when code is pushed to main
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Generate cache key
-        id: cache-key
-        run: echo "value=${{ github.sha }}" >> $GITHUB_OUTPUT
-
-      - name: Cache code
-        uses: actions/cache@v3
-        with:
-          path: .
-          key: code-${{ steps.cache-key.outputs.value }}
-          restore-keys: |
-            code-
-
-  test:
-    runs-on: ubuntu-latest
-    needs: checkout
-    # This job runs only when code is pushed to main
-
-    steps:
-      - name: Restore cached code
-        uses: actions/cache@v3
-        with:
-          path: .
-          key: code-${{ needs.checkout.outputs.cache-key }}
-          restore-keys: |
-            code-
 
       - name: Set up JDK
         uses: actions/setup-java@v3
@@ -63,7 +36,7 @@ jobs:
         run: mvn test
 
   bump-version-and-release:
-    needs: [checkout, test]
+    needs: test
     # Run only when code is pushed to main
     runs-on: ubuntu-latest
     permissions:
