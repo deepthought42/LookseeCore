@@ -1,12 +1,17 @@
 package com.looksee.services;
 
+import com.looksee.models.enums.JourneyStatus;
 import com.looksee.models.journeys.Journey;
+import com.looksee.models.journeys.Step;
 import com.looksee.models.repository.JourneyRepository;
+import java.util.List;
 import java.util.Optional;
 import lombok.NoArgsConstructor;
+import lombok.Synchronized;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -81,5 +86,54 @@ public class JourneyService {
 	 */
 	public Journey findByCandidateKey(String candidateKey) {
 		return journey_repo.findByCandidateKey(candidateKey);
+	}
+	
+	/**
+	 * 
+	 * @param journey
+	 * @return
+	 */
+	@Retryable
+	@Synchronized
+	public Journey save(long domain_map_id, Journey journey) {
+		Journey journey_record = journey_repo.findByKeyOrCandidateKey(domain_map_id, journey.getKey(), journey.getCandidateKey());
+		if(journey_record == null) {
+			//journey_record = journey_repo.save(journey);
+			journey_record = new Journey();
+			journey_record.setOrderedIds(journey.getOrderedIds());
+			journey_record.setStatus(journey.getStatus());
+			journey_record.setKey(journey.generateKey());
+			journey_record.setCandidateKey(journey.generateCandidateKey());
+			journey_record = journey_repo.save(journey_record);
+			journey_record.setSteps(journey.getSteps());
+
+			for(Step step: journey.getSteps()){
+				addStep(journey_record.getId(), step.getId());
+			}
+		}
+		
+		return journey_record;
+	}
+	
+	/**
+	 * Updates the status, key, and ordered_ids fields for {@link Journey} stored in database
+	 * 
+	 * @param journey_id
+	 * @param status
+	 * @param key
+	 * @param ordered_ids
+	 * 
+	 * @return {@link Journey} after saving
+	 */
+	public Journey updateFields(long journey_id, JourneyStatus status, String key, List<Long> ordered_ids) {
+		return journey_repo.updateFields(journey_id, status, key, ordered_ids);
+	}
+
+	public Journey addStep(long journey_id, long step_id) {
+		return journey_repo.addStep(journey_id, step_id);
+	}
+
+	public Journey findByCandidateKey(long domain_map_id, String candidate_key) {
+		return journey_repo.findByCandidateKey(domain_map_id, candidate_key);
 	}
 }

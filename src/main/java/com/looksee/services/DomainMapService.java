@@ -1,16 +1,14 @@
 package com.looksee.services;
 
 
+import com.looksee.models.journeys.DomainMap;
+import com.looksee.models.repository.DomainMapRepository;
+import io.github.resilience4j.retry.annotation.Retry;
+import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.looksee.models.journeys.DomainMap;
-import com.looksee.models.repository.DomainMapRepository;
-
-import io.github.resilience4j.retry.annotation.Retry;
-import lombok.NoArgsConstructor;
 
 /**
  * Contains business logic for interacting with and managing domain maps

@@ -316,4 +316,15 @@ public class StepService {
 		
 		return step_repo.getStepsWithStartPage(page_state.getId());
 	}
+
+	/**
+	 * Retrieve single step with given candidate key
+	 * @param domain_map_id TODO
+	 * @param candidateKey
+	 * 
+	 * @return
+	 */
+	public Step findByCandidateKey(String candidate_key, long domain_map_id) {
+		return step_repo.findByCandidateKey(candidate_key, domain_map_id);
+	}
 }
