@@ -1,4 +1,4 @@
-package com.looksee.journeyExpander.gcp;
+package com.looksee.gcp;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

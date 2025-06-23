@@ -2,6 +2,7 @@ package com.looksee.models.repository;
 
 import com.looksee.models.enums.JourneyStatus;
 import com.looksee.models.journeys.Journey;
+import java.util.List;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
 import org.springframework.data.repository.query.Param;
@@ -38,6 +39,39 @@ public interface JourneyRepository extends Neo4jRepository<Journey, Long>  {
 	 */
 	@Query("MATCH (j:Journey{candidateKey:$candidateKey}) RETURN j")
 	public Journey findByCandidateKey(@Param("candidateKey") String candidateKey);
+
+	/**
+	 * Finds a journey by its candidate key within a domain map
+	 *
+	 * @param domain_map_id the ID of the domain map
+	 * @param candidate_key the candidate key of the journey
+	 * @return the journey
+	 */
+	@Query("MATCH (map:DomainMap)-[*2]-(j:Journey{candidateKey:$candidate_key}) WHERE id(map)=$domain_map_id RETURN j LIMIT 1")
+	public Journey findByCandidateKey(@Param("domain_map_id") long domain_map_id, @Param("candidate_key") String candidate_key);
+
+	/**
+	 * Finds a journey by its key or candidate key within a domain map
+	 *
+	 * @param domain_map_id the ID of the domain map
+	 * @param key the key of the journey
+	 * @param candidateKey the candidate key of the journey
+	 * @return the journey
+	 */
+	@Query("MATCH (map:DomainMap)-[*2]-(j:Journey) WHERE id(map)=$domain_map_id AND (j.key=$key OR j.candidateKey=$candidateKey) RETURN j LIMIT 1")
+	public Journey findByKeyOrCandidateKey(@Param("domain_map_id") long domain_map_id, @Param("key") String key, @Param("candidateKey") String candidateKey);
+
+	/**
+	 * Updates the fields of a journey
+	 *
+	 * @param journey_id the ID of the journey
+	 * @param status the status of the journey
+	 * @param key the key of the journey
+	 * @param ordered_ids the ordered IDs of the journey
+	 * @return the journey
+	 */
+	@Query("MATCH (j:Journey) WHERE id(j)=$journey_id SET j.status=$status, j.key=$key, j.orderedIds=$ordered_ids RETURN j")
+	public Journey updateFields(@Param("journey_id") long journey_id, @Param("status") JourneyStatus status, @Param("key") String key, @Param("ordered_ids") List<Long> ordered_ids);
 
 	/**
 	 * Finds all journeys for a domain audit record
