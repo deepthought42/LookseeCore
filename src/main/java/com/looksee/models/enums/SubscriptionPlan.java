@@ -30,6 +30,7 @@ public enum SubscriptionPlan {
      * The agency subscription plan
      */
 	AGENCY_PRO("AGENCY_PRO"),
+    
     /**
      * The agency premium subscription plan
      */
@@ -64,7 +65,7 @@ public enum SubscriptionPlan {
      * Creates a {@link SubscriptionPlan} from a string value
      *
      * @param value the value to create the subscription plan from
-     * @return the subscription plan
+     * @return the subscription plan enum object
      *
      * precondition: value != null
      */

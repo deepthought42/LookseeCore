@@ -60,9 +60,6 @@ public class SubscriptionService {
 		else if(plan.equals(SubscriptionPlan.COMPANY_PREMIUM)){ //UNLIMITED
 			return false;
 		}
-		else if(plan.equals(SubscriptionPlan.AGENCY_PRO) && page_audit_cnt >= 5000){
-			return true;
-		}
 		else if(plan.equals(SubscriptionPlan.AGENCY_PREMIUM) ){ //UNLIMITED
 			return false;
 		}
@@ -97,9 +94,6 @@ public class SubscriptionService {
 		else if(plan.equals(SubscriptionPlan.COMPANY_PREMIUM) && page_audit_count >= 500){
 			return true;
 		}
-		else if(plan.equals(SubscriptionPlan.AGENCY_PRO) && page_audit_count >= 500){
-			return true;
-		}
 		else if(plan.equals(SubscriptionPlan.AGENCY_PREMIUM) && page_audit_count >= 2000){
 			return true;
 		}
@@ -129,9 +123,6 @@ public class SubscriptionService {
 			return true;
 		}
 		else if(plan.equals(SubscriptionPlan.COMPANY_PREMIUM) && domain_audit_cnt >= 100){
-			return true;
-		}
-		else if(plan.equals(SubscriptionPlan.AGENCY_PRO) && domain_audit_cnt >= 50){
 			return true;
 		}
 		else if(plan.equals(SubscriptionPlan.AGENCY_PREMIUM) && domain_audit_cnt >= 200){
