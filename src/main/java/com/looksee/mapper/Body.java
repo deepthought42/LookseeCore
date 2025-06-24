@@ -32,6 +32,9 @@ public class Body {
     this.message = message;
   }
 
+  /**
+   * A message from Pub/Sub
+   */
   public class Message {
 
     private String messageId;
