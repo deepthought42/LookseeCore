@@ -1,13 +1,11 @@
 package com.looksee.utils;
 
+import com.looksee.models.journeys.LoginStep;
+import com.looksee.models.journeys.Step;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.looksee.journeyExpander.models.journeys.LoginStep;
-import com.looksee.journeyExpander.models.journeys.Step;
 
 
 public class JourneyUtils {
