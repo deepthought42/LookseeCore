@@ -3,7 +3,6 @@ package com.looksee.models.message;
 
 import com.looksee.models.enums.BrowserType;
 import com.looksee.models.journeys.Journey;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,25 +15,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class JourneyCandidateMessage extends Message {
-
-	/**
-	 * The map id
-	 */
 	private long mapId;
-
-	/**
-	 * The journey
-	 */
 	private Journey journey;
-
-	/**
-	 * The browser type
-	 */
 	private BrowserType browser;
-
-	/**
-	 * The audit record id
-	 */
 	private long auditRecordId;
 	
 	/**
