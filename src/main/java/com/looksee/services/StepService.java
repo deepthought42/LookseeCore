@@ -319,10 +319,10 @@ public class StepService {
 
 	/**
 	 * Retrieve single step with given candidate key
-	 * @param domain_map_id TODO
-	 * @param candidateKey
+	 * @param domain_map_id the id of the domain map
+	 * @param candidate_key the candidate key
 	 * 
-	 * @return
+	 * @return the step
 	 */
 	public Step findByCandidateKey(String candidate_key, long domain_map_id) {
 		return step_repo.findByCandidateKey(candidate_key, domain_map_id);

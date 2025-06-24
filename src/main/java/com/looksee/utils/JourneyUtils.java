@@ -8,6 +8,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
+/**
+ * Utility class for journey operations
+ */
 public class JourneyUtils {
 	@SuppressWarnings("unused")
 	private static Logger log = LoggerFactory.getLogger(JourneyUtils.class.getName());
@@ -27,7 +30,12 @@ public class JourneyUtils {
 		return false;
 	}
 
-	public static List<Step> trimPreLoginSteps(List<Step> steps) {		
+	/**
+	 * Trims the pre-login steps from a list of steps
+	 * @param steps the list of steps
+	 * @return the list of steps without the pre-login steps
+	 */
+	public static List<Step> trimPreLoginSteps(List<Step> steps) {
 		assert steps != null;
 		assert !steps.isEmpty();
 		
@@ -48,11 +56,11 @@ public class JourneyUtils {
 	}
 
 	/**
-	 * Checks the url of the start page for a {@link Step} agains a list of {@link Step} 
+	 * Checks the url of the start page for a {@link Step} agains a list of {@link Step}
 	 * to ensure that the page url hasn't already been expanded
 	 * 
-	 * @param new_steps
-	 * @param step
+	 * @param steps the list of steps
+	 * @param step the step to check for
 	 * @return true if page url exists in list, otherwise false
 	 */
 	public static boolean hasStartPageAlreadyBeenExpanded(List<Step> steps, Step step) {

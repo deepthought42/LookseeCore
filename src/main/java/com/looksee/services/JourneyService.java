@@ -89,9 +89,14 @@ public class JourneyService {
 	}
 	
 	/**
-	 * 
-	 * @param journey
-	 * @return
+	 * Saves a journey
+	 *
+	 * @param domain_map_id the id of the domain map
+	 * @param journey the journey to save
+	 * @return the saved journey
+	 *
+	 * precondition: domain_map_id > 0
+	 * precondition: journey != null
 	 */
 	@Retryable
 	@Synchronized
@@ -118,10 +123,10 @@ public class JourneyService {
 	/**
 	 * Updates the status, key, and ordered_ids fields for {@link Journey} stored in database
 	 * 
-	 * @param journey_id
-	 * @param status
-	 * @param key
-	 * @param ordered_ids
+	 * @param journey_id the id of the journey
+	 * @param status the status of the journey
+	 * @param key the key of the journey
+	 * @param ordered_ids the ordered ids of the journey
 	 * 
 	 * @return {@link Journey} after saving
 	 */
