@@ -713,22 +713,6 @@ public class AuditUtils {
 		return audit_labels;
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	/**
 	 * Scores site color palette based on the color scheme it most resembles
 	 * @param palette the {@link List} of {@link PaletteColor}s
