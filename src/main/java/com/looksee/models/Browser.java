@@ -168,6 +168,7 @@ public class Browser {
 		html_doc.select("script").remove();
 		html_doc.select("style").remove();
 		html_doc.select("link").remove();
+		html_doc.select("meta").remove();
 		
 		String html = html_doc.html();
 		html = html.replace("\r", "");
@@ -176,7 +177,6 @@ public class Browser {
 		html = html.replace("  ", " ");
 		html = html.replace("  ", " ");
 		html = html.replace("  ", " ");
-		
 
 		return html.replace(" style=\"\"", "");
 	}

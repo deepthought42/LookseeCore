@@ -21,10 +21,24 @@ public class TestUserService {
 	@Autowired
 	private TestUserRepository test_user_repo;
 	
+	/**
+	 * Finds a {@link TestUser} by their ID
+	 *
+	 * @param id the ID of the {@link TestUser} to find
+	 *
+	 * @return the {@link TestUser} with the given ID
+	 */
 	public TestUser findById(long id) {
 		return test_user_repo.findById(id).get();
 	}
 
+	/**
+	 * Saves a {@link TestUser} to the database
+	 *
+	 * @param user the {@link TestUser} to save
+	 *
+	 * @return the saved {@link TestUser}
+	 */
 	public TestUser save(TestUser user) {
 		assert user != null;
 		

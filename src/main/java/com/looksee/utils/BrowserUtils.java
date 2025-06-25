@@ -236,15 +236,19 @@ public class BrowserUtils {
 		assert domain_host != null;
 		assert link_url != null;
 		
+		//add check that link url does not contain a host. The host does not need to be the same as the domain host. for example the domain host might be look-see.com and the link url might be shopify.dev/docs/api/customer/unstable/mutations/subscriptionContractPause
+		if(containsHost(link_url)) {
+			return false;
+		}
+
 		String link_without_params = link_url;
 		if( link_url.indexOf('?') >= 0) {
 			link_without_params = link_url.substring(0, link_url.indexOf('?'));
 		}
 		
 		//check if link is a path by ensuring that it neither contains the/a domain host or a protocol
-		
 		return link_without_params.isEmpty()
-				|| (link_without_params.charAt(0) == '/' && !link_without_params.startsWith("//") && !link_without_params.contains(domain_host)) 
+				|| (link_without_params.charAt(0) == '/' && !link_without_params.startsWith("//") && !link_without_params.contains(domain_host))
 				|| (link_without_params.charAt(0) == '?' && !link_without_params.contains(domain_host))
 				|| (link_without_params.charAt(0) == '#' && !link_without_params.contains(domain_host))
 				|| (!link_without_params.contains(domain_host) && !containsHost(link_url));
@@ -262,7 +266,7 @@ public class BrowserUtils {
 	public static boolean containsHost(String link_url) {
 		assert link_url != null;
 		
-		String host_pattern = "([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&%$-]+)*@)*((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?)(\\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}|([a-zA-Z0-9-]+\\.)*[a-zA-Z0-9-]+\\.(com|app|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|website|space|ca|us|co|uk|cc|es|tn))(:[0-9]+)*";
+		String host_pattern = "([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&%$-]+)*@)*((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?)(\\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}|([a-zA-Z0-9-]+\\.)*[a-zA-Z0-9-]+\\.(com|app|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|website|space|ca|us|co|uk|cc|es|tn|dev|us|ai))(:[0-9]+)*";
 		Pattern pattern = Pattern.compile(host_pattern);
         Matcher matcher = pattern.matcher(link_url);
 

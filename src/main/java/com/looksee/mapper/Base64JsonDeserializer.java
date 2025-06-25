@@ -24,7 +24,7 @@ public class Base64JsonDeserializer extends JsonDeserializer<Object> implements 
     private Class<?> resultClass;
 
     /**
-     *
+     * 
      */
     @Override
     public JsonDeserializer<?> createContextual(DeserializationContext context, BeanProperty property) throws JsonMappingException {

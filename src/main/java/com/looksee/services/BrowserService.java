@@ -2769,17 +2769,17 @@ public class BrowserService {
 	 * 	chat client from page if it exists. Finally it builds a {@link PageState}
 	 *
 	 *Constructs a page object that contains all child elements that are considered to be potentially expandable.
-	 * @param url_after_loading the url after loading
-	 * @param title the title
+	 * @param browser the browser
+	 * @param audit_record_id the id of the audit record
+	 * @param browser_url the browser url
+	 * 
 	 * @return page {@linkplain PageState}
+	 * 
+	 * @throws WebDriverException if the web driver exception occurs
 	 * @throws StorageException if the storage exception occurs
 	 * @throws IOException if the io exception occurs
-	 * @throws XPathExpressionException if the xpath expression exception occurs
-	 * @throws Exception if the exception occurs
 	 * 
-	 * @pre browser != null
-	 * 
-	 * @Version - 9/18/2023
+	 * precondition: browser != null
 	 */
 	public PageState buildPageState( Browser browser, long audit_record_id, String browser_url) throws WebDriverException, IOException {
 		assert browser != null;
@@ -2859,22 +2859,23 @@ public class BrowserService {
 	
 
 	/**
-	 * identify and collect data for elements within the Document Object Model 
+	 * Identifies and collects data for elements within the Document Object Model
 	 * 
 	 * @param domain_map_id the id of the domain map
 	 * @param full_page_screenshot the full page screenshot
-	 * @param page_source the page source
-	 * @param rule_sets the rule sets
-	 * @param reviewed_xpaths the reviewed xpaths
+	 * @param page_state the page state
+	 * @param xpaths the xpaths
+	 * @param browser the browser
+	 * @param browser_url the browser url
 	 * 
 	 * @return List of ElementStates
 	 * 
-	 * @throws Exception 
-	 * @throws XPathExpressionException 
+	 * @throws Exception if an error occurs
+	 * @throws XPathExpressionException if an error occurs
 	 * 
-	 * @pre xpaths != null
-	 * @pre browser != null
-	 * @pre page_state != null
+	 * precondition: xpaths != null
+	 * precondition: browser != null
+	 * precondition: page_state != null
 	 */
 	public List<ElementState> getDomElementStates(
 			PageState page_state,
@@ -3102,8 +3103,8 @@ public class BrowserService {
 	/**
 	 * Enriches elements using cloud vision utils
 	 * 
-	 * @param element_state
-	 * @return
+	 * @param element_state the element state to enrich
+	 * @return the enriched element state
 	 */
 	public ElementState enrichImageElement(ElementState element_state)
 	{

@@ -16,17 +16,36 @@ import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Deserializes a step
+ */
 public class StepDeserializer extends JsonDeserializer<Object> implements ContextualDeserializer {
 	private static Logger log = LoggerFactory.getLogger(StepDeserializer.class);
 
     private Class<?> resultClass;
 
+    /**
+     * Creates a contextual deserializer
+     *
+     * @param context the deserialization context
+     * @param property the property to deserialize
+     *
+     * @return the contextual deserializer
+     */
     @Override
     public JsonDeserializer<?> createContextual(DeserializationContext context, BeanProperty property) throws JsonMappingException {
         this.resultClass = property.getType().getRawClass();
         return this;
     }
 
+    /**
+     * Deserializes a step
+     *
+     * @param parser the parser to deserialize the step from
+     * @param context the deserialization context
+     *
+     * @return the deserialized step
+     */
     @Override
     public Object deserialize(JsonParser parser, DeserializationContext context) throws IOException, JsonProcessingException {
         String value = parser.getValueAsString();

@@ -135,12 +135,10 @@ public interface StepRepository extends Neo4jRepository<Step, Long>{
 	public List<Step> getStepsWithStartPage(@Param("page_state_id") long page_state_id);
 
 	/**
-	 * updates the {@link JourneyStatus} for a step with the given ID
+	 * Updates the {@link JourneyStatus} for a step with the given ID
 	 * 
-	 * @version = 9/17/2023
-	 * 
-	 * @param step_id
-	 * @param status
+	 * @param step_id the ID of the step
+	 * @param status the {@link JourneyStatus} to set
 	 */
 	@Query("MATCH (step:Step) WHERE id(step)=$step_id SET step.status=$status RETURN step")
 	public void updateStatus(@Param("step_id") long step_id, @Param("status") JourneyStatus status);

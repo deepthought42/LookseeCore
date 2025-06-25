@@ -18,6 +18,11 @@ public class ActionFactory {
 
 	private Actions builder;
 	
+	/**
+	 * Creates a new action factory
+	 *
+	 * @param driver the web driver
+	 */
 	public ActionFactory(WebDriver driver){
 		builder = new Actions(driver);
 	}

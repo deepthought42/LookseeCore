@@ -517,13 +517,14 @@ public class PageStateService {
 		return page_state_repo.findByDomainAudit(domainAuditRecordId, current_url);
 	}
 
-	/**
-	 * Finds a page state by key
-	 * @param key the key of the page state
-	 * @return the page state
-	 *
-	 * precondition: key != null
-	 */
+    /**
+     * Updates the element extraction complete status for a page state
+     * @param page_id the id of the page state
+     * @param is_complete the status of the element extraction
+     * @throws Exception if the page state is not found
+     *
+     * precondition: page_id > 0
+     */
 	@Retryable
 	@Synchronized
 	public void updateElementExtractionCompleteStatus(Long page_id, boolean is_complete) throws Exception {

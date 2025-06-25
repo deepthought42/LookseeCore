@@ -330,24 +330,24 @@ public class ElementStateUtils {
 	}
 
 	/**
-	 * Checks if {@link ElementState} is an interactive element. The methods 
-	 * defines element interactivity as an element that is either natively interactive in 
+	 * Checks if {@link ElementState} is an interactive element. The methods
+	 * defines element interactivity as an element that is either natively interactive in
 	 * HTML such as the tags a, button, select, and input. This method also
 	 * checks that the outer html has reference to "click" or onClick.
 	 * 
-	 * @param element
+	 * @param element the element to check
 	 * @return true if the element is interactive, otherwise returns false
 	 * 
-	 * @pre element != null
+	 * precondition: element != null
 	 */
     public static boolean isInteractiveElement(Element element) {
 		assert element != null;
 		
 		String tagName = element.tagName();
 
-		if("a".equals(tagName) 
-			|| "button".equals(tagName) 
-			|| "select".equals(tagName) 
+		if("a".equals(tagName)
+			|| "button".equals(tagName)
+			|| "select".equals(tagName)
 			|| "input".equals(tagName) )
 		{
 			return true;

@@ -10,16 +10,35 @@ import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
 import java.io.IOException;
 import java.util.Base64;
 
+/**
+ * Deserializes a base64 string
+ */
 public class Base64StringDeserializer extends JsonDeserializer<Object> implements ContextualDeserializer {
 
     private Class<?> resultClass;
 
+    /**
+     * Creates a contextual deserializer
+     *
+     * @param context the deserialization context
+     * @param property the property to deserialize
+     *
+     * @return the contextual deserializer
+     */
     @Override
     public JsonDeserializer<?> createContextual(DeserializationContext context, BeanProperty property) throws JsonMappingException {
         this.resultClass = property.getType().getRawClass();
         return this;
     }
 
+    /**
+     * Deserializes a base64 string
+     *
+     * @param parser the parser to deserialize the base64 string from
+     * @param context the deserialization context
+     *
+     * @return the deserialized base64 string
+     */
     @Override
     public Object deserialize(JsonParser parser, DeserializationContext context) throws IOException, JsonProcessingException {
         String value = parser.getValueAsString();

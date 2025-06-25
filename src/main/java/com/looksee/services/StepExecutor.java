@@ -18,11 +18,22 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+/**
+ * Executes a step
+ */
 @Service
 public class StepExecutor {
 	@SuppressWarnings("unused")
 	private static Logger log = LoggerFactory.getLogger(StepExecutor.class);
 	
+	/**
+	 * Executes a step
+	 *
+	 * @param browser the {@link Browser} to execute the step on
+	 * @param step the {@link Step} to execute
+	 *
+	 * @throws Exception if an error occurs
+	 */
 	public void execute(Browser browser, Step step) throws Exception {
 		assert browser != null;
 		assert step != null;

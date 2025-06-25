@@ -48,7 +48,6 @@ public class BrowserUtilTests {
 		String url3 = "shopify.dev/docs/api/customer/unstable/mutations/subscriptionContractPause";
 		boolean is_relative3 = BrowserUtils.isRelativeLink("look-see.com", url3);
 		assertFalse(is_relative3);
-		
 	}
 
 	@Test

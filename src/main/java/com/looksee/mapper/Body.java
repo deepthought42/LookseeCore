@@ -16,6 +16,10 @@
 
 package com.looksee.mapper;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 // Body.Message is the payload of a Pub/Sub event. Please refer to the docs for
 // additional information regarding Pub/Sub events.
 public class Body {
@@ -35,41 +39,25 @@ public class Body {
   /**
    * A message from Pub/Sub
    */
+  @Getter
+  @Setter
+  @NoArgsConstructor
   public class Message {
 
     private String messageId;
     private String publishTime;
     private String data;
 
-    public Message() {}
-
+    /**
+     * Creates a new message
+     *
+     * @param messageId the message id
+     * @param publishTime the publish time
+     * @param data the data
+     */
     public Message(String messageId, String publishTime, String data) {
       this.messageId = messageId;
       this.publishTime = publishTime;
-      this.data = data;
-    }
-
-    public String getMessageId() {
-      return messageId;
-    }
-
-    public void setMessageId(String messageId) {
-      this.messageId = messageId;
-    }
-
-    public String getPublishTime() {
-      return publishTime;
-    }
-
-    public void setPublishTime(String publishTime) {
-      this.publishTime = publishTime;
-    }
-
-    public String getData() {
-      return data;
-    }
-
-    public void setData(String data) {
       this.data = data;
     }
   }

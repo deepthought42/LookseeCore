@@ -134,12 +134,15 @@ public class JourneyService {
 		return journey_repo.updateFields(journey_id, status, key, ordered_ids);
 	}
 
+	/**
+	 * Adds a step to a journey
+	 *
+	 * @param journey_id the id of the journey
+	 * @param step_id the id of the step
+	 * @return the journey
+	 */
 	public Journey addStep(long journey_id, long step_id) {
 		return journey_repo.addStep(journey_id, step_id);
-	}
-
-	public Journey findByCandidateKey(long domain_map_id, String candidate_key) {
-		return journey_repo.findByCandidateKey(domain_map_id, candidate_key);
 	}
 
 	/**
