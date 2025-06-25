@@ -72,5 +72,4 @@ public class JourneyUtils {
 		
 		return false;
 	}
-
 }

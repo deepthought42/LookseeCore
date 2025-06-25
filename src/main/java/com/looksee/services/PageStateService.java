@@ -16,9 +16,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import lombok.NoArgsConstructor;
+import lombok.Synchronized;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -478,4 +480,73 @@ public class PageStateService {
 	public int getElementStateCount(long page_id) {
 		return element_state_repo.getElementStateCount(page_id);
 	}
+
+	/**
+	 * Finds a page state by the domain map id and key
+	 * @param domain_map_id the id of the domain map
+	 * @param page_key the key of the page state
+	 * @return the page state
+	 *
+	 * precondition: domain_map_id > 0
+	 */
+	public PageState findPageInDomainMap(long domain_map_id, String page_key) {
+		return page_state_repo.findByDomainMap(domain_map_id, page_key);
+	}
+
+	/**
+	 * Finds a page state by the domain audit record id and page state id
+	 * @param domainAuditRecordId the id of the domain audit record
+	 * @param page_state_id the id of the page state
+	 * @return the page state
+	 */
+	public PageState findByDomainAudit(long domainAuditRecordId, long page_state_id) {
+		return page_state_repo.findByDomainAudit(domainAuditRecordId, page_state_id);
+	}
+
+	/**
+	 * Finds a page state by the domain audit record id and current url
+	 * @param domainAuditRecordId the id of the domain audit record
+	 * @param current_url the current url
+	 * @return the page state
+	 *
+	 * precondition: domainAuditRecordId > 0
+	 * precondition: current_url != null
+	 * precondition: !current_url.isEmpty()
+	 */
+	public PageState findByDomainAudit(long domainAuditRecordId, String current_url) {
+		return page_state_repo.findByDomainAudit(domainAuditRecordId, current_url);
+	}
+
+	/**
+	 * Finds a page state by key
+	 * @param key the key of the page state
+	 * @return the page state
+	 *
+	 * precondition: key != null
+	 */
+	@Retryable
+	@Synchronized
+	public void updateElementExtractionCompleteStatus(Long page_id, boolean is_complete) throws Exception {
+		PageState page = page_state_repo.updateElementExtractionCompleteStatus(page_id, is_complete);
+		if(page == null){
+			throw new Exception("Page state with id = "+page_id+" was not found");
+		}
+	}
+
+	/**
+	 * Updates the element extraction complete status for a page state
+	 * @param page_id the id of the page state
+	 * @param is_complete the status of the element extraction
+	 * @throws Exception if the page state is not found
+	 *
+	 * precondition: page_id > 0
+	 */
+	@Retryable
+	@Synchronized
+    public void updateInteractiveElementExtractionComplete(Long page_id, boolean is_complete) throws Exception {
+        PageState page = page_state_repo.updateInteractiveElementExtractionCompleteStatus(page_id, is_complete);
+		if(page == null){
+			throw new Exception("Page state with id = "+page_id+" was not found");
+		}
+    }
 }
