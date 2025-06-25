@@ -1,6 +1,7 @@
 package utils;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.looksee.utils.BrowserUtils;
 import org.junit.jupiter.api.Test;

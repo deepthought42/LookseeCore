@@ -1,26 +1,20 @@
 package services;
 
-import static org.junit.Assert.*;
-
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.List;
-
-import javax.imageio.ImageIO;
-import javax.xml.xpath.XPathExpressionException;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.junit.Test;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Point;
-import org.springframework.beans.factory.annotation.Autowired;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.looksee.models.Browser;
 import com.looksee.models.enums.TemplateType;
 import com.looksee.services.BrowserService;
-import com.looksee.utils.ImageUtils;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.util.List;
+import javax.xml.xpath.XPathExpressionException;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
+import org.springframework.beans.factory.annotation.Autowired;
 
 //@RunWith(SpringRunner.class)
 //@SpringBootTest(classes = EntryPoint.class)
