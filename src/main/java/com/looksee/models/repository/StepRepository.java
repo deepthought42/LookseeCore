@@ -2,6 +2,7 @@ package com.looksee.models.repository;
 
 import com.looksee.models.ElementState;
 import com.looksee.models.PageState;
+import com.looksee.models.enums.JourneyStatus;
 import com.looksee.models.journeys.Step;
 import java.util.List;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
@@ -132,4 +133,15 @@ public interface StepRepository extends Neo4jRepository<Step, Long>{
 	 */
 	@Query("MATCH (p:PageState) WITH p WHERE id(p)=$page_state_id MATCH (step:Step)-[:STARTS_WITH]->(p:PageState) RETURN step")
 	public List<Step> getStepsWithStartPage(@Param("page_state_id") long page_state_id);
+
+	/**
+	 * updates the {@link JourneyStatus} for a step with the given ID
+	 * 
+	 * @version = 9/17/2023
+	 * 
+	 * @param step_id
+	 * @param status
+	 */
+	@Query("MATCH (step:Step) WHERE id(step)=$step_id SET step.status=$status RETURN step")
+	public void updateStatus(@Param("step_id") long step_id, @Param("status") JourneyStatus status);
 }

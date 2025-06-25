@@ -61,7 +61,6 @@ public class ActionFactory {
 			builder.sendKeys(elem, input);
 		}
 		else if(Action.MOUSE_OVER.equals(action)){
-			builder.scrollToElement(elem);
 			builder.moveToElement(elem);
 		}
 
