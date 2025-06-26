@@ -441,4 +441,14 @@ public interface ElementStateRepository extends Neo4jRepository<ElementState, Lo
 	 */
 	@Query("MATCH p=(d:DomainMap)-[*3]->(n:PageState)-[]->(e:ElementState{key:$key}) WHERE id(d)=$domain_map_id RETURN e LIMIT 1")
 	public ElementState findByDomainMapAndKey(@Param("domain_map_id") long domain_map_id, @Param("key") String key);
+
+	/**
+	 * Retrieves an element state by its page state ID and CSS selector.
+	 *
+	 * @param page_state_id The ID of the page state
+	 * @param selector The CSS selector of the element state
+	 * @return The ElementState object if found, null otherwise
+	 */
+	@Query("MATCH (p:PageState)-[:HAS]->(e:ElementState{cssSelector:$selector}) WHERE id(p)=$page_state_id RETURN DISTINCT e")
+    public ElementState findByPageAndCssSelector(@Param("page_state_id") long id, @Param("selector") String cssSelector);
 }

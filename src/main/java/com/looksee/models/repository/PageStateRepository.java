@@ -426,5 +426,4 @@ public interface PageStateRepository extends Neo4jRepository<PageState, Long> {
 	 */
 	@Query("MATCH (page_state:PageState) WHERE id(page_state)=$page_id SET page_state.interactiveElementExtractionComplete=$is_complete RETURN page_state LIMIT 1")
     public PageState updateInteractiveElementExtractionCompleteStatus(@Param("page_id") long page_id, @Param("is_complete") boolean is_complete);
-
 }
