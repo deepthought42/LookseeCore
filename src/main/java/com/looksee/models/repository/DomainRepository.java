@@ -389,5 +389,4 @@ public interface DomainRepository extends Neo4jRepository<Domain, Long> {
 	 */
 	@Query("MATCH (d:Domain{url:$url})-[]->(audit:DomainAuditRecord) RETURN audit ORDER BY audit.created_at DESC LIMIT 1")
 	public Optional<DomainAuditRecord> getMostRecentAuditRecord(@Param("url") String url);
-
 }

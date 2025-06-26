@@ -1,12 +1,10 @@
 package com.looksee.models.repository;
 
+import com.looksee.models.rules.Rule;
 import java.util.Set;
-
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
 import org.springframework.data.repository.query.Param;
-
-import com.looksee.models.rules.Rule;
 
 /**
  * Repository for {@link Rule}s
@@ -86,5 +84,4 @@ public interface RuleRepository extends Neo4jRepository<Rule, Long> {
 	 */
 	@Query("MATCH (:Account{username:$username})-[*]->(e:ElementState{key:$element_key}) MATCH (e)-[:HAS]->(r:Rule{key:$rule_key}) RETURN r LIMIT 1")
 	public Rule getElementRule(@Param("username") String username, @Param("element_key") String element_key, @Param("rule_key") String rule_key);
-
 }

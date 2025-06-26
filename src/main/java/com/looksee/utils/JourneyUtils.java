@@ -17,8 +17,8 @@ public class JourneyUtils {
 
 	/**
 	 * Checks if a list of {@link Step steps} has a {@linkplain LoginStep}
-	 * @param steps
-	 * @return
+	 * @param steps the list of steps
+	 * @return true if the list of steps has a {@linkplain LoginStep}, otherwise false
 	 */
 	public static boolean hasLoginStep(List<Step> steps) {
 		for(Step step: steps) {
@@ -72,5 +72,4 @@ public class JourneyUtils {
 		
 		return false;
 	}
-
 }

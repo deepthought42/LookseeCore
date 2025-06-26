@@ -536,4 +536,17 @@ public class ElementStateService {
 									.map(element -> save(element))
 									.collect(Collectors.toList());
 	}
+
+	/**
+	 * Finds an {@link ElementState} by the domain map id and key
+	 * 
+	 * @param domain_map_id the id of the domain map
+	 * @param element the element to find
+	 * @return the element state
+	 * @throws Exception if the element state is null or not found in the database
+	 */
+	@Retryable
+	public ElementState findByDomainMapAndKey(long domain_map_id, ElementState element) throws Exception {
+		return element_repo.findByDomainMapAndKey(domain_map_id, element.getKey());
+	}
 }

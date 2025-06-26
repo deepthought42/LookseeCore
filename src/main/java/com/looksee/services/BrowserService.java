@@ -35,6 +35,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -55,6 +56,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.InvalidSelectorException;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
@@ -2760,15 +2762,398 @@ public class BrowserService {
 		
 		return browser.getSource();
 	}
-	
+
 	/**
-	 * Calculates the SHA-256 hash of a string
+	 *
+	 * Navigates to a url, checks that the service is available, then removes drift
+	 * 	chat client from page if it exists. Finally it builds a {@link PageState}
+	 *
+	 *Constructs a page object that contains all child elements that are considered to be potentially expandable.
+	 * @param browser the browser
+	 * @param audit_record_id the id of the audit record
+	 * @param browser_url the browser url
 	 * 
-	 * @param value the value to hash (must not be null)
+	 * @return page {@linkplain PageState}
 	 * 
-	 * @return the SHA-256 hash
+	 * @throws WebDriverException if the web driver exception occurs
+	 * @throws StorageException if the storage exception occurs
+	 * @throws IOException if the io exception occurs
+	 * 
+	 * precondition: browser != null
 	 */
-	private static String calculateSha256(String value) {
-		return org.apache.commons.codec.digest.DigestUtils.sha256Hex(value);
+	public PageState buildPageState( Browser browser, long audit_record_id, String browser_url) throws WebDriverException, IOException {
+		assert browser != null;
+		
+		//remove 3rd party chat apps such as drift, and ...(NB: fill in as more identified)
+		
+		URL current_url = new URL(browser_url);
+		int status_code = BrowserUtils.getHttpStatus(current_url);
+		String url_without_protocol = BrowserUtils.getPageUrl(current_url.toString());
+		browser.removeDriftChat();
+		browser.removeGDPRmodals();
+		boolean is_secure = BrowserUtils.checkIfSecure(current_url);
+
+		String source = Browser.cleanSrc(browser.getDriver().getPageSource());
+		
+		if(Browser.is503Error(source)) {
+			throw new ServiceUnavailableException("503(Service Unavailable) Error encountered. Starting over..");
+		}
+		
+		Document html_doc = Jsoup.parse(source);
+		Set<String> metadata = BrowserService.extractMetadata(html_doc);
+		Set<String> stylesheets = BrowserService.extractStylesheets(html_doc);
+		Set<String> script_urls =  BrowserService.extractScriptUrls(html_doc);
+		Set<String> fav_icon_links = BrowserService.extractIconLinks(html_doc);
+		//PageState page_record = retrievePageFromDB(audit_record_id, url_without_protocol, source, BrowserType.CHROME);
+		//if(page_record != null){
+		//	return page_record;
+		//}
+		
+        //scroll to bottom then back to top to make sure all elements that may be hidden until the page is scrolled
+		String title = browser.getDriver().getTitle();
+
+		BufferedImage viewport_screenshot = browser.getViewportScreenshot();
+		String screenshot_checksum = ImageUtils.getChecksum(viewport_screenshot);
+
+		BufferedImage full_page_screenshot = browser.getFullPageScreenshotShutterbug();
+		String full_page_screenshot_checksum = ImageUtils.getChecksum(full_page_screenshot);
+		
+		String viewport_screenshot_url = googleCloudStorage.saveImage(viewport_screenshot,
+																	current_url.getHost(),
+																	screenshot_checksum,
+																	BrowserType.create(browser.getBrowserName()));
+		viewport_screenshot.flush();
+
+		String full_page_screenshot_url = googleCloudStorage.saveImage(full_page_screenshot,
+																	current_url.getHost(),
+																	full_page_screenshot_checksum,
+																	BrowserType.create(browser.getBrowserName()));
+		full_page_screenshot.flush();
+		
+		long x_offset = browser.getXScrollOffset();
+		long y_offset = browser.getYScrollOffset();
+		Dimension size = browser.getDriver().manage().window().getSize();
+		
+		return new PageState(
+							viewport_screenshot_url,
+							source,
+							x_offset,
+							y_offset,
+							size.getWidth(),
+							size.getHeight(),
+							BrowserType.CHROME,
+							full_page_screenshot_url,
+							full_page_screenshot.getWidth(),
+							full_page_screenshot.getHeight(),
+							url_without_protocol,
+							title,
+							is_secure,
+							status_code,
+							current_url.toString(),
+							audit_record_id,
+							metadata,
+							stylesheets,
+							script_urls,
+							fav_icon_links);
+	}
+	
+
+	/**
+	 * Identifies and collects data for elements within the Document Object Model
+	 * 
+	 * @param domain_map_id the id of the domain map
+	 * @param full_page_screenshot the full page screenshot
+	 * @param page_state the page state
+	 * @param xpaths the xpaths
+	 * @param browser the browser
+	 * @param browser_url the browser url
+	 * 
+	 * @return List of ElementStates
+	 * 
+	 * @throws Exception if an error occurs
+	 * @throws XPathExpressionException if an error occurs
+	 * 
+	 * precondition: xpaths != null
+	 * precondition: browser != null
+	 * precondition: page_state != null
+	 */
+	public List<ElementState> getDomElementStates(
+			PageState page_state,
+			List<String> xpaths,
+			Browser browser,
+			long domain_map_id,
+			BufferedImage full_page_screenshot,
+			String browser_url
+	) throws Exception {
+		assert xpaths != null;
+		assert browser != null;
+		assert page_state != null;
+		
+		List<ElementState> visited_elements = new ArrayList<>();
+		List<ElementState> image_elements = new ArrayList<>();
+		String body_src = extractBody(page_state.getSrc());
+		
+		Document html_doc = Jsoup.parse(body_src);
+		String host = (new URL(browser_url)).getHost();
+		xpaths = xpaths.parallelStream().filter(Objects::nonNull).collect(Collectors.toList());
+
+		//iterate over xpaths to build ElementStates without screenshots
+		for(String xpath : xpaths) {
+			//load JSOUP element
+			Elements elements = Xsoup.compile(xpath).evaluate(html_doc).getElements();
+			Element element = elements.first();
+			if(page_state.getUrl().contains("blog")){
+				log.warn("reviewing element with xpath1 = "+xpath);
+			}
+			String tag_name = element.tagName();
+			//check if element is visible in pane and if not then continue to next element xpath
+			if( isStructureTag(tag_name) || !ElementStateUtils.isInteractiveElement(element)){
+				if(page_state.getUrl().contains("blog")){
+					log.warn("skipping xpath = "+xpath);
+				}
+				continue;
+			}
+			if(page_state.getUrl().contains("blog")){
+				log.warn("reviewing element with xpath2 = "+xpath);
+			}
+			WebElement web_element = browser.findElement(xpath);
+			if(web_element == null) {
+				log.warn("web element is null : "+xpath+"  ;;   for page = "+page_state.getKey());
+				continue;
+			}
+			if(page_state.getUrl().contains("blog")){
+				log.warn("reviewing element with xpath3 = "+xpath);
+			}
+
+			Rectangle rect = web_element.getRect();
+			Dimension element_size = new Dimension(rect.getWidth(), rect.getHeight());
+			Point element_location = new Point(rect.getX(), rect.getY());
+			if( doesElementHaveNegativePosition(element_location)
+				|| BrowserUtils.isHidden(element_location, element_size)
+				|| rect.getHeight() <= 0
+				|| rect.getWidth() <= 0
+				|| !web_element.isDisplayed()
+			){
+				if(page_state.getUrl().contains("blog")){
+					log.warn("skipping element because of negative position or no dimensions or not displayed = "+xpath);
+				}
+				continue;
+			}
+
+			if(page_state.getUrl().contains("blog")){
+				log.warn("reviewing element with xpath4 = "+xpath);
+			}
+
+			String css_selector = generateCssSelectorFromXpath(xpath);
+			ElementClassification classification = ElementClassification.UNKNOWN;
+			if(page_state.getUrl().contains("blog")){
+				log.warn("reviewing element with xpath5 = "+xpath);
+			}
+			if(isImageElement(tag_name)) {
+				ElementState element_state = buildImageElementState(xpath,
+																	new HashMap<>(),
+																	element,
+																	classification,
+																	new HashMap<>(),
+																	null,
+																	css_selector,
+																	null,
+																	null,
+																	null,
+																	null,
+																	null,
+																	element_size,
+																	element_location);
+				
+				ElementState element_record = element_state_service.findByDomainMapAndKey(domain_map_id, element_state);
+				if(element_record == null) {
+					element_state = enrichElementState(browser, web_element, element_state, full_page_screenshot, host);
+					element_state = enrichImageElement(element_state);
+					//element_record = element_state_service.save(domain_map_id, page_state.getId(), element_state);
+					visited_elements.add(element_state);
+				}
+				else{
+					visited_elements.add(element_record);
+				}
+			}
+			else {
+				if(page_state.getUrl().contains("blog")){
+					log.warn("reviewing element with xpath6 (element-build) = "+xpath);
+				}
+				try{
+					ElementState element_state = buildElementState(xpath,
+																new HashMap<>(),
+																element,
+																classification,
+																new HashMap<>(),
+																null,
+																css_selector,
+																element_size,
+																element_location);
+					
+					ElementState element_record = element_state_service.findByDomainMapAndKey(domain_map_id, element_state);
+					if(element_record == null) {
+						if(page_state.getUrl().contains("blog")){
+							log.warn("reviewing element with xpath6 (element-enrichment) = "+xpath);
+						}
+						element_state = enrichElementState(browser, web_element, element_state, full_page_screenshot, host);
+						if(page_state.getUrl().contains("blog")){
+							log.warn("reviewing element with xpath6 (background enrichment) = "+xpath);
+						}
+						element_state = ElementStateUtils.enrichBackgroundColor(element_state);
+						//element_record = element_state_service.save(domain_map_id, page_state.getId(), element_state);
+						visited_elements.add(element_state);
+					}
+					else{
+						visited_elements.add(element_record);
+					}
+				}catch(Exception e){
+					e.printStackTrace();
+				}
+			}
+		}
+		visited_elements.addAll(image_elements);
+
+		return visited_elements;
+	}
+
+	/**
+	 * Checks if element tag is 'img'
+	 * @param web_element
+	 * @return
+	 */
+	private boolean isImageElement(String tag_name) {
+		return "img".equalsIgnoreCase(tag_name);
+	}
+
+	/**
+	 * Checks if {@link WebElement element} is visible in the current viewport window or not
+	 * 
+	 * @param viewport_size {@link Browser browser} connection to use 
+	 * @param size {@link Dimension size} of the element
+	 * 
+	 * @return true if element is rendered within viewport, otherwise false
+	 */
+	public static boolean doesElementFitInViewport(Dimension viewport_size, Point position, Dimension size){
+		assert viewport_size != null;
+		assert size != null;
+
+		int height = size.getHeight();
+		int width = size.getWidth();
+
+		return width < (viewport_size.getWidth())
+				&& height < (viewport_size.getHeight());
+	}
+
+	/**
+	 * Performs image enrichment in parallel for all elements in the given list
+	 * @param element_states list of element states to enrich
+	 * @return list of enriched element states
+	 */
+	public List<ElementState> enrichImageElement(List<ElementState> element_states)
+	{
+		return element_states.parallelStream().map(element_state -> {
+			if(element_state instanceof ImageElementState && !element_state.getScreenshotUrl().isEmpty()) {
+				BufferedImage element_screenshot;
+				try {
+					element_screenshot = ImageIO.read(new URL(element_state.getScreenshotUrl()));
+
+					//retrieve image landmark properties from google cloud vision
+					//Set<ImageLandmarkInfo> landmark_info_set = CloudVisionUtils.extractImageLandmarks(element_screenshot);
+					Set<ImageLandmarkInfo> landmark_info_set = null;
+					//retrieve image faces properties from google cloud vision
+					//Set<ImageFaceAnnotation> faces = CloudVisionUtils.extractImageFaces(element_screenshot);
+					Set<ImageFaceAnnotation> faces = null;
+					//retrieve image reverse image search properties from google cloud vision
+					ImageSearchAnnotation image_search_set = CloudVisionUtils.searchWebForImageUsage(element_screenshot);
+					ImageSafeSearchAnnotation img_safe_search_annotation = CloudVisionUtils.detectSafeSearch(element_screenshot);
+					
+					//retrieve image logos from google cloud vision
+					Set<Logo> logos = new HashSet<>();//CloudVisionUtils.extractImageLogos(element_screenshot);
+
+					//retrieve image labels
+					Set<Label> labels = CloudVisionUtils.extractImageLabels(element_screenshot);
+
+					ImageElementState image_element = (ImageElementState)element_state;
+					//image_element.setScreenshotUrl(element_screenshot_url);
+					image_element.setFaces(faces);
+					image_element.setLandmarkInfoSet(landmark_info_set);
+					image_element.setImageSearchSet(image_search_set);
+
+					image_element.setAdult(img_safe_search_annotation.getAdult());
+					image_element.setRacy(img_safe_search_annotation.getRacy());
+					image_element.setViolence(img_safe_search_annotation.getViolence());
+					image_element.setLogos(logos);
+					image_element.setLabels(labels);
+					return image_element;
+				} catch (MalformedURLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			return null;
+
+		}).filter(e -> e==null)
+		.collect(Collectors.toList());
+	}
+
+	/**
+	 * Enriches elements using cloud vision utils
+	 * 
+	 * @param element_state the element state to enrich
+	 * @return the enriched element state
+	 */
+	public ElementState enrichImageElement(ElementState element_state)
+	{
+		if(element_state instanceof ImageElementState
+				&& element_state.getScreenshotUrl() != null
+				&& !element_state.getScreenshotUrl().isEmpty())
+		{
+			BufferedImage element_screenshot;
+			try {
+				element_screenshot = ImageIO.read(new URL(element_state.getScreenshotUrl()));
+
+				//retrieve image landmark properties from google cloud vision
+				//Set<ImageLandmarkInfo> landmark_info_set = CloudVisionUtils.extractImageLandmarks(element_screenshot);
+				Set<ImageLandmarkInfo> landmark_info_set = null;
+				//retrieve image faces properties from google cloud vision
+				//Set<ImageFaceAnnotation> faces = CloudVisionUtils.extractImageFaces(element_screenshot);
+				Set<ImageFaceAnnotation> faces = null;
+				//retrieve image reverse image search properties from google cloud vision
+				ImageSearchAnnotation image_search_set = CloudVisionUtils.searchWebForImageUsage(element_screenshot);
+				ImageSafeSearchAnnotation img_safe_search_annotation = CloudVisionUtils.detectSafeSearch(element_screenshot);
+				
+				//retrieve image logos from google cloud vision
+				Set<Logo> logos = new HashSet<>();//CloudVisionUtils.extractImageLogos(element_screenshot);
+
+				//retrieve image labels
+				Set<Label> labels = CloudVisionUtils.extractImageLabels(element_screenshot);
+
+				ImageElementState image_element = (ImageElementState)element_state;
+				//image_element.setScreenshotUrl(element_screenshot_url);
+				image_element.setFaces(faces);
+				image_element.setLandmarkInfoSet(landmark_info_set);
+				image_element.setImageSearchSet(image_search_set);
+
+				if(img_safe_search_annotation != null){
+					image_element.setAdult(img_safe_search_annotation.getAdult());
+					image_element.setRacy(img_safe_search_annotation.getRacy());
+					image_element.setViolence(img_safe_search_annotation.getViolence());
+				}
+				image_element.setLogos(logos);
+				image_element.setLabels(labels);
+				return image_element;
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return element_state;
 	}
 }

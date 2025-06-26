@@ -431,4 +431,14 @@ public interface ElementStateRepository extends Neo4jRepository<ElementState, Lo
 	 */
 	@Query("MATCH (p:PageState) WHERE id(p)=$page_state_id MATCH (p)-[:HAS]->(e:ElementState) where e.visible=true AND e.classification'LEAF' RETURN e")
 	public List<ElementState> getVisibleLeafElements(@Param("page_state_id") long page_state_id);
+
+	/**
+	 * Retrieves an element state by its domain map ID and key.
+	 *
+	 * @param domain_map_id The ID of the domain map
+	 * @param key The key of the element state
+	 * @return The ElementState object if found, null otherwise
+	 */
+	@Query("MATCH p=(d:DomainMap)-[*3]->(n:PageState)-[]->(e:ElementState{key:$key}) WHERE id(d)=$domain_map_id RETURN e LIMIT 1")
+	public ElementState findByDomainMapAndKey(@Param("domain_map_id") long domain_map_id, @Param("key") String key);
 }

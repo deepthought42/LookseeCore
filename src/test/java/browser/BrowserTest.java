@@ -1,7 +1,14 @@
 package browser;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.looksee.models.Browser;
+import com.looksee.models.BrowserConnectionHelper;
+import com.looksee.models.enums.BrowserEnvironment;
+import com.looksee.models.enums.BrowserType;
+import com.looksee.services.BrowserService;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -10,25 +17,17 @@ import java.net.URL;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
-
 import javax.imageio.ImageIO;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
-import com.looksee.models.Browser;
-import com.looksee.models.BrowserConnectionHelper;
-import com.looksee.models.enums.BrowserEnvironment;
-import com.looksee.models.enums.BrowserType;
-import com.looksee.services.BrowserService;
-
 
 /**
- * 
+ *
  */
 public class BrowserTest {
 	
@@ -185,5 +184,14 @@ public class BrowserTest {
 		BrowserService.removeComments(html_doc);
 		
 		assert(expected_result.equals(html_doc.html()));
+	}
+
+	@Test
+	public void testCleanSrc(){
+		String expected_result = "<html> <head></head> <body> <app-footer _ngcontent-wiq-c74=\"\" class=\"footer\" _nghost-wiq-c23=\"\"></app-footer> </body></html>";
+		String src = "<app-footer _ngcontent-wiq-c74=\"\" class=\"footer\" _nghost-wiq-c23=\"\"></app-footer>  ";
+		String generalized_src = Browser.cleanSrc(src);
+		System.out.println(generalized_src);
+		assertTrue(expected_result.equals(generalized_src));
 	}
 }

@@ -318,7 +318,47 @@ public class ElementStateUtils {
 				|| element.getAttributes().containsKey("onclick");
 	}
 	
+	/**
+	 * Checks if {@link ElementState} is a form element
+	 * @param element the element to check
+	 * @return true if the element is a form element, otherwise returns false
+	 *
+	 * precondition: element != null
+	 */
 	public static boolean isFormElement(ElementState element) {
 		return element.getXpath().contains("form");
 	}
+
+	/**
+	 * Checks if {@link ElementState} is an interactive element. The methods
+	 * defines element interactivity as an element that is either natively interactive in
+	 * HTML such as the tags a, button, select, and input. This method also
+	 * checks that the outer html has reference to "click" or onClick.
+	 * 
+	 * @param element the element to check
+	 * @return true if the element is interactive, otherwise returns false
+	 * 
+	 * precondition: element != null
+	 */
+    public static boolean isInteractiveElement(Element element) {
+		assert element != null;
+		
+		String tagName = element.tagName();
+
+		if("a".equals(tagName)
+			|| "button".equals(tagName)
+			|| "select".equals(tagName)
+			|| "input".equals(tagName) )
+		{
+			return true;
+		}
+
+		String outerHtml = element.outerHtml().toLowerCase();
+		if(outerHtml.contains("click")
+			&& (element.html() != null && !element.html().contains("click"))){
+			return true;
+		}
+
+		return false;
+    }
 }

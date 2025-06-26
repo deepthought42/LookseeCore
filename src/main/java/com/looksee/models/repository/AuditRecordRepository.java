@@ -19,7 +19,7 @@ import org.springframework.stereotype.Repository;
 
 /**
  * Repository interface for Spring Data Neo4j to handle interactions with {@link Audit} objects.
- * 
+ *
  * <p><b>Thread Safety:</b>
  * This repository is thread-safe as it is managed by Spring's dependency injection container.
  * All operations are atomic at the database level.

@@ -168,6 +168,7 @@ public class Browser {
 		html_doc.select("script").remove();
 		html_doc.select("style").remove();
 		html_doc.select("link").remove();
+		html_doc.select("meta").remove();
 		
 		String html = html_doc.html();
 		html = html.replace("\r", "");
@@ -176,7 +177,6 @@ public class Browser {
 		html = html.replace("  ", " ");
 		html = html.replace("  ", " ");
 		html = html.replace("  ", " ");
-		
 
 		return html.replace(" style=\"\"", "");
 	}
@@ -954,6 +954,20 @@ public class Browser {
 	 */
 	public void removeDriftChat() {
 		((JavascriptExecutor)driver).executeScript("var element=document.getElementById(\"drift-frame-chat\");if(typeof(element)!='undefined' && element != null){document.getElementById(\"drift-frame-chat\").remove();document.getElementById(\"drift-frame-controller\").remove();}");
+	}
+
+	/**
+	 * Remove GDPR modal
+	 */
+	public void removeGDPRmodals() {
+		((JavascriptExecutor)driver).executeScript("var element=document.getElementById(\"gdprModal\");if(typeof(element)!='undefined' && element != null){element.remove();}	");
+	}
+
+	/**
+	 * Remove GDPR modal
+	 */
+	public void removeGDPR() {
+		((JavascriptExecutor)driver).executeScript("var element=document.getElementById(\"gdpr\");if(typeof(element)!='undefined' && element != null){element.remove();} ");
 	}
 	
 	/**

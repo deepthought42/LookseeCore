@@ -134,11 +134,41 @@ public class JourneyService {
 		return journey_repo.updateFields(journey_id, status, key, ordered_ids);
 	}
 
+	/**
+	 * Adds a step to a journey
+	 *
+	 * @param journey_id the id of the journey
+	 * @param step_id the id of the step
+	 * @return the journey
+	 */
 	public Journey addStep(long journey_id, long step_id) {
 		return journey_repo.addStep(journey_id, step_id);
 	}
 
-	public Journey findByCandidateKey(long domain_map_id, String candidate_key) {
-		return journey_repo.findByCandidateKey(domain_map_id, candidate_key);
+	/**
+	 * Finds a journey by the domain map id and key
+	 *
+	 * @param domain_map_id the id of the domain map
+	 * @param key the key of the journey
+	 * @return the journey
+	 *
+	 * precondition: domain_map_id > 0
+	 */
+	public Journey findByKey(long domain_map_id, String key) {
+		return journey_repo.findByKey(domain_map_id, key);
+	}
+	
+
+	/**
+	 * Updates the status of a journey
+	 *
+	 * @param journey_id the id of the journey
+	 * @param status the status of the journey
+	 * @return the updated journey
+	 */
+	@Synchronized
+	@Retryable
+	public Journey updateStatus(long journey_id, JourneyStatus status) {
+		return journey_repo.updateStatus(journey_id, status.toString());
 	}
 }
