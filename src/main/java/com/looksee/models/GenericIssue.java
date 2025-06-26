@@ -1,4 +1,4 @@
-package com.looksee.audit.informationArchitecture.models;
+package com.looksee.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,20 +7,11 @@ import lombok.Setter;
 
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 public class GenericIssue {
-    @Getter
-    @Setter
     private String description;
-
-    @Getter
-    @Setter
     private String title;
-
-    @Getter
-    @Setter
     private String cssSelector;
-
-    @Getter
-    @Setter
     private String recommendation;
 }

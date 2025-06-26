@@ -541,4 +541,16 @@ public class DomainService {
 	public List<Competitor> getCompetitors(long domain_id) {
 		return competitor_repo.getCompetitors(domain_id);
 	}
+
+	/**
+	 * @deprecated Use {@link #getMostRecentAuditRecord(long)} instead
+	 */
+	@Deprecated
+	public Optional<DomainAuditRecord> getMostRecentAuditRecord(String host) {
+		assert host != null;
+		assert !host.isEmpty();
+		
+		return domain_repo.getMostRecentAuditRecord(host);
+	}
+	
 }
