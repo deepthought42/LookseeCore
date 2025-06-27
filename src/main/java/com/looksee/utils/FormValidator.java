@@ -7,6 +7,9 @@ import java.util.Set;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+/**
+ * FormValidator is a class that validates the form structure.
+ */
 public class FormValidator {
 
     /**

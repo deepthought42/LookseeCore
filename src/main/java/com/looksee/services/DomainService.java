@@ -543,7 +543,14 @@ public class DomainService {
 	}
 
 	/**
+	 * Retrieves the most recent audit record for a given domain host
 	 * @deprecated Use {@link #getMostRecentAuditRecord(long)} instead
+	 *
+	 * @param host The host of the domain to retrieve the most recent audit record for
+	 * @return An optional containing the most recent audit record, or empty if no record exists
+	 *
+	 * precondition: host != null
+	 * precondition: !host.isEmpty()
 	 */
 	@Deprecated
 	public Optional<DomainAuditRecord> getMostRecentAuditRecord(String host) {

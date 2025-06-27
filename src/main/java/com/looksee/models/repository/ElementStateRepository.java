@@ -446,9 +446,9 @@ public interface ElementStateRepository extends Neo4jRepository<ElementState, Lo
 	 * Retrieves an element state by its page state ID and CSS selector.
 	 *
 	 * @param page_state_id The ID of the page state
-	 * @param selector The CSS selector of the element state
+	 * @param cssSelector The CSS selector of the element state
 	 * @return The ElementState object if found, null otherwise
 	 */
 	@Query("MATCH (p:PageState)-[:HAS]->(e:ElementState{cssSelector:$selector}) WHERE id(p)=$page_state_id RETURN DISTINCT e")
-    public ElementState findByPageAndCssSelector(@Param("page_state_id") long id, @Param("selector") String cssSelector);
+    public ElementState findByPageAndCssSelector(@Param("page_state_id") long page_state_id, @Param("selector") String cssSelector);
 }

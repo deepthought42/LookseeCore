@@ -3010,10 +3010,11 @@ public class BrowserService {
 
 	/**
 	 * Checks if {@link WebElement element} is visible in the current viewport window or not
-	 * 
-	 * @param viewport_size {@link Browser browser} connection to use 
+	 *
+	 * @param viewport_size {@link Browser browser} connection to use
+	 * @param position {@link Point position} of the element
 	 * @param size {@link Dimension size} of the element
-	 * 
+	 *
 	 * @return true if element is rendered within viewport, otherwise false
 	 */
 	public static boolean doesElementFitInViewport(Dimension viewport_size, Point position, Dimension size){
