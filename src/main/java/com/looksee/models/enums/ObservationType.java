@@ -18,6 +18,7 @@ public enum ObservationType {
 	SECURITY("Security"),
 	SEO("SEO"),
 	PAGE_LANGUAGE("Page_Language"),
+    REFLOW("Reflow"),
 	UNKNOWN("Unknown");
 	
 	private String shortName;

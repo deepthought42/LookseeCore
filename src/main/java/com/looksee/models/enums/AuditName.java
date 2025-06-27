@@ -107,7 +107,24 @@ public enum AuditName {
 	/**
 	 * Evaluates the security of the website
 	 */
-	ENCRYPTED("ENCRYPTED");
+	ENCRYPTED("ENCRYPTED"),
+	HEADER_STRUCTURE("Header_Structure"),
+	TABLE_STRUCTURE("Table_Structure"),
+	FORM_STRUCTURE("Form_Structure"),
+	ORIENTATION("Orientation"),
+	INPUT_PURPOSE("Input_Purpose"),
+	IDENTIFY_PURPOSE("Identify_Purpose"),
+	USE_OF_COLOR("Use_of_Color"),
+	AUDIO_CONTROL("Audio_Control"),
+	VISUAL_PRESENTATION("Visual_Presentation"),
+	REFLOW("Reflow"),
+	TEXT_SPACING("Text_Spacing"),
+	PAGE_LANGUAGE("Page_Language"),
+	VIDEO_STRUCTURE("Video_Structure"),
+	LINK_STRUCTURE("Link_Structure"),
+	BUTTON_STRUCTURE("Button"),
+	INPUT_STRUCTURE("Input"),
+	LIST_STRUCTURE("List");
 
 	/**
 	 * The human-readable name of the audit type
