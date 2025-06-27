@@ -43,7 +43,7 @@ import java.util.stream.Collectors;
 import javax.imageio.ImageIO;
 import javax.xml.xpath.XPathExpressionException;
 import lombok.NoArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.similarity.LevenshteinDistance;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Attribute;
 import org.jsoup.nodes.Attributes;
@@ -228,9 +228,9 @@ public class BrowserService {
 		ElementState element_state = new ImageElementState(
 													own_text,
 													element.text(),
-													xpath, 
-													element.tagName(), 
-													attributes, 
+													xpath,
+													element.tagName(),
+													attributes,
 													rendered_css_values, 
 													screenshot_url, 
 													element_location.getX(), 
@@ -614,15 +614,6 @@ public class BrowserService {
 			"Contemplating the meaning of the universe",
 			"Checking template structure"
 			};
-	/**
-	 * Select random message from list of data extraction messages.
-	 * 
-	 * @return
-	 */
-	private String generateDataExtractionMessage() {
-		int random_idx = (int) (Math.random() * (data_extraction_messages.length-1));
-		return data_extraction_messages[random_idx];
-	}
 
 	/**
 	 * Removes all {@link Element}s that have a negative or 0 value for the x or y coordinates
@@ -1378,7 +1369,8 @@ public class BrowserService {
 				log.warn("getting levenshtein distance...");
 				//double distance = StringUtils.getJaroWinklerDistance(element_list.get(idx1).getTemplate(), element_list.get(idx2).getTemplate());
 				//calculate distance between loop1 value and loop2 value
-				double distance = StringUtils.getLevenshteinDistance(element1.getTemplate(), element2.getTemplate());
+				double distance = LevenshteinDistance.getDefaultInstance().apply(element1.getTemplate(), element2.getTemplate());
+
 				//if value is within threshold then add loop2 value to map for loop1 value xpath
 				double avg_string_size = ((element1.getTemplate().length() + element2.getTemplate().length())/2.0);
 				double similarity = distance / avg_string_size;
@@ -2659,17 +2651,6 @@ public class BrowserService {
 			}
 		}
 		
-		return false;
-	}
-
-	/**
-	 * Checks if {@link Element element} is a top level element
-	 * 
-	 * @param element the element to check
-	 * @return true if the element is a top level element, false otherwise
-	 */
-	private boolean isTopLevelElement() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

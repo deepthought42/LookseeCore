@@ -1,5 +1,7 @@
 package com.looksee.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.looksee.models.enums.TestStatus;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -9,7 +11,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.neo4j.core.schema.CompositeProperty;
@@ -17,14 +21,6 @@ import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.google.type.DateTime;
-import com.looksee.models.enums.TestStatus;
-
-import lombok.Getter;
-import lombok.Setter;
-import lombok.NoArgsConstructor;
 
 /**
  * Defines the path of a test, the result and the expected values to determine if a test was 
