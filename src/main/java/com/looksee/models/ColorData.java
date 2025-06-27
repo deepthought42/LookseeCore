@@ -168,7 +168,7 @@ public class ColorData extends LookseeObject{
 	 * @param luminance the luminance value
 	 * @return the L* value
 	 */
-	private double YtoLstar(double luminance) {
+	public static double YtoLstar(double luminance) {
         // Send this function a luminance value between 0.0 and 1.0,
         // and it returns L* which is "perceptual lightness"
 	
@@ -362,7 +362,6 @@ public class ColorData extends LookseeObject{
 		}
 		
 		String hex_value = "#"+red_value+green_value+blue_value;
-		log.warn("Hex value :: "+hex_value);
 		return hex_value;
 	}
 }

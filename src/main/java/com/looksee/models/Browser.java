@@ -383,6 +383,9 @@ public class Browser {
 		if(screenshots.size() > 0) {
 			original_image = screenshots.remove(0);
 		}
+		else {
+			throw new IOException("No screenshots were taken");
+		}
 
 		//identify stitching points by using a sliding window with random sampling to determine
 		// if both images match. If a sliding window is found that matches for both images, then stitch images

@@ -1,11 +1,8 @@
 package com.looksee.gcp;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
-import lombok.NoArgsConstructor;
 
 /**
  * Implementation of the PubSubPageCreatedPublisher interface.
@@ -13,8 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Component
 public class PubSubPageCreatedPublisherImpl extends PubSubPublisher {
-
-    private static Logger LOG = LoggerFactory.getLogger(PubSubPageCreatedPublisherImpl.class);
 
     @Value("${pubsub.page_built}")
     private String topic;

@@ -43,12 +43,13 @@ import java.util.stream.Collectors;
 import javax.imageio.ImageIO;
 import javax.xml.xpath.XPathExpressionException;
 import lombok.NoArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.similarity.LevenshteinDistance;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Attribute;
 import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
 import org.jsoup.safety.Cleaner;
 import org.jsoup.safety.Whitelist;
 import org.jsoup.select.Elements;
@@ -227,9 +228,9 @@ public class BrowserService {
 		ElementState element_state = new ImageElementState(
 													own_text,
 													element.text(),
-													xpath, 
-													element.tagName(), 
-													attributes, 
+													xpath,
+													element.tagName(),
+													attributes,
 													rendered_css_values, 
 													screenshot_url, 
 													element_location.getX(), 
@@ -613,15 +614,6 @@ public class BrowserService {
 			"Contemplating the meaning of the universe",
 			"Checking template structure"
 			};
-	/**
-	 * Select random message from list of data extraction messages.
-	 * 
-	 * @return
-	 */
-	private String generateDataExtractionMessage() {
-		int random_idx = (int) (Math.random() * (data_extraction_messages.length-1));
-		return data_extraction_messages[random_idx];
-	}
 
 	/**
 	 * Removes all {@link Element}s that have a negative or 0 value for the x or y coordinates
@@ -1377,7 +1369,8 @@ public class BrowserService {
 				log.warn("getting levenshtein distance...");
 				//double distance = StringUtils.getJaroWinklerDistance(element_list.get(idx1).getTemplate(), element_list.get(idx2).getTemplate());
 				//calculate distance between loop1 value and loop2 value
-				double distance = StringUtils.getLevenshteinDistance(element1.getTemplate(), element2.getTemplate());
+				double distance = LevenshteinDistance.getDefaultInstance().apply(element1.getTemplate(), element2.getTemplate());
+
 				//if value is within threshold then add loop2 value to map for loop1 value xpath
 				double avg_string_size = ((element1.getTemplate().length() + element2.getTemplate().length())/2.0);
 				double similarity = distance / avg_string_size;
@@ -2662,17 +2655,6 @@ public class BrowserService {
 	}
 
 	/**
-	 * Checks if {@link Element element} is a top level element
-	 * 
-	 * @param element the element to check
-	 * @return true if the element is a top level element, false otherwise
-	 */
-	private boolean isTopLevelElement() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	/**
 	 * Extracts metadata from a string
 	 * 
 	 * @param src the string to extract metadata from
@@ -3028,10 +3010,11 @@ public class BrowserService {
 
 	/**
 	 * Checks if {@link WebElement element} is visible in the current viewport window or not
-	 * 
-	 * @param viewport_size {@link Browser browser} connection to use 
+	 *
+	 * @param viewport_size {@link Browser browser} connection to use
+	 * @param position {@link Point position} of the element
 	 * @param size {@link Dimension size} of the element
-	 * 
+	 *
 	 * @return true if element is rendered within viewport, otherwise false
 	 */
 	public static boolean doesElementFitInViewport(Dimension viewport_size, Point position, Dimension size){
@@ -3156,4 +3139,57 @@ public class BrowserService {
 		}
 		return element_state;
 	}
+	
+	/**
+     * Generates an XPath for the given element using indexes for each tag to specify its location
+     * relative to other tags with the same name.
+     *
+     * @param element The JSoup Element for which to generate the XPath.
+     * @return A string representing the XPath of the element.
+     */
+    public static String getXPath(Element element) {
+        StringBuilder xpath = new StringBuilder();
+
+        // Traverse up the DOM tree to construct the XPath
+        while (element != null) {
+            int index = getElementIndex(element);
+            String tagName = element.tagName();
+
+            // Construct the XPath part for this element
+            xpath.insert(0, "/" + tagName + "[" + index + "]");
+
+            // Move up to the parent element
+            Node parent = element.parent();
+            if (parent instanceof Element && !"body".equals(((Element)parent).tagName())) {
+                element = (Element) parent;
+            } else {
+				xpath.insert(0, "//body");
+                break;
+            }
+        }
+
+        // Return the full XPath
+        return xpath.toString();
+    }
+
+    /**
+     * Returns the 1-based index of the element among its siblings with the same tag name.
+     *
+     * @param element The element whose index to determine.
+     * @return The 1-based index of the element.
+     */
+    private static int getElementIndex(Element element) {
+        int index = 1; // XPath indices are 1-based
+        Element previousSibling = element.previousElementSibling();
+
+        // Count the number of preceding siblings with the same tag name
+        while (previousSibling != null) {
+            if (previousSibling.tagName().equals(element.tagName())) {
+                index++;
+            }
+            previousSibling = previousSibling.previousElementSibling();
+        }
+
+        return index;
+    }
 }

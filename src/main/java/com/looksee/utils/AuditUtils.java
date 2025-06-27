@@ -88,7 +88,6 @@ public class AuditUtils {
 		int aesthetic_count = 0;
 		
 		double interactivity_score = 0;
-		int interactivity_count = 0;
 		
 		for(Audit audit: audits) {
 			if(audit.getTotalPossiblePoints() == 0) {
@@ -846,36 +845,6 @@ public class AuditUtils {
 			messages.add(palette_success_message);
 		}
 		return new Score(score, max_points, messages);
-	}
-
-	/**
-	 * Compares colors to palette and if any colors are within 5 arc degrees of a palette color, then it is considered to
-	 * 	conform to the palette.
-	 * 
-	 * @param palette the {@link List} of {@link String}s
-	 * @param colors the {@link List} of {@link ColorData}s
-	 * @return the {@link Map} of {@link String} to {@link Boolean}
-	 */
-	private static Map<String, Boolean> retrieveNonCompliantColors(List<String> palette, List<ColorData> colors) {
-		Map<String, Boolean> non_compliant_colors = new HashMap<>();
-
-		for(ColorData color: colors) {
-			boolean conforms_to_palette = false;
-			for(String palette_color : palette) {
-				boolean is_similar_hue = new ColorData(palette_color).isSimilarHue(color);
-				//if color is a hue within 5 arc degrees of palette color then it matches
-				//otherwise it is not a match within the palette and we should
-				if(is_similar_hue) {
-					conforms_to_palette = true;
-					break;
-				}
-			}
-			if(!conforms_to_palette) {
-				//    add it to a list of non matching colors
-				non_compliant_colors.put(color.rgb(), Boolean.TRUE);
-			}
-		}
-		return non_compliant_colors;
 	}
 
 	/**

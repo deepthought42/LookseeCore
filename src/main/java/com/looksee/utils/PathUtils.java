@@ -14,7 +14,6 @@ import org.slf4j.LoggerFactory;
  * 
  * Deprecated in favor of {@link JourneyUtils}
  */
-@Deprecated
 public class PathUtils {
 	@SuppressWarnings("unused")
 	private static Logger log = LoggerFactory.getLogger(PathUtils.class);

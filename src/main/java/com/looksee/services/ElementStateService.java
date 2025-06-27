@@ -549,4 +549,15 @@ public class ElementStateService {
 	public ElementState findByDomainMapAndKey(long domain_map_id, ElementState element) throws Exception {
 		return element_repo.findByDomainMapAndKey(domain_map_id, element.getKey());
 	}
+
+	/**
+	 * Finds an {@link ElementState} by the page id and css selector
+	 * 
+	 * @param id the id of the page
+	 * @param cssSelector the css selector of the element
+	 * @return the element state
+	 */
+    public ElementState findByPageAndCssSelector(long id, String cssSelector) {
+        return element_repo.findByPageAndCssSelector(id, cssSelector);
+    }	
 }

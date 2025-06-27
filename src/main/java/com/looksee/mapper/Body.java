@@ -22,19 +22,12 @@ import lombok.Setter;
 
 // Body.Message is the payload of a Pub/Sub event. Please refer to the docs for
 // additional information regarding Pub/Sub events.
+@NoArgsConstructor
+@Getter
+@Setter
 public class Body {
 
   private Message message;
-
-  public Body() {}
-
-  public Message getMessage() {
-    return message;
-  }
-
-  public void setMessage(Message message) {
-    this.message = message;
-  }
 
   /**
    * A message from Pub/Sub

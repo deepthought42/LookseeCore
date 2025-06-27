@@ -1,9 +1,10 @@
 package com.looksee.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.looksee.services.BrowserService;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -12,19 +13,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import javax.imageio.ImageIO;
-
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.codec.binary.Hex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.neo4j.core.schema.Relationship;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.looksee.services.BrowserService;
-
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * A reference to a web page that contains information about the page's state,
