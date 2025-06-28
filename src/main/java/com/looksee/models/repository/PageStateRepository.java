@@ -426,4 +426,13 @@ public interface PageStateRepository extends Neo4jRepository<PageState, Long> {
 	 */
 	@Query("MATCH (page_state:PageState) WHERE id(page_state)=$page_id SET page_state.interactiveElementExtractionComplete=$is_complete RETURN page_state LIMIT 1")
     public PageState updateInteractiveElementExtractionCompleteStatus(@Param("page_id") long page_id, @Param("is_complete") boolean is_complete);
+
+    /**
+	 * Finds a page state by page audit record ID.
+	 * 
+	 * @param pageAuditId the ID of the page audit record
+	 * @return the page state if found
+	 */
+	@Query("MATCH (page_audit:PageAuditRecord)-[]->(page_state:PageState) WHERE id(page_audit)=$id RETURN page_state")
+    public PageState findByAuditRecordId(@Param("id") long pageAuditId);
 }

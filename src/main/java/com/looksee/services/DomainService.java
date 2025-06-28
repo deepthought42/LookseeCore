@@ -559,5 +559,4 @@ public class DomainService {
 		
 		return domain_repo.getMostRecentAuditRecord(host);
 	}
-	
 }
