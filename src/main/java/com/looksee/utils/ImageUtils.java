@@ -517,9 +517,12 @@ public class ImageUtils {
 
 	/**
 		* Calculate the colour difference value between two colours in lab space.
-		* @param lab1 first colour
-		* @param lab2 second colour
+		* @param color1 first colour
+		* @param color2 second colour
 		* @return the CIE 2000 colour difference
+
+
+		NOTE: This method is not properly implemented yet.
 		*/
 	public static float calculateDeltaE(ColorData color1, ColorData color2) {
 		int[] lab1 = rgb2lab(color1.getRed(), color1.getGreen(), color1.getBlue());
