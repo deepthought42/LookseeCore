@@ -559,5 +559,5 @@ public class ElementStateService {
 	 */
     public ElementState findByPageAndCssSelector(long id, String cssSelector) {
         return element_repo.findByPageAndCssSelector(id, cssSelector);
-    }	
+    }
 }

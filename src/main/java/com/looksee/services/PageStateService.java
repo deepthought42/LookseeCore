@@ -550,4 +550,17 @@ public class PageStateService {
 			throw new Exception("Page state with id = "+page_id+" was not found");
 		}
     }
+
+	/**
+	 * Finds a page state by the audit record id
+	 * @param pageAuditId the id of the audit record
+	 * @return the page state
+	 *
+	 * precondition: pageAuditId > 0
+	 */
+    public PageState findByAuditRecordId(long pageAuditId) {
+		assert pageAuditId > 0;
+		
+        return page_state_repo.findByAuditRecordId(pageAuditId);
+    }
 }

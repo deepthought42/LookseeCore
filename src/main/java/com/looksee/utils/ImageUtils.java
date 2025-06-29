@@ -504,4 +504,30 @@ public class ImageUtils {
 	public static BufferedImage readImageFromURL(URL full_page_screenshot_url) throws IOException {
 		return ImageIO.read( full_page_screenshot_url );
 	}
+	
+    /**
+	* Calculate the colour difference value between two colours in lab space.
+	* @param lab1 first colour
+	* @param lab2 second colour
+	* @return the CIE 2000 colour difference
+	*/
+	public static float calculateDeltaE(float [] lab1, float[] lab2) {
+		return 0.0f; //(float) CIEDE2000.calculateDeltaE(lab1[0],lab1[1],lab1[2],lab2[0],lab2[1],lab2[2]);
+	}
+
+	/**
+		* Calculate the colour difference value between two colours in lab space.
+		* @param color1 first colour
+		* @param color2 second colour
+		* @return the CIE 2000 colour difference
+
+
+		NOTE: This method is not properly implemented yet.
+		*/
+	public static float calculateDeltaE(ColorData color1, ColorData color2) {
+		int[] lab1 = rgb2lab(color1.getRed(), color1.getGreen(), color1.getBlue());
+		int[] lab2 = rgb2lab(color2.getRed(), color2.getGreen(), color2.getBlue());
+
+		return 0.0f; //(float) CIEDE2000.calculateDeltaE(lab1[0],lab1[1],lab1[2],lab2[0],lab2[1],lab2[2]);
+	}
 }
