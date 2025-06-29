@@ -1,18 +1,15 @@
 package com.looksee.services;
 
-import java.util.Optional;
-import java.util.Set;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.looksee.models.Account;
 import com.looksee.models.AuditRecord;
 import com.looksee.models.Domain;
 import com.looksee.models.PageAuditRecord;
 import com.looksee.models.repository.AccountRepository;
-
+import java.util.Optional;
+import java.util.Set;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Contains business logic for interacting with and managing accounts
@@ -294,5 +291,19 @@ public class AccountService {
 		assert month >= 0;
 		
 		return account_repo.geDomainAuditRecordCountByMonth(account_id, month);
+	}
+
+	/**
+	 * Retrieves the domains for an account
+	 *
+	 * @param account_id the ID of the account
+	 * @return the domains for the account
+	 *
+	 * precondition: account_id > 0
+	 */
+	public Set<Domain> getDomainsForAccount(long account_id) {
+		assert account_id > 0;
+		
+		return account_repo.getDomainsForAccount(account_id);
 	}
 }

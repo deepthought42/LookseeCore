@@ -576,4 +576,33 @@ public interface AuditRecordRepository extends Neo4jRepository<AuditRecord, Long
 	 */
 	@Query("MATCH (audit_record:DomainAuditRecord) WHERE id(audit_record)=$audit_record_id MATCH (audit_record)-[:FOR]->(page:PageState) WHERE id(page)=$page_id RETURN audit_record")
 	public AuditRecord findPageWithId(@Param("audit_record_id") long audit_record_id, @Param("page_id") long page_id);
+
+	/**
+	 * Retrieves all audits for a domain audit record.
+	 *
+	 * @param audit_record_id the ID of the domain audit record
+	 * @return the audits for the domain audit record
+	 */
+	@Query("MATCH (ar:AuditRecord)-[*2]->(audit:Audit) WHERE id(ar)=$audit_record_id RETURN audit")
+	public Set<Audit> getAllAuditsForDomainAudit(@Param("audit_record_id") long audit_record_id);
+
+	/**
+	 * Retrieves the audit record for a page by ID.
+	 *
+	 * @param domain_audit_id the ID of the domain audit record
+	 * @param page_id the ID of the page
+	 * @return the audit record if found, null otherwise
+	 */
+	@Query("MATCH (audit_record:DomainAuditRecord)-[:HAS]->(page_audit:PageAuditRecord)-[:FOR]->(page:PageState) WHERE id(audit_record)=$domain_audit_id AND id(page)=$page_id  RETURN page_audit LIMIT 1")
+	public AuditRecord wasPageAlreadyAudited(@Param("domain_audit_id")  long domainAuditRecordId, @Param("page_id") long pageId);
+
+	/**
+	 * Retrieves the audit record for a single page by ID.
+	 *
+	 * @param page_audit_id the ID of the page audit record
+	 * @param page_id the ID of the page
+	 * @return the audit record if found, null otherwise
+	 */
+	@Query("MATCH (page_audit:PageAuditRecord)-[:FOR]->(page:PageState) WHERE id(page_audit)=$page_audit_id AND id(page)=$page_id  RETURN page_audit LIMIT 1")
+	public AuditRecord wasSinglePageAlreadyAudited(@Param("page_audit_id")  long pageAuditRecordId, @Param("page_id") long pageId);
 }
