@@ -443,7 +443,7 @@ public interface PageStateRepository extends Neo4jRepository<PageState, Long> {
 	 * @return the element states
 	 */
 	@Query("MATCH (p:PageState{key:$page_key})-[:HAS]->(e:ElementState) RETURN DISTINCT e")
-	public List<ElementState> getElementStates(@Param("page_key") String key);
+	public List<ElementState> getElementStates(@Param("page_key") String page_key);
 
 	/**
 	 * Retrieves the element states for a page state.
@@ -457,7 +457,7 @@ public interface PageStateRepository extends Neo4jRepository<PageState, Long> {
 	/**
 	 * Retrieves the page state for a landing step.
 	 *
-	 * @param page_id the ID of the page state
+	 * @param pageId the ID of the page state
 	 * @return the page state if found
 	 */
 	@Query("MATCH (step:LandingStep)-[:STARTS_WITH]->(ps:PageState) WHERE id(ps)=$page_id RETURN ps LIMIT 1")

@@ -1,9 +1,10 @@
 package com.looksee.models.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.looksee.models.Audit;
 
 /**
- * Defines all phases of a website/web app {@link Audit audits} 
+ * Defines all phases of a website/web app {@link Audit audits}
  */
 public enum AuditPhase {
 	PAGE_DATA_EXTRACTION("PAGE_DATA_EXTRACTION"),
