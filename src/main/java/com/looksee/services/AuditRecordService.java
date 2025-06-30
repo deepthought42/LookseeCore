@@ -893,4 +893,26 @@ public class AuditRecordService {
 	public AuditRecord findPageWithId(long audit_record_id, long page_id) {
 		return audit_record_repo.findPageWithId(audit_record_id, page_id);
 	}
+
+	/**
+	 * Checks if a page was already audited for a domain audit record
+	 *
+	 * @param domainAuditRecordId the id of the domain audit record
+	 * @param pageId the id of the page
+	 * @return true if the page was already audited, false otherwise
+	 */
+	public boolean wasPageAlreadyAudited(long domainAuditRecordId, long pageId) {
+		return audit_record_repo.wasPageAlreadyAudited(domainAuditRecordId, pageId) != null;
+	}
+
+	/**
+	 * Checks if a page was already audited for a page audit record
+	 *
+	 * @param pageAuditRecordId the id of the page audit record
+	 * @param pageId the id of the page
+	 * @return true if the page was already audited, false otherwise
+	 */
+	public boolean wasSinglePageAlreadyAudited(long pageAuditRecordId, long pageId) {
+		return audit_record_repo.wasSinglePageAlreadyAudited(pageAuditRecordId, pageId) != null;
+	}
 }

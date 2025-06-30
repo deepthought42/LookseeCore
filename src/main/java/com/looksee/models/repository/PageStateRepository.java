@@ -435,4 +435,31 @@ public interface PageStateRepository extends Neo4jRepository<PageState, Long> {
 	 */
 	@Query("MATCH (page_audit:PageAuditRecord)-[]->(page_state:PageState) WHERE id(page_audit)=$id RETURN page_state")
     public PageState findByAuditRecordId(@Param("id") long pageAuditId);
+
+	/**
+	 * Retrieves the element states for a page state.
+	 *
+	 * @param page_key the key of the page state
+	 * @return the element states
+	 */
+	@Query("MATCH (p:PageState{key:$page_key})-[:HAS]->(e:ElementState) RETURN DISTINCT e")
+	public List<ElementState> getElementStates(@Param("page_key") String page_key);
+
+	/**
+	 * Retrieves the element states for a page state.
+	 *
+	 * @param page_state_id the ID of the page state
+	 * @return the element states
+	 */
+	@Query("MATCH (p:PageState)-[:HAS]->(e:ElementState) WHERE id(p)=$page_state_id RETURN DISTINCT e")
+	public List<ElementState> getElementStates(@Param("page_state_id") long page_state_id);
+
+	/**
+	 * Retrieves the page state for a landing step.
+	 *
+	 * @param pageId the ID of the page state
+	 * @return the page state if found
+	 */
+	@Query("MATCH (step:LandingStep)-[:STARTS_WITH]->(ps:PageState) WHERE id(ps)=$page_id RETURN ps LIMIT 1")
+	public PageState isPageLandable(@Param("page_id") long pageId);
 }

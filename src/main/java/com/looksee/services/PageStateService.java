@@ -563,4 +563,17 @@ public class PageStateService {
 		
         return page_state_repo.findByAuditRecordId(pageAuditId);
     }
+
+	/**
+	 * Checks if a page is landable
+	 * @param pageId the id of the page
+	 * @return true if the page is landable, false otherwise
+	 *
+	 * precondition: pageId > 0
+	 */
+	public boolean isPageLandable(long pageId) {
+		assert pageId > 0;
+		
+		return page_state_repo.isPageLandable(pageId) != null;
+	}
 }

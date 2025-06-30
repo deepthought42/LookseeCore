@@ -20,8 +20,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-// Body.Message is the payload of a Pub/Sub event. Please refer to the docs for
-// additional information regarding Pub/Sub events.
+/**
+ * Body is the payload of a Pub/Sub event. Please refer to the docs for
+ * additional information regarding Pub/Sub events.
+ */
 @NoArgsConstructor
 @Getter
 @Setter

@@ -1,19 +1,16 @@
 package com.looksee.models.repository;
 
-import java.util.Optional;
-import java.util.Set;
-
-import org.springframework.data.neo4j.repository.Neo4jRepository;
-import org.springframework.data.neo4j.repository.query.Query;
-import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
-
 import com.looksee.models.Account;
 import com.looksee.models.AuditRecord;
 import com.looksee.models.Domain;
 import com.looksee.models.PageAuditRecord;
-
 import io.github.resilience4j.retry.annotation.Retry;
+import java.util.Optional;
+import java.util.Set;
+import org.springframework.data.neo4j.repository.Neo4jRepository;
+import org.springframework.data.neo4j.repository.query.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 /**
  * Repository interface for Spring Data Neo4j to handle interactions with {@link Account} objects
@@ -154,4 +151,12 @@ public interface AccountRepository extends Neo4jRepository<Account, Long> {
 	 */
 	@Query("MATCH (account:Account)-[*]->(audit_record:AuditRecord) WHERE id(audit_record)=$audit_record_id RETURN account LIMIT 1")
 	public Optional<Account> getAccount(@Param("audit_record_id") long audit_record_id);
+
+	/**
+	 * Get the domains for an account
+	 * @param account_id the id of the account
+	 * @return the domains for the account
+	 */
+	@Query("MATCH (account:Account)-[:HAS]->(domain:Domain) WHERE id(account)=$account_id RETURN domain")
+	Set<Domain> getDomainsForAccount(@Param("account_id") long account_id);
 }
