@@ -1,12 +1,12 @@
-package com.crawlerApi.models.audit;
+package com.looksee.models.audit;
 
 import java.awt.Color;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.crawlerApi.models.LookseeObject;
-import com.crawlerApi.models.XYZColorSpace;
+import com.looksee.models.LookseeObject;
+import com.looksee.models.XYZColorSpace;
 
 
 /**

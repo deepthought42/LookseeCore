@@ -1,10 +1,10 @@
-package com.crawlerApi.models.audit;
+package com.looksee.models.audit;
 
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
-import com.crawlerApi.models.SimpleElement;
+import com.looksee.models.SimpleElement;
 
 public class ElementIssueTwoWayMapping {
 	private Collection<? extends UXIssueMessage> issues;

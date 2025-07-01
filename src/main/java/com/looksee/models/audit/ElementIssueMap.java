@@ -1,8 +1,8 @@
-package com.crawlerApi.models.audit;
+package com.looksee.models.audit;
 
 import java.util.Set;
 
-import com.crawlerApi.models.SimpleElement;
+import com.looksee.models.SimpleElement;
 
 //deprecated on 8-24-2021
 @Deprecated

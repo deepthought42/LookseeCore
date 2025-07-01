@@ -1,9 +1,9 @@
-package com.crawlerApi.models.audit;
+package com.looksee.models.audit;
 
 import java.util.UUID;
 
-import com.crawlerApi.models.SimplePage;
-import com.crawlerApi.models.enums.ExecutionStatus;
+import com.looksee.models.SimplePage;
+import com.looksee.models.enums.ExecutionStatus;
 
 /**
  * Record detailing an set of {@link Audit audits}.

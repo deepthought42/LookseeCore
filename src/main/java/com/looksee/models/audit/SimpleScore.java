@@ -1,4 +1,4 @@
-package com.crawlerApi.models.audit;
+package com.looksee.models.audit;
 
 import java.time.LocalDateTime;
 

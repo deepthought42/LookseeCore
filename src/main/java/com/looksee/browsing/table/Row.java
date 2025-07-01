@@ -1,9 +1,8 @@
-package com.crawlerApi.browsing.table;
+package com.looksee.browsing.table;
 
+import com.looksee.browsing.ElementNode;
+import com.looksee.models.Element;
 import java.util.List;
-
-import com.crawlerApi.browsing.ElementNode;
-import com.crawlerApi.models.Element;
 
 /**
  *	Contains the {@link ElementNode}s that make up a row in a [@link Table} within a {@link PageVersion}. 

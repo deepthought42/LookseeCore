@@ -2,6 +2,7 @@ package com.looksee.browsing;
 
 
 import com.looksee.exceptions.PagesAreNotMatchingException;
+import com.looksee.models.ActionOLD;
 import com.looksee.models.Browser;
 import com.looksee.models.ElementState;
 import com.looksee.models.ExploratoryPath;
@@ -149,7 +150,7 @@ public class Crawler {
 		assert browser != null;
 		assert keys != null;
 
-		com.crawlerApi.models.Element last_element = null;
+		com.looksee.models.Element last_element = null;
 		LookseeObject last_obj = null;
 		PageState expected_page = null;
 		List<String> path_keys = new ArrayList<String>(keys);
@@ -176,8 +177,8 @@ public class Crawler {
 			}
 			else if(current_obj instanceof PageLoadAnimation){
 			}
-			else if(current_obj instanceof com.crawlerApi.models.Element){
-				last_element = (com.crawlerApi.models.Element) current_obj;
+			else if(current_obj instanceof com.looksee.models.Element){
+				last_element = (com.looksee.models.Element) current_obj;
 				browser.scrollToElement(last_element);
 				//BrowserUtils.detectShortAnimation(browser, expected_page.getUrl());
 			}
@@ -256,7 +257,7 @@ public class Crawler {
 		assert browser != null;
 		assert keys != null;
 
-		com.crawlerApi.models.Element last_element = null;
+		com.looksee.models.Element last_element = null;
 		LookseeObject last_obj = null;
 		PageState expected_page = null;
 
@@ -285,8 +286,8 @@ public class Crawler {
 			}
 			else if(current_obj instanceof PageLoadAnimation){
 			}
-			else if(current_obj instanceof com.crawlerApi.models.Element){
-				last_element = (com.crawlerApi.models.Element) current_obj;
+			else if(current_obj instanceof com.looksee.models.Element){
+				last_element = (com.looksee.models.Element) current_obj;
 				browser.scrollToElement(last_element);
 				//BrowserUtils.detectShortAnimation(browser, expected_page.getUrl());
 			}
@@ -352,7 +353,7 @@ public class Crawler {
 	 *
 	 * @return whether action was able to be performed on element or not
 	 */
-	public static void performAction(Action action, com.crawlerApi.models.Element elem, WebDriver driver) throws NoSuchElementException{
+	public static void performAction(Action action, com.looksee.models.Element elem, WebDriver driver) throws NoSuchElementException{
 		ActionFactory actionFactory = new ActionFactory(driver);
 		WebElement element = driver.findElement(By.xpath(elem.getXpath()));
 		actionFactory.execAction(element, "", action);
@@ -365,7 +366,7 @@ public class Crawler {
 	 *
 	 * @return whether action was able to be performed on element or not
 	 */
-	public static void performAction(Action action, com.crawlerApi.models.Element elem, WebDriver driver, Point location) throws NoSuchElementException{
+	public static void performAction(Action action, com.looksee.models.Element elem, WebDriver driver, Point location) throws NoSuchElementException{
 		ActionFactory actionFactory = new ActionFactory(driver);
 		WebElement element = driver.findElement(By.xpath(elem.getXpath()));
 		actionFactory.execAction(element, "", action);

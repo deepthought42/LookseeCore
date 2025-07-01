@@ -1,14 +1,13 @@
-package com.crawlerApi.browsing.form;
+package com.looksee.browsing.form;
 
+import com.looksee.models.ActionOLD;
+import com.looksee.models.Element;
+import com.looksee.models.rules.Rule;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
-
-import com.crawlerApi.models.Element;
-import com.crawlerApi.models.rules.Rule;
 
 /**
  * Defines a complex element grouping of input and label for a field contained within a form. 

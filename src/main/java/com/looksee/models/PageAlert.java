@@ -1,9 +1,9 @@
-package com.crawlerApi.models;
+package com.looksee.models;
 
 
 import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 
-import com.crawlerApi.models.enums.AlertChoice;
+import com.looksee.models.enums.AlertChoice;
 
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.NoAlertPresentException;

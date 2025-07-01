@@ -1,10 +1,10 @@
-package com.crawlerApi.services;
+package com.looksee.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.crawlerApi.models.audit.recommend.Recommendation;
-import com.crawlerApi.models.repository.RecommendationRepository;
+import com.looksee.models.audit.recommend.Recommendation;
+import com.looksee.models.repository.RecommendationRepository;
 
 @Service
 public class RecommendationService {

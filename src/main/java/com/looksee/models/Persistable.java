@@ -1,4 +1,4 @@
-package com.crawlerApi.models;
+package com.looksee.models;
 
 /**
  * Interface for persistable objects which allows objects to generate a key before saving 

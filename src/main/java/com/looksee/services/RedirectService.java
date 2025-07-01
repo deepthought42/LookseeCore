@@ -1,4 +1,4 @@
-package com.crawlerApi.services;
+package com.looksee.services;
 
 import java.util.Set;
 
@@ -7,9 +7,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.crawlerApi.models.journeys.Redirect;
-import com.crawlerApi.models.repository.DomainRepository;
-import com.crawlerApi.models.repository.RedirectRepository;
+import com.looksee.models.journeys.Redirect;
+import com.looksee.models.repository.DomainRepository;
+import com.looksee.models.repository.RedirectRepository;
 
 @Service
 public class RedirectService {

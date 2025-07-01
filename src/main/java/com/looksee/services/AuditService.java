@@ -5,13 +5,16 @@ import com.looksee.models.ImageElementState;
 import com.looksee.models.PageState;
 import com.looksee.models.SimpleElement;
 import com.looksee.models.SimplePage;
-import com.looksee.models.UXIssueMessage;
+import com.looksee.models.audit.Audit;
 import com.looksee.models.audit.ElementStateIssueMessage;
 import com.looksee.models.audit.PageStateAudits;
+import com.looksee.models.audit.UXIssueMessage;
 import com.looksee.models.enums.AuditName;
 import com.looksee.models.enums.AuditSubcategory;
+import com.looksee.models.enums.JourneyStatus;
 import com.looksee.models.enums.ObservationType;
 import com.looksee.models.repository.AuditRepository;
+import com.looksee.models.repository.JourneyRepository;
 import io.github.resilience4j.retry.annotation.Retry;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -47,6 +50,9 @@ public class AuditService {
 	
 	@Autowired
 	private PageStateService page_state_service;
+
+	@Autowired
+	private JourneyRepository journey_repo;
 
 	/**
 	 * Saves an audit
@@ -483,12 +489,6 @@ public class AuditService {
 		
 		List<Long> issue_ids = issue_messages.stream().map(x -> x.getId()).collect(Collectors.toList());
 		addAllIssues(audit_id, issue_ids);
-	}
-
-	public Audit save(Audit audit) {
-		assert audit != null;
-		
-		return audit_repo.save(audit);
 	}
 
 	public double calculateDataExtractionProgress(long audit_id) {

@@ -1,21 +1,18 @@
-package com.crawlerApi.services;
+package com.looksee.services;
 
+import com.looksee.exceptions.ExistingRuleException;
+import com.looksee.models.Domain;
+import com.looksee.models.Element;
+import com.looksee.models.PageState;
+import com.looksee.models.repository.ElementRepository;
+import com.looksee.models.rules.Rule;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.crawlerApi.api.exception.ExistingRuleException;
-import com.crawlerApi.models.Domain;
-import com.crawlerApi.models.Element;
-import com.crawlerApi.models.repository.ElementRepository;
-import com.crawlerApi.models.rules.Rule;
-
-import io.github.resilience4j.retry.annotation.Retry;
 
 @Service
 public class ElementService {

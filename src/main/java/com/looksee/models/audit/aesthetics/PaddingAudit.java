@@ -1,5 +1,22 @@
-package com.crawlerApi.models.audit.aesthetics;
+package com.looksee.models.audit.aesthetics;
 
+import com.looksee.models.Domain;
+import com.looksee.models.Element;
+import com.looksee.models.ElementState;
+import com.looksee.models.PageState;
+import com.looksee.models.audit.Audit;
+import com.looksee.models.audit.AuditRecord;
+import com.looksee.models.audit.ElementStateIssueMessage;
+import com.looksee.models.audit.IExecutablePageStateAudit;
+import com.looksee.models.audit.Score;
+import com.looksee.models.audit.UXIssueMessage;
+import com.looksee.models.designsystem.DesignSystem;
+import com.looksee.models.enums.AuditCategory;
+import com.looksee.models.enums.AuditLevel;
+import com.looksee.models.enums.AuditName;
+import com.looksee.models.enums.AuditSubcategory;
+import com.looksee.models.enums.Priority;
+import com.looksee.services.PageStateService;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -10,29 +27,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import com.crawlerApi.models.Domain;
-import com.crawlerApi.models.Element;
-import com.crawlerApi.models.ElementState;
-import com.crawlerApi.models.PageState;
-import com.crawlerApi.models.audit.Audit;
-import com.crawlerApi.models.audit.AuditRecord;
-import com.crawlerApi.models.audit.ElementStateIssueMessage;
-import com.crawlerApi.models.audit.IExecutablePageStateAudit;
-import com.crawlerApi.models.audit.Score;
-import com.crawlerApi.models.audit.UXIssueMessage;
-import com.crawlerApi.models.designsystem.DesignSystem;
-import com.crawlerApi.models.enums.AuditCategory;
-import com.crawlerApi.models.enums.AuditLevel;
-import com.crawlerApi.models.enums.AuditName;
-import com.crawlerApi.models.enums.AuditSubcategory;
-import com.crawlerApi.models.enums.Priority;
-import com.crawlerApi.services.PageStateService;
 
 
 /**

@@ -1,4 +1,4 @@
-package com.crawlerApi.models.audit;
+package com.looksee.models.audit;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,11 +12,11 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.crawlerApi.models.CIEColorSpace;
-import com.crawlerApi.models.designsystem.PaletteColor;
-import com.crawlerApi.models.enums.AuditCategory;
-import com.crawlerApi.models.enums.ColorScheme;
-import com.crawlerApi.models.enums.Priority;
+import com.looksee.models.CIEColorSpace;
+import com.looksee.models.designsystem.PaletteColor;
+import com.looksee.models.enums.AuditCategory;
+import com.looksee.models.enums.ColorScheme;
+import com.looksee.models.enums.Priority;
 
 /**
  * 

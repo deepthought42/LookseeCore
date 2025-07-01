@@ -1,11 +1,11 @@
-package com.crawlerApi.models.audit.performance;
+package com.looksee.models.audit.performance;
 
 import java.util.List;
 
 import org.springframework.data.neo4j.core.schema.Relationship;
 
-import com.crawlerApi.models.LookseeObject;
-import com.crawlerApi.models.enums.InsightType;
+import com.looksee.models.LookseeObject;
+import com.looksee.models.enums.InsightType;
 
 /**
  * Google Page speed audit

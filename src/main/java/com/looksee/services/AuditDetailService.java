@@ -1,10 +1,10 @@
-package com.crawlerApi.services;
+package com.looksee.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.crawlerApi.models.audit.performance.AuditDetail;
-import com.crawlerApi.models.repository.AuditDetailRepository;
+import com.looksee.models.audit.performance.AuditDetail;
+import com.looksee.models.repository.AuditDetailRepository;
 
 /**
  * 

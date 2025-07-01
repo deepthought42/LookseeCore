@@ -1,4 +1,4 @@
-package com.crawlerApi.models.audit;
+package com.looksee.models.audit;
 
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
@@ -11,19 +11,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.crawlerApi.models.ElementState;
-import com.crawlerApi.models.ImageElementState;
-import com.crawlerApi.models.PageState;
-import com.crawlerApi.models.designsystem.DesignSystem;
-import com.crawlerApi.models.enums.AuditCategory;
-import com.crawlerApi.models.enums.AuditLevel;
-import com.crawlerApi.models.enums.AuditName;
-import com.crawlerApi.models.enums.AuditSubcategory;
-import com.crawlerApi.models.enums.Priority;
-import com.crawlerApi.services.AuditService;
-import com.crawlerApi.services.PageStateService;
-import com.crawlerApi.services.UXIssueMessageService;
-import com.crawlerApi.utils.BrowserUtils;
+import com.looksee.models.ElementState;
+import com.looksee.models.ImageElementState;
+import com.looksee.models.PageState;
+import com.looksee.models.designsystem.DesignSystem;
+import com.looksee.models.enums.AuditCategory;
+import com.looksee.models.enums.AuditLevel;
+import com.looksee.models.enums.AuditName;
+import com.looksee.models.enums.AuditSubcategory;
+import com.looksee.models.enums.Priority;
+import com.looksee.services.AuditService;
+import com.looksee.services.PageStateService;
+import com.looksee.services.UXIssueMessageService;
+import com.looksee.utils.BrowserUtils;
 
 /**
  * Responsible for executing an audit on the hyperlinks on a page for the information architecture audit category

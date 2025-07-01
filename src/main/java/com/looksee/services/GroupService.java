@@ -1,10 +1,10 @@
-package com.crawlerApi.services;
+package com.looksee.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.crawlerApi.models.Group;
-import com.crawlerApi.models.repository.GroupRepository;
+import com.looksee.models.Group;
+import com.looksee.models.repository.GroupRepository;
 
 @Service
 public class GroupService {

@@ -1,9 +1,9 @@
-package com.crawlerApi.models.audit.performance;
+package com.looksee.models.audit.performance;
 
 import java.util.Date;
 
-import com.crawlerApi.models.LookseeObject;
-import com.crawlerApi.models.enums.BugType;
+import com.looksee.models.LookseeObject;
+import com.looksee.models.enums.BugType;
 
 /**
  * 

@@ -1,6 +1,6 @@
-package com.crawlerApi.models.dto;
+package com.looksee.models.dto;
 
-import com.crawlerApi.models.competitiveanalysis.brand.Brand;
+import com.looksee.models.competitiveanalysis.brand.Brand;
 
 
 /**

@@ -3,11 +3,11 @@ package com.looksee.services;
 import com.looksee.models.Account;
 import com.looksee.models.Label;
 import com.looksee.models.PageState;
-import com.looksee.models.UXIssueMessage;
 import com.looksee.models.audit.Audit;
 import com.looksee.models.audit.AuditRecord;
 import com.looksee.models.audit.DomainAuditRecord;
 import com.looksee.models.audit.PageAuditRecord;
+import com.looksee.models.audit.UXIssueMessage;
 import com.looksee.models.designsystem.DesignSystem;
 import com.looksee.models.dto.AuditRecordDto;
 import com.looksee.models.enums.AuditCategory;
@@ -919,7 +919,7 @@ public class AuditRecordService {
 	public boolean wasSinglePageAlreadyAudited(long pageAuditRecordId, long pageId) {
 		return audit_record_repo.wasSinglePageAlreadyAudited(pageAuditRecordId, pageId) != null;
 	}
-	
+
 	public int getNumberOfJourneysWithoutStatus(long domain_audit_id, JourneyStatus status) {
 		return audit_record_repo.getNumberOfJourneysWithoutStatus(domain_audit_id, status.toString());
 	}
@@ -970,9 +970,9 @@ public class AuditRecordService {
 		//log.warn("audits found = "+audits.size());
 		//log.warn("content score = "+content_score);
 
-		AuditRecordDto audit_dto = new AuditRecordDto(audit_record.getId(),
+		AuditRecordDto audit_dto = new AuditRecordDto( audit_record.getId(),
 													audit_record.getStatus(),
-													audit_record.getType(),
+													audit_record.getLevel(),
 													audit_record.getStartTime(),
 													visual_design_score,
 													content_score,

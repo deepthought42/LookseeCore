@@ -1,5 +1,6 @@
-package com.looksee.models;
+package com.looksee.models.audit;
 
+import com.looksee.models.SimplePage;
 import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;

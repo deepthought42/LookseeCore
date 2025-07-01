@@ -9,6 +9,7 @@ import com.looksee.models.ColorData;
 import com.looksee.models.Domain;
 import com.looksee.models.ElementState;
 import com.looksee.models.ImageElementState;
+import com.looksee.models.LookseeObject;
 import com.looksee.models.PageLoadAnimation;
 import com.looksee.models.PageState;
 import com.looksee.models.enums.BrowserEnvironment;
@@ -1399,5 +1400,9 @@ public class BrowserUtils {
 		}
 
 		return null;
+	}
+	
+	public static boolean doesSpanMutlipleDomains(String start_url, String end_url, List<LookseeObject> path_objects) throws MalformedURLException {
+		return !(start_url.trim().contains(new URL(end_url).getHost()) || end_url.contains((new URL(PathUtils.getLastPageStateOLD(path_objects).getUrl()).getHost())));
 	}
 }

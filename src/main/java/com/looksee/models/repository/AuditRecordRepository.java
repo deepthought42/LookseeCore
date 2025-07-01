@@ -1,12 +1,12 @@
 package com.looksee.models.repository;
 
 import com.looksee.models.Label;
-import com.looksee.models.PageAuditRecord;
 import com.looksee.models.PageState;
-import com.looksee.models.UXIssueMessage;
 import com.looksee.models.audit.Audit;
 import com.looksee.models.audit.AuditRecord;
 import com.looksee.models.audit.DomainAuditRecord;
+import com.looksee.models.audit.PageAuditRecord;
+import com.looksee.models.audit.UXIssueMessage;
 import com.looksee.models.designsystem.DesignSystem;
 import io.github.resilience4j.retry.annotation.Retry;
 import java.util.List;

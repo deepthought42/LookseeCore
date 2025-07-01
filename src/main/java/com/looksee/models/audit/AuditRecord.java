@@ -1,6 +1,5 @@
 package com.looksee.models.audit;
 
-import com.looksee.models.Audit;
 import com.looksee.models.LookseeObject;
 import com.looksee.models.enums.AuditLevel;
 import com.looksee.models.enums.AuditName;

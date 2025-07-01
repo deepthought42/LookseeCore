@@ -1,6 +1,6 @@
-package com.crawlerApi.models.audit;
+package com.looksee.models.audit;
 
-import com.crawlerApi.models.enums.ExecutionStatus;
+import com.looksee.models.enums.ExecutionStatus;
 
 import lombok.Getter;
 import lombok.Setter;

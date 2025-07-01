@@ -1,7 +1,6 @@
-package com.looksee.models;
+package com.looksee.models.audit;
 
-import com.looksee.models.audit.Audit;
-import com.looksee.models.audit.AuditRecord;
+import com.looksee.models.PageState;
 import com.looksee.models.designsystem.DesignSystem;
 
 /**

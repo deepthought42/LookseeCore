@@ -1,6 +1,6 @@
 package com.looksee.models.message;
 
-import com.looksee.models.Competitor;
+import com.looksee.models.competitiveanalysis.Competitor;
 import lombok.Getter;
 import lombok.Setter;
 

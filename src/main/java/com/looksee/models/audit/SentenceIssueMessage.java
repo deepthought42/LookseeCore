@@ -1,10 +1,10 @@
-package com.looksee.models;
+package com.looksee.models.audit;
 
-import java.util.Set;
-
+import com.looksee.models.Element;
+import com.looksee.models.ElementState;
 import com.looksee.models.enums.AuditCategory;
 import com.looksee.models.enums.Priority;
-
+import java.util.Set;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

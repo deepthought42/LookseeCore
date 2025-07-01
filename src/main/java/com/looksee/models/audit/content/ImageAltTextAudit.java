@@ -1,4 +1,4 @@
-package com.crawlerApi.models.audit.content;
+package com.looksee.models.audit.content;
 
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
@@ -15,22 +15,22 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.crawlerApi.models.ElementState;
-import com.crawlerApi.models.PageState;
-import com.crawlerApi.models.audit.Audit;
-import com.crawlerApi.models.audit.AuditRecord;
-import com.crawlerApi.models.audit.ElementStateIssueMessage;
-import com.crawlerApi.models.audit.IExecutablePageStateAudit;
-import com.crawlerApi.models.audit.UXIssueMessage;
-import com.crawlerApi.models.designsystem.DesignSystem;
-import com.crawlerApi.models.enums.AuditCategory;
-import com.crawlerApi.models.enums.AuditLevel;
-import com.crawlerApi.models.enums.AuditName;
-import com.crawlerApi.models.enums.AuditSubcategory;
-import com.crawlerApi.models.enums.Priority;
-import com.crawlerApi.services.AuditService;
-import com.crawlerApi.services.PageStateService;
-import com.crawlerApi.services.UXIssueMessageService;
+import com.looksee.models.ElementState;
+import com.looksee.models.PageState;
+import com.looksee.models.audit.Audit;
+import com.looksee.models.audit.AuditRecord;
+import com.looksee.models.audit.ElementStateIssueMessage;
+import com.looksee.models.audit.IExecutablePageStateAudit;
+import com.looksee.models.audit.UXIssueMessage;
+import com.looksee.models.designsystem.DesignSystem;
+import com.looksee.models.enums.AuditCategory;
+import com.looksee.models.enums.AuditLevel;
+import com.looksee.models.enums.AuditName;
+import com.looksee.models.enums.AuditSubcategory;
+import com.looksee.models.enums.Priority;
+import com.looksee.services.AuditService;
+import com.looksee.services.PageStateService;
+import com.looksee.services.UXIssueMessageService;
 
 /**
  * Responsible for executing an audit on the images on a page to determine adherence to alternate text best practices 

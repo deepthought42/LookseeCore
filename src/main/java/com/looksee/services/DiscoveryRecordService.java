@@ -1,4 +1,4 @@
-package com.crawlerApi.services;
+package com.looksee.services;
 
 import java.util.Date;
 import java.util.List;
@@ -6,9 +6,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.crawlerApi.models.Account;
-import com.crawlerApi.models.DiscoveryRecord;
-import com.crawlerApi.models.repository.DiscoveryRecordRepository;
+import com.looksee.models.Account;
+import com.looksee.models.DiscoveryRecord;
+import com.looksee.models.repository.DiscoveryRecordRepository;
 
 @Service
 public class DiscoveryRecordService {

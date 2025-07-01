@@ -1,6 +1,6 @@
 package com.looksee.models.repository;
 
-import com.looksee.models.Competitor;
+import com.looksee.models.competitiveanalysis.Competitor;
 import com.looksee.models.competitiveanalysis.brand.Brand;
 import io.github.resilience4j.retry.annotation.Retry;
 import java.util.List;

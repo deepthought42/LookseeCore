@@ -1,10 +1,10 @@
-package com.crawlerApi.services;
+package com.looksee.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.crawlerApi.models.audit.performance.PageSpeedAudit;
-import com.crawlerApi.models.repository.AuditDetailRepository;
-import com.crawlerApi.models.repository.PageSpeedAuditRepository;
+import com.looksee.models.audit.performance.PageSpeedAudit;
+import com.looksee.models.repository.AuditDetailRepository;
+import com.looksee.models.repository.PageSpeedAuditRepository;
 
 @Service
 public class PageSpeedAuditService {

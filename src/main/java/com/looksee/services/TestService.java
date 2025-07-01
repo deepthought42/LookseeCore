@@ -1,4 +1,4 @@
-package com.crawlerApi.services;
+package com.looksee.services;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -14,28 +14,28 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.crawlerApi.api.exception.PagesAreNotMatchingException;
-import com.crawlerApi.helpers.BrowserConnectionHelper;
-import com.crawlerApi.models.ActionOLD;
-import com.crawlerApi.models.Animation;
-import com.crawlerApi.models.Browser;
-import com.crawlerApi.models.Domain;
-import com.crawlerApi.models.Element;
-import com.crawlerApi.models.ElementState;
-import com.crawlerApi.models.Group;
-import com.crawlerApi.models.LookseeObject;
-import com.crawlerApi.models.PageLoadAnimation;
-import com.crawlerApi.models.PageState;
-import com.crawlerApi.models.Test;
-import com.crawlerApi.models.TestRecord;
-import com.crawlerApi.models.enums.BrowserEnvironment;
-import com.crawlerApi.models.enums.BrowserType;
-import com.crawlerApi.models.enums.TestStatus;
-import com.crawlerApi.models.journeys.Redirect;
-import com.crawlerApi.models.repository.GroupRepository;
-import com.crawlerApi.models.repository.PageStateRepository;
-import com.crawlerApi.models.repository.TestRepository;
-import com.crawlerApi.utils.PathUtils;
+import com.looksee.api.exception.PagesAreNotMatchingException;
+import com.looksee.helpers.BrowserConnectionHelper;
+import com.looksee.models.ActionOLD;
+import com.looksee.models.Animation;
+import com.looksee.models.Browser;
+import com.looksee.models.Domain;
+import com.looksee.models.Element;
+import com.looksee.models.ElementState;
+import com.looksee.models.Group;
+import com.looksee.models.LookseeObject;
+import com.looksee.models.PageLoadAnimation;
+import com.looksee.models.PageState;
+import com.looksee.models.Test;
+import com.looksee.models.TestRecord;
+import com.looksee.models.enums.BrowserEnvironment;
+import com.looksee.models.enums.BrowserType;
+import com.looksee.models.enums.TestStatus;
+import com.looksee.models.journeys.Redirect;
+import com.looksee.models.repository.GroupRepository;
+import com.looksee.models.repository.PageStateRepository;
+import com.looksee.models.repository.TestRepository;
+import com.looksee.utils.PathUtils;
 
 @Component
 public class TestService {

@@ -1,16 +1,14 @@
-package com.crawlerApi.browsing.form;
+package com.looksee.browsing.form;
 
+import com.looksee.models.Element;
+import com.looksee.models.rules.Clickable;
+import com.looksee.models.rules.Rule;
+import com.looksee.models.rules.RuleFactory;
+import com.looksee.services.RuleService;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.crawlerApi.models.Element;
-import com.crawlerApi.models.rules.Clickable;
-import com.crawlerApi.models.rules.Rule;
-import com.crawlerApi.models.rules.RuleFactory;
-import com.crawlerApi.services.RuleService;
 
 /**
  * Extracts rules for input {@link Element}s

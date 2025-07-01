@@ -2,17 +2,17 @@ package com.looksee.utils;
 
 import com.looksee.models.CIEColorSpace;
 import com.looksee.models.ColorData;
-import com.looksee.models.ColorPaletteIssueMessage;
-import com.looksee.models.PageAuditRecord;
 import com.looksee.models.PaletteColor;
-import com.looksee.models.ReadingComplexityIssueMessage;
 import com.looksee.models.Score;
-import com.looksee.models.SentenceIssueMessage;
-import com.looksee.models.StockImageIssueMessage;
-import com.looksee.models.UXIssueMessage;
 import com.looksee.models.audit.Audit;
 import com.looksee.models.audit.AuditRecord;
 import com.looksee.models.audit.AuditScore;
+import com.looksee.models.audit.ColorPaletteIssueMessage;
+import com.looksee.models.audit.PageAuditRecord;
+import com.looksee.models.audit.ReadingComplexityIssueMessage;
+import com.looksee.models.audit.SentenceIssueMessage;
+import com.looksee.models.audit.StockImageIssueMessage;
+import com.looksee.models.audit.UXIssueMessage;
 import com.looksee.models.designsystem.DesignSystem;
 import com.looksee.models.enums.AuditCategory;
 import com.looksee.models.enums.AuditName;
@@ -22,6 +22,7 @@ import com.looksee.models.enums.Priority;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.DoubleSummaryStatistics;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -1314,5 +1315,114 @@ public class AuditUtils {
 		}
 		
 		return color.getGreen();
+	}
+
+	/**
+	 * Retrieves count of pages that have non text contrast issue
+	 * 
+	 * @param page_audits
+	 * @param subcategory TODO
+	 * @return
+	 */
+	public static int getCountPagesWithSubcategoryIssues(List<AuditRecord> page_audits,
+														AuditSubcategory subcategory) {
+		int count_failing_pages = 0;
+		for(AuditRecord page_audit : page_audits) {
+			PageAuditRecord page_audit_record = (PageAuditRecord)page_audit;
+			for(Audit audit: page_audit_record.getAudits()) {
+				if(subcategory.equals( audit.getSubcategory() ) 
+						&& audit.getPoints() < audit.getTotalPossiblePoints()) {
+					count_failing_pages++;
+					break;
+				}
+			}
+		}
+		
+		return count_failing_pages;
+	}
+
+	/**
+	 * Retrieves count of pages that have non text contrast issue
+	 * 
+	 * @param page_audits
+	 * @return
+	 */
+	public static int getCountPagesWithIssuesByAuditName(List<AuditRecord> page_audits, AuditName audit_name) {
+		int count_failing_pages = 0;
+		
+		for(AuditRecord page_audit : page_audits) {
+			PageAuditRecord page_audit_record = (PageAuditRecord)page_audit;
+
+			for(Audit audit: page_audit_record.getAudits()) {
+				if(audit_name.equals( audit.getName() ) 
+						&& audit.getPoints() < audit.getTotalPossiblePoints()) {
+					count_failing_pages++;
+					break;
+				}
+			}
+		}
+		
+		return count_failing_pages;
+	}
+
+	/**
+	 *
+	 * @param page_audits
+	 * @return
+	 */
+	public static int getCountOfPagesWithWcagComplianceIssues(List<AuditRecord> page_audits) {
+		int pages_with_issues = 0;
+		
+		for(AuditRecord audit_record : page_audits) {
+			PageAuditRecord page_audit_record = (PageAuditRecord)audit_record;
+
+			boolean has_issue = false;
+			for(Audit audit: page_audit_record.getAudits()) {
+				for(UXIssueMessage issue : audit.getMessages()) {
+					if(issue.getLabels().contains("wcag") && issue.getPoints() < issue.getMaxPoints()) {
+						pages_with_issues++;
+						has_issue = true;
+						break;
+					}
+				}
+				if(has_issue) {
+					break;
+				}
+			}
+		}
+		return pages_with_issues;
+	}
+
+	/**
+	 * Calculates the overall score of based on audits that are based on WCAG standards
+	 * The list of audits that are based on WCAG are those with the subcategories 
+	 * TEXT_CONTRAST, NON-TEXT CONTRAST, LINKS, ALT_TEXT, PARAGRAPHING, READING_COMPLEXITY, TITLES
+	 * 
+	 * @param audits List of {@link Audit audits}
+	 * @return overall score
+	 */
+	public static double calculateAccessibilityScore(Set<Audit> audits) {
+		assert(audits != null);
+		
+		List<String> audit_names = new ArrayList<>();
+		audit_names.add(AuditName.TEXT_BACKGROUND_CONTRAST.toString());
+		audit_names.add(AuditName.NON_TEXT_BACKGROUND_CONTRAST.toString());
+		audit_names.add(AuditName.LINKS.toString());
+		audit_names.add(AuditName.ALT_TEXT.toString());
+		audit_names.add(AuditName.PARAGRAPHING.toString());
+		audit_names.add(AuditName.READING_COMPLEXITY.toString());
+		audit_names.add(AuditName.TITLES.toString());
+
+		//filter audits based on subcategory
+		List<Audit> list1 = audits.parallelStream()
+										.filter(audit -> audit_names.contains(audit.getName().toString()))
+										.filter(audit -> audit.getTotalPossiblePoints() != 0)
+										.collect(Collectors.toList());
+
+		DoubleSummaryStatistics score_stats = list1.parallelStream()
+													.mapToDouble(audit -> (audit.getPoints()/(double)audit.getTotalPossiblePoints())*100)
+													.summaryStatistics();
+
+		return score_stats.getAverage();
 	}
 }

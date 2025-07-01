@@ -1,4 +1,4 @@
-package com.crawlerApi.models.repository;
+package com.looksee.models.repository;
 
 import java.util.List;
 import java.util.Set;
@@ -7,8 +7,8 @@ import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.crawlerApi.models.LookseeObject;
-import com.crawlerApi.models.Test;
+import com.looksee.models.LookseeObject;
+import com.looksee.models.Test;
 
 /**
  *

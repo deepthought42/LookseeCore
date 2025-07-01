@@ -1,8 +1,7 @@
-package com.crawlerApi.models.audit.recommend;
+package com.looksee.models.audit.recommend;
 
+import com.looksee.models.LookseeObject;
 import java.util.UUID;
-
-import com.crawlerApi.models.LookseeObject;
 
 public class Recommendation extends LookseeObject{
 	private String description;

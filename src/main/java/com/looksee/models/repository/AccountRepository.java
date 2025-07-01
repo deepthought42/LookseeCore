@@ -3,8 +3,8 @@ package com.looksee.models.repository;
 import com.looksee.models.Account;
 import com.looksee.models.DiscoveryRecord;
 import com.looksee.models.Domain;
-import com.looksee.models.PageAuditRecord;
 import com.looksee.models.audit.AuditRecord;
+import com.looksee.models.audit.PageAuditRecord;
 import io.github.resilience4j.retry.annotation.Retry;
 import java.util.List;
 import java.util.Optional;
@@ -171,7 +171,7 @@ public interface AccountRepository extends Neo4jRepository<Account, Long> {
 	@Query("MATCH (account:Account {username:$user_id})-[]->(d:DiscoveryRecord) WHERE datetime(d.started_at).month=$month return d")
 	@Deprecated
 	public Set<DiscoveryRecord> getDiscoveryRecordsByMonth(@Param("username") String username, 
-														  @Param("month") int month);
+															@Param("month") int month);
 	
 	@Query("MATCH (t:Account) WHERE id(t)=$acct_id MATCH (a:Domain) WHERE id(a)=$domain_id MERGE (t)-[:HAS]->(a) RETURN t")
 	public void addDomain(@Param("domain_id") long domain_id, @Param("acct_id") long acct_id);

@@ -1,8 +1,8 @@
-package com.crawlerApi.models.audit.performance;
+package com.looksee.models.audit.performance;
 
 import org.springframework.data.neo4j.core.schema.Relationship;
 
-import com.crawlerApi.models.ElementState;
+import com.looksee.models.ElementState;
 
 /**
  * Defines an accessibility audit detail record. 

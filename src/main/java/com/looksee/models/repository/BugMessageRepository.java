@@ -1,11 +1,11 @@
-package com.crawlerApi.models.repository;
+package com.looksee.models.repository;
 
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.crawlerApi.models.audit.performance.BugMessage;
+import com.looksee.models.audit.performance.BugMessage;
 
 /**
  * Spring Data interface for interacting with {@link BugMessage} objects in database

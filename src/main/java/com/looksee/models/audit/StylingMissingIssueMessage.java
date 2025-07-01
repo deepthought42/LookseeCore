@@ -1,12 +1,10 @@
-package com.looksee.models;
-
-import java.util.Set;
-
-import org.springframework.data.neo4j.core.schema.Node;
+package com.looksee.models.audit;
 
 import com.looksee.models.enums.ObservationType;
 import com.looksee.models.enums.Priority;
 import com.looksee.models.recommend.Recommendation;
+import java.util.Set;
+import org.springframework.data.neo4j.core.schema.Node;
 
 
 /**

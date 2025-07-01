@@ -1,6 +1,5 @@
 package com.looksee.services;
 
-import com.looksee.models.Competitor;
 import com.looksee.models.Domain;
 import com.looksee.models.Element;
 import com.looksee.models.Form;
@@ -13,10 +12,10 @@ import com.looksee.models.TestUser;
 import com.looksee.models.audit.AuditRecord;
 import com.looksee.models.audit.DomainAuditRecord;
 import com.looksee.models.audit.PageAuditRecord;
+import com.looksee.models.competitiveanalysis.Competitor;
 import com.looksee.models.designsystem.DesignSystem;
 import com.looksee.models.repository.AuditRecordRepository;
 import com.looksee.models.repository.CompetitorRepository;
-import com.looksee.models.repository.DesignSystemRepository;
 import com.looksee.models.repository.DomainRepository;
 import java.net.URL;
 import java.util.List;
@@ -59,7 +58,10 @@ public class DomainService {
 	private CompetitorRepository competitor_repo;
 
 	@Autowired
-	private DesignSystemRepository design_system_repo;
+	private DesignSystemService design_system_service;
+
+	@Autowired
+	private AccountService account_service;
 
 	/**
 	 * Retrieves all domains

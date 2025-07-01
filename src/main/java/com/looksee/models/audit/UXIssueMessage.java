@@ -1,50 +1,66 @@
-package com.crawlerApi.models.audit;
+package com.looksee.models.audit;
 
+import com.looksee.models.LookseeObject;
+import com.looksee.models.enums.AuditCategory;
+import com.looksee.models.enums.ObservationType;
+import com.looksee.models.enums.Priority;
 import java.util.Set;
 import java.util.UUID;
-
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.neo4j.core.schema.Node;
 
-import com.crawlerApi.models.LookseeObject;
-import com.crawlerApi.models.enums.AuditCategory;
-import com.crawlerApi.models.enums.ObservationType;
-import com.crawlerApi.models.enums.Priority;
-
 /**
- * 
+ * Represents a UX issue message
  */
 @Node
+@Getter
+@Setter
+@NoArgsConstructor
 public class UXIssueMessage extends LookseeObject {
 	private static Logger log = LoggerFactory.getLogger(UXIssueMessage.class);
 
 	private String title;
 	private String description;
-	private String why_it_matters;
+	private String whyItMatters;
 	private String recommendation;
 	private String priority;
 	private String type;
 	private String category;
-	private String wcag_compliance;
+	private String wcagCompliance;
 	private Set<String> labels;
 	private int points;
-	private int max_points;
+	private int maxPoints;
 	private int score;
-
-	public UXIssueMessage() {}
 	
+	/**
+	 * constructor for the ux issue message
+	 * @param priority {@link Priority}
+	 * @param description description of the ux issue message
+	 * @param type {@link ObservationType}
+	 * @param category {@link AuditCategory}
+	 * @param wcagCompliance String with the WCAG compliance requirement
+	 * @param labels labels of the ux issue message
+	 * @param whyItMatters why it matters
+	 * @param title title of the ux issue message
+	 * @param points points of the ux issue message
+	 * @param maxPoints max points of the ux issue message
+	 * @param recommendation recommendation of the ux issue message
+	 */
 	public UXIssueMessage(
 			Priority priority,
-			String description, 
+			String description,
 			ObservationType type,
 			AuditCategory category,
-			String wcag_compliance,
+			String wcagCompliance,
 			Set<String> labels,
-			String why_it_matters, 
-			String title, 
-			int points, 
-			int max_points, 
+			String whyItMatters,
+			String title,
+			int points,
+			int maxPoints,
 			String recommendation
 	) {
 		assert priority != null;
@@ -56,16 +72,19 @@ public class UXIssueMessage extends LookseeObject {
 		setType(type);
 		setCategory(category);
 		setRecommendation(recommendation);
-		setWcagCompliance(wcag_compliance);
+		setWcagCompliance(wcagCompliance);
 		setLabels(labels);
-		setWhyItMatters(why_it_matters);
+		setWhyItMatters(whyItMatters);
 		setTitle(title);
 		setPoints(points);
-		setMaxPoints(max_points);
-		setScore( (int)((points/(double)max_points)*100) );
+		setMaxPoints(maxPoints);
+		setScore( (int)((points/(double)maxPoints)*100) );
 		setKey(generateKey());
 	}
 	
+	/**
+	 * Prints the UX issue message
+	 */
 	public void print() {
 		log.warn("ux issue key :: "+getKey());
 		log.warn("ux issue desc :: "+getDescription());
@@ -84,104 +103,65 @@ public class UXIssueMessage extends LookseeObject {
 		
 	}
 	
+	/**
+	 * Gets the priority of the UX issue message
+	 *
+	 * @return the priority of the UX issue message
+	 */
 	public Priority getPriority() {
 		return Priority.create(this.priority);
 	}
 	
+	/**
+	 * Sets the priority of the UX issue message
+	 *
+	 * @param priority the priority of the UX issue message
+	 */
 	public void setPriority(Priority priority) {
 		this.priority = priority.getShortName();
 	}
 	
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	
+	/**
+	 * Gets the type of the UX issue message
+	 *
+	 * @return the type of the UX issue message
+	 */
 	public ObservationType getType() {
 		return ObservationType.create(type);
 	}
 
+	/**
+	 * Sets the type of the UX issue message
+	 *
+	 * @param type the type of the UX issue message
+	 */
 	public void setType(ObservationType type) {
 		this.type = type.getShortName();
 	}
 
+	/**
+	 * Gets the category of the UX issue message
+	 *
+	 * @return the category of the UX issue message
+	 */
 	public AuditCategory getCategory() {
 		return AuditCategory.create(category);
 	}
 
+	/**
+	 * Sets the category of the UX issue message
+	 *
+	 * @param category the category of the UX issue message
+	 */
 	public void setCategory(AuditCategory category) {
 		this.category = category.getShortName();
 	}
 
-	public Set<String> getLabels() {
-		return labels;
-	}
-
-	public void setLabels(Set<String> labels) {
-		this.labels = labels;
-	}
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String generateKey() {
 		return "issuemessage"+UUID.randomUUID();
-	}
-
-	public String getWcagCompliance() {
-		return wcag_compliance;
-	}
-
-	public void setWcagCompliance(String wcag_compliance) {
-		this.wcag_compliance = wcag_compliance;
-	}
-
-	public String getWhyItMatters() {
-		return why_it_matters;
-	}
-
-	public void setWhyItMatters(String why_it_matters) {
-		this.why_it_matters = why_it_matters;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public int getPoints() {
-		return points;
-	}
-
-	public void setPoints(int points) {
-		this.points = points;
-	}
-
-	public int getMaxPoints() {
-		return max_points;
-	}
-
-	public void setMaxPoints(int max_points) {
-		this.max_points = max_points;
-	}
-
-	public String getRecommendation() {
-		return recommendation;
-	}
-
-	public void setRecommendation(String recommendation) {
-		this.recommendation = recommendation;
-	}
-
-	public int getScore() {
-		return score;
-	}
-
-	public void setScore(int score) {
-		this.score = score;
 	}
 }

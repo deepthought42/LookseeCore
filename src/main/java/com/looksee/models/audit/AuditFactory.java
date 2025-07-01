@@ -1,4 +1,4 @@
-package com.crawlerApi.models.audit;
+package com.looksee.models.audit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

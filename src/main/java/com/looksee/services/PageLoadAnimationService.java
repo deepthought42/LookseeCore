@@ -1,4 +1,4 @@
-package com.crawlerApi.services;
+package com.looksee.services;
 
 
 import org.slf4j.Logger;
@@ -6,8 +6,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.crawlerApi.models.PageLoadAnimation;
-import com.crawlerApi.models.repository.PageLoadAnimationRepository;
+import com.looksee.models.PageLoadAnimation;
+import com.looksee.models.repository.PageLoadAnimationRepository;
 
 @Service
 public class PageLoadAnimationService {

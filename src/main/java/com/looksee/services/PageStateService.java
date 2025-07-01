@@ -1,10 +1,10 @@
 package com.looksee.services;
 
-import com.looksee.models.Audit;
 import com.looksee.models.ElementState;
-import com.looksee.models.PageAuditRecord;
 import com.looksee.models.PageState;
 import com.looksee.models.Screenshot;
+import com.looksee.models.audit.Audit;
+import com.looksee.models.audit.PageAuditRecord;
 import com.looksee.models.enums.AuditName;
 import com.looksee.models.enums.ElementClassification;
 import com.looksee.models.repository.AuditRecordRepository;

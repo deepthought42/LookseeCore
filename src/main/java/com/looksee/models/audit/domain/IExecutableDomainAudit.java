@@ -1,9 +1,9 @@
-package com.crawlerApi.models.audit.domain;
+package com.looksee.models.audit.domain;
 
 import java.util.List;
 
-import com.crawlerApi.models.Domain;
-import com.crawlerApi.models.audit.Audit;
+import com.looksee.models.Domain;
+import com.looksee.models.audit.Audit;
 
 public interface IExecutableDomainAudit {
 	/**

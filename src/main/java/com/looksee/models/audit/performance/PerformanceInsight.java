@@ -1,17 +1,15 @@
-package com.crawlerApi.models.audit.performance;
+package com.looksee.models.audit.performance;
 
+import com.looksee.models.Persistable;
+import com.looksee.models.enums.CaptchaResult;
+import com.looksee.models.enums.FormFactor;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
-
-import com.crawlerApi.models.Persistable;
-import com.crawlerApi.models.enums.CaptchaResult;
-import com.crawlerApi.models.enums.FormFactor;
 
 /**
  * Stores page speed analytics data that is returned as part of requests to Google Page Insights

@@ -1,10 +1,10 @@
-package com.crawlerApi.services;
+package com.looksee.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.crawlerApi.models.ActionOLD;
-import com.crawlerApi.models.repository.ActionRepository;
+import com.looksee.models.ActionOLD;
+import com.looksee.models.repository.ActionRepository;
 
 @Service
 public class ActionService {

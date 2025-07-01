@@ -3,17 +3,18 @@ package com.looksee.models.competitiveanalysis;
 import com.looksee.models.LookseeObject;
 import com.looksee.models.competitiveanalysis.brand.Brand;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
 
-
 /**
  * Defines the type of package paid for, which domains are registered and which Users belong to the account
  */
-@Node
 @Getter
 @Setter
+@NoArgsConstructor
+@Node
 public class Competitor extends LookseeObject{
 
 	private String companyName;
@@ -22,18 +23,13 @@ public class Competitor extends LookseeObject{
 	
 	@Relationship("USES")
 	private Brand brand;
-	
-	public Competitor(){
-		super();
-	}
 
 	/**
+	 * Constructs a new competitor
 	 *
-	 * @param username
-	 * @param customer_token
-	 * @param subscription_token
-	 *
-	 * @pre users != null
+	 * @param company_name the name of the company
+	 * @param url the URL of the company
+	 * @param industry the industry of the company
 	 */
 	public Competitor(
 			String company_name,
@@ -46,7 +42,11 @@ public class Competitor extends LookseeObject{
 		setIndustry(industry);
 	}
 
-	
+	/**
+	 * Generates a key for the competitor
+	 *
+	 * @return the key
+	 */
 	@Override
 	public String generateKey() {
 		return "competitor::" + org.apache.commons.codec.digest.DigestUtils.sha256Hex( this.getUrl() );

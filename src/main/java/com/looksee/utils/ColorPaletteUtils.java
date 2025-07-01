@@ -2,10 +2,10 @@ package com.looksee.utils;
 
 import com.looksee.models.CIEColorSpace;
 import com.looksee.models.ColorData;
-import com.looksee.models.ColorPaletteIssueMessage;
 import com.looksee.models.PaletteColor;
 import com.looksee.models.Score;
-import com.looksee.models.UXIssueMessage;
+import com.looksee.models.audit.ColorPaletteIssueMessage;
+import com.looksee.models.audit.UXIssueMessage;
 import com.looksee.models.designsystem.DesignSystem;
 import com.looksee.models.enums.AuditCategory;
 import com.looksee.models.enums.ColorScheme;
@@ -134,7 +134,7 @@ public class ColorPaletteUtils {
 																	palette,
 																	AuditCategory.AESTHETICS,
 																	labels,
-																	ada_compliance, 
+																	ada_compliance,
 																	title,
 																	0,
 																	1);

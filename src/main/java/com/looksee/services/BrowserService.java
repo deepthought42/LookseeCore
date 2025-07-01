@@ -1,6 +1,7 @@
 package com.looksee.services;
 
 import com.google.cloud.storage.StorageException;
+import com.looksee.browsing.form.ElementRuleExtractor;
 import com.looksee.browsing.helpers.BrowserConnectionHelper;
 import com.looksee.exceptions.ServiceUnavailableException;
 import com.looksee.gcp.CloudVisionUtils;
@@ -48,7 +49,6 @@ import javax.imageio.ImageIO;
 import javax.xml.xpath.XPathExpressionException;
 import lombok.NoArgsConstructor;
 import org.apache.commons.text.similarity.LevenshteinDistance;
-import org.apache.tomcat.util.codec.binary.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Attribute;
 import org.jsoup.nodes.Attributes;
@@ -87,10 +87,19 @@ public class BrowserService {
 
 	@Autowired
 	private ElementStateService element_state_service;
+
+	@Autowired
+	private ElementService element_service;
 	
 	@Autowired
 	private GoogleCloudStorage googleCloudStorage;
 	
+	@Autowired
+	private PageService page_service;
+
+	@Autowired
+	private ElementRuleExtractor extractor;
+
 	/**
 	 * Retrieves a new browser connection
 	 *
@@ -3198,206 +3207,6 @@ public class BrowserService {
         return index;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	/**
-	 * retrieves a new browser connection
-	 *
-	 * @param browser_name name of the browser (ie. firefox, chrome)
-	 *
-	 * @return new {@link Browser} instance
-	 * @throws MalformedURLException
-	 *
-	 * @pre browser_name != null;
-	 * @pre !browser_name.isEmpty();
-	 */
-	public Browser getConnection(BrowserType browser, BrowserEnvironment browser_env) throws MalformedURLException {
-		assert browser != null;
-
-		return BrowserConnectionHelper.getConnection(browser, browser_env);
-	}
-
-	/**
- 	 * Constructs an {@link Element} from a JSOUP {@link Element element}
- 	 * 
-	 * @param xpath
-	 * @param attributes
-	 * @param element
-	 * @param web_elem
-	 * @param classification
-	 * @param rendered_css_values
-	 * @param screenshot_url TODO
-	 * @param css_selector TODO
-	 * @pre xpath != null && !xpath.isEmpty()
-	 * @pre attributes != null
-	 * @pre element != null
-	 * @pre classification != null
-	 * @pre rendered_css_values != null
-	 * @pre css_values != null
-	 * @pre screenshot != null
-	 * 
-	 * @return {@link ElementState} based on {@link WebElement} and other params
-	 * @throws IOException 
-	 * @throws MalformedURLException 
-	 */
-	public static ElementState buildElementState(
-			String xpath, 
-			Map<String, String> attributes, 
-			Element element,
-			WebElement web_elem,
-			ElementClassification classification, 
-			Map<String, String> rendered_css_values, 
-			String screenshot_url,
-			String css_selector
-	) throws IOException{
-		assert xpath != null && !xpath.isEmpty();
-		assert attributes != null;
-		assert element != null;
-		assert classification != null;
-		assert rendered_css_values != null;
-		assert screenshot_url != null;
-		
-		Point location = web_elem.getLocation();
-		Dimension dimension = web_elem.getSize();
-		
-		String foreground_color = rendered_css_values.get("color");
-		if(foreground_color == null || foreground_color.trim().isEmpty()) {
-			foreground_color = "rgb(0,0,0)";
-		}
-		
-		ElementState element_state = new ElementState(
-											element.ownText().trim(),
-											element.text(),
-											xpath, 
-											element.tagName(), 
-											attributes, 
-											rendered_css_values, 
-											screenshot_url, 
-											location.getX(), 
-											location.getY(), 
-											dimension.getWidth(), 
-											dimension.getHeight(), 
-											classification,
-											element.outerHtml(),
-											web_elem.isDisplayed(),
-											css_selector, 
-											foreground_color,
-											rendered_css_values.get("background-color"),
-											false);
-		
-		return element_state;
-	}
-	
-	/**
- 	 * Constructs an {@link Element} from a JSOUP {@link Element element}
- 	 * 
-	 * @param xpath
-	 * @param attributes
-	 * @param element
-	 * @param web_elem
-	 * @param classification
-	 * @param rendered_css_values
-	 * @param screenshot_url TODO
-	 * @param css_selector TODO
-	 * @pre xpath != null && !xpath.isEmpty()
-	 * @pre attributes != null
-	 * @pre element != null
-	 * @pre classification != null
-	 * @pre rendered_css_values != null
-	 * @pre css_values != null
-	 * @pre screenshot != null
-	 * 
-	 * @return {@link ElementState} based on {@link WebElement} and other params
-	 * @throws IOException 
-	 */
-	public static ElementState buildImageElementState(
-			String xpath, 
-			Map<String, String> attributes, 
-			Element element,
-			WebElement web_elem,
-			ElementClassification classification, 
-			Map<String, String> rendered_css_values, 
-			String screenshot_url,
-			String css_selector,
-			Set<ImageLandmarkInfo> landmark_info_set,
-			Set<ImageFaceAnnotation> faces,
-			ImageSearchAnnotation image_search_set,
-			Set<Logo> logos,
-			Set<Label> labels,
-			ImageSafeSearchAnnotation safe_search_annotation
-	) throws IOException{
-		assert xpath != null && !xpath.isEmpty();
-		assert attributes != null;
-		assert element != null;
-		assert classification != null;
-		assert rendered_css_values != null;
-		assert screenshot_url != null;
-		
-		Point location = web_elem.getLocation();
-		Dimension dimension = web_elem.getSize();
-		
-		String foreground_color = rendered_css_values.get("color");
-		if(foreground_color == null || foreground_color.trim().isEmpty()) {
-			foreground_color = "rgb(0,0,0)";
-		}
-		
-		String background_color = rendered_css_values.get("background-color");
-		if(background_color == null) {
-			background_color = "rgb(255,255,255)";
-		}
-		
-		ElementState element_state = new ImageElementState(
-													element.ownText().trim(),
-													element.text(),
-													xpath, 
-													element.tagName(), 
-													attributes, 
-													rendered_css_values, 
-													screenshot_url, 
-													location.getX(), 
-													location.getY(), 
-													dimension.getWidth(), 
-													dimension.getHeight(), 
-													classification,
-													element.outerHtml(),
-													web_elem.isDisplayed(),
-													css_selector, 
-													foreground_color,
-													background_color,
-													landmark_info_set,
-													faces,
-													image_search_set,
-													logos,
-													labels,
-													safe_search_annotation);
-		
-		return element_state;
-	}
-	
 	/**
 	 *Constructs a page object that contains all child elements that are considered to be potentially expandable.
 	 * @param title TODO
@@ -3408,9 +3217,9 @@ public class BrowserService {
 	 * 
 	 * @pre browser != null
 	 */
-	public Page buildPage( String page_src, 
-						   String page_url, 
-						   String title 
+	public Page buildPage( 	String page_src,
+							String page_url,
+							String title
     ) throws IOException, XPathExpressionException{
 		assert page_url != null;
 		assert page_src != null;
@@ -3418,7 +3227,7 @@ public class BrowserService {
 		String url_without_params = BrowserUtils.sanitizeUrl(page_url, true);
 		
 		//Element root = html_doc.getElementsByTag("body").get(0);
-		List<String> raw_stylesheets = Browser.extractStylesheets(page_src); 
+		List<String> raw_stylesheets = Browser.extractStylesheets(page_src);
 		List<RuleSet> rule_sets = Browser.extractRuleSetsFromStylesheets(raw_stylesheets, new URL(page_url)); 
 		
 		String clean_source = Browser.cleanSrc(page_src);
@@ -3512,8 +3321,7 @@ public class BrowserService {
 					form_elem.getAttribute("innerHTML"), 
 					ElementClassification.ANCESTOR, 
 					form_elem.getAttribute("outerHTML"));
-			//String screenshot_url = UploadObjectSingleOperation.saveImageToS3ForUser(img, host, checksum, BrowserType.create(browser.getBrowserName()), user_id);
-			//form_tag.setScreenshotUrl(screenshot_url);
+
 			form_tag = element_service.saveFormElement(form_tag);
 			
 			/*
@@ -3609,412 +3417,6 @@ public class BrowserService {
 		
 		return elements;
 	}
-
-	/**
-	 * locates and returns the form submit button
-	 * 
-	 * @param form_elem
-	 * @return
-	 * @throws Exception
-	 * 
-	 * @pre user_id != null
-	 * @pre !user_id.isEmpty()
-	 * @pre form_elem != null
-	 * @pre browser != null;
-	 */
-	@Deprecated
-	private com.looksee.models.Element findFormSubmitButton(WebElement form_elem, 
-															Browser browser
-	) throws Exception {
-		assert form_elem != null;
-		assert browser != null;
-		
-		WebElement submit_element = null;
-
-		boolean submit_elem_found = false;
-		List<WebElement> form_elements = getNestedElements(form_elem);
-
-		Map<String, String> attributes = new HashMap<>();
-		for(WebElement elem : form_elements){
-			attributes = browser.extractAttributes(elem);
-			for(String attribute : attributes.keySet()){
-				if(attributes.get(attribute).contains("submit")){
-					submit_elem_found = true;
-					break;
-				}
-			}
-
-			if(submit_elem_found){
-				submit_element = elem;
-				break;
-			}
-		}
-
-		if(submit_element == null){
-			return null;
-		}
-		
-		//Map<String, String> css_map = Browser.loadCssProperties(submit_element);
-		com.looksee.models.Element elem = new com.looksee.models.Element(submit_element.getText(), 
-																		 generateXpath(submit_element, browser.getDriver(), attributes), 
-																		 submit_element.getTagName(), 
-																		 attributes, 
-																		 new HashMap<>(), 
-																		 submit_element.getAttribute("innerHTML"), 
-																		 submit_element.getAttribute("outerHTML"));
-		//String screenshot_url = UploadObjectSingleOperation.saveImageToS3ForUser(img, (new URL(browser.getDriver().getCurrentUrl())).getHost(), checksum, BrowserType.create(browser.getBrowserName()), user_id);
-		//elem.setViewportScreenshotUrl(screenshot_url);
-		elem = element_service.saveFormElement(elem);
-
-		return elem;
-	}
-	
-
-	public Map<String, Template> findTemplates(List<com.looksee.models.Element> element_list){
-		//create a map for the various duplicate elements
-		Map<String, Template> element_templates = new HashMap<>();
-		List<com.looksee.models.Element> parents_only_element_list = new ArrayList<>();
-		for(com.looksee.models.Element element : element_list) {
-			if(!ElementClassification.LEAF.equals(element.getClassification())) {
-				parents_only_element_list.add(element);
-			}
-		}
-
-		//iterate over all elements in list
-		
-		Map<String, Boolean> identified_templates = new HashMap<String, Boolean>();
-		for(int idx1 = 0; idx1 < parents_only_element_list.size()-1; idx1++){
-			com.looksee.models.Element element1 = parents_only_element_list.get(idx1);
-			boolean at_least_one_match = false;
-			if(identified_templates.containsKey(element1.getKey()) ) {
-				continue;
-			}
-			//for each element iterate over all elements in list
-			for(int idx2 = idx1+1; idx2 < parents_only_element_list.size(); idx2++){
-				com.looksee.models.Element element2 = parents_only_element_list.get(idx2);
-				if(identified_templates.containsKey(element2.getKey()) || !element1.getName().equals(element2.getName())){
-					continue;
-				}
-				//get largest string length
-				int max_length = element1.getTemplate().length();
-				if(element2.getTemplate().length() > max_length){
-					max_length = element2.getTemplate().length();
-				}
-				
-				if(max_length == 0) {
-					log.warn("max length of 0 between both templates");
-					continue;
-				}
-				
-				if(element1.getTemplate().equals(element2.getTemplate())){
-					String template_str = element2.getTemplate();
-					if(!element_templates.containsKey(template_str)){
-						element_templates.put(template_str, new Template(TemplateType.UNKNOWN, template_str));
-					}
-					element_templates.get(template_str).getElements().add(element2);
-					identified_templates.put(element2.getKey(), Boolean.TRUE);
-					at_least_one_match = true;
-					continue;
-				}
-
-				log.warn("getting levenshtein distance...");
-				//double distance = StringUtils.getJaroWinklerDistance(element_list.get(idx1).getTemplate(), element_list.get(idx2).getTemplate());
-				//calculate distance between loop1 value and loop2 value
-				double distance = StringUtils.getLevenshteinDistance(element1.getTemplate(), element2.getTemplate());
-				//if value is within threshold then add loop2 value to map for loop1 value xpath
-				double avg_string_size = ((element1.getTemplate().length() + element2.getTemplate().length())/2.0);
-				double similarity = distance / avg_string_size;
-				//double sigmoid = new Sigmoid(0,1).value(similarity);
-
-				//calculate distance of children if within 20%
-				if(distance == 0.0 || similarity < 0.025){
-					log.warn("Distance ;  Similarity :: "+distance + "  ;  "+similarity);
-					String template_str = element1.getTemplate();
-					if(!element_templates.containsKey(template_str)){
-						element_templates.put(template_str, new Template(TemplateType.UNKNOWN, template_str));
-					}
-					element_templates.get(template_str).getElements().add(element2);
-					identified_templates.put(element2.getKey(), Boolean.TRUE);
-
-					at_least_one_match = true;
-				}
-			}
-			if(at_least_one_match){
-				String template_str = element1.getTemplate();
-				element_templates.get(template_str).getElements().add(element1);
-				identified_templates.put(element1.getKey(), Boolean.TRUE);
-			}
-			log.warn("****************************************************************");
-
-		}
-
-		return element_templates;
-	}
-
-	/**
-	 * Checks if Attributes contains keywords indicative of a slider 
-	 * @param attributes
-	 * 
-	 * @return true if any of keywords present, otherwise false
-	 * 
-	 * @pre attributes != null
-	 * @pre !attributes.isEmpty()
-	 */
-	public static boolean doesAttributesContainSliderKeywords(Map<String, List<String>> attributes) {
-		assert attributes != null;
-		assert !attributes.isEmpty();
-		for(String attr : attributes.keySet()) {
-			if(attributes.get(attr).contains("slide")) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	/**
-	 * Extracts template for element by using outer html and removing inner text
-	 * @param element {@link Element}
-	 * @return templated version of element html
-	 */
-	public static String extractTemplate(String outerHtml){
-		assert outerHtml != null;
-		assert !outerHtml.isEmpty();
-		
-		Document html_doc = Jsoup.parseBodyFragment(outerHtml);
-
-		Cleaner cleaner = new Cleaner(Whitelist.relaxed());
-		html_doc = cleaner.clean(html_doc);
-		
-		html_doc.select("script").remove()
-				.select("link").remove()
-				.select("style").remove();
-
-		for(Element element : html_doc.getAllElements()) {
-			element.removeAttr("id");
-			element.removeAttr("name");
-			element.removeAttr("style");
-		}
-		
-		return html_doc.html();
-	}
-	
-	
-
-	public Map<String, Template> reduceTemplatesToParents(Map<String, Template> list_elements_list) {
-		Map<String, Template> element_map = new HashMap<>();
-		List<Template> template_list = new ArrayList<>(list_elements_list.values());
-		//check if element is a child of another element in the list. if yes then don't add it to the list
-		for(int idx1=0; idx1 < template_list.size(); idx1++){
-			boolean is_child = false;
-			for(int idx2=0; idx2 < template_list.size(); idx2++){
-				if(idx1 != idx2 && template_list.get(idx2).getTemplate().contains(template_list.get(idx1).getTemplate())){
-					is_child = true;
-					break;
-				}
-			}
-
-			if(!is_child){
-				element_map.put(template_list.get(idx1).getTemplate(), template_list.get(idx1));
-			}
-		}
-
-		//remove duplicates
-		log.warn("total elements left after reduction :: " + element_map.values().size());
-		return element_map;
-	}
-
-	/**
-	 *
-	 * Atom - A leaf element or an element that contains only 1 leaf element regardless of depth
-	 * Molecule - Contains at least 2 atoms and cannot contain any molecules
-	 * Organism - Contains at least 2 molecules or at least 1 molecule and 1 atom or at least 1 organism, Must not be an immediate child of body
-	 * Template - An Immediate child of the body tag or the descendant such that the element is the first to have sibling elements
-	 *
-	 * @param template
-	 * @return
-	 */
-	public TemplateType classifyTemplate(String template){
-		Document html_doc = Jsoup.parseBodyFragment(template);
-		Element root_element = html_doc.body();
-
-		return classifyUsingChildren(root_element);
-	}
-
-	private TemplateType classifyUsingChildren(Element root_element) {
-		assert root_element != null;
-
-		int atom_cnt = 0;
-		int molecule_cnt = 0;
-		int organism_cnt = 0;
-		int template_cnt = 0;
-		if(root_element.children() == null || root_element.children().isEmpty()){
-			return TemplateType.ATOM;
-		}
-
-		//categorize each eleemnt
-		for(Element element : root_element.children()){
-			TemplateType type = classifyUsingChildren(element);
-			if(type == TemplateType.ATOM){
-				atom_cnt++;
-			}
-			else if(type == TemplateType.MOLECULE){
-				molecule_cnt++;
-			}
-			else if(type == TemplateType.ORGANISM){
-				organism_cnt++;
-			}
-			else if(type == TemplateType.TEMPLATE){
-				template_cnt++;
-			}
-		}
-
-		if(atom_cnt == 1){
-			return TemplateType.ATOM;
-		}
-		else if(atom_cnt > 1 && molecule_cnt == 0 && organism_cnt == 0 && template_cnt == 0){
-			return TemplateType.MOLECULE;
-		}
-		else if( (molecule_cnt == 1 && atom_cnt > 0 || molecule_cnt > 1 || organism_cnt > 0) && template_cnt == 0){
-			return TemplateType.ORGANISM;
-		}
-		else if(isTopLevelElement()){
-			return TemplateType.TEMPLATE;
-		}
-		return TemplateType.UNKNOWN;
-
-	}
-
-	private boolean isTopLevelElement() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
-	public static boolean testContainsElement(List<String> keys) {
-		for(String key : keys) {
-			if(key.contains("elementstate")) {
-				return true;
-			}
-		}
-		
-		return false;
-	}
-	
-	/**
-	 * 
-	 * @param src
-	 * @return
-	 */
-	public List<String> extractAllUniqueElementXpaths(String src) {
-		assert src != null;
-		
-		Map<String, String> frontier = new HashMap<>();
-		List<String> xpaths = new ArrayList<>();
-		String body_src = extractBody(src);
-		
-		Document html_doc = Jsoup.parse(body_src);
-		frontier.put("//body","");
-		while(!frontier.isEmpty()) {
-			String next_xpath = frontier.keySet().iterator().next();
-			frontier.remove(next_xpath);
-			xpaths.add(next_xpath);
-			
-			Elements elements = Xsoup.compile(next_xpath).evaluate(html_doc).getElements();
-			if(elements.size() == 0) {
-				log.warn("NO ELEMENTS WITH XPATH FOUND :: "+next_xpath);
-				continue;
-			}
-			Element element = elements.first();
-			List<Element> children = new ArrayList<Element>(element.children());
-			Map<String, Integer> xpath_cnt = new HashMap<>();
-			
-			for(Element child : children) {
-				if(isStructureTag(child.tagName())) {
-					continue;
-				}
-				String xpath = next_xpath + "/" + child.tagName();
-				
-				if(xpath_cnt.containsKey(child.tagName()) ) {
-					xpath_cnt.put(child.tagName(), xpath_cnt.get(child.tagName())+1);
-				}
-				else {
-					xpath_cnt.put(child.tagName(), 1);
-				}
-				
-				xpath = xpath + "["+xpath_cnt.get(child.tagName())+"]";
-
-				frontier.put(xpath, "");
-			}
-		}	
-		
-		return xpaths;
-	}
-
-	public static String extractBody(String src) {
-		String patternString = "<body[^\\>]*>([\\s\\S]*)<\\/body>";
-
-        Pattern pattern = Pattern.compile(patternString);
-        Matcher matcher = pattern.matcher(src);
-        if(matcher.find()) {
-        	return matcher.group();
-        }
-        return null;
-	}
-
-	public static Set<String> extractMetadata(String src) {
-		Document html_doc = Jsoup.parse(src);
-		Elements meta_tags = html_doc.getElementsByTag("meta");
-		Set<String> meta_tag_html = new HashSet<String>();
-		
-		for(Element meta_tag : meta_tags) {
-			meta_tag_html.add(meta_tag.outerHtml());
-		}
-		return meta_tag_html;
-	}
-
-	public static Set<String> extractStylesheets(String src) {
-		Document html_doc = Jsoup.parse(src);
-		Elements link_tags = html_doc.getElementsByTag("link");
-		Set<String> stylesheet_urls = new HashSet<String>();
-		
-		for(Element link_tag : link_tags) {
-			stylesheet_urls.add(link_tag.absUrl("href"));
-		}
-		return stylesheet_urls;
-	}
-
-	public static Set<String> extractScriptUrls(String src) {
-		Document html_doc = Jsoup.parse(src);
-		Elements script_tags = html_doc.getElementsByTag("script");
-		Set<String> script_urls = new HashSet<String>();
-		
-		for(Element script_tag : script_tags) {
-			String src_url = script_tag.absUrl("src");
-			if(src_url != null && !src_url.isEmpty()) {
-				script_urls.add(script_tag.absUrl("src"));
-			}
-		}
-		return script_urls;
-	}
-
-	public static Set<String> extractIconLinks(String src) {
-		Document html_doc = Jsoup.parse(src);
-		Elements icon_tags = html_doc.getElementsByTag("link");
-		Set<String> icon_urls = new HashSet<String>();
-		
-		for(Element icon_tag : icon_tags) {
-			if(icon_tag.attr("rel").contains("icon")){
-				icon_urls.add(icon_tag.absUrl("href"));
-			}
-		}
-		return icon_urls;
-	}
-
-	public String getPageSource(Browser browser, URL sanitized_url) throws MalformedURLException {
-		assert browser != null;
-		assert sanitized_url != null;
-		
-		return browser.getSource();
-	}
 	
 	public List<com.looksee.models.Element> extractElements(String page_src, URL url, List<RuleSet> rule_sets) throws IOException, XPathExpressionException {
 		return getDomElements(page_src, url, rule_sets);
@@ -4043,7 +3445,7 @@ public class BrowserService {
 		//get html doc and get root element
 		Document html_doc = Jsoup.parse(page_source);
 		Element root = html_doc.getElementsByTag("body").get(0);
-			
+		
 		//create element state from root node
 		Map<String, String> attributes = generateAttributesMapUsingJsoup(root);
 		log.warn("page source 1 :: "+page_source.length());
@@ -4123,10 +3525,5 @@ public class BrowserService {
 			}
 		}
 		return visited_elements;
-	}
-	
-	
-	private static String calculateSha256(String value) {
-		return org.apache.commons.codec.digest.DigestUtils.sha256Hex(value);
 	}
 }

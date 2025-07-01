@@ -1,4 +1,4 @@
-package com.crawlerApi.services;
+package com.looksee.services;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,13 +8,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.crawlerApi.models.Element;
-import com.crawlerApi.models.Page;
-import com.crawlerApi.models.PageState;
-import com.crawlerApi.models.audit.performance.PerformanceInsight;
-import com.crawlerApi.models.repository.PageRepository;
-import com.crawlerApi.models.repository.PageStateRepository;
-import com.crawlerApi.models.repository.PerformanceInsightRepository;
+import com.looksee.models.Element;
+import com.looksee.models.Page;
+import com.looksee.models.PageState;
+import com.looksee.models.audit.performance.PerformanceInsight;
+import com.looksee.models.repository.PageRepository;
+import com.looksee.models.repository.PageStateRepository;
+import com.looksee.models.repository.PerformanceInsightRepository;
 
 /**
  * Methods for interacting with page object

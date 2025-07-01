@@ -1,9 +1,8 @@
-package com.crawlerApi.models.dto;
+package com.looksee.models.dto;
 
+import com.looksee.models.TestUser;
+import com.looksee.models.designsystem.DesignSystem;
 import java.util.Set;
-
-import com.crawlerApi.models.TestUser;
-import com.crawlerApi.models.designsystem.DesignSystem;
 
 public class DomainSettingsDto {
 	private DesignSystem design_system;

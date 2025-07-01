@@ -1,4 +1,4 @@
-package com.crawlerApi.services;
+package com.looksee.services;
 
 
 import org.slf4j.Logger;
@@ -6,8 +6,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.crawlerApi.models.Animation;
-import com.crawlerApi.models.repository.AnimationRepository;
+import com.looksee.models.Animation;
+import com.looksee.models.repository.AnimationRepository;
 
 @Service
 public class AnimationService {

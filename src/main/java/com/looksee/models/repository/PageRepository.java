@@ -1,4 +1,4 @@
-package com.crawlerApi.models.repository;
+package com.looksee.models.repository;
 
 import java.util.List;
 import java.util.Optional;
@@ -9,10 +9,10 @@ import org.springframework.data.neo4j.repository.query.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.crawlerApi.models.Element;
-import com.crawlerApi.models.Page;
-import com.crawlerApi.models.PageState;
-import com.crawlerApi.models.audit.performance.PerformanceInsight;
+import com.looksee.models.Element;
+import com.looksee.models.Page;
+import com.looksee.models.PageState;
+import com.looksee.models.audit.performance.PerformanceInsight;
 
 /**
  * 

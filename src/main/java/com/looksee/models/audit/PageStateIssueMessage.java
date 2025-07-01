@@ -1,5 +1,7 @@
-package com.looksee.models;
+package com.looksee.models.audit;
 
+import com.looksee.models.Element;
+import com.looksee.models.PageState;
 import com.looksee.models.enums.AuditCategory;
 import com.looksee.models.enums.ObservationType;
 import com.looksee.models.enums.Priority;

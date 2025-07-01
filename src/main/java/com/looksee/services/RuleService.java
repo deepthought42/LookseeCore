@@ -1,12 +1,11 @@
-package com.crawlerApi.services;
+package com.looksee.services;
 
+import com.looksee.exceptions.RuleValueRequiredException;
+import com.looksee.models.repository.RuleRepository;
+import com.looksee.models.rules.Rule;
+import com.looksee.models.rules.RuleFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.crawlerApi.api.exception.RuleValueRequiredException;
-import com.crawlerApi.models.repository.RuleRepository;
-import com.crawlerApi.models.rules.Rule;
-import com.crawlerApi.models.rules.RuleFactory;
 
 @Service
 public class RuleService {

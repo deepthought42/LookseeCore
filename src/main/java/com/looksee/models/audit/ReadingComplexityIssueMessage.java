@@ -1,5 +1,7 @@
-package com.looksee.models;
+package com.looksee.models.audit;
 
+import com.looksee.models.Element;
+import com.looksee.models.ElementState;
 import com.looksee.models.enums.AuditCategory;
 import com.looksee.models.enums.Priority;
 import java.util.Set;

@@ -1,18 +1,15 @@
-package com.crawlerApi.models.repository;
+package com.looksee.models.repository;
 
+import com.looksee.models.Domain;
+import com.looksee.models.Element;
+import com.looksee.models.rules.Rule;
+import io.github.resilience4j.retry.annotation.Retry;
 import java.util.List;
 import java.util.Set;
-
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
-import com.crawlerApi.models.Domain;
-import com.crawlerApi.models.Element;
-import com.crawlerApi.models.rules.Rule;
-
-import io.github.resilience4j.retry.annotation.Retry;
 
 @Repository
 @Retry(name = "neoforj")

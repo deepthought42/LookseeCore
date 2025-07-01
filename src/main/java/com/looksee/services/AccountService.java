@@ -312,45 +312,8 @@ public class AccountService {
 		return account_repo.getDomainsForAccount(account_id);
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	@Autowired
-	private AccountRepository account_repo;
-	
-	@Deprecated
-	public void addDomainToAccount(Account acct, Domain domain){
-		account_repo.addDomain(domain.getId(), acct.getId());
-	}
-
 	public void addDomainToAccount(long account_id, long domain_id){
 		account_repo.addDomain(domain_id, account_id);
-	}
-
-	public Account findByEmail(String email) {
-		assert email != null;
-		assert !email.isEmpty();
-		
-		return account_repo.findByEmail(email);
 	}
 
 	public Set<DiscoveryRecord> getDiscoveryRecordsByMonth(String username, int month) {

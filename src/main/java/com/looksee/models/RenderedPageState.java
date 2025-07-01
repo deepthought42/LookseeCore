@@ -1,4 +1,4 @@
-package com.crawlerApi.models;
+package com.looksee.models;
 
 public class RenderedPageState {
 

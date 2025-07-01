@@ -1,4 +1,4 @@
-package com.crawlerApi.browsing.table;
+package com.looksee.browsing.table;
 
 import java.util.ArrayList;
 import java.util.List;

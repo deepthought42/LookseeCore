@@ -1,4 +1,4 @@
-package com.crawlerApi.models.audit.performance;
+package com.looksee.models.audit.performance;
 
 /**
  * Defines detail item for "total-byte-weight" and  in the Google PageSpeed API 

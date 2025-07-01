@@ -1,18 +1,15 @@
-package com.looksee.models;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import org.springframework.data.neo4j.core.schema.Node;
+package com.looksee.models.audit;
 
 import com.looksee.models.enums.AuditCategory;
 import com.looksee.models.enums.ColorScheme;
 import com.looksee.models.enums.ObservationType;
 import com.looksee.models.enums.Priority;
-
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import lombok.Getter;
+import org.springframework.data.neo4j.core.schema.Node;
 
 /**
  * A observation of potential error for a given color palette 

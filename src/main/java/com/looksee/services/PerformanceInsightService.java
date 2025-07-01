@@ -1,13 +1,13 @@
-package com.crawlerApi.services;
+package com.looksee.services;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.crawlerApi.models.audit.performance.PageSpeedAudit;
-import com.crawlerApi.models.audit.performance.PerformanceInsight;
-import com.crawlerApi.models.repository.PerformanceInsightRepository;
+import com.looksee.models.audit.performance.PageSpeedAudit;
+import com.looksee.models.audit.performance.PerformanceInsight;
+import com.looksee.models.repository.PerformanceInsightRepository;
 
 /**
  * Methods for interacting with {@link PerformanceInsight} object

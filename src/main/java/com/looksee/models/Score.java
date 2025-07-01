@@ -1,7 +1,7 @@
 package com.looksee.models;
 
+import com.looksee.models.audit.UXIssueMessage;
 import java.util.Set;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

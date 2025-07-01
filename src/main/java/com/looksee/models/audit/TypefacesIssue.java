@@ -1,46 +1,66 @@
-package com.crawlerApi.models.audit;
+package com.looksee.models.audit;
 
+import com.looksee.models.Element;
+import com.looksee.models.enums.AuditCategory;
+import com.looksee.models.enums.ObservationType;
+import com.looksee.models.enums.Priority;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.neo4j.core.schema.Node;
 
-import com.crawlerApi.models.Element;
-import com.crawlerApi.models.enums.AuditCategory;
-import com.crawlerApi.models.enums.ObservationType;
-import com.crawlerApi.models.enums.Priority;
-
 /**
- * A observation of potential error for a given {@link Element element} 
+ * A observation of potential error for a given {@link Element element}
  */
 @Node
-public class TypefacesIssue extends UXIssueMessage {	
+@Getter
+@Setter
+@NoArgsConstructor
+public class TypefacesIssue extends UXIssueMessage {
+
+	/**
+	 * The typefaces of the typefaces issue
+	 */
 	private List<String> typefaces = new ArrayList<>();
 	
-	public TypefacesIssue() {}
-	
+	/**
+	 * Constructs a new {@link TypefacesIssue}
+	 *
+	 * @param typefaces the typefaces of the typefaces issue
+	 * @param description the description of the typefaces issue
+	 * @param recommendation the recommendation of the typefaces issue
+	 * @param priority the priority of the typefaces issue
+	 * @param category the category of the typefaces issue
+	 * @param labels the labels of the typefaces issue
+	 * @param wcagCompliance the wcag compliance of the typefaces issue
+	 * @param pointsAwarded the points awarded of the typefaces issue
+	 * @param maxPoints the max points of the typefaces issue
+	 * @param title the title of the typefaces issue
+	 */
 	public TypefacesIssue(
-			List<String> typefaces, 
-			String description, 
-			String recommendation, 
-			Priority priority, 
-			AuditCategory category, 
-			Set<String> labels, 
-			String wcag_compliance, 
-			int points_awarded, 
-			int max_points,
+			List<String> typefaces,
+			String description,
+			String recommendation,
+			Priority priority,
+			AuditCategory category,
+			Set<String> labels,
+			String wcagCompliance,
+			int pointsAwarded,
+			int maxPoints,
 			String title) {
-		super(	priority, 
-				description, 
+		super(	priority,
+				description,
 				ObservationType.PAGE_STATE,
 				category,
-				wcag_compliance,
+				wcagCompliance,
 				labels,
 				"",
 				title,
-				points_awarded,
-				max_points,
+				pointsAwarded,
+				maxPoints,
 				recommendation);
 		
 		assert typefaces != null;
@@ -49,15 +69,12 @@ public class TypefacesIssue extends UXIssueMessage {
 		setTypefaces(typefaces);
 	}
 
-	public List<String> getTypefaces() {
-		return typefaces;
-	}
-
-
-	public void setTypefaces(List<String> typefaces) {
-		this.typefaces = typefaces;
-	}
-	
+	/**
+	 * Adds typefaces to the typefaces issue
+	 *
+	 * @param typefaces the typefaces to add to the typefaces issue
+	 * @return true if the typefaces were added, false otherwise
+	 */
 	public boolean addTypefaces(List<String> typefaces) {
 		return this.typefaces.addAll(typefaces);
 	}

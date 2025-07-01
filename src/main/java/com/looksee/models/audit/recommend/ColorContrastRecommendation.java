@@ -1,4 +1,4 @@
-package com.crawlerApi.models.audit.recommend;
+package com.looksee.models.audit.recommend;
 
 public class ColorContrastRecommendation extends Recommendation{
 	private String color1_rgb;

@@ -1,12 +1,12 @@
-package com.crawlerApi.services;
+package com.looksee.services;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.crawlerApi.models.AuditSubcategoryStat;
-import com.crawlerApi.models.repository.AuditSubcategoryStatRepository;
+import com.looksee.models.AuditSubcategoryStat;
+import com.looksee.models.repository.AuditSubcategoryStatRepository;
 
 @Service
 public class AuditSubcategoryStatService {

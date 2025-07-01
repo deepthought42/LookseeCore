@@ -1,8 +1,8 @@
-package com.crawlerApi.models.repository;
+package com.looksee.models.repository;
 
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 
-import com.crawlerApi.models.AuditSubcategoryStat;
+import com.looksee.models.AuditSubcategoryStat;
 
 public interface AuditSubcategoryStatRepository extends Neo4jRepository<AuditSubcategoryStat, Long> {
 	

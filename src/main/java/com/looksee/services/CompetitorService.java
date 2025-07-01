@@ -1,4 +1,4 @@
-package com.crawlerApi.services;
+package com.looksee.services;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
@@ -7,9 +7,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.crawlerApi.models.competitiveanalysis.Competitor;
-import com.crawlerApi.models.competitiveanalysis.brand.Brand;
-import com.crawlerApi.models.repository.CompetitorRepository;
+import com.looksee.models.competitiveanalysis.Competitor;
+import com.looksee.models.competitiveanalysis.brand.Brand;
+import com.looksee.models.repository.CompetitorRepository;
 
 /**
  * Contains business logic for interacting with and managing accounts
