@@ -1,12 +1,8 @@
 package com.looksee.utils;
 
-import com.looksee.models.Audit;
-import com.looksee.models.AuditRecord;
-import com.looksee.models.AuditScore;
 import com.looksee.models.CIEColorSpace;
 import com.looksee.models.ColorData;
 import com.looksee.models.ColorPaletteIssueMessage;
-import com.looksee.models.DesignSystem;
 import com.looksee.models.PageAuditRecord;
 import com.looksee.models.PaletteColor;
 import com.looksee.models.ReadingComplexityIssueMessage;
@@ -14,6 +10,10 @@ import com.looksee.models.Score;
 import com.looksee.models.SentenceIssueMessage;
 import com.looksee.models.StockImageIssueMessage;
 import com.looksee.models.UXIssueMessage;
+import com.looksee.models.audit.Audit;
+import com.looksee.models.audit.AuditRecord;
+import com.looksee.models.audit.AuditScore;
+import com.looksee.models.designsystem.DesignSystem;
 import com.looksee.models.enums.AuditCategory;
 import com.looksee.models.enums.AuditName;
 import com.looksee.models.enums.AuditSubcategory;

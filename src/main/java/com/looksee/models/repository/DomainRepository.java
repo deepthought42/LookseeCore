@@ -1,9 +1,6 @@
 package com.looksee.models.repository;
 
-import com.looksee.models.AuditRecord;
-import com.looksee.models.DesignSystem;
 import com.looksee.models.Domain;
-import com.looksee.models.DomainAuditRecord;
 import com.looksee.models.Element;
 import com.looksee.models.Form;
 import com.looksee.models.PageLoadAnimation;
@@ -12,6 +9,10 @@ import com.looksee.models.Test;
 import com.looksee.models.TestAction;
 import com.looksee.models.TestRecord;
 import com.looksee.models.TestUser;
+import com.looksee.models.audit.AuditRecord;
+import com.looksee.models.audit.DomainAuditRecord;
+import com.looksee.models.audit.performance.PerformanceInsight;
+import com.looksee.models.designsystem.DesignSystem;
 import com.looksee.models.journeys.Redirect;
 import io.github.resilience4j.retry.annotation.Retry;
 import java.util.List;

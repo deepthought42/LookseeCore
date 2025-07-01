@@ -1,14 +1,14 @@
 package com.looksee.models;
 
+import com.looksee.models.audit.DomainAuditRecord;
+import com.looksee.models.designsystem.DesignSystem;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import org.springframework.data.neo4j.core.schema.Relationship;
-
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.neo4j.core.schema.Relationship;
 
 /**
  * Represents a domain.

@@ -1,14 +1,13 @@
 package com.looksee.services;
 
-import com.looksee.models.Audit;
 import com.looksee.models.ElementState;
-import com.looksee.models.ElementStateIssueMessage;
 import com.looksee.models.ImageElementState;
 import com.looksee.models.PageState;
-import com.looksee.models.PageStateAudits;
 import com.looksee.models.SimpleElement;
 import com.looksee.models.SimplePage;
 import com.looksee.models.UXIssueMessage;
+import com.looksee.models.audit.ElementStateIssueMessage;
+import com.looksee.models.audit.PageStateAudits;
 import com.looksee.models.enums.AuditName;
 import com.looksee.models.enums.AuditSubcategory;
 import com.looksee.models.enums.ObservationType;
@@ -484,5 +483,27 @@ public class AuditService {
 		
 		List<Long> issue_ids = issue_messages.stream().map(x -> x.getId()).collect(Collectors.toList());
 		addAllIssues(audit_id, issue_ids);
+	}
+
+	public Audit save(Audit audit) {
+		assert audit != null;
+		
+		return audit_repo.save(audit);
+	}
+
+	public double calculateDataExtractionProgress(long audit_id) {
+//		int verified_journeys = journey_repo.findAllJourneysForDomainAudit(audit_id, JourneyStatus.VERIFIED.toString());
+		int verified_journeys = journey_repo.findAllNonStatusJourneysForDomainAudit(audit_id, JourneyStatus.CANDIDATE.toString());
+		log.warn("verified journeys = "+verified_journeys);
+
+		int candidates = journey_repo.findAllJourneysForDomainAudit(audit_id, JourneyStatus.CANDIDATE.toString());
+		log.warn("candidates :: " + candidates);
+		
+		if( (candidates+verified_journeys) == 0) {
+			return 0.01;
+		}
+		else {
+			return verified_journeys / (double)(verified_journeys+candidates);
+		}
 	}
 }

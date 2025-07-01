@@ -1,21 +1,25 @@
 package com.looksee.services;
 
 import com.looksee.models.Account;
-import com.looksee.models.Audit;
-import com.looksee.models.AuditRecord;
-import com.looksee.models.DesignSystem;
-import com.looksee.models.DomainAuditRecord;
 import com.looksee.models.Label;
-import com.looksee.models.PageAuditRecord;
 import com.looksee.models.PageState;
 import com.looksee.models.UXIssueMessage;
+import com.looksee.models.audit.Audit;
+import com.looksee.models.audit.AuditRecord;
+import com.looksee.models.audit.DomainAuditRecord;
+import com.looksee.models.audit.PageAuditRecord;
+import com.looksee.models.designsystem.DesignSystem;
+import com.looksee.models.dto.AuditRecordDto;
 import com.looksee.models.enums.AuditCategory;
 import com.looksee.models.enums.ExecutionStatus;
 import com.looksee.models.enums.JourneyStatus;
 import com.looksee.models.repository.AccountRepository;
 import com.looksee.models.repository.AuditRecordRepository;
 import com.looksee.models.repository.AuditRepository;
+import com.looksee.utils.AuditUtils;
 import io.github.resilience4j.retry.annotation.Retry;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -914,5 +918,69 @@ public class AuditRecordService {
 	 */
 	public boolean wasSinglePageAlreadyAudited(long pageAuditRecordId, long pageId) {
 		return audit_record_repo.wasSinglePageAlreadyAudited(pageAuditRecordId, pageId) != null;
+	}
+	
+	public int getNumberOfJourneysWithoutStatus(long domain_audit_id, JourneyStatus status) {
+		return audit_record_repo.getNumberOfJourneysWithoutStatus(domain_audit_id, status.toString());
+	}
+
+	/**
+	 * 
+	 * @param acct_id
+	 * @return
+	 */
+    public List<AuditRecord> findByAccountId(long acct_id) {
+		return audit_record_repo.findAuditRecordByAccountId(acct_id);
+    }
+
+	/**
+	 * Convert list of {@link AuditRecord audit_records} to list of {@link AuditDTO}
+	 * 
+	 * @param audits_records
+	 * @return
+	 */
+    public List<AuditRecordDto> buildAudits(List<AuditRecord> audits_records) {
+		List<AuditRecordDto> auditDtoList = new ArrayList<>();
+		for(AuditRecord audit_record: audits_records){
+			auditDtoList.add(buildAudit(audit_record));
+		}
+
+		return auditDtoList;
+	}
+
+	/**
+	 * Convert list of {@link AuditRecord audit_records} to list of {@link AuditDTO}
+	 * 
+	 * @param audits_records
+	 * @return
+	 */
+    public AuditRecordDto buildAudit(AuditRecord audit_record) {
+		Set<Audit> audits = new HashSet<>();
+		if(audit_record instanceof DomainAuditRecord){
+			audits = getAllAuditsForDomainAudit(audit_record.getId());
+		}
+		else if(audit_record instanceof PageAuditRecord){
+			audits = getAllAudits(audit_record.getId());
+		}
+
+		double content_score = AuditUtils.calculateScoreByCategory(audits, AuditCategory.CONTENT);
+		double info_architecture_score = AuditUtils.calculateScoreByCategory(audits, AuditCategory.INFORMATION_ARCHITECTURE);
+		double visual_design_score = AuditUtils.calculateScoreByCategory(audits, AuditCategory.AESTHETICS);
+
+		//log.warn("audits found = "+audits.size());
+		//log.warn("content score = "+content_score);
+
+		AuditRecordDto audit_dto = new AuditRecordDto(audit_record.getId(),
+													audit_record.getStatus(),
+													audit_record.getType(),
+													audit_record.getStartTime(),
+													visual_design_score,
+													content_score,
+													info_architecture_score,
+													audit_record.getCreatedAt(),
+													audit_record.getEndTime(),
+													audit_record.getUrl());
+
+		return audit_dto;
 	}
 }

@@ -1,7 +1,11 @@
 package com.looksee.models.message;
 
 import com.looksee.models.Competitor;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class CompetitorMessage extends Message {
 
 	private Competitor competitor;
@@ -11,16 +15,7 @@ public class CompetitorMessage extends Message {
 	}
 
 	public CompetitorMessage(long competitor_id, long account_id, Competitor competitor) {
-		super(competitor_id, account_id, -1);
+		super(account_id);
 		setCompetitor(competitor);
 	}
-
-	public Competitor getCompetitor() {
-		return competitor;
-	}
-
-	public void setCompetitor(Competitor competitor) {
-		this.competitor = competitor;
-	}
-
 }

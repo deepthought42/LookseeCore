@@ -1,10 +1,15 @@
 package com.looksee.services;
 
+import com.looksee.exceptions.MissingSubscriptionException;
+import com.looksee.exceptions.UnknownAccountException;
 import com.looksee.models.Account;
-import com.looksee.models.AuditRecord;
+import com.looksee.models.DiscoveryRecord;
 import com.looksee.models.Domain;
-import com.looksee.models.PageAuditRecord;
+import com.looksee.models.audit.AuditRecord;
+import com.looksee.models.audit.PageAuditRecord;
 import com.looksee.models.repository.AccountRepository;
+import java.security.Principal;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import lombok.NoArgsConstructor;
@@ -306,4 +311,75 @@ public class AccountService {
 		
 		return account_repo.getDomainsForAccount(account_id);
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	@Autowired
+	private AccountRepository account_repo;
+	
+	@Deprecated
+	public void addDomainToAccount(Account acct, Domain domain){
+		account_repo.addDomain(domain.getId(), acct.getId());
+	}
+
+	public void addDomainToAccount(long account_id, long domain_id){
+		account_repo.addDomain(domain_id, account_id);
+	}
+
+	public Account findByEmail(String email) {
+		assert email != null;
+		assert !email.isEmpty();
+		
+		return account_repo.findByEmail(email);
+	}
+
+	public Set<DiscoveryRecord> getDiscoveryRecordsByMonth(String username, int month) {
+		return account_repo.getDiscoveryRecordsByMonth(username, month);
+	}
+
+	public List<AuditRecord> findMostRecentPageAudits(long account_id, int limit) {
+		return account_repo.findMostRecentAuditsByAccount(account_id, limit);
+	}
+
+	/**
+	 * Checks that there is an account associated with the given Principal and 
+	 *  that the account has a subscription assigned
+	 * 
+	 * @param userPrincipal user {@link Principal}
+	 * @throws UnknownAccountException
+	 * @throws MissingSubscriptionException
+	 */
+    public Account retrieveAndValidateAccount(Principal userPrincipal) throws UnknownAccountException, MissingSubscriptionException {
+		String acct_id = userPrincipal.getName();
+		Account acct = findByUserId(acct_id);
+		
+		if(acct == null){
+			throw new UnknownAccountException();
+		}
+		else if(acct.getSubscriptionToken() == null){
+			throw new MissingSubscriptionException();
+		}
+
+		return acct;
+    }
 }

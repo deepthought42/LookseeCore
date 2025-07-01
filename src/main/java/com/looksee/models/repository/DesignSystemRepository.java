@@ -1,6 +1,6 @@
 package com.looksee.models.repository;
 
-import com.looksee.models.DesignSystem;
+import com.looksee.models.designsystem.DesignSystem;
 import io.github.resilience4j.retry.annotation.Retry;
 import java.util.List;
 import java.util.Optional;

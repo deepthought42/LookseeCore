@@ -1,7 +1,7 @@
 package com.looksee.models.repository;
 
-import com.looksee.models.Brand;
 import com.looksee.models.Competitor;
+import com.looksee.models.competitiveanalysis.brand.Brand;
 import io.github.resilience4j.retry.annotation.Retry;
 import java.util.List;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
