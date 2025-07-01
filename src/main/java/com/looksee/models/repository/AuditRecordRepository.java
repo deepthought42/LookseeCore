@@ -605,4 +605,11 @@ public interface AuditRecordRepository extends Neo4jRepository<AuditRecord, Long
 	 */
 	@Query("MATCH (page_audit:PageAuditRecord)-[:FOR]->(page:PageState) WHERE id(page_audit)=$page_audit_id AND id(page)=$page_id  RETURN page_audit LIMIT 1")
 	public AuditRecord wasSinglePageAlreadyAudited(@Param("page_audit_id")  long pageAuditRecordId, @Param("page_id") long pageId);
+
+	
+	@Query("MATCH (domain_audit:DomainAuditRecord)-[:CONTAINS]->(map:DomainMap) WHERE id(domain_audit)=$audit_record_id MATCH(map)-[:CONTAINS]->(journey:Journey) WHERE NOT journey.status=$status AND NOT journey.status='REVIEWING' RETURN COUNT(journey)")
+	public int getNumberOfJourneysWithoutStatus(@Param("audit_record_id") long audit_record_id, @Param("status") String status);
+
+	@Query("MATCH (acct:Account)-[:HAS]->(audit_record:AuditRecord) WHERE id(acct)=$account_id RETURN audit_record")
+    public List<AuditRecord> findAuditRecordByAccountId(@Param("account_id") long account_id);
 }

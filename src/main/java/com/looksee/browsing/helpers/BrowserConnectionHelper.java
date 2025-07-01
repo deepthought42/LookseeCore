@@ -1,17 +1,15 @@
-package com.looksee.models;
+package com.looksee.browsing.helpers;
 
+import com.looksee.models.Browser;
+import com.looksee.models.enums.BrowserEnvironment;
+import com.looksee.models.enums.BrowserType;
+import io.github.resilience4j.retry.annotation.Retry;
 import java.net.MalformedURLException;
 import java.net.URL;
-
+import lombok.NoArgsConstructor;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.looksee.models.enums.BrowserEnvironment;
-import com.looksee.models.enums.BrowserType;
-
-import io.github.resilience4j.retry.annotation.Retry;
-import lombok.NoArgsConstructor;
 
 /**
  * A helper class for creating a {@link Browser} connection

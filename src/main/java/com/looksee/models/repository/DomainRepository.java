@@ -389,4 +389,13 @@ public interface DomainRepository extends Neo4jRepository<Domain, Long> {
 	 */
 	@Query("MATCH (d:Domain{url:$url})-[]->(audit:DomainAuditRecord) RETURN audit ORDER BY audit.created_at DESC LIMIT 1")
 	public Optional<DomainAuditRecord> getMostRecentAuditRecord(@Param("url") String url);
+
+	@Query("MATCH (account:Account)-[:HAS_DOMAIN]->(d:Domain{url:$url}) MATCH (d)-[]->(p:PageState{url:$page_url}) MATCH (p)-[:HAS]->(pi:PerformanceInsight) WHERE id(account)=$account_id RETURN pi")
+	public Set<PerformanceInsight> getPerformanceInsights(@Param("account_id") long account_id, @Param("url") String url, @Param("page_url") String page_url);
+
+	@Query("MATCH (account:Account)-[:HAS_DOMAIN]->(d:Domain{url:$url}) MATCH (d)-[]->(p:PageState{url:$page_url}) MATCH (p)-[:HAS]->(pi:PerformanceInsight) WHERE id(account)=$account_id ORDER BY pi.executed_at DESC LIMIT 1")
+	public PerformanceInsight getMostRecentPerformanceInsight(@Param("account_id") long account_id, @Param("url") String url, @Param("page_url") String page_url);
+
+	@Query("MATCH (account:Account)-[:HAS]->(domain:Domain) WHERE id(account)=$account_id AND domain.url=$url RETURN domain LIMIT 1")
+    public Domain findByAccountId(@Param("account_id") long account_id, @Param("url") String url);
 }

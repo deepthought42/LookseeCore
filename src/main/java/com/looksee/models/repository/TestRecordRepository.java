@@ -1,13 +1,11 @@
 package com.looksee.models.repository;
 
+import com.looksee.models.TestRecord;
 import java.util.List;
-
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
-import com.looksee.models.TestRecord;
 
 /**
  * Repository for {@link TestRecord}s
@@ -55,5 +53,4 @@ public interface TestRecordRepository extends Neo4jRepository<TestRecord, Long> 
 	 */
 	@Query("MATCH (a:Account{user_id: $user_id})-[:HAS_DOMAIN]->(d:Domain{url:$url}) MATCH (d)-[:HAS_TEST]->(t:Test{key:$key}) MATCH (t)-[r:HAS_TEST_RECORD]->(tr:TestRecord) RETURN tr ORDER BY tr.ran_at DESC LIMIT 1")
 	public TestRecord getMostRecentRecord(@Param("key") String key, @Param("url") String url, @Param("user_id") String user_id);
-
 }

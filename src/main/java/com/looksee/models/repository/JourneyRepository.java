@@ -117,4 +117,10 @@ public interface JourneyRepository extends Neo4jRepository<Journey, Long>  {
 	 */
 	@Query("MATCH (journey:Journey) WHERE id(journey)=$journey_id SET journey.status=$status RETURN journey")
 	public Journey updateStatus(@Param("journey_id") long journey_id, @Param("status") String status);
+
+	@Query("MATCH (audit:DomainAuditRecord) WHERE id(audit)=$audit_id MATCH (audit)-[*2]->(j:Journey) WHERE j.status=$status RETURN COUNT(j)")
+	public int findAllJourneysForDomainAudit(@Param("audit_id") long audit_id, @Param("status") String status);
+
+	@Query("MATCH (audit:DomainAuditRecord) WHERE id(audit)=$audit_id MATCH (audit)-[*2]->(j:Journey) WHERE NOT j.status=$status RETURN COUNT(j)")
+	public int findAllNonStatusJourneysForDomainAudit(@Param("audit_id") long audit_id, @Param("status") String status);
 }
