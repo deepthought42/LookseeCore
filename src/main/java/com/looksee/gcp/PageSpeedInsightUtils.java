@@ -192,15 +192,15 @@ public class PageSpeedInsightUtils {
 				
 				UXIssueMessage issue_msg = new UXIssueMessage(
 						Priority.HIGH,
-						required_details, 
-						ObservationType.PAGE_STATE, 
-						AuditCategory.INFORMATION_ARCHITECTURE, 
-						"wcag compliance", 
-						new HashSet<>(), 
+						required_details,
+						ObservationType.PAGE_STATE,
+						AuditCategory.INFORMATION_ARCHITECTURE,
+						"wcag compliance",
+						new HashSet<>(),
 						"",
 						audit_record.getTitle(),
-						-1, 
-						-1, 
+						-1,
+						-1,
 						"");
 
 				ux_issues.add(issue_msg);
@@ -210,6 +210,12 @@ public class PageSpeedInsightUtils {
 		return ux_issues;
 	}
 
+	/**
+	 * Extracts all font size issues from page speed insights api as {@link UXIssueMessages}
+	 * 
+	 * @param page_speed_response {@link PagespeedApiPagespeedResponseV5}
+	 * @return list of {@link UXIssueMessage}s
+	 */
 	public static List<UXIssueMessage> extractFontSizeIssues(PagespeedApiPagespeedResponseV5 page_speed_response) {
 		List<UXIssueMessage> ux_issues = new ArrayList<UXIssueMessage>();
 		
@@ -250,6 +256,12 @@ public class PageSpeedInsightUtils {
 		return ux_issues;
 	}
 	
+	/**
+	 * Extracts all issues from page speed insights api as {@link UXIssueMessages}
+	 * 
+	 * @param page_speed_response {@link PagespeedApiPagespeedResponseV5}
+	 * @return list of {@link UXIssueMessage}s
+	 */
 	public static List<UXIssueMessage> extractIssues(PagespeedApiPagespeedResponseV5 page_speed_response) {
 		List<UXIssueMessage> ux_issues = new ArrayList<UXIssueMessage>();
 		
