@@ -115,15 +115,15 @@ public class TestCreatorService {
 		log.warn("path objects ::  "+path_objects.size());
 		String last_page_state_url = PathUtils.getLastPageStateOLD(path_objects).getUrl();
 		boolean leaves_domain = !(domain_host.trim().equals(new URL(result_url).getHost()) || result_url.contains(new URL(last_page_state_url).getHost()));
-		Test test = new Test(path_keys, path_objects, result_page, leaves_domain);
+		Test test = new Test(path_keys, path_objects, result_page, "test name(replace with generated name)", true, leaves_domain);
 
 		Test test_db = test_service.findByKey(test.getKey(), domain_host, account_id);
 		if(test_db == null){
-			test.setRunTime(crawl_time);
-			test.setLastRunTimestamp(new Date());
+			test.setRunTimeLength(crawl_time);
+			test.setLastRunTime(new Date());
 			addFormGroupsToPath(test);
 
-			TestRecord test_record = new TestRecord(test.getLastRunTimestamp(), TestStatus.UNVERIFIED, browser_name, result_page, crawl_time, test.getPathKeys());
+			TestRecord test_record = new TestRecord(test.getLastRunTime(), TestStatus.UNVERIFIED, browser_name, result_page, crawl_time, test.getPathKeys());
 			test.addRecord(test_record);
 			
 			return test;

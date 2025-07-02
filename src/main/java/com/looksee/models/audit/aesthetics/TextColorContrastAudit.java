@@ -1,11 +1,11 @@
 package com.looksee.models.audit.aesthetics;
 
+import com.looksee.models.ColorData;
 import com.looksee.models.ElementState;
 import com.looksee.models.PageState;
 import com.looksee.models.audit.Audit;
 import com.looksee.models.audit.AuditRecord;
 import com.looksee.models.audit.ColorContrastIssueMessage;
-import com.looksee.models.audit.ColorData;
 import com.looksee.models.audit.IExecutablePageStateAudit;
 import com.looksee.models.audit.UXIssueMessage;
 import com.looksee.models.audit.recommend.ColorContrastRecommendation;
@@ -481,9 +481,9 @@ public class TextColorContrastAudit implements IExecutablePageStateAudit {
 	 * @return
 	 */
 	private Set<Recommendation> generateTextContrastRecommendations(ColorData font_color,
-																	 ColorData background_color, 
-																	 double font_size, 
-																	 boolean is_bold) {
+																	ColorData background_color,
+																	double font_size,
+																	boolean is_bold) {
 		assert font_color != null;
 		assert background_color != null;
 		

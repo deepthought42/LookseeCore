@@ -1,12 +1,12 @@
 package com.looksee.models.audit.aesthetics;
 
 import com.looksee.gcp.GoogleCloudStorage;
+import com.looksee.models.ColorData;
 import com.looksee.models.ElementState;
 import com.looksee.models.PageState;
 import com.looksee.models.audit.Audit;
 import com.looksee.models.audit.AuditRecord;
 import com.looksee.models.audit.ColorContrastIssueMessage;
-import com.looksee.models.audit.ColorData;
 import com.looksee.models.audit.IExecutablePageStateAudit;
 import com.looksee.models.audit.UXIssueMessage;
 import com.looksee.models.audit.recommend.ColorContrastRecommendation;
@@ -53,6 +53,9 @@ public class NonTextColorContrastAudit implements IExecutablePageStateAudit {
 	
 	@Autowired
 	private UXIssueMessageService issue_message_service;
+
+	@Autowired
+	private GoogleCloudStorage gcp_storage;
 	
 	/**
 	 * {@inheritDoc}
@@ -115,7 +118,7 @@ public class NonTextColorContrastAudit implements IExecutablePageStateAudit {
 	}
 	
 	public Color getPixelColor(String image_url, int x, int y) throws IOException {
-		BufferedImage image = GoogleCloudStorage.getImage(image_url);
+		BufferedImage image = gcp_storage.getImage(image_url);
 		return new Color(image.getRGB(x, y));
 	}
 
@@ -313,18 +316,18 @@ public class NonTextColorContrastAudit implements IExecutablePageStateAudit {
 			*/
 		}
 		
-		String description = "Color contrast of text";		
+		String description = "Color contrast of text";
 		Audit audit = new Audit(AuditCategory.AESTHETICS,
-								 AuditSubcategory.COLOR_MANAGEMENT,
-								 AuditName.NON_TEXT_BACKGROUND_CONTRAST,
-								 points_earned,
-								 new HashSet<>(),
-								 AuditLevel.PAGE,
-								 max_points,
-								 page_state.getUrl(),
-								 why_it_matters,
-								 description,
-								 true);
+								AuditSubcategory.COLOR_MANAGEMENT,
+								AuditName.NON_TEXT_BACKGROUND_CONTRAST,
+								points_earned,
+								new HashSet<>(),
+								AuditLevel.PAGE,
+								max_points,
+								page_state.getUrl(),
+								why_it_matters,
+								description,
+								true);
 
 		audit_service.save(audit);
 		audit_service.addAllIssues(audit.getId(), issue_messages);
@@ -369,7 +372,7 @@ public class NonTextColorContrastAudit implements IExecutablePageStateAudit {
 	 * @return
 	 */
 	private Set<Recommendation> generateNonTextContrastRecommendations(ElementState element,
-																	 ColorData background_color) {
+																		ColorData background_color) {
 		assert element != null;
 		assert background_color != null;
 		
@@ -387,8 +390,8 @@ public class NonTextColorContrastAudit implements IExecutablePageStateAudit {
 		
 		
 		//generate color suggestions with different text color shades (background doesn't change)
-		Set<ColorContrastRecommendation> recommended_font_color = ColorUtils.findCompliantElementColors(element, 
-																										background_color, 
+		Set<ColorContrastRecommendation> recommended_font_color = ColorUtils.findCompliantElementColors(element,
+																										background_color,
 																										is_dark_theme);
 		recommendations.addAll( recommended_font_color);
 		

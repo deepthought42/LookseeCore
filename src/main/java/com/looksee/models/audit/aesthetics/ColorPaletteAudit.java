@@ -1,9 +1,9 @@
 package com.looksee.models.audit.aesthetics;
 
+import com.looksee.models.ColorData;
 import com.looksee.models.PageState;
 import com.looksee.models.audit.Audit;
 import com.looksee.models.audit.AuditRecord;
-import com.looksee.models.audit.ColorData;
 import com.looksee.models.audit.ColorPaletteUtils;
 import com.looksee.models.audit.IExecutablePageStateAudit;
 import com.looksee.models.audit.Score;
@@ -92,7 +92,7 @@ public class ColorPaletteAudit implements IExecutablePageStateAudit {
 		}
 		*/
 		
-		//List<PaletteColor> palette_colors = ColorPaletteUtils.extractPalette(colors);		
+		//List<PaletteColor> palette_colors = ColorPaletteUtils.extractPalette(colors);
 		
 		List<ColorData> colors = new ArrayList<ColorData>();
 		for(String color : audit_record.getColors()) {

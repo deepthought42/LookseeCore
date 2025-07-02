@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -20,7 +19,6 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
 public class PageAuditDto {
 	private long id;
@@ -117,19 +115,19 @@ public class PageAuditDto {
 	 * 
 	 */
 	public PageAuditDto(long id,
-					   ExecutionStatus status,
-					   AuditLevel level,
-					   LocalDateTime startTime,
-					   double aestheticAuditProgress,
-					   double aestheticScore,
-					   double contentAuditScore,
-					   double contentAuditProgress,
-					   double infoArchScore,
-					   double infoArchAuditProgress,
-					   double dataExtractionProgress,
-					   LocalDateTime created_at,
-					   LocalDateTime endTime,
-					   String url
+						ExecutionStatus status,
+						AuditLevel level,
+						LocalDateTime startTime,
+						double aestheticAuditProgress,
+						double aestheticScore,
+						double contentAuditScore,
+						double contentAuditProgress,
+						double infoArchScore,
+						double infoArchAuditProgress,
+						double dataExtractionProgress,
+						LocalDateTime created_at,
+						LocalDateTime endTime,
+						String url
 	) {
 		setId(id);
 		setStatus(status);
@@ -156,7 +154,7 @@ public class PageAuditDto {
 
 	@Override
 	public String toString() {
-		return this.getId()+", "+this.getUrl()+", "+this.getStatus()+", "+this.getStatusMessage();
+		return this.getId()+", "+this.getUrl()+", "+this.getStatus()+", "+this.getMessage();
 	}
 	
 	public boolean isComplete() {

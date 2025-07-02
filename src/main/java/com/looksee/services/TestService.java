@@ -1,21 +1,7 @@
 package com.looksee.services;
 
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import org.openqa.grid.common.exception.GridException;
-import org.openqa.selenium.WebDriverException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import com.looksee.api.exception.PagesAreNotMatchingException;
-import com.looksee.helpers.BrowserConnectionHelper;
+import com.looksee.browsing.helpers.BrowserConnectionHelper;
+import com.looksee.exceptions.PagesAreNotMatchingException;
 import com.looksee.models.ActionOLD;
 import com.looksee.models.Animation;
 import com.looksee.models.Browser;
@@ -36,6 +22,18 @@ import com.looksee.models.repository.GroupRepository;
 import com.looksee.models.repository.PageStateRepository;
 import com.looksee.models.repository.TestRepository;
 import com.looksee.utils.PathUtils;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import org.openqa.grid.common.exception.GridException;
+import org.openqa.selenium.WebDriverException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 @Component
 public class TestService {

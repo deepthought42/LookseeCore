@@ -1,21 +1,9 @@
 package com.looksee.models.audit;
 
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.google.cloud.language.v1.Sentence;
 import com.looksee.gcp.CloudNLPUtils;
 import com.looksee.models.ElementState;
 import com.looksee.models.PageState;
-import com.looksee.models.audit.recommend.Recommendation;
 import com.looksee.models.designsystem.DesignSystem;
 import com.looksee.models.enums.AuditCategory;
 import com.looksee.models.enums.AuditLevel;
@@ -26,6 +14,13 @@ import com.looksee.services.AuditService;
 import com.looksee.services.PageStateService;
 import com.looksee.services.UXIssueMessageService;
 import com.looksee.utils.BrowserUtils;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * Responsible for executing an audit on the hyperlinks on a page for the information architecture audit category
@@ -52,11 +47,7 @@ public class ParagraphingAudit implements IExecutablePageStateAudit {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * Scores links on a page based on if the link has an href value present, the url format is valid and the 
-	 *   url goes to a location that doesn't produce a 4xx error 
-	 *   
-	 * @throws MalformedURLException 
-	 * @throws URISyntaxException 
+	 * Scores paragraphs on a page based on if the paragraphs are too long
 	 */
 	@Override
 	public Audit execute(PageState page_state, AuditRecord audit_record, DesignSystem design_system) {

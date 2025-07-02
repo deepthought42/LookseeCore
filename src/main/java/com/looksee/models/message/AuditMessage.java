@@ -1,7 +1,6 @@
 package com.looksee.models.message;
 
-import com.looksee.models.Audit;
-
+import com.looksee.models.audit.Audit;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,9 +27,9 @@ public class AuditMessage extends Message {
 	 * @param page_audit_record_id The ID of the page audit record
 	 */
 	public AuditMessage(Audit audit,
-						 double audit_progress,
-						 long account_id, 
-						 long page_audit_record_id)
+						double audit_progress,
+						long account_id,
+						long page_audit_record_id)
 	{
 		super(account_id);
 		setAudit(audit);
@@ -45,8 +44,8 @@ public class AuditMessage extends Message {
 	 */
 	public AuditMessage clone(){
 		return new AuditMessage(audit.clone(),
-								  getAuditProgress(),
-								  getAccountId(),
-								  getPageAuditRecordId());
+								getAuditProgress(),
+								getAccountId(),
+								getPageAuditRecordId());
 	}
 }

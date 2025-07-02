@@ -1,19 +1,5 @@
 package com.looksee.models.audit.informationarchitecture;
 
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.util.HashSet;
-import java.util.Set;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.looksee.models.PageState;
 import com.looksee.models.audit.Audit;
 import com.looksee.models.audit.AuditRecord;
@@ -31,8 +17,17 @@ import com.looksee.models.enums.Priority;
 import com.looksee.services.AuditService;
 import com.looksee.services.UXIssueMessageService;
 import com.looksee.utils.ContentUtils;
-
 import io.whelk.flesch.kincaid.ReadabilityCalculator;
+import java.util.HashSet;
+import java.util.Set;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 
 /**
@@ -52,10 +47,8 @@ public class MetadataAudit implements IExecutablePageStateAudit {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * Identifies colors used on page, the color scheme type used, and the ultimately the score for how the colors used conform to scheme
-	 *  
-	 * @throws MalformedURLException 
-	 * @throws URISyntaxException 
+	 * Identifies metadata used on page, the metadata scheme type used, and the
+	 * ultimately the score for how the metadata used conform to scheme
 	 */
 	@Override
 	public Audit execute(PageState page_state, AuditRecord audit_record, DesignSystem design_system) {

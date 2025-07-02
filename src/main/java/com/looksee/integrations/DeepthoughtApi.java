@@ -7,12 +7,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
+import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.entity.mime.MultipartEntityBuilder;
-import org.apache.http.HttpEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.core5.http.HttpEntity;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -31,7 +31,7 @@ public class DeepthoughtApi {
         
 	  	CloseableHttpClient client = HttpClients.createDefault();
 	    HttpPost httpPost = new HttpPost("http://198.211.117.122:9080/rl/predict");
-	 
+
 	    MultipartEntityBuilder builder = MultipartEntityBuilder.create();
 	    builder.addTextBody("json_object", form_json);
 	    builder.addTextBody("input_vocab_label", "html");
@@ -43,11 +43,11 @@ public class DeepthoughtApi {
 
 	    CloseableHttpResponse response = client.execute(httpPost);
 
-	  	log.warn("Recieved status code from RL :: "+response.getStatusLine().getStatusCode());
-	  	log.warn("REPSONE ENTITY CONTENT ::   " +response.getEntity().getContent().toString());
-	  	int status = response.getStatusLine().getStatusCode();
-	  	
-  		String rl_response = "";
+		log.warn("Recieved status code from RL :: "+response.getCode());
+		log.warn("REPSONE ENTITY CONTENT ::   " +response.getEntity().getContent().toString());
+		int status = response.getCode();
+		
+		String rl_response = "";
         switch (status) {
             case 200:
             case 201:
@@ -60,7 +60,7 @@ public class DeepthoughtApi {
                 }
                 br.close();
                 rl_response = sb.toString();
-                log.info("Response received from RL system :: "+rl_response);	
+                log.info("Response received from RL system :: "+rl_response);
                 break;
             case 500:
             	return;
@@ -116,9 +116,9 @@ public class DeepthoughtApi {
 
 	    CloseableHttpResponse response = client.execute(httpPost);
 
-	  	log.info("Recieved status code from RL :: "+response.getStatusLine().getStatusCode());
-	  	log.info("REPSONE ENTITY CONTENT ::   " +response.getEntity().getContent().toString());
-	  	int status = response.getStatusLine().getStatusCode();
+		log.info("Recieved status code from RL :: "+response.getCode());
+		log.info("REPSONE ENTITY CONTENT ::   " +response.getEntity().getContent().toString());
+		int status = response.getCode();
 	  	
   		String rl_response = "";
         switch (status) {

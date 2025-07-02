@@ -19,8 +19,6 @@ import com.looksee.models.enums.Priority;
 import com.looksee.services.PageStateService;
 import com.looksee.services.UXIssueMessageService;
 import com.looksee.utils.BrowserUtils;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -59,13 +57,13 @@ public class TypefacesAudit implements IExecutablePageStateAudit {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * Identifies colors used on page, the color scheme type used, and the ultimately the score for how the colors used conform to scheme
-	 *  
-	 * @throws MalformedURLException 
-	 * @throws URISyntaxException 
+	 * Identifies typefaces used on page, the typeface scheme type used, and the
+	 * ultimately the score for how the typefaces used conform to scheme
 	 */
 	@Override
-	public Audit execute(PageState page_state, AuditRecord audit_record, DesignSystem design_system) {
+	public Audit execute(PageState page_state,
+						AuditRecord audit_record,
+						DesignSystem design_system) {
 		assert page_state != null;
 		
 		List<String> font_families = new ArrayList<>();
@@ -149,7 +147,7 @@ public class TypefacesAudit implements IExecutablePageStateAudit {
 														1, "");
 			issue_messages.add(issue_message_service.save(observation));
 		}
-		total_possible_points++;		
+		total_possible_points++;
 		
 		
 		//SCORE TYPEFACE SEQUENCE CONSISTENCY - TYPEFACES SHOULD ALWAYS APPEAR WITH THE SAME TYPEFACES.

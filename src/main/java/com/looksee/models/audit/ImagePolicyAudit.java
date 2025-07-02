@@ -1,16 +1,5 @@
 package com.looksee.models.audit;
 
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.looksee.models.ElementState;
 import com.looksee.models.ImageElementState;
 import com.looksee.models.PageState;
@@ -24,6 +13,15 @@ import com.looksee.services.AuditService;
 import com.looksee.services.PageStateService;
 import com.looksee.services.UXIssueMessageService;
 import com.looksee.utils.BrowserUtils;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * Responsible for executing an audit on the hyperlinks on a page for the information architecture audit category
@@ -67,16 +65,16 @@ public class ImagePolicyAudit implements IExecutablePageStateAudit {
 		Score image_policy_score = calculateImagePolicyViolationScore(element_list, design_system);
 		
 		Audit audit = new Audit(AuditCategory.CONTENT,
-								 AuditSubcategory.IMAGERY, 
-								 AuditName.IMAGE_POLICY, 
-								 image_policy_score.getPointsAchieved(), 
-								 new HashSet<>(), 
-								 AuditLevel.PAGE, 
-								 image_policy_score.getMaxPossiblePoints(), 
-								 page_state.getUrl(),
-								 why_it_matters, 
-								 description,
-								 false); 
+								AuditSubcategory.IMAGERY,
+								AuditName.IMAGE_POLICY,
+								image_policy_score.getPointsAchieved(),
+								new HashSet<>(),
+								AuditLevel.PAGE,
+								image_policy_score.getMaxPossiblePoints(),
+								page_state.getUrl(),
+								why_it_matters,
+								description,
+								false);
 		
 		audit_service.save(audit);
 		audit_service.addAllIssues(audit.getId(), image_policy_score.getIssueMessages());

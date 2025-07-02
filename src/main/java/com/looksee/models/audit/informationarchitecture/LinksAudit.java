@@ -1,25 +1,5 @@
 package com.looksee.models.audit.informationarchitecture;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.imageio.ImageIO;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.looksee.gcp.CloudVisionUtils;
 import com.looksee.models.ElementState;
 import com.looksee.models.PageState;
@@ -38,6 +18,22 @@ import com.looksee.services.AuditService;
 import com.looksee.services.PageStateService;
 import com.looksee.services.UXIssueMessageService;
 import com.looksee.utils.BrowserUtils;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import javax.imageio.ImageIO;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * Responsible for executing an audit on the hyperlinks on a page for the information architecture audit category
@@ -72,13 +68,9 @@ public class LinksAudit implements IExecutablePageStateAudit {
 
 	
 	/**
-	 * {@inheritDoc}
-	 * 
-	 * Scores links on a page based on if the link has an href value present, the url format is valid and the 
-	 *   url goes to a location that doesn't produce a 4xx error 
-	 *   
-	 * @throws MalformedURLException 
-	 * @throws URISyntaxException 
+	 * Scores links on a page based on if the link has an href value present,
+	 * the url format is valid and the url goes to a location that doesn't
+	 * produce a 4xx error
 	 */
 	@Override
 	public Audit execute(PageState page_state, AuditRecord audit_record, DesignSystem design_system) {
@@ -311,7 +303,7 @@ public class LinksAudit implements IExecutablePageStateAudit {
 			}
 
 			//Does link have a valid URL? yes(1) / No(0)
-			try {				
+			try {
 				if(BrowserUtils.isJavascript(href)) {
 					String recommendation = "Links should have a valid URL in them. We suggest avoiding the use of the javascript protocol, expecially if you are going to use it to crete a non working link";
 					String description = "This link has the href value set to 'javascript:void(0)', which causes the link to appear to users as if it doesn't work.";
@@ -342,7 +334,7 @@ public class LinksAudit implements IExecutablePageStateAudit {
 						ElementStateIssueMessage issue_message = new ElementStateIssueMessage(
 																		Priority.NONE,
 																		description,
-																		recommendation, 
+																		recommendation,
 																		null,
 																		AuditCategory.INFORMATION_ARCHITECTURE,
 																		labels,
@@ -477,7 +469,7 @@ public class LinksAudit implements IExecutablePageStateAudit {
 				// and in these scenarios recommend making the parent tag a link instead of including multiple link tags
 				// NOTE 2: This is an issue for blind people and others that rely on screen readers
 				// NOTE 3: Links with image tags within then should have the alt-text extracted and reviewed.
-				 
+				
 				boolean element_includes_text = false;
 	
 				//send img src to google for text extraction
@@ -504,7 +496,7 @@ public class LinksAudit implements IExecutablePageStateAudit {
 					e.printStackTrace();
 				}
 				
-				 
+				
 				if(!element_includes_text) {
 					String recommendation = "For best usability make sure links include text. You can assign text to a link by entering text within the link tag or by using an image with text";
 					String description = "Link doesn't contain any text";
@@ -525,30 +517,30 @@ public class LinksAudit implements IExecutablePageStateAudit {
 					 //does element use image as links?
 					issue_message = (ElementStateIssueMessage) issue_message_service.save(issue_message);
 					issue_message_service.addElement(issue_message.getId(), link.getId());
-					issue_messages.add(issue_message);				 
-				 }
-				 else {
-					 String recommendation = "";
-					 String description = "Link contains text and is setup correctly. Well done!";
-					 String title = "Link is setup correctly and considered accessible";
+					issue_messages.add(issue_message);
+				}
+				else {
+					String recommendation = "";
+					String description = "Link contains text and is setup correctly. Well done!";
+					String title = "Link is setup correctly and considered accessible";
 	
-					 ElementStateIssueMessage issue_message = new ElementStateIssueMessage(Priority.HIGH,
-																							description, 
-																							recommendation, 
+					ElementStateIssueMessage issue_message = new ElementStateIssueMessage(Priority.HIGH,
+																							description,
+																							recommendation,
 																							null,
 																							AuditCategory.INFORMATION_ARCHITECTURE,
 																							labels,
 																							ada_compliance,
-																							title, 
+																							title,
 																							4,
 																							4);
 	
 					issue_message = (ElementStateIssueMessage) issue_message_service.save(issue_message);
 					issue_message_service.addElement(issue_message.getId(), link.getId());
 					issue_messages.add(issue_message);
-				 }
+				}
 			}
-			 
+			
 			//TODO : Does link have a hover styling? yes(1) / No(0)
 			
 			//TODO : Is link label relevant to destination url or content? yes(1) / No(0)
@@ -586,7 +578,7 @@ public class LinksAudit implements IExecutablePageStateAudit {
 		int max_points = 0;
 		for(UXIssueMessage issue_msg : issue_messages) {
 			points_earned += issue_msg.getPoints();
-			max_points += issue_msg.getMaxPoints();		   
+			max_points += issue_msg.getMaxPoints();
 /*
 			if(issue_msg.getScore() < 90 && issue_msg instanceof ElementStateIssueMessage) {
 				ElementStateIssueMessage element_issue_msg = (ElementStateIssueMessage)issue_msg;
@@ -596,7 +588,7 @@ public class LinksAudit implements IExecutablePageStateAudit {
 					continue;
 				}
 				
-				if(good_examples.size() > 1) {					
+				if(good_examples.size() > 1) {
 					Random random = new Random();
 					ElementState good_example = good_examples.get(random.nextInt(good_examples.size()-1));
 					element_issue_msg.setGoodExample(good_example);
@@ -611,16 +603,16 @@ public class LinksAudit implements IExecutablePageStateAudit {
 		}
 		
 		Audit audit = new Audit(AuditCategory.INFORMATION_ARCHITECTURE,
-								 AuditSubcategory.NAVIGATION,
-								 AuditName.LINKS,
-								 points_earned,
-								 new HashSet<>(),
-								 AuditLevel.PAGE,
-								 max_points,
-								 page_state.getUrl(),
-								 why_it_matters, 
-								 description,
-								 true); 
+								AuditSubcategory.NAVIGATION,
+								AuditName.LINKS,
+								points_earned,
+								new HashSet<>(),
+								AuditLevel.PAGE,
+								max_points,
+								page_state.getUrl(),
+								why_it_matters,
+								description,
+								true);
 		
 		audit_service.save(audit);
 		audit_service.addAllIssues(audit.getId(), issue_messages);

@@ -1,16 +1,5 @@
 package com.looksee.models.audit;
 
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.looksee.models.ElementState;
 import com.looksee.models.ImageElementState;
 import com.looksee.models.PageState;
@@ -23,6 +12,13 @@ import com.looksee.models.enums.Priority;
 import com.looksee.services.AuditService;
 import com.looksee.services.UXIssueMessageService;
 import com.looksee.utils.BrowserUtils;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * Responsible for executing an audit on the hyperlinks on a page for the information architecture audit category
@@ -45,13 +41,12 @@ public class ImageAudit implements IExecutablePageStateAudit {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * Scores links on a page based on if the link has an href value present, the url format is valid and the 
-	 *   url goes to a location that doesn't produce a 4xx error 
-	 * @throws MalformedURLException 
-	 * @throws URISyntaxException 
+	 * Scores images on a page based on if the image is unique to the page
 	 */
 	@Override
-	public Audit execute(PageState page_state, AuditRecord audit_record, DesignSystem design_system) {
+	public Audit execute(PageState page_state,
+						AuditRecord audit_record,
+						DesignSystem design_system) {
 		assert page_state != null;
 		
 		//get all elements that are text containers
@@ -64,17 +59,17 @@ public class ImageAudit implements IExecutablePageStateAudit {
 		String description = "";
 
 		Audit audit = new Audit(AuditCategory.CONTENT,
-								 AuditSubcategory.IMAGERY, 
-								 AuditName.IMAGE_COPYRIGHT, 
-								 copyright_score.getPointsAchieved(), 
-								 new HashSet<>(), 
-								 AuditLevel.PAGE, 
-								 copyright_score.getMaxPossiblePoints(), 
-								 page_state.getUrl(),
-								 why_it_matters, 
-								 description,
-								 false); 
-						 
+								AuditSubcategory.IMAGERY,
+								AuditName.IMAGE_COPYRIGHT,
+								copyright_score.getPointsAchieved(),
+								new HashSet<>(),
+								AuditLevel.PAGE,
+								copyright_score.getMaxPossiblePoints(),
+								page_state.getUrl(),
+								why_it_matters,
+								description,
+								false);
+						
 		audit_service.save(audit);
 		audit_service.addAllIssues(audit.getId(), copyright_score.getIssueMessages());
 		return audit;
@@ -82,12 +77,11 @@ public class ImageAudit implements IExecutablePageStateAudit {
 
 
 	/**
-	 * Reviews image for potential copyright infringement / lack of uniqueness by checking if other sites have 
-	 * 		the exact same image
+	 * Reviews image for potential copyright infringement / lack of uniqueness
+	 * by checking if other sites have the exact same image
 	 * 
-	 * @param sentences
-	 * @param element
-	 * @return
+	 * @param elements list of image elements
+	 * @return score for copyright infringement / lack of uniqueness
 	 */
 	public Score calculateCopyrightScore(List<ImageElementState> elements) {
 		int points_earned = 0;
@@ -153,6 +147,6 @@ public class ImageAudit implements IExecutablePageStateAudit {
 				issue_messages.add(issue_message);
 			}
 		}
-		return new Score(points_earned, max_points, issue_messages);					
+		return new Score(points_earned, max_points, issue_messages);
 	}
 }

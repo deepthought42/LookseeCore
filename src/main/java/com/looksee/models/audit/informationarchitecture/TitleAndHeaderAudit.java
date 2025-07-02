@@ -17,8 +17,6 @@ import com.looksee.services.AuditService;
 import com.looksee.services.UXIssueMessageService;
 import com.looksee.utils.BrowserUtils;
 import com.looksee.utils.ElementStateUtils;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -50,13 +48,14 @@ public class TitleAndHeaderAudit implements IExecutablePageStateAudit {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * Identifies colors used on page, the color scheme type used, and the ultimately the score for how the colors used conform to scheme
-	 *  
-	 * @throws MalformedURLException 
-	 * @throws URISyntaxException 
+	 * Identifies title and header used on page, the title and header scheme
+	 * type used, and the ultimately the score for how the title and header
+	 * used conform to scheme
 	 */
 	@Override
-	public Audit execute(PageState page_state, AuditRecord audit_record, DesignSystem design_system) {
+	public Audit execute(PageState page_state,
+						AuditRecord audit_record,
+						DesignSystem design_system) {
 		assert page_state != null;
 
 		Set<UXIssueMessage> issue_messages = new HashSet<>();
@@ -96,16 +95,16 @@ public class TitleAndHeaderAudit implements IExecutablePageStateAudit {
 
 		//page_state = page_state_service.findById(page_state.getId()).get();
 		Audit audit = new Audit(AuditCategory.INFORMATION_ARCHITECTURE,
-								 AuditSubcategory.SEO,
-								 AuditName.TITLES,
-								 points_earned,
-								 new HashSet<>(),
-								 AuditLevel.PAGE,
-								 max_points,
-								 page_state.getUrl(),
-								 why_it_matters, 
-								 description, 
-								 true);
+								AuditSubcategory.SEO,
+								AuditName.TITLES,
+								points_earned,
+								new HashSet<>(),
+								AuditLevel.PAGE,
+								max_points,
+								page_state.getUrl(),
+								why_it_matters,
+								description,
+								true);
 		
 		audit_service.save(audit);
 		audit_service.addAllIssues(audit.getId(), issue_messages);
@@ -137,7 +136,7 @@ public class TitleAndHeaderAudit implements IExecutablePageStateAudit {
 		Score text_block_header_score = scoreTextElementHeaders(page_state);
 		points_achieved += text_block_header_score.getPointsAchieved();
 		max_points += text_block_header_score.getMaxPossiblePoints();
-		issue_messages.addAll(text_block_header_score.getIssueMessages());	
+		issue_messages.addAll(text_block_header_score.getIssueMessages());
 		
 		return new Score(points_achieved, max_points, issue_messages);
 	}

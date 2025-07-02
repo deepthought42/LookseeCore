@@ -1,20 +1,5 @@
 package com.looksee.models.audit.content;
 
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.looksee.models.ElementState;
 import com.looksee.models.PageState;
 import com.looksee.models.audit.Audit;
@@ -31,6 +16,17 @@ import com.looksee.models.enums.Priority;
 import com.looksee.services.AuditService;
 import com.looksee.services.PageStateService;
 import com.looksee.services.UXIssueMessageService;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * Responsible for executing an audit on the images on a page to determine adherence to alternate text best practices 
@@ -56,15 +52,16 @@ public class ImageAltTextAudit implements IExecutablePageStateAudit {
 
 	
 	/**
-	 * {@inheritDoc}
+	 * Scores images on a page based on if the image has an "alt" value present,
+	 * format is valid and the url goes to a location that doesn't produce a
+	 * 4xx error
 	 * 
-	 * Scores images on a page based on if the image has an "alt" value present, format is valid and the 
-	 *   url goes to a location that doesn't produce a 4xx error 
-	 * @throws MalformedURLException 
-	 * @throws URISyntaxException 
+	 * @param 
 	 */
 	@Override
-	public Audit execute(PageState page_state, AuditRecord audit_record, DesignSystem design_system) { 
+	public Audit execute(PageState page_state,
+						AuditRecord audit_record,
+						DesignSystem design_system) {
 		assert page_state != null;
 		
 		Set<UXIssueMessage> issue_messages = new HashSet<>();

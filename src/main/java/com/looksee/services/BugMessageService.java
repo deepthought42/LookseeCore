@@ -1,10 +1,9 @@
 package com.looksee.services;
 
+import com.looksee.models.message.BugMessage;
+import com.looksee.models.repository.BugMessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.looksee.models.audit.performance.BugMessage;
-import com.looksee.models.repository.BugMessageRepository;
 
 @Service
 public class BugMessageService {

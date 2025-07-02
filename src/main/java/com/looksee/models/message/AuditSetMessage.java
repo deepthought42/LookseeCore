@@ -1,7 +1,7 @@
 package com.looksee.models.message;
 
-import com.looksee.models.Audit;
 import com.looksee.models.PageState;
+import com.looksee.models.audit.Audit;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;

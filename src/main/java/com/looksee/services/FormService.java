@@ -1,20 +1,18 @@
 package com.looksee.services;
 
-import java.util.Optional;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.looksee.models.Domain;
 import com.looksee.models.Form;
 import com.looksee.models.PageState;
-import com.looksee.models.audit.performance.BugMessage;
+import com.looksee.models.message.BugMessage;
 import com.looksee.models.repository.BugMessageRepository;
 import com.looksee.models.repository.ElementStateRepository;
 import com.looksee.models.repository.FormRepository;
 import com.looksee.models.repository.PageStateRepository;
+import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class FormService {

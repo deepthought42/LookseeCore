@@ -1,10 +1,10 @@
 package com.looksee.services;
 
+import com.looksee.models.dto.UXIssueReportDto;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
-
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.IndexedColors;
@@ -13,12 +13,10 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import com.looksee.models.UXIssueReportDto;
-
 public class ReportService {
 
-	public static XSSFWorkbook generateExcelSpreadsheet( 
-			List<UXIssueReportDto> audit_messages, 
+	public static XSSFWorkbook generateExcelSpreadsheet(
+			List<UXIssueReportDto> audit_messages,
 			URL url
 	) throws FileNotFoundException, IOException {
 		assert audit_messages != null;
@@ -37,7 +35,9 @@ public class ReportService {
 
         Row header_row = sheet.createRow(rowCount);
         header_row.setRowStyle(header_cell_style);
-        //write object to cells in order of category, issue, why it matters, recommendations, ada compliance, and priority   
+
+        //write object to cells in order of category, issue, why it matters,
+        //recommendations, ada compliance, and priority
         Cell category_header_cell = header_row.createCell(0);
         category_header_cell.setCellValue("Category");
         
@@ -169,7 +169,8 @@ public class ReportService {
             Cell url_cell = row.createCell(0);
             url_cell.setCellValue(msg.getPageUrl());
             
-            //write object to cells in order of category, issue, why it matters, recommendations, ada compliance, and priority
+            //write object to cells in order of category, issue, why it matters,
+            //recommendations, ada compliance, and priority
             Cell category_cell = row.createCell(1);
             category_cell.setCellValue(msg.getCategory().toString());
             

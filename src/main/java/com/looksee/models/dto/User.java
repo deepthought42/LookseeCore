@@ -1,12 +1,11 @@
 package com.looksee.models.dto;
 
-import com.looksee.models.LookseeObject;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class User extends LookseeObject{
+public class User{
 	private String email;
 	private String name;
 	private String id;
