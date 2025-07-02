@@ -22,20 +22,23 @@ import java.util.Map;
 import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
-
+@Component
 public class PageSpeedInsightUtils {
 	private static Logger log = LoggerFactory.getLogger(PageSpeedInsightUtils.class.getName());
 
-	private final static String API_KEY = "AIzaSyATt22wFoH6NNg8LMclmhsCvN7SltM0n3g";
+	@Value("${gcp.api.key}")
+	private static String API_KEY;
 
 	/**
 	 * Retrieves Google PageSpeed Insights result from their API
 	 * 
 	 * @param url
 	 * 
-	 * @throws IOException
-	 * @throws GeneralSecurityException
+	 * @throws IOException if an I/O error occurs
+	 * @throws GeneralSecurityException if a security error occurs
 	 * 
 	 * @pre url != null
 	 * @pre !url.isEmpty()
@@ -66,7 +69,7 @@ public class PageSpeedInsightUtils {
 	 * Extracts all accessibility issues from page speed insights api as {@link UXIssueMessages}
 	 * 
 	 * @param page_speed_response
-	 * @return
+	 * @return list of {@link UXIssueMessage}s
 	 */
 	public static List<UXIssueMessage> extractAccessibilityIssues(
 			PagespeedApiPagespeedResponseV5 page_speed_response
@@ -114,10 +117,11 @@ public class PageSpeedInsightUtils {
 	}
 	
 	/**
+	 * Extracts all accessibility issues from page speed insights api as {@link UXIssueMessages}
 	 * 
-	 * @param details
+	 * @param audit_record {@link LighthouseAuditResultV5}
 	 * 
-	 * @return
+	 * @return list of {@link UXIssueMessage}s
 	 * 
 	 * @pre details != null;
 	 */
@@ -274,15 +278,15 @@ public class PageSpeedInsightUtils {
     	
 		UXIssueMessage issue_msg = new UXIssueMessage(
 											Priority.HIGH,
-											audit_record.getDescription(), 
-											ObservationType.PAGE_STATE, 
-											AuditCategory.INFORMATION_ARCHITECTURE, 
-											"wcag compliance", 
-											new HashSet<>(), 
+											audit_record.getDescription(),
+											ObservationType.PAGE_STATE,
+											AuditCategory.INFORMATION_ARCHITECTURE,
+											"wcag compliance",
+											new HashSet<>(),
 											audit_record.getExplanation(),
 											audit_record.getTitle(),
-											-1, 
-											-1, 
+											-1,
+											-1,
 											"");
 				
 		ux_issues.add(issue_msg);
