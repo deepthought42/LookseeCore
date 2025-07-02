@@ -233,9 +233,9 @@ public class TypefacesAudit implements IExecutablePageStateAudit {
 				String title = "Text rendered with a primary typeface";
 
 				ElementStateIssueMessage issue_message = new ElementStateIssueMessage(
-																	Priority.MEDIUM, 
-																	description, 
-																	recommendation, 
+																	Priority.MEDIUM,
+																	description,
+																	recommendation,
 																	element,
 																	AuditCategory.AESTHETICS,
 																	labels,
@@ -251,9 +251,9 @@ public class TypefacesAudit implements IExecutablePageStateAudit {
 				String title = "Text rendered with a fallback typeface";
 
 				ElementStateIssueMessage issue_message = new ElementStateIssueMessage(
-																	Priority.MEDIUM, 
-																	description, 
-																	recommendation, 
+																	Priority.MEDIUM,
+																	description,
+																	recommendation,
 																	element,
 																	AuditCategory.AESTHETICS,
 																	labels,

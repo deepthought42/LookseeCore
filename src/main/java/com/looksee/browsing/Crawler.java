@@ -1,6 +1,5 @@
 package com.looksee.browsing;
 
-
 import com.looksee.models.ElementState;
 import com.looksee.models.enums.Action;
 import com.looksee.utils.TimingUtils;

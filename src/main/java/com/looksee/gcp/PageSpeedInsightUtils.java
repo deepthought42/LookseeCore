@@ -83,15 +83,15 @@ public class PageSpeedInsightUtils {
 			
     		UXIssueMessage issue_msg = new UXIssueMessage(
     											Priority.HIGH,
-    											audit_record.getDescription(), 
-    											ObservationType.PAGE_STATE, 
-    											AuditCategory.INFORMATION_ARCHITECTURE, 
-    											"wcag compliance", 
-    											new HashSet<>(), 
+    											audit_record.getDescription(),
+    											ObservationType.PAGE_STATE,
+    											AuditCategory.INFORMATION_ARCHITECTURE,
+    											"wcag compliance",
+    											new HashSet<>(),
     											audit_record.getExplanation(),
     											audit_record.getTitle(),
-    											-1, 
-    											-1, 
+    											-1,
+    											-1,
     											"");
     				
     		ux_issues.add(issue_msg);
@@ -216,11 +216,11 @@ public class PageSpeedInsightUtils {
 		
 		UXIssueMessage issue_msg = new UXIssueMessage(
 											Priority.HIGH,
-											audit_record.getDescription(), 
-											ObservationType.PAGE_STATE, 
-											AuditCategory.INFORMATION_ARCHITECTURE, 
-											"wcag compliance", 
-											new HashSet<>(), 
+											audit_record.getDescription(),
+											ObservationType.PAGE_STATE,
+											AuditCategory.INFORMATION_ARCHITECTURE,
+											"wcag compliance",
+											new HashSet<>(),
 											audit_record.getExplanation(),
 											audit_record.getTitle(),
 											-1, -1, "");
