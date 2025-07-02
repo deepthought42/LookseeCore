@@ -78,16 +78,16 @@ public class MetadataAudit implements IExecutablePageStateAudit {
 		String description = "";
 
 		Audit audit = new Audit(AuditCategory.INFORMATION_ARCHITECTURE,
-								 AuditSubcategory.SEO,
-								 AuditName.METADATA,
-								 points_earned,
-								 new HashSet<>(),
-								 AuditLevel.PAGE,
-								 max_points,
-								 page_state.getUrl(), 
-								 why_it_matters, 
-								 description, 
-								 false);
+								AuditSubcategory.SEO,
+								AuditName.METADATA,
+								points_earned,
+								new HashSet<>(),
+								AuditLevel.PAGE,
+								max_points,
+								page_state.getUrl(),
+								why_it_matters,
+								description,
+								false);
 		
 		audit_service.save(audit);
 		audit_service.addAllIssues(audit.getId(), issue_messages);
@@ -143,18 +143,18 @@ public class MetadataAudit implements IExecutablePageStateAudit {
 			Set<Recommendation> recommendations = new HashSet<>();
 			//recommendations.add(new Recommendation(recommendation));
 			
-			UXIssueMessage ux_issue = new UXIssueMessage(Priority.NONE, 
-												  description, 
-												  type, 
-												  category, 
-												  wcag_compliance, 
-												  labels, 
-												  why_it_matters, 
-												  title, 
-												  1, 
-												  1, 
-												  recommendation);
-			
+			UXIssueMessage ux_issue = new UXIssueMessage(Priority.NONE,
+														description,
+														type,
+														category,
+														wcag_compliance,
+														labels,
+														why_it_matters,
+														title,
+														1,
+														1,
+														recommendation);
+				
 			issue_messages.add(issue_message_service.save(ux_issue));
 
 		}
@@ -184,17 +184,17 @@ public class MetadataAudit implements IExecutablePageStateAudit {
 			Set<Recommendation> recommendations = new HashSet<>();
 			//recommendations.add(new Recommendation(recommendation));
 			
-			UXIssueMessage ux_issue = new UXIssueMessage(priority, 
-														  description, 
-														  type, 
-														  category, 
-														  wcag_compliance, 
-														  labels, 
-														  why_it_matters, 
-														  title, 
-														  0, 
-														  1, 
-														  recommendation );
+			UXIssueMessage ux_issue = new UXIssueMessage(priority,
+														description,
+														type,
+														category,
+														wcag_compliance,
+														labels,
+														why_it_matters,
+														title,
+														0,
+														1,
+														recommendation );
 			
 			issue_messages.add(issue_message_service.save(ux_issue));
 
@@ -355,17 +355,17 @@ public class MetadataAudit implements IExecutablePageStateAudit {
 						Set<Recommendation> recommendations = new HashSet<>();
 						//recommendations.add(new Recommendation(recommendation));
 						
-						UXIssueMessage issue_msg = new UXIssueMessage(priority, 
-																	  description, 
-																	  type, 
-																	  category, 
-																	  wcag_compliance, 
-																	  labels, 
-																	  why_it_matters, 
-																	  title, 
-																	  1, 
-																	  1, 
-																	  recommendation);
+						UXIssueMessage issue_msg = new UXIssueMessage(priority,
+																	description,
+																	type,
+																	category,
+																	wcag_compliance,
+																	labels,
+																	why_it_matters,
+																	title,
+																	1,
+																	1,
+																	recommendation);
 						
 						issue_messages.add(issue_message_service.save(issue_msg));
 					}
@@ -381,17 +381,17 @@ public class MetadataAudit implements IExecutablePageStateAudit {
 						Set<Recommendation> recommendations = new HashSet<>();
 						//recommendations.add(new Recommendation(recommendation));
 						
-						UXIssueMessage issue_msg = new UXIssueMessage(priority, 
-																	  description, 
-																	  type, 
-																	  category, 
-																	  wcag_compliance, 
-																	  labels, 
-																	  why_it_matters, 
-																	  title, 
-																	  0, 
-																	  1, 
-																	  recommendation);
+						UXIssueMessage issue_msg = new UXIssueMessage(priority,
+																	description,
+																	type,
+																	category,
+																	wcag_compliance,
+																	labels,
+																	why_it_matters,
+																	title,
+																	0,
+																	1,
+																	recommendation);
 						
 						issue_messages.add(issue_message_service.save(issue_msg));
 					}
@@ -407,17 +407,17 @@ public class MetadataAudit implements IExecutablePageStateAudit {
 						Set<Recommendation> recommendations = new HashSet<>();
 						//recommendations.add(new Recommendation(recommendation));
 						
-						UXIssueMessage issue_msg = new UXIssueMessage(priority, 
-																	  description, 
-																	  type, 
-																	  category, 
-																	  wcag_compliance, 
-																	  labels, 
-																	  why_it_matters, 
-																	  title, 
-																	  0, 
-																	  1, 
-																	  recommendation);
+						UXIssueMessage issue_msg = new UXIssueMessage(priority,
+																	description,
+																	type,
+																	category,
+																	wcag_compliance,
+																	labels,
+																	why_it_matters,
+																	title,
+																	0,
+																	1,
+																	recommendation);
 
 						issue_messages.add(issue_message_service.save(issue_msg));
 					}
@@ -429,7 +429,7 @@ public class MetadataAudit implements IExecutablePageStateAudit {
 						String recommendation = "";
 						String description = "The text \"" + meta_description + 
 											"\" is written at the "+ ContentUtils.getReadingGradeLevel(ease_of_reading_score) + 
-											 ", which is considered " + ContentUtils.getReadingDifficultyRating(ease_of_reading_score) + " to read";
+											", which is considered " + ContentUtils.getReadingDifficultyRating(ease_of_reading_score) + " to read";
 						ObservationType type = ObservationType.SEO;
 						AuditCategory category = AuditCategory.INFORMATION_ARCHITECTURE;
 						String wcag_compliance = "There are no WCAG requirements for this";
@@ -440,17 +440,17 @@ public class MetadataAudit implements IExecutablePageStateAudit {
 						Set<Recommendation> recommendations = new HashSet<>();
 						//recommendations.add(new Recommendation(recommendation));
 						
-						UXIssueMessage issue_msg = new UXIssueMessage(Priority.NONE, 
-																	  description, 
-																	  type, 
-																	  category, 
-																	  wcag_compliance, 
-																	  labels, 
-																	  why_it_matters, 
-																	  title, 
-																	  1, 
-																	  1, 
-																	  recommendation);
+						UXIssueMessage issue_msg = new UXIssueMessage(Priority.NONE,
+																	description,
+																	type,
+																	category,
+																	wcag_compliance,
+																	labels,
+																	why_it_matters,
+																	title,
+																	1,
+																	1,
+																	recommendation);
 						
 						issue_messages.add(issue_message_service.save(issue_msg));
 					}
@@ -459,7 +459,7 @@ public class MetadataAudit implements IExecutablePageStateAudit {
 						Priority priority = Priority.MEDIUM;
 						String description = "The text \"" + meta_description + 
 											"\" is written at the "+ ContentUtils.getReadingGradeLevel(ease_of_reading_score) + 
-											 ", which is considered " + ContentUtils.getReadingDifficultyRating(ease_of_reading_score) + " to read";
+											", which is considered " + ContentUtils.getReadingDifficultyRating(ease_of_reading_score) + " to read";
 						ObservationType type = ObservationType.SEO;
 						AuditCategory category = AuditCategory.INFORMATION_ARCHITECTURE;
 						String wcag_compliance = "There are no WCAG requirements for this";
@@ -470,17 +470,17 @@ public class MetadataAudit implements IExecutablePageStateAudit {
 						Set<Recommendation> recommendations = new HashSet<>();
 						//recommendations.add(new Recommendation(recommendation));
 						
-						UXIssueMessage issue_msg = new UXIssueMessage(priority, 
-																	  description, 
-																	  type, 
-																	  category, 
-																	  wcag_compliance, 
-																	  labels, 
-																	  why_it_matters, 
-																	  title, 
-																	  0, 
-																	  1, 
-																	  recommendation);
+						UXIssueMessage issue_msg = new UXIssueMessage(priority,
+																	description,
+																	type,
+																	category,
+																	wcag_compliance,
+																	labels,
+																	why_it_matters,
+																	title,
+																	0,
+																	1,
+																	recommendation);
 						
 						issue_messages.add(issue_message_service.save(issue_msg));
 					}
@@ -497,17 +497,17 @@ public class MetadataAudit implements IExecutablePageStateAudit {
 					Set<Recommendation> recommendations = new HashSet<>();
 					//recommendations.add(new Recommendation(recommendation));
 					
-					UXIssueMessage issue_msg = new UXIssueMessage(priority, 
-																  description, 
-																  type, 
-																  category, 
-																  wcag_compliance, 
-																  labels, 
-																  why_it_matters, 
-																  title, 
-																  0, 
-																  1, 
-																  recommendation);
+					UXIssueMessage issue_msg = new UXIssueMessage(priority,
+																description,
+																type,
+																category,
+																wcag_compliance,
+																labels,
+																why_it_matters,
+																title,
+																0,
+																1,
+																recommendation);
 					
 					issue_messages.add(issue_message_service.save(issue_msg));
 				}
@@ -528,17 +528,17 @@ public class MetadataAudit implements IExecutablePageStateAudit {
 			Set<Recommendation> recommendations = new HashSet<>();
 			//recommendations.add(new Recommendation(recommendation));
 			
-			UXIssueMessage issue_msg = new UXIssueMessage(priority, 
-														  description, 
-														  type, 
-														  category, 
-														  wcag_compliance, 
-														  labels, 
-														  why_it_matters, 
-														  title, 
-														  0, 
-														  2, 
-														  recommendation);
+			UXIssueMessage issue_msg = new UXIssueMessage(priority,
+														description,
+														type,
+														category,
+														wcag_compliance,
+														labels,
+														why_it_matters,
+														title,
+														0,
+														2,
+														recommendation);
 			
 			issue_messages.add(issue_message_service.save(issue_msg));
 		}
@@ -556,17 +556,17 @@ public class MetadataAudit implements IExecutablePageStateAudit {
 			Set<Recommendation> recommendations = new HashSet<>();
 			//recommendations.add(new Recommendation(recommendation));
 			
-			UXIssueMessage issue_msg = new UXIssueMessage(priority, 
-														  description, 
-														  type, 
-														  category, 
-														  wcag_compliance, 
-														  labels, 
-														  why_it_matters, 
-														  title, 
-														  1, 
-														  2, 
-														  recommendation);
+			UXIssueMessage issue_msg = new UXIssueMessage(priority,
+														description,
+														type,
+														category,
+														wcag_compliance,
+														labels,
+														why_it_matters,
+														title,
+														1,
+														2,
+														recommendation);
 			
 			issue_messages.add(issue_message_service.save(issue_msg));
 		}
@@ -610,17 +610,17 @@ public class MetadataAudit implements IExecutablePageStateAudit {
 			Set<Recommendation> recommendations = new HashSet<>();
 			//recommendations.add(new Recommendation(recommendation));
 			
-			UXIssueMessage issue_msg = new UXIssueMessage(Priority.NONE, 
-												  description, 
-												  type, 
-												  category, 
-												  wcag_compliance, 
-												  labels, 
-												  why_it_matters, 
-												  title, 
-												  1, 
-												  1, 
-												  recommendation);
+			UXIssueMessage issue_msg = new UXIssueMessage(Priority.NONE,
+														description,
+														type,
+														category,
+														wcag_compliance,
+														labels,
+														why_it_matters,
+														title,
+														1,
+														1,
+														recommendation);
 			
 			issue_messages.add(issue_message_service.save(issue_msg));
 		}
@@ -635,17 +635,17 @@ public class MetadataAudit implements IExecutablePageStateAudit {
 			Set<Recommendation> recommendations = new HashSet<>();
 			//recommendations.add(new Recommendation(recommendation));
 			
-			UXIssueMessage issue_msg = new UXIssueMessage(Priority.HIGH, 
-												  description, 
-												  type, 
-												  category, 
-												  wcag_compliance, 
-												  labels, 
-												  why_it_matters, 
-												  title, 
-												  0, 
-												  1, 
-												  recommendation);
+			UXIssueMessage issue_msg = new UXIssueMessage(Priority.HIGH,
+														description,
+														type,
+														category,
+														wcag_compliance,
+														labels,
+														why_it_matters,
+														title,
+														0,
+														1,
+														recommendation);
 			
 			issue_messages.add(issue_message_service.save(issue_msg));
 		}

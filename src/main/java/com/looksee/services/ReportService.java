@@ -103,8 +103,8 @@ public class ReportService {
         return workbook;
 	}
 	
-	public static XSSFWorkbook generateDomainExcelSpreadsheet( 
-			List<UXIssueReportDto> ux_issues, 
+	public static XSSFWorkbook generateDomainExcelSpreadsheet(
+			List<UXIssueReportDto> ux_issues,
 			URL url
 	) throws FileNotFoundException, IOException {
 		assert ux_issues != null;
