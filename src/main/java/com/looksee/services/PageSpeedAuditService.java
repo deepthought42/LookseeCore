@@ -1,10 +1,9 @@
 package com.looksee.services;
 
+import com.looksee.models.audit.performance.PageSpeedAudit;
+import com.looksee.models.repository.PageSpeedAuditRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.looksee.models.audit.performance.PageSpeedAudit;
-import com.looksee.models.repository.AuditDetailRepository;
-import com.looksee.models.repository.PageSpeedAuditRepository;
 
 @Service
 public class PageSpeedAuditService {
@@ -13,11 +12,12 @@ public class PageSpeedAuditService {
 	private PageSpeedAuditRepository audit_repo;
 	
 	/**
-	 * Objects are expected to be immutable as of 3/14/19. When this method is ran, if the 
-	 * object already exists then it will be loaded from the database by key, otherwise it will be saved
-	 * 
-	 * @param audit {@link PageSpeedAudit} 
-	 * @return
+	 * Objects are expected to be immutable as of 3/14/19. When this method is
+	 * ran, if the object already exists then it will be loaded from the
+	 * database by key, otherwise it will be saved
+	 *
+	 * @param audit {@link PageSpeedAudit}
+	 * @return {@link PageSpeedAudit}
 	 */
 	public PageSpeedAudit save(PageSpeedAudit audit){
 		assert audit != null;
@@ -35,9 +35,9 @@ public class PageSpeedAuditService {
 
 	/**
 	 * Retrieve data from database
-	 * 
-	 * @param key
-	 * @return
+	 *
+	 * @param key key of the {@link PageSpeedAudit} to retrieve
+	 * @return {@link PageSpeedAudit}
 	 */
 	public PageSpeedAudit findByKey(String key) {
 		return audit_repo.findByKey(key);

@@ -1,8 +1,8 @@
 package com.looksee.services;
 
 import com.looksee.models.ElementState;
-import com.looksee.models.UXIssueMessage;
 import com.looksee.models.audit.ColorContrastIssueMessage;
+import com.looksee.models.audit.UXIssueMessage;
 import com.looksee.models.enums.AuditName;
 import com.looksee.models.repository.ColorContrastIssueMessageRepository;
 import com.looksee.models.repository.UXIssueMessageRepository;

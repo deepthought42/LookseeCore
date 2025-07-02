@@ -76,7 +76,7 @@ public class ParagraphingAudit implements IExecutablePageStateAudit {
 					List<Sentence> sentences = CloudNLPUtils.extractSentences(paragraph);
 					Score score = calculateSentenceScore(sentences, element);
 
-					issue_messages.addAll(score.getIssueMessages());	
+					issue_messages.addAll(score.getIssueMessages());
 				} catch (Exception e) {
 					log.warn("error getting sentences from text :: "+paragraph);
 					//e.printStackTrace();
