@@ -81,49 +81,49 @@ public class TestService {
 	 * @throws WebDriverException
 	 * @throws GridException
 	 */
-	 public TestRecord runTest(Test test, String browser_name, TestStatus last_test_status, Domain domain, String user_id) {
-		 assert test != null;
+	public TestRecord runTest(Test test, String browser_name, TestStatus last_test_status, Domain domain, String user_id) {
+		assert test != null;
 
-		 TestStatus passing = null;
-		 PageState page = null;
-		 TestRecord test_record = null;
-		 final long pathCrawlStartTime = System.currentTimeMillis();
+		TestStatus passing = null;
+		PageState page = null;
+		TestRecord test_record = null;
+		final long pathCrawlStartTime = System.currentTimeMillis();
 
-		 int cnt = 0;
-		 Browser browser = null;
-		 
-		 do{
-			 try {
-				 browser = BrowserConnectionHelper.getConnection(BrowserType.create(browser_name), BrowserEnvironment.TEST);
-				 //page = crawler.crawlPath(user_id, domain, test.getPathKeys(), test.getPathObjects(), browser, new URL(PathUtils.getFirstPage(test.getPathObjects()).getUrl()).getHost(), visible_element_map, visible_elements);
-			 } catch(PagesAreNotMatchingException e){
-				 log.warn(e.getMessage());
-			 }
-			 catch (Exception e) {
-				 e.printStackTrace();
-				 log.error("RUN TEST ERROR ::  " + e.getMessage());
-			 }
-			 finally{
-				 if(browser != null){
-					 browser.close();
-				 }
-			 }
+		int cnt = 0;
+		Browser browser = null;
+		
+		do{
+			try {
+				browser = BrowserConnectionHelper.getConnection(BrowserType.create(browser_name), BrowserEnvironment.TEST);
+				//page = crawler.crawlPath(user_id, domain, test.getPathKeys(), test.getPathObjects(), browser, new URL(PathUtils.getFirstPage(test.getPathObjects()).getUrl()).getHost(), visible_element_map, visible_elements);
+			} catch(PagesAreNotMatchingException e){
+				log.warn(e.getMessage());
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+				log.error("RUN TEST ERROR ::  " + e.getMessage());
+			}
+			finally{
+				if(browser != null){
+					browser.close();
+				}
+			}
 
-			 cnt++;
-		 }while(cnt < 1000 && page == null);
+			cnt++;
+		}while(cnt < 1000 && page == null);
 
-		 final long pathCrawlEndTime = System.currentTimeMillis();
-		 long pathCrawlRunTime = pathCrawlEndTime - pathCrawlStartTime;
+		final long pathCrawlEndTime = System.currentTimeMillis();
+		long pathCrawlRunTime = pathCrawlEndTime - pathCrawlStartTime;
 
-		 passing = Test.isTestPassing(getResult(test.getKey(), domain.getUrl(), user_id), page, last_test_status );
- 		 test_record = new TestRecord(new Date(), passing, browser_name.trim(), page, pathCrawlRunTime, test.getPathKeys());
+		passing = Test.isTestPassing(getResult(test.getKey(), domain.getUrl(), user_id), page, last_test_status );
+		test_record = new TestRecord(new Date(), passing, browser_name.trim(), page, pathCrawlRunTime, test.getPathKeys());
 
-		 return test_record;
-	 }
+		return test_record;
+	}
 
-	 public Test save(Test test, String url, long account_id) throws Exception {
-		 assert test != null;
-		 Test record = test_repo.findByKey(test.getKey(), url, account_id);
+	public Test save(Test test, String url, long account_id) throws Exception {
+		assert test != null;
+		Test record = test_repo.findByKey(test.getKey(), url, account_id);
 
 		if(record == null){
 			log.warn("test record is null while saving");
@@ -159,7 +159,7 @@ public class TestService {
 				groups.add(group_service.save(group));
 			}
 			test.setGroups(groups);
-	  		return test_repo.save(test);
+			return test_repo.save(test);
 		}
 		else{
 			log.warn("test record already exists");
@@ -187,114 +187,116 @@ public class TestService {
 		}
 	}
 
-   public List<Test> findTestsWithElementState(String page_state_key, String element_state_key){
-     return test_repo.findTestWithElementState(page_state_key, element_state_key);
-   }
+	public List<Test> findTestsWithElementState(String page_state_key, String element_state_key){
+		return test_repo.findTestWithElementState(page_state_key, element_state_key);
+	}
 
-   public Test findByKey(String key, String url, long account_id){
-     return test_repo.findByKey(key, url, account_id);
-   }
+	public Test findByKey(String key, String url, long account_id){
+		return test_repo.findByKey(key, url, account_id);
+	}
 
-   public List<Test> findTestsWithPageState(String page_state_key, String url, long account_id) {
-     return test_repo.findTestWithPageState(page_state_key, url, account_id);
-   }
+	public List<Test> findTestsWithPageState(String page_state_key, String url, long account_id) {
+		return test_repo.findTestWithPageState(page_state_key, url, account_id);
+	}
 
-   /**
+	/**
     * Retrieves list of path objects from database and puts them in the correct order
-    * 
+    *
     * @param test_key key of {@link Test} that we want path objects for
-    * 
+    *
     * @return List of ordered {@link LookseeObject}s
     */
-   public List<LookseeObject> getPathObjects(String test_key, String url, long account_id) {
-	   Test test = test_repo.findByKey(test_key, url, account_id);
-	   List<LookseeObject> path_obj_list = test_repo.getPathObjects(test_key, url, account_id);
-	   //order path objects
-	   List<LookseeObject> ordered_list = new ArrayList<LookseeObject>();
-	   for(String key : test.getPathKeys()) {
-		   for(LookseeObject path_obj : path_obj_list) {
-			   if(path_obj.getKey().equals(key)) {
-				   ordered_list.add(path_obj);
-				   break;
-			   }
-		   }
-	   }
-	   
-	   return ordered_list;
-   }
+	public List<LookseeObject> getPathObjects(String test_key, String url, long account_id) {
+		Test test = test_repo.findByKey(test_key, url, account_id);
+		List<LookseeObject> path_obj_list = test_repo.getPathObjects(test_key, url, account_id);
+		//order path objects
+		List<LookseeObject> ordered_list = new ArrayList<LookseeObject>();
+		for(String key : test.getPathKeys()) {
+			for(LookseeObject path_obj : path_obj_list) {
+				if(path_obj.getKey().equals(key)) {
+					ordered_list.add(path_obj);
+					break;
+				}
+			}
+		}
+		
+		return ordered_list;
+	}
 
-   public Set<Group> getGroups(String key) {
-     return group_repo.getGroups(key);
-   }
-   
-   public PageState getResult(String key, String url, String user_id) {
-	   return page_state_repo.getResult(key, url, user_id);
-   }
+	public Set<Group> getGroups(String key) {
+		return group_repo.getGroups(key);
+	}
+	
+	public PageState getResult(String key, String url, String user_id) {
+		return page_state_repo.getResult(key, url, user_id);
+	}
 
-   /**
+	/**
     * Checks if url, xpath and remaining keys in path_keys list are present in any of the test paths provided in test_path_object_lists
     * 
-    * @param path_keys
-    * @param tests_path_object_lists
+    * @param path_keys list of path keys to check
+    * @param tests_path_object_lists list of test path objects to check
+    * @param user_id user id of the user who owns the tests
+    * @param url url of the page to check
     * 
     * @pre path_keys != null
     * @pre !path_keys.isEmpty()
     * @pre test_path_object_lists != null
     * @pre !test_path_object_lists.isEmpty()
     * 
-    * @return
+    * @return {@code true} if the end of the path is unique, {@code false} otherwise
     */
-   public boolean checkIfEndOfPathAlreadyExistsInAnotherTest(List<String> path_keys, List<List<LookseeObject>> test_path_object_lists, String user_id, String url) {
-	   assert path_keys != null;
-	   assert !path_keys.isEmpty();
-	   assert test_path_object_lists != null;
-	   assert !test_path_object_lists.isEmpty();
-   
-	   //load path objects using path keys
-	   List<LookseeObject> path_objects = loadPathObjects(user_id, path_keys);
-	   
-	   //find all tests with page state at index
-	   for(List<LookseeObject> test_path_objects : test_path_object_lists) {
-		   //check if any subpath of test matches path_objects based on url, xpath and action
-		   int current_idx = 0;
-		   
-		   log.warn("path object list size when checking if end of path is unique :: "+test_path_objects.size());
-		   for(LookseeObject path_object : test_path_objects) {
-			   if(path_object != null && path_object.getKey().contains("pagestate") && ((PageState)path_object).getUrl().equalsIgnoreCase(((PageState)path_objects.get(0)).getUrl())){
-				   current_idx++;
-				   break;
-			   }
-			   current_idx++;
-		   }
+	public boolean checkIfEndOfPathAlreadyExistsInAnotherTest(List<String> path_keys, List<List<LookseeObject>> test_path_object_lists, String user_id, String url) {
+		assert path_keys != null;
+		assert !path_keys.isEmpty();
+		assert test_path_object_lists != null;
+		assert !test_path_object_lists.isEmpty();
+	
+		//load path objects using path keys
+		List<LookseeObject> path_objects = loadPathObjects(user_id, path_keys);
+		
+		//find all tests with page state at index
+		for(List<LookseeObject> test_path_objects : test_path_object_lists) {
+			//check if any subpath of test matches path_objects based on url, xpath and action
+			int current_idx = 0;
+			
+			log.warn("path object list size when checking if end of path is unique :: "+test_path_objects.size());
+			for(LookseeObject path_object : test_path_objects) {
+				if(path_object != null && path_object.getKey().contains("pagestate") && ((PageState)path_object).getUrl().equalsIgnoreCase(((PageState)path_objects.get(0)).getUrl())){
+					current_idx++;
+					break;
+				}
+				current_idx++;
+			}
 
-		   log.warn("------------------------------------------------------------------------------");
-		   log.warn("path objects size :: "+path_objects.size());
-		   log.warn("test path objects size :: "+test_path_objects.size());
-		   log.warn("------------------------------------------------------------------------------");
-		   
-		   //check if next element has the same xpath as the next element in path objects
-		   if(test_path_objects.size() > 1) {
-			   boolean matching_test_found = true;
-			   if(((Element)test_path_objects.get(current_idx)).getXpath().equalsIgnoreCase(((Element)path_objects.get(1)).getXpath())) {
-				   current_idx++;
-				   //check if remaining keys in path_objects match following keys in test_path_objects
-				   for(LookseeObject obj : path_objects.subList(2, path_objects.size())) {
-					   if(!obj.getKey().equalsIgnoreCase(test_path_objects.get(current_idx).getKey())) {
-						   matching_test_found = false;
-						   break;
-					   }
-					   current_idx++;
-				   }	
-			   }
+			log.warn("------------------------------------------------------------------------------");
+			log.warn("path objects size :: "+path_objects.size());
+			log.warn("test path objects size :: "+test_path_objects.size());
+			log.warn("------------------------------------------------------------------------------");
+			
+			//check if next element has the same xpath as the next element in path objects
+			if(test_path_objects.size() > 1) {
+				boolean matching_test_found = true;
+				if(((Element)test_path_objects.get(current_idx)).getXpath().equalsIgnoreCase(((Element)path_objects.get(1)).getXpath())) {
+					current_idx++;
+					//check if remaining keys in path_objects match following keys in test_path_objects
+					for(LookseeObject obj : path_objects.subList(2, path_objects.size())) {
+						if(!obj.getKey().equalsIgnoreCase(test_path_objects.get(current_idx).getKey())) {
+							matching_test_found = false;
+							break;
+						}
+						current_idx++;
+					}	
+				}
 
-			   if(matching_test_found) {
-				   return true;
-			   }
-		   }
-	   }
-	   
-	   return false;
-   }
+				if(matching_test_found) {
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
 
 	public List<LookseeObject> loadPathObjects(String user_id, List<String> path_keys) {
 		//load path objects using path keys

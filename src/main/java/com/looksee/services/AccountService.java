@@ -325,12 +325,12 @@ public class AccountService {
 	}
 
 	/**
-	 * Checks that there is an account associated with the given Principal and 
-	 *  that the account has a subscription assigned
-	 * 
+	 * Checks that there is an account associated with the given Principal and
+	 * that the account has a subscription assigned
+	 *
 	 * @param userPrincipal user {@link Principal}
-	 * @throws UnknownAccountException
-	 * @throws MissingSubscriptionException
+	 * @throws UnknownAccountException if the account is not found
+	 * @throws MissingSubscriptionException if the account has no subscription
 	 */
     public Account retrieveAndValidateAccount(Principal userPrincipal) throws UnknownAccountException, MissingSubscriptionException {
 		String acct_id = userPrincipal.getName();
