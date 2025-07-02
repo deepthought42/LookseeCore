@@ -43,7 +43,7 @@ public class PageSpeedInsightUtils {
 	 * @pre url != null
 	 * @pre !url.isEmpty()
 	 */
-	public static PagespeedApiPagespeedResponseV5 getPageInsights(String url) throws IOException, GeneralSecurityException {
+	public PagespeedApiPagespeedResponseV5 getPageInsights(String url) throws IOException, GeneralSecurityException {
 	    assert url != null;
 	    assert !url.isEmpty();
 	    
@@ -71,7 +71,7 @@ public class PageSpeedInsightUtils {
 	 * @param page_speed_response
 	 * @return list of {@link UXIssueMessage}s
 	 */
-	public static List<UXIssueMessage> extractAccessibilityIssues(
+	public List<UXIssueMessage> extractAccessibilityIssues(
 			PagespeedApiPagespeedResponseV5 page_speed_response
 	) {
 		assert page_speed_response != null;
@@ -125,7 +125,7 @@ public class PageSpeedInsightUtils {
 	 * 
 	 * @pre details != null;
 	 */
-	public static List<UXIssueMessage> extractAccessibilityAuditDetails(LighthouseAuditResultV5 audit_record) {
+	public List<UXIssueMessage> extractAccessibilityAuditDetails(LighthouseAuditResultV5 audit_record) {
 		List<UXIssueMessage> ux_issues = new ArrayList<>();
 		if(audit_record.getDetails() != null) {
 			List<Object> items = (List)audit_record.getDetails().get("items");
@@ -216,7 +216,7 @@ public class PageSpeedInsightUtils {
 	 * @param page_speed_response {@link PagespeedApiPagespeedResponseV5}
 	 * @return list of {@link UXIssueMessage}s
 	 */
-	public static List<UXIssueMessage> extractFontSizeIssues(PagespeedApiPagespeedResponseV5 page_speed_response) {
+	public List<UXIssueMessage> extractFontSizeIssues(PagespeedApiPagespeedResponseV5 page_speed_response) {
 		List<UXIssueMessage> ux_issues = new ArrayList<UXIssueMessage>();
 		
 		log.warn("extracting page speed audit results for accessibility");
@@ -262,7 +262,7 @@ public class PageSpeedInsightUtils {
 	 * @param page_speed_response {@link PagespeedApiPagespeedResponseV5}
 	 * @return list of {@link UXIssueMessage}s
 	 */
-	public static List<UXIssueMessage> extractIssues(PagespeedApiPagespeedResponseV5 page_speed_response) {
+	public List<UXIssueMessage> extractIssues(PagespeedApiPagespeedResponseV5 page_speed_response) {
 		List<UXIssueMessage> ux_issues = new ArrayList<UXIssueMessage>();
 		
 		log.warn("extracting page speed audit results for accessibility");
