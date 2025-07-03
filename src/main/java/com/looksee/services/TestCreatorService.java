@@ -25,8 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * 
- * 
+ * Service for creating tests
  */
 @Component
 public class TestCreatorService {
@@ -41,38 +40,47 @@ public class TestCreatorService {
 	/**
 	 * Generates a landing page test based on a given URL
 	 *
-	 * @param browser
-	 * @param msg
-	 *
-	 * @throws MalformedURLException
-	 * @throws IOException
-	 * @throws NoSuchAlgorithmException
-	 * @throws WebDriverException
-	 * @throws GridException
-	 *
-	 * @pre browser != null
-	 * @pre msg != null
+	 * @param path_keys list of keys for the path
+	 * @param path_objects list of objects for the path
+	 * @param page_state {@link PageState} of the page
+	 * @param browser_name name of the browser
+	 * @param domain {@link Domain} of the page
+	 * @param account_id id of the account
+	 * 
+	 * @throws MalformedURLException if there is an error parsing the URL
+	 * @throws IOException if there is an error reading the file
+	 * @throws NullPointerException if the path objects are null
+	 * @throws GridException if there is an error with the grid
+	 * @throws WebDriverException if there is an error with the web driver
+	 * @throws NoSuchAlgorithmException if there is an error with the algorithm
+	 * 
+	 * precondition: path_keys != null
+	 * precondition: path_objects != null
+	 * precondition: page_state != null
+	 * precondition: browser_name != null
+	 * precondition: domain != null
+	 * precondition: account_id > 0
 	 */
-	public Test createLandingPageTest(List<String> path_keys, 
-									  List<LookseeObject> path_objects, 
-									  PageState page_state, 
-									  String browser_name, 
-									  Domain domain, 
-									  long account_id
-	 ) throws MalformedURLException, IOException, NullPointerException, GridException, WebDriverException, NoSuchAlgorithmException{
-	  	
-	  	log.warn("domain url :: "+domain.getUrl());
-	  	URL domain_url = new URL(domain.getUrl());
-	  	log.warn("total path object added to test :: "+path_objects.size());
-	  	Test test = createTest(path_keys, 
-	  						   path_objects, 
-	  						   page_state, 
-	  						   1L, 
-	  						   browser_name, 
-	  						   domain_url.getHost(), 
-	  						   account_id);
+	public Test createLandingPageTest(List<String> path_keys,
+									List<LookseeObject> path_objects,
+									PageState page_state,
+									String browser_name,
+									Domain domain,
+									long account_id
+	) throws MalformedURLException, IOException, NullPointerException, GridException, WebDriverException, NoSuchAlgorithmException{
 
-	  	String url = BrowserUtils.sanitizeUrl(page_state.getUrl(), false);
+		log.warn("domain url :: "+domain.getUrl());
+		URL domain_url = new URL(domain.getUrl());
+		log.warn("total path object added to test :: "+path_objects.size());
+		Test test = createTest(path_keys,
+								path_objects,
+								page_state,
+								1L,
+								browser_name,
+								domain_url.getHost(),
+								account_id);
+
+		String url = BrowserUtils.sanitizeUrl(page_state.getUrl(), false);
 		
 		String url_path = new URL(url).getPath();
 		url_path = url_path.replace("/", " ").trim();
@@ -87,21 +95,36 @@ public class TestCreatorService {
 		test.addGroup(group);
 
 		return test;
-	}	
+	}
 
 	/**
 	 * Generates {@link Test Tests} for test
-	 * @param test
-	 * @param result_page
-	 * @throws JsonProcessingException
-	 * @throws MalformedURLException
+	 * 
+	 * @param path_keys list of keys for the path
+	 * @param path_objects list of objects for the path
+	 * @param result_page {@link PageState} of the result page
+	 * @param crawl_time time taken to crawl the page
+	 * @param browser_name name of the browser
+	 * @param domain_host host of the domain
+	 * @param account_id id of the account
+	 * @return {@link Test}
+	 * @throws JsonProcessingException if there is an error processing the JSON
+	 * @throws MalformedURLException if there is an error parsing the URL
+	 * 
+	 * precondition: path_keys != null
+	 * precondition: path_objects != null
+	 * precondition: result_page != null
+	 * precondition: crawl_time > 0
+	 * precondition: browser_name != null
+	 * precondition: domain_host != null
+	 * precondition: account_id > 0
 	 */
 	public Test createTest(
-			List<String> path_keys, 
-			List<LookseeObject> path_objects, 
-			PageState result_page, 
-			long crawl_time, 
-			String browser_name, 
+			List<String> path_keys,
+			List<LookseeObject> path_objects,
+			PageState result_page,
+			long crawl_time,
+			String browser_name,
 			String domain_host,
 			long account_id
 	) throws JsonProcessingException, MalformedURLException {
@@ -136,7 +159,10 @@ public class TestCreatorService {
 	 * Adds Group labeled "form" to test if the test has any elements in it that have form in the xpath
 	 *
 	 * @param test {@linkplain Test} that you want to label
-	 * @throws MalformedURLException 
+	 * 
+	 * precondition: test != null
+	 * 
+	 * @throws MalformedURLException if there is an error parsing the URL
 	 */
 	private void addFormGroupsToPath(Test test) throws MalformedURLException {
 		//check if test has any form elements

@@ -1,13 +1,12 @@
 package com.looksee.services;
 
+import com.looksee.models.audit.performance.PageSpeedAudit;
+import com.looksee.models.audit.performance.PerformanceInsight;
+import com.looksee.models.repository.PerformanceInsightRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.looksee.models.audit.performance.PageSpeedAudit;
-import com.looksee.models.audit.performance.PerformanceInsight;
-import com.looksee.models.repository.PerformanceInsightRepository;
 
 /**
  * Methods for interacting with {@link PerformanceInsight} object
@@ -22,11 +21,11 @@ public class PerformanceInsightService {
 	/**
 	 * Saves {@link PerformanceInsight} to database
 	 * 
-	 * @param page
+	 * @param performance_insight {@link PerformanceInsight} to save
 	 * 
 	 * @return {@link PerformanceInsight} object reference to database object
 	 * 
-	 * @pre performance_insight != null;
+	 * precondition: performance_insight != null
 	 */
 	public PerformanceInsight save(PerformanceInsight performance_insight){
 		assert performance_insight != null;
@@ -43,12 +42,12 @@ public class PerformanceInsightService {
 	/**
 	 * Retrieve performance_insight from database using key
 	 * 
-	 * @param key
+	 * @param key key of the performance insight
 	 * 
-	 * @return {@link PerformanceInsight} record
+	 * @return {@link PerformanceInsight} record with given key
 	 * 
-	 * @pre key != null;
-	 * @pre !key.isEmpty();
+	 * precondition: key != null
+	 * precondition: !key.isEmpty()
 	 */
 	public PerformanceInsight findByKey(String key){
 		assert key != null;
@@ -58,20 +57,21 @@ public class PerformanceInsightService {
 	}
 
 	/**
+	 * Adds an audit to a performance insight
 	 * 
-	 * @param user_id
-	 * @param domain_url
-	 * @param performance_insight_key
-	 * @param audit_key
+	 * @param user_id user id
+	 * @param domain_url domain url
+	 * @param performance_insight_key performance insight key
+	 * @param audit_key audit key
 	 * 
-	 * @pre user_id != null;
-	 * @pre !user_id.isEmpty();
-	 * @pre domain_url != null;
-	 * @pre !domain_url.isEmpty();
-	 * @pre performance_insight_key != null;
-	 * @pre !performance_insight_key.isEmpty();
-	 * @pre audit_key != null;
-	 * @pre !audit_key.isEmpty();
+	 * precondition: user_id != null
+	 * precondition: !user_id.isEmpty()
+	 * precondition: domain_url != null
+	 * precondition: !domain_url.isEmpty()
+	 * precondition: performance_insight_key != null
+	 * precondition: !performance_insight_key.isEmpty()
+	 * precondition: audit_key != null
+	 * precondition: !audit_key.isEmpty()
 	 */
 	public void addAudit(String user_id, String domain_url, String performance_insight_key, String audit_key) {
 		assert user_id != null;

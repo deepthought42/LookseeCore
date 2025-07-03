@@ -15,8 +15,6 @@ import com.looksee.models.enums.AuditName;
 import com.looksee.models.enums.AuditSubcategory;
 import com.looksee.services.AuditService;
 import com.looksee.services.UXIssueMessageService;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -42,12 +40,22 @@ public class ColorPaletteAudit implements IExecutablePageStateAudit {
 	private UXIssueMessageService ux_issue_service;
 		
 	/**
-	 * {@inheritDoc}
-	 * 
 	 * Identifies colors used on page, the color scheme type used, and the ultimately the score for how the colors used conform to scheme
-	 *  
-	 * @throws MalformedURLException 
-	 * @throws URISyntaxException 
+	 * 
+	 * WCAG Success Criteria Source - https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html
+	 * 
+	 * There is no level A compliance
+	 * Level AA is the requirement used withiin common laws and standards
+	 * Level AAA This is for companies looking to provide an exceptional experience with color contrast
+	 * 
+	 * @param page_state {@link PageState} to audit
+	 * @param audit_record {@link AuditRecord} to audit
+	 * @param design_system {@link DesignSystem} to audit
+	 * @return {@link Audit} result of the audit
+	 * 
+	 * precondition: page_state != null
+	 * precondition: audit_record != null
+	 * precondition: design_system != null
 	 */
 	@Override
 	public Audit execute(PageState page_state, AuditRecord audit_record, DesignSystem design_system) {
@@ -107,7 +115,7 @@ public class ColorPaletteAudit implements IExecutablePageStateAudit {
 		Score score = ColorPaletteUtils.getPaletteScore(palette_colors, colors);
 		
 		Set<UXIssueMessage> issue_messages = new HashSet<>();
-		for( UXIssueMessage issue_msg : score.getIssueMessages()) {			
+		for( UXIssueMessage issue_msg : score.getIssueMessages()) {
 			issue_messages.add(ux_issue_service.save(issue_msg));
 		}
 		
@@ -117,21 +125,19 @@ public class ColorPaletteAudit implements IExecutablePageStateAudit {
 		//setGrayColors(new ArrayList<>(gray_colors));
 		
 		Audit audit = new Audit(AuditCategory.AESTHETICS,
-								 AuditSubcategory.COLOR_MANAGEMENT,
-								 AuditName.COLOR_PALETTE,
-								 score.getPointsAchieved(),
-								 new HashSet<>(),
-								 AuditLevel.PAGE,
-								 score.getMaxPossiblePoints(),
-								 page_state.getUrl(),
-								 why_it_matters, 
-								 audit_description,
-								 false);
+								AuditSubcategory.COLOR_MANAGEMENT,
+								AuditName.COLOR_PALETTE,
+								score.getPointsAchieved(),
+								new HashSet<>(),
+								AuditLevel.PAGE,
+								score.getMaxPossiblePoints(),
+								page_state.getUrl(),
+								why_it_matters, 
+								audit_description,
+								false);
 		
 		audit_service.save(audit);
 		audit_service.addAllIssues(audit.getId(), issue_messages);
 		return audit;
 	}
-	
-	
 }

@@ -1,13 +1,5 @@
 package com.looksee.services;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.looksee.models.Element;
 import com.looksee.models.Page;
 import com.looksee.models.PageState;
@@ -15,6 +7,12 @@ import com.looksee.models.audit.performance.PerformanceInsight;
 import com.looksee.models.repository.PageRepository;
 import com.looksee.models.repository.PageStateRepository;
 import com.looksee.models.repository.PerformanceInsightRepository;
+import java.util.List;
+import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Methods for interacting with page object
@@ -37,11 +35,11 @@ public class PageService {
 	/**
 	 * Saves {@link Page} to database
 	 * 
-	 * @param page
+	 * @param page {@link Page} to save
 	 * 
 	 * @return {@link Page} object reference to database object
 	 * 
-	 * @pre page != null;
+	 * precondition: page != null;
 	 */
 	public Page saveForUser(String user_id, Page page){
 		assert page != null;
@@ -61,11 +59,11 @@ public class PageService {
 	/**
 	 * Saves {@link Page} to database
 	 * 
-	 * @param page
+	 * @param page {@link Page} to save
 	 * 
 	 * @return {@link Page} object reference to database object
 	 * 
-	 * @pre page != null;
+	 * precondition: page != null;
 	 */
 	public Page save(Page page){
 		assert page != null;
@@ -82,15 +80,15 @@ public class PageService {
 	/**
 	 * Retrieve page from database using key and user ID
 	 * 
-	 * @param user_id
-	 * @param key
+	 * @param user_id user id of the user who owns the page
+	 * @param key key of the {@link Page} to retrieve
 	 * 
 	 * @return {@link Page} record
 	 * 
-	 * @pre key != null;
-	 * @pre !key.isEmpty();
-	 * @pre user_id != null
-	 * @pre !user_id.isEmpty()
+	 * precondition: key != null;
+	 * precondition: !key.isEmpty();
+	 * precondition: user_id != null
+	 * precondition: !user_id.isEmpty()
 	 */
 	@Deprecated
 	public Page findByKeyAndUser(String user_id, String key){
@@ -105,12 +103,12 @@ public class PageService {
 	/**
 	 * Retrieve page from database using key
 	 * 
-	 * @param key
+	 * @param key key of the {@link Page} to retrieve
 	 * 
 	 * @return {@link Page} record
 	 * 
-	 * @pre key != null;
-	 * @pre !key.isEmpty();
+	 * precondition: key != null;
+	 * precondition: !key.isEmpty();
 	 */
 	public Page findByKey( String key ){
 		assert key != null;
@@ -120,14 +118,14 @@ public class PageService {
 	}
 
 	/**
-	 * Retrieve page from database using key
+	 * Retrieve page from database using url
 	 * 
-	 * @param url
+	 * @param url url of the {@link Page} to retrieve
 	 * 
 	 * @return {@link Page} record
 	 * 
-	 * @pre key != null;
-	 * @pre !key.isEmpty();
+	 * precondition: key != null;
+	 * precondition: !key.isEmpty();
 	 */
 	public Page findByUrl( String url ){
 		assert url != null;
@@ -137,19 +135,21 @@ public class PageService {
 	}
 	
 	/**
+	 * Adds a {@link PerformanceInsight} to a {@link Page} with a given key
 	 * 
+	 * @param user_id user id of the user who owns the page
+	 * @param domain_url domain url of the page
+	 * @param page_key key of the {@link Page} to add the performance insight to
+	 * @param performance_insight_key key of the {@link PerformanceInsight} to add
 	 * 
-	 * @param page
-	 * @param performance_insight
-	 * 
-	 * @pre user_id != null
-	 * @pre !user_id.isEmpty()
-	 * @pre domain_url != null;
-	 * @pre !domain_url.isEmpty();
-	 * @pre page_key != null
-	 * @pre !page_key.isEmpty()
-	 * @pre performance_insight_key != null
-	 * @pre !performance_insight_key.isEmpty();
+	 * precondition: user_id != null
+	 * precondition: !user_id.isEmpty()
+	 * precondition: domain_url != null;
+	 * precondition: !domain_url.isEmpty();
+	 * precondition: page_key != null
+	 * precondition: !page_key.isEmpty()
+	 * precondition: performance_insight_key != null
+	 * precondition: !performance_insight_key.isEmpty();
 	 */
 	public boolean addPerformanceInsight(String user_id, String domain_url, String page_key, String performance_insight_key) {
 		assert user_id != null;
@@ -173,11 +173,11 @@ public class PageService {
 	/**
 	 * Retrieves a List of all {@link PerformanceInsight}s associated with a {@link Page} that has a given key
 	 * 
-	 * @param page_key
-	 * @return
+	 * @param page_key key of the {@link Page} to retrieve insights for
+	 * @return list of {@link PerformanceInsight}s
 	 * 
-	 * @pre page_key != null
-	 * @pre !page_key.isEmpty()
+	 * precondition: page_key != null
+	 * precondition: !page_key.isEmpty()
 	 */
 	public List<PerformanceInsight> findAllInsights(String page_key) {
 		assert page_key != null;
@@ -189,11 +189,11 @@ public class PageService {
 	/**
 	 * Retrieves the latest {@link PerformanceInsight} for a {@link Page} with a given key
 	 * 
-	 * @param page_key
-	 * @return
+	 * @param page_key key of the {@link Page} to retrieve the latest insight for
+	 * @return latest {@link PerformanceInsight}
 	 * 
-	 * @pre page_key != null
-	 * @pre !page_key.isEmpty()
+	 * precondition: page_key != null
+	 * precondition: !page_key.isEmpty()
 	 */
 	public PerformanceInsight findLatestInsight(String page_key) {
 		assert page_key != null;
@@ -205,12 +205,13 @@ public class PageService {
 	}
 	
 	/**
+	 * Adds a {@link PageState} to a {@link Page} with a given key
 	 * 
-	 * @param page_key
-	 * @return
+	 * @param page_key key of the {@link Page} to add the page state to
+	 * @param page_state {@link PageState} to add
 	 * 
-	 * @pre page_key != null
-	 * @pre !page_key.isEmpty()
+	 * precondition: page_key != null
+	 * precondition: !page_key.isEmpty()
 	 */
 	@Deprecated
 	public void addPageState(String user_id, String page_key, PageState page_state) {
@@ -230,14 +231,15 @@ public class PageService {
 	}
 	
 	/**
+	 * Adds a {@link PageState} to a {@link Page} with a given key
 	 * 
-	 * @param page_key
-	 * @return
+	 * @param page_key key of the {@link Page} to add the page state to
+	 * @param page_state_id id of the {@link PageState} to add
 	 * 
-	 * @pre page_key != null
-	 * @pre !page_key.isEmpty()
-	 * @pre page_state_key != null
-	 * @pre !page_state_key.isEmpty()
+	 * precondition: page_key != null
+	 * precondition: !page_key.isEmpty()
+	 * precondition: page_state_key != null
+	 * precondition: !page_state_key.isEmpty()
 	 */
 	public void addPageState(String page_key, long page_state_id) {
 		assert page_key != null;
@@ -249,10 +251,22 @@ public class PageService {
 		}
 	}
 
+	/**
+	 * Retrieves the most recent {@link PageState} for a {@link Page} with a given key
+	 * 
+	 * @param key key of the {@link Page} to retrieve the most recent page state for
+	 * @return most recent {@link PageState}
+	 */
 	public PageState getMostRecentPageState(String key) {
 		return page_repo.findMostRecentPageState(key);
 	}
 
+	/**
+	 * Retrieves all {@link Element}s for a {@link Page} with a given key
+	 * 
+	 * @param key key of the {@link Page} to retrieve the elements for
+	 * @return list of {@link Element}s
+	 */
 	public List<Element> getElements(String key) {
 		return page_repo.getElements(key);
 	}

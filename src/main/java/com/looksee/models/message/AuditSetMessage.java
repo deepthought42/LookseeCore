@@ -16,6 +16,13 @@ public class AuditSetMessage extends Message {
 	private String url;
 	
 
+	/**
+	 * Constructs an {@link AuditSetMessage} object
+	 * 
+	 * @param account_id id of the account
+	 * @param audits list of audits
+	 * @param url url of the audit
+	 */
 	public AuditSetMessage(long account_id, List<Audit> audits, String url){
 		setAccountId(account_id);
 		setAudits(audits);

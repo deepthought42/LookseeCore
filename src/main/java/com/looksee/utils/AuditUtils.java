@@ -1320,12 +1320,18 @@ public class AuditUtils {
 	/**
 	 * Retrieves count of pages that have non text contrast issue
 	 * 
-	 * @param page_audits
-	 * @param subcategory TODO
-	 * @return
+	 * @param page_audits the list of {@link AuditRecord}s
+	 * @param subcategory the subcategory of the audit
+	 * @return the count of pages that have issues by subcategory
+	 * 
+	 * precondition: page_audits != null
+	 * precondition: subcategory != null
 	 */
 	public static int getCountPagesWithSubcategoryIssues(List<AuditRecord> page_audits,
 														AuditSubcategory subcategory) {
+		assert page_audits != null;
+		assert subcategory != null;
+		
 		int count_failing_pages = 0;
 		for(AuditRecord page_audit : page_audits) {
 			PageAuditRecord page_audit_record = (PageAuditRecord)page_audit;
@@ -1344,10 +1350,17 @@ public class AuditUtils {
 	/**
 	 * Retrieves count of pages that have non text contrast issue
 	 * 
-	 * @param page_audits
-	 * @return
+	 * @param page_audits the list of {@link AuditRecord}s
+	 * @param audit_name the name of the audit
+	 * @return the count of pages that have issues by audit name
+	 * 
+	 * precondition: page_audits != null
+	 * precondition: audit_name != null
 	 */
 	public static int getCountPagesWithIssuesByAuditName(List<AuditRecord> page_audits, AuditName audit_name) {
+		assert page_audits != null;
+		assert audit_name != null;
+		
 		int count_failing_pages = 0;
 		
 		for(AuditRecord page_audit : page_audits) {
@@ -1366,11 +1379,14 @@ public class AuditUtils {
 	}
 
 	/**
-	 *
-	 * @param page_audits
-	 * @return
+	 * Retrieves the count of pages that have WCAG compliance issues
+	 * 
+	 * @param page_audits the list of {@link AuditRecord}s
+	 * @return the count of pages that have WCAG compliance issues
 	 */
 	public static int getCountOfPagesWithWcagComplianceIssues(List<AuditRecord> page_audits) {
+		assert page_audits != null;
+		
 		int pages_with_issues = 0;
 		
 		for(AuditRecord audit_record : page_audits) {

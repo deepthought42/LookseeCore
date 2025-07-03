@@ -11,10 +11,9 @@ import java.util.List;
  *
  */
 public class ActionHelper {
-	public static HashMap<String, Integer> actionOrderOfOperationsMap 
-		= new HashMap<String, Integer>();
+	public static HashMap<String, Integer> actionOrderOfOperationsMap = new HashMap<>();
 	
-	private static List<List<ActionOLD>> action_lists = new ArrayList<List<ActionOLD>>();
+	private static List<List<ActionOLD>> action_lists = new ArrayList<>();
 	
 	/*
 	 * ACTION POLICIES
@@ -36,11 +35,11 @@ public class ActionHelper {
 	 * -------------------------
 	 */
 	static {
-		List<ActionOLD> mouse_motion_actions = new ArrayList<ActionOLD>();
+		List<ActionOLD> mouse_motion_actions = new ArrayList<>();
 		//mouse_motion_actions.add(new Action("mouseover"));
 		//mouse_motion_actions.add(new Action("scroll","100"));
 		
-		List<ActionOLD> click_actions = new ArrayList<ActionOLD>();
+		List<ActionOLD> click_actions = new ArrayList<>();
 		//click_actions.add(new Action("clickAndHold"));
 		click_actions.add(new ActionOLD("click"));
 		//click_actions.add(new Action("clickAt"));
@@ -57,10 +56,21 @@ public class ActionHelper {
 		//action_lists.add(keyboard_actions);
 	}
 	
+	/**
+	 * Gets the order of operation for an action
+	 * 
+	 * @param actionName name of the action
+	 * @return {@link Integer} representing the order of operation
+	 */
 	public static Integer getOrderOfOperationForAction(String actionName){
 		return actionOrderOfOperationsMap.get(actionName);
 	}
 
+	/**
+	 * Gets the action lists
+	 * 
+	 * @return {@link List} of {@link List} of {@link ActionOLD}s
+	 */
 	public static List<List<ActionOLD>> getActionLists() {
 		return action_lists;
 	}

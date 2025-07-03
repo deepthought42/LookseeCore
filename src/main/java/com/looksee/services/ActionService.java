@@ -1,11 +1,13 @@
 package com.looksee.services;
 
+import com.looksee.models.ActionOLD;
+import com.looksee.models.repository.ActionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.looksee.models.ActionOLD;
-import com.looksee.models.repository.ActionRepository;
-
+/**
+ * Service for interacting with {@link ActionOLD} objects
+ */
 @Service
 public class ActionService {
 
@@ -13,11 +15,12 @@ public class ActionService {
 	private ActionRepository action_repo;
 	
 	/**
-	 * Objects are expected to be immutable as of 3/14/19. When this method is ran, if the 
-	 * object already exists then it will be loaded from the database by key, otherwise it will be saved
+	 * Saves an {@link ActionOLD} object to the database
 	 * 
-	 * @param action {@link ActionOLD} 
-	 * @return
+	 * @param action {@link ActionOLD}
+	 * @return {@link ActionOLD}
+	 * 
+	 * precondition: action != null
 	 */
 	public ActionOLD save(ActionOLD action){
 		ActionOLD action_record = action_repo.findByKey(action.getKey());
@@ -30,8 +33,10 @@ public class ActionService {
 	/**
 	 * Retrieve data from database
 	 * 
-	 * @param key
-	 * @return
+	 * @param key key of the action to find
+	 * @return {@link ActionOLD}
+	 * 
+	 * precondition: key != null
 	 */
 	public ActionOLD findByKey(String key) {
 		return action_repo.findByKey(key);

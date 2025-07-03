@@ -20,8 +20,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,12 +53,15 @@ public class MarginAudit implements IExecutablePageStateAudit {
 	public MarginAudit() {	}
 	
 	/**
-	 * {@inheritDoc}
+	 * Executes the audit on the margins used within a page state as part of  the 
+	 * 	information architecture audit category
 	 * 
-	 * Identifies colors used on page, the color scheme type used, and the ultimately the score for how the colors used conform to scheme
-	 *  
-	 * @throws MalformedURLException 
-	 * @throws URISyntaxException 
+	 * @param page_state {@link PageState} to audit
+	 * @param audit_record {@link AuditRecord} to audit
+	 * @param design_system {@link DesignSystem} to audit
+	 * @return {@link Audit} result of the audit
+	 * 
+	 * precondition: page_state != null
 	 */
 	@Override
 	public Audit execute(PageState page_state, AuditRecord audit_record, DesignSystem design_system) {
@@ -127,19 +128,19 @@ public class MarginAudit implements IExecutablePageStateAudit {
 		int points = spacing_score.getPointsAchieved() + margin_as_padding_score.getPointsAchieved();
 		int max_points = spacing_score.getMaxPossiblePoints() + margin_as_padding_score.getMaxPossiblePoints();
 		//calculate score for question "Is margin used as margin?" NOTE: The expected calculation expects that margins are not used as margin
-		//log.warn("MARGIN SCORE  :::   " + points + " / 100" );	
+		//log.warn("MARGIN SCORE  :::   " + points + " / 100" );
 
 		return new Audit(AuditCategory.AESTHETICS,
-						 AuditSubcategory.WHITESPACE,
-						 AuditName.MARGIN,
-						 points,
-						 issue_messages,
-						 AuditLevel.PAGE,
-						 max_points,
-						 page_state.getUrl(),
-						 "",
-						 "",
-						 false);
+						AuditSubcategory.WHITESPACE,
+						AuditName.MARGIN,
+						points,
+						issue_messages,
+						AuditLevel.PAGE,
+						max_points,
+						page_state.getUrl(),
+						"",
+						"",
+						false);
 	}
 
 
@@ -304,6 +305,11 @@ public class MarginAudit implements IExecutablePageStateAudit {
 		return new Score(points_earned, max_points, element_issues);
 	}
 	
+	/**
+	 * Checks if a size is a multiple of 8
+	 * @param size_str size to check
+	 * @return true if the size is a multiple of 8, false otherwise
+	 */
 	public static boolean isMultipleOf8(String size_str) {
 		double size = Double.parseDouble(cleanSizeUnits(size_str));
 		if(size == 0.0) {
@@ -328,9 +334,11 @@ public class MarginAudit implements IExecutablePageStateAudit {
 	/**
 	 * Generates {@link Score score} based on which units (ie, %, em, rem, px, pt, etc.) are used for vertical(top,bottom) padding
 	 * 
-	 * @param vertical_margin_values
+	 * @param element_margin_map map of {@link ElementState}s to their margin values
 	 * 
-	 * @return
+	 * @return {@link Score score}
+	 * 
+	 * precondition: element_margin_map != null
 	 */
 	private Score evaluateUnits(Map<ElementState, List<String>> element_margin_map) {
 		assert element_margin_map != null;
@@ -392,6 +400,11 @@ public class MarginAudit implements IExecutablePageStateAudit {
 	}
 
 
+	/**
+	 * Extracts the measure unit from a padding value
+	 * @param padding_value padding value to extract the measure unit from
+	 * @return measure unit
+	 */
 	private String extractMeasureUnit(String padding_value) {
 		if(padding_value.contains("rem")) {
 			return "rem";
@@ -443,11 +456,11 @@ public class MarginAudit implements IExecutablePageStateAudit {
 	/**
 	 * Identifies elements that are using margin when they should be using margin
 	 * 
-	 * @param elements
+	 * @param elements set of {@link ElementState}s to score
 	 * 
-	 * @return 
+	 * @return {@link Score score}
 	 * 
-	 * @pre elements != null
+	 * precondition: elements != null
 	 */
 	private Score scoreMarginAsPadding(Set<ElementState> elements) {
 		assert elements != null;
@@ -552,10 +565,12 @@ public class MarginAudit implements IExecutablePageStateAudit {
 	}
 
 	/**
-	 * TODO
+	 * Scores non-collapsing margins
 	 * 
-	 * @param elements
-	 * @return
+	 * @param elements list of {@link Element}s to score
+	 * @return {@link Score score}
+	 * 
+	 * precondition: elements != null
 	 */
 	private int scoreNonCollapsingMargins(List<Element> elements) {
 		for(Element element : elements) {
@@ -571,6 +586,12 @@ public class MarginAudit implements IExecutablePageStateAudit {
 		
 	}
 
+	/**
+	 * Reads the content of a URL
+	 * @param url URL to read
+	 * @return content of the URL
+	 * @throws IOException if the URL cannot be read
+	 */
 	public static String URLReader(URL url) throws IOException {
         HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
         
@@ -583,8 +604,13 @@ public class MarginAudit implements IExecutablePageStateAudit {
         }
 	}
 	
+	/**
+	 * Reads a gzip stream
+	 * @param inputStream input stream to read
+	 * @return content of the input stream
+	 */
 	private static String readGzipStream(InputStream inputStream) {
-		 StringBuilder sb = new StringBuilder();
+		StringBuilder sb = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(new GZIPInputStream( inputStream )));) {
             String nextLine = "";
             while ((nextLine = reader.readLine()) != null) {
@@ -596,6 +622,11 @@ public class MarginAudit implements IExecutablePageStateAudit {
         return sb.toString();
 	}
 
+	/**
+	 * Reads a stream
+	 * @param in input stream to read
+	 * @return content of the input stream
+	 */
 	private static String readStream(InputStream in) {
         StringBuilder sb = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(in));) {
@@ -613,8 +644,10 @@ public class MarginAudit implements IExecutablePageStateAudit {
 	/**
 	 * Sort units into buckets by mapping unit type to margin sizes
 	 * 
-	 * @param margin_set
-	 * @return
+	 * @param margin_set list of margin values
+	 * @return map of unit types to their margin values
+	 * 
+	 * precondition: margin_set != null
 	 */
 	private Map<String, List<Double>> sortSizeUnits(List<String> margin_set) {
 		Map<String, List<Double>> sorted_margins = new HashMap<>();
@@ -647,10 +680,20 @@ public class MarginAudit implements IExecutablePageStateAudit {
 		return sorted_margins;
 	}
 	
+	/**
+	 * Sorts a list of doubles and makes them distinct
+	 * @param from list of doubles to sort and make distinct
+	 * @return list of distinct doubles
+	 */
 	public static List<Double> sortAndMakeDistinct(List<Double> from){
 		return from.stream().filter(n -> n != 0.0).distinct().sorted().collect(Collectors.toList());
 	}
 	
+	/**
+	 * Cleans a list of strings of size units
+	 * @param from list of strings to clean
+	 * @return list of cleaned strings
+	 */
 	public static List<String> cleanSizeUnits(List<String> from){
 		return from.stream()
 				.map(line -> line.replaceAll("px", ""))
@@ -669,6 +712,11 @@ public class MarginAudit implements IExecutablePageStateAudit {
 				.collect(Collectors.toList());
 	}
 	
+	/**
+	 * Cleans a string of size units
+	 * @param value string to clean
+	 * @return cleaned string
+	 */
 	public static String cleanSizeUnits(String value){
 		return value.replaceAll("px", "")
 					.replaceAll("%", "")
@@ -687,16 +735,31 @@ public class MarginAudit implements IExecutablePageStateAudit {
 					.trim();
 	}
 	
+	/**
+	 * Removes zero values from a list of integers
+	 * @param from list of integers to remove zero values from
+	 * @return list of integers without zero values
+	 */
 	public static List<Integer> removeZeroValues(List<Integer> from){
 		return from.stream().filter(n -> n != 0).collect(Collectors.toList());
 	}
 	
-	//for lists
+	/**
+	 * Converts a list of one type to another
+	 * @param from list of one type to convert
+	 * @param func function to convert the list
+	 * @return list of the converted type
+	 */
 	public static <T, U> List<U> convertList(List<T> from, Function<T, U> func) {
 	    return from.stream().map(func).collect(Collectors.toList());
 	}
 	
-	/* * Java method to find GCD of two number using Euclid's method * @return GDC of two numbers in Java */ 
+	/**
+	 * Finds the GCD of two numbers using Euclid's method
+	 * @param number1 first number
+	 * @param number2 second number
+	 * @return GCD of the two numbers
+	 */
 	private static double findGCD(double number1, double number2) { 
 		//base case 
 		if(number2 == 0){ 
@@ -705,6 +768,11 @@ public class MarginAudit implements IExecutablePageStateAudit {
 		return findGCD(number2, number1%number2);
 	}
 	
+	/**
+	 * Scores a measure unit
+	 * @param unit unit to score
+	 * @return score
+	 */
 	private int scoreMeasureUnit(String unit) {
 		if(unit.contains("rem") || unit.contains("em") || unit.contains("%") ){
 			return 2;
@@ -719,6 +787,11 @@ public class MarginAudit implements IExecutablePageStateAudit {
 		return 2;
 	}
 	
+	/**
+	 * Deflates a list of GCD values
+	 * @param gcd_list list of GCD values to deflate
+	 * @return list of deflated GCD values
+	 */
 	public static List<Double> deflateGCD(List<Double> gcd_list){
 		return gcd_list.stream().map(s -> s/100.0).distinct().sorted().collect(Collectors.toList());
 	}

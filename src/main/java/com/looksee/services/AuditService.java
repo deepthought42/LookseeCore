@@ -491,6 +491,12 @@ public class AuditService {
 		addAllIssues(audit_id, issue_ids);
 	}
 
+	/**
+	 * Calculates the data extraction progress for an audit
+	 * 
+	 * @param audit_id the id of the audit
+	 * @return the data extraction progress
+	 */
 	public double calculateDataExtractionProgress(long audit_id) {
 //		int verified_journeys = journey_repo.findAllJourneysForDomainAudit(audit_id, JourneyStatus.VERIFIED.toString());
 		int verified_journeys = journey_repo.findAllNonStatusJourneysForDomainAudit(audit_id, JourneyStatus.CANDIDATE.toString());

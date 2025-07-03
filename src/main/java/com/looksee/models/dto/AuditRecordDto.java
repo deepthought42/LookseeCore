@@ -8,10 +8,14 @@ import com.looksee.models.enums.AuditLevel;
 import com.looksee.models.enums.ExecutionStatus;
 import java.time.LocalDateTime;
 import java.util.UUID;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Client facing audit record.
  */
+@Getter
+@Setter
 public class AuditRecordDto {
     private long id;
     private String url;
@@ -34,8 +38,9 @@ public class AuditRecordDto {
 	private String targetUserAge;
 	private String targetUserEducation;
 
-;
-    
+	/**
+	 * Constructs an {@link AuditRecordDto} object
+	 */
     public AuditRecordDto() {
 		setStartTime(LocalDateTime.now());
 		setStatus(ExecutionStatus.UNKNOWN);
@@ -48,20 +53,29 @@ public class AuditRecordDto {
 	}
 	
 	/**
-	 * Constructor
-	 * @param level TODO
+	 * Constructs an {@link AuditRecordDto} object
 	 * 
+	 * @param id id of the audit record
+	 * @param status status of the audit record
+	 * @param level level of the audit record
+	 * @param startTime start time of the audit record
+	 * @param aestheticScore aesthetic score of the audit record
+	 * @param contentAuditScore content audit score of the audit record
+	 * @param infoArchScore info architecture score of the audit record
+	 * @param created_at creation time of the audit record
+	 * @param endTime end time of the audit record
+	 * @param url url of the audit record
 	 */
 	public AuditRecordDto(long id,
-					   ExecutionStatus status,
-					   AuditLevel level,
-					   LocalDateTime startTime,
-					   double aestheticScore,
-					   double contentAuditScore,
-					   double infoArchScore,
-					   LocalDateTime created_at,
-					   LocalDateTime endTime,
-					   String url
+						ExecutionStatus status,
+						AuditLevel level,
+						LocalDateTime startTime,
+						double aestheticScore,
+						double contentAuditScore,
+						double infoArchScore,
+						LocalDateTime created_at,
+						LocalDateTime endTime,
+						String url
 	) {
 		setId(id);
 		setStatus(status);
@@ -75,95 +89,49 @@ public class AuditRecordDto {
 		setUrl(url);
 	}
 
+	/**
+	 * Generates a key for the audit record
+	 * 
+	 * @return {@link String} representing the key
+	 */
 	public String generateKey() {
 		return "auditrecord:" + UUID.randomUUID().toString() + org.apache.commons.codec.digest.DigestUtils.sha256Hex(System.currentTimeMillis() + "");
 	}
 
-    public void setId(long id){
-        this.id = id;
-    }
-
-    public long getId(){
-        return id;
-    }
+	/**
+	 * Gets the status of the audit record
+	 * 
+	 * @return {@link ExecutionStatus}
+	 */
 	public ExecutionStatus getStatus() {
 		return ExecutionStatus.create(status);
 	}
 
+	/**
+	 * Sets the status of the audit record
+	 * 
+	 * @param status {@link ExecutionStatus}
+	 */
 	public void setStatus(ExecutionStatus status) {
 		this.status = status.getShortName();
 	}
 
+	/**
+	 * Gets the level of the audit record
+	 * 
+	 * @return {@link AuditLevel}
+	 */
 	public AuditLevel getLevel() {
 		return AuditLevel.create(level);
 	}
 
+	/**
+	 * Sets the level of the audit record
+	 * 
+	 * @param level {@link AuditLevel}
+	 */
 	public void setLevel(AuditLevel level) {
 		this.level = level.toString();
-	}
-
-	public LocalDateTime getStartTime() {
-		return startTime;
-	}
-
-	public void setStartTime(LocalDateTime start_time) {
-		this.startTime = start_time;
-	}
-
-	public LocalDateTime getEndTime() {
-		return endTime;
-	}
-
-	public void setEndTime(LocalDateTime end_time) {
-		this.endTime = end_time;
-	}
-
-	public double getContentAuditScore() {
-		return contentAuditScore;
-	}
-
-	public void setContentAuditScore(double content_audit_score) {
-		this.contentAuditScore = content_audit_score;
-	}
-	
-	public double getInfoArchScore() {
-		return infoArchScore;
-	}
-
-	public void setInfoArchScore(double info_arch_score) {
-		this.infoArchScore = info_arch_score;
-	}
-
-	public double getAestheticScore() {
-		return aestheticScore;
-	}
-
-	public void setAestheticScore(double aesthetic_score) {
-		this.aestheticScore = aesthetic_score;
-	}
-
-	public String getTargetUserAge() {
-		return targetUserAge;
-	}
-
-	public void setTargetUserAge(String target_user_age) {
-		this.targetUserAge = target_user_age;
-	}
-
-	public String getTargetUserEducation() {
-		return targetUserEducation;
-	}
-
-	public void setTargetUserEducation(String target_user_education) {
-		this.targetUserEducation = target_user_education;
-	}
-
-	public String getStatusMessage() {
-		return statusMessage;
-	}
-
-	public void setStatusMessage(String status_message) {
-		this.statusMessage = status_message;
 	}
 	
 	@Override
@@ -171,15 +139,12 @@ public class AuditRecordDto {
 		return this.getId()+", "+this.getUrl()+", "+this.getStatus()+", "+this.getStatusMessage();
 	}
 	
+	/**
+	 * Checks if the audit record is complete
+	 * 
+	 * @return true if the audit record is complete, false otherwise
+	 */
 	public boolean isComplete() {
 		return false;
-	}
-
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
 	}
 }

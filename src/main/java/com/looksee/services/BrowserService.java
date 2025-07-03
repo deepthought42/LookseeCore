@@ -3209,13 +3209,18 @@ public class BrowserService {
 
 	/**
 	 *Constructs a page object that contains all child elements that are considered to be potentially expandable.
-	 * @param title TODO
-	 * @return page {@linkplain PageState}
-	 * @throws IOException 
-	 * @throws XPathExpressionException 
-	 * @throws Exception 
 	 * 
-	 * @pre browser != null
+	 * @param page_src {@link String} representing the source of the page
+	 * @param page_url {@link String} representing the url of the page
+	 * @param title {@link String} representing the title of the page
+	 * 
+	 * @return {@link Page} representing the page
+	 * 
+	 * precondition: page_url != null
+	 * precondition: page_src != null
+	 * 
+	 * @throws IOException if an error occurs while building the page
+	 * @throws XPathExpressionException if an error occurs while building the page
 	 */
 	public Page buildPage( 	String page_src,
 							String page_url,
@@ -3253,25 +3258,26 @@ public class BrowserService {
 	/**
  	 * Constructs an {@link Element} from a JSOUP {@link Element element}
  	 * 
-	 * @param xpath
-	 * @param attributes
-	 * @param element
-	 * @param classification
-	 * @param rendered_css_values
+	 * @param xpath {@link String} representing the xpath of the element
+	 * @param attributes {@link Map} of {@link String}s to {@link String}s representing the attributes of the element
+	 * @param jsoup_element {@link Element} to build
+	 * @param classification {@link ElementClassification} of the element
+	 * @param pre_rendered_css_values {@link Map} of {@link String}s to {@link String}s representing the rendered css values of the element
 	 * 
-	 * @return
+	 * @return {@link com.looksee.models.Element} representing the element
 	 * 
-	 * @pre xpath != null && !xpath.isEmpty();
-	 * @pre attributes != null;
-	 * @pre element != null;
-	 * @pre classification != null
-	 * @pre rendered_css_values != null
+	 * precondition: xpath != null
+	 * precondition: !xpath.isEmpty()
+	 * precondition: attributes != null
+	 * precondition: element != null
+	 * precondition: classification != null
+	 * precondition: rendered_css_values != null
 	 */
 	public static com.looksee.models.Element buildElement(
-			String xpath, 
-			Map<String, String> attributes, 
-			Element jsoup_element, 
-			ElementClassification classification, 
+			String xpath,
+			Map<String, String> attributes,
+			Element jsoup_element,
+			ElementClassification classification,
 			Map<String, String> pre_rendered_css_values
 	) {
 		assert xpath != null && !xpath.isEmpty();
@@ -3290,11 +3296,16 @@ public class BrowserService {
 	/**
 	 * Extracts all forms including the child inputs and associated labels.
 	 *
-	 * @param elem
-	 * @param tag
-	 * @param driver
-	 * @return
-	 * @throws Exception
+	 * @param account_id id of the account
+	 * @param domain {@link Domain} to extract forms from
+	 * @param browser {@link Browser} to extract forms from
+	 * @return {@link Set} of {@link Form}s
+	 * 
+	 * precondition: account_id > 0
+	 * precondition: domain != null
+	 * precondition: browser != null
+	 * 
+	 * @throws Exception if an error occurs while extracting forms
 	 */
 	@Deprecated
 	public Set<Form> extractAllForms(long account_id, Domain domain, Browser browser) throws Exception {
@@ -3313,13 +3324,13 @@ public class BrowserService {
 			//String checksum = PageState.getFileChecksum(img);
 			//Map<String, String> css_map = Browser.loadCssProperties(form_elem);
 			com.looksee.models.Element form_tag = new com.looksee.models.Element(
-					form_elem.getText(), 
-					uniqifyXpath(form_elem, "//form", browser.getDriver()), 
-					form_elem.getTagName(), 
-					browser.extractAttributes(form_elem), 
-					new HashMap<>(), 
-					form_elem.getAttribute("innerHTML"), 
-					ElementClassification.ANCESTOR, 
+					form_elem.getText(),
+					uniqifyXpath(form_elem, "//form", browser.getDriver()),
+					form_elem.getTagName(),
+					browser.extractAttributes(form_elem),
+					new HashMap<>(),
+					form_elem.getAttribute("innerHTML"),
+					ElementClassification.ANCESTOR,
 					form_elem.getAttribute("outerHTML"));
 
 			form_tag = element_service.saveFormElement(form_tag);
@@ -3362,8 +3373,14 @@ public class BrowserService {
 		return form_list;
 	}
 	
-	
-
+	/**
+	 * Builds form fields from a list of input elements
+	 * 
+	 * @param account_id id of the account
+	 * @param input_elements {@link List} of {@link WebElement}s to build form fields from
+	 * @param browser {@link Browser} to build form fields from
+	 * @return {@link List} of {@link com.looksee.models.Element}s representing the form fields
+	 */
 	private List<com.looksee.models.Element> buildFormFields(long account_id, List<WebElement> input_elements, Browser browser) throws IOException {
 		List<com.looksee.models.Element> elements = new ArrayList<>();
 		for(WebElement input_elem : input_elements){
@@ -3418,19 +3435,37 @@ public class BrowserService {
 		return elements;
 	}
 	
+	/**
+	 * Extracts elements from a page
+	 * 
+	 * @param page_src {@link String} representing the source of the page
+	 * @param url {@link URL} representing the url of the page
+	 * @param rule_sets {@link List} of {@link RuleSet}s to extract elements from
+	 * @return {@link List} of {@link com.looksee.models.Element}s representing the elements
+	 * 
+	 * precondition: page_src != null
+	 * precondition: url != null
+	 * precondition: rule_sets != null
+	 * 
+	 * @throws IOException if an error occurs while extracting elements
+	 * @throws XPathExpressionException if an error occurs while extracting elements
+	 */
 	public List<com.looksee.models.Element> extractElements(String page_src, URL url, List<RuleSet> rule_sets) throws IOException, XPathExpressionException {
 		return getDomElements(page_src, url, rule_sets);
 	}
 	
 	/**
+	 * Extracts elements from a page
 	 * 
-	 * @param page_source
-	 * @param url
-	 * @param rule_sets TODO
-	 * @param reviewed_xpaths
-	 * @return
-	 * @throws IOException
-	 * @throws XPathExpressionException 
+	 * @param page_source {@link String} representing the source of the page
+	 * @param url {@link URL} representing the url of the page
+	 * @param rule_sets {@link List} of {@link RuleSet}s to extract elements from
+	 * @param reviewed_xpaths {@link Set} of {@link String}s representing the xpaths of the elements to review
+	 * @return {@link List} of {@link com.looksee.models.Element}s representing the elements
+	 * 
+	 * precondition: page_source != null
+	 * precondition: url != null
+	 * precondition: rule_sets != null
 	 */
 	private synchronized List<com.looksee.models.Element> getDomElements(String page_source, URL url, List<RuleSet> rule_sets) throws IOException, XPathExpressionException {
 		assert page_source != null;

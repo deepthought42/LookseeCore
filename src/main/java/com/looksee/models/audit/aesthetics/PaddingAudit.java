@@ -1,7 +1,6 @@
 package com.looksee.models.audit.aesthetics;
 
 import com.looksee.models.Domain;
-import com.looksee.models.Element;
 import com.looksee.models.ElementState;
 import com.looksee.models.PageState;
 import com.looksee.models.audit.Audit;
@@ -17,8 +16,6 @@ import com.looksee.models.enums.AuditName;
 import com.looksee.models.enums.AuditSubcategory;
 import com.looksee.models.enums.Priority;
 import com.looksee.services.PageStateService;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -27,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +34,7 @@ import org.springframework.stereotype.Component;
 /**
  * Responsible for executing an audit on the padding consistency across a {@link Domain} as part of the information architecture audit category
  */
+@NoArgsConstructor
 @Component
 public class PaddingAudit implements IExecutablePageStateAudit {
 	@SuppressWarnings("unused")
@@ -45,18 +44,19 @@ public class PaddingAudit implements IExecutablePageStateAudit {
 	
 	@Autowired
 	private PageStateService page_state_service;
-
-	
-	
-	public PaddingAudit() {	}
-	
+		
 	/**
-	 * {@inheritDoc}
-	 * 
 	 * Identifies colors used on page, the color scheme type used, and the ultimately the score for how the colors used conform to scheme
-	 *  
-	 * @throws MalformedURLException 
-	 * @throws URISyntaxException 
+	 *
+	 * @param page {@link PageState} to audit
+	 * @param audit_record {@link AuditRecord} to audit
+	 * @param design_system {@link DesignSystem} to audit
+	 * 
+	 * @return {@link Audit} result of the audit
+	 * 
+	 * precondition: page != null
+	 * precondition: audit_record != null
+	 * precondition: design_system != null
 	 */
 	@Override
 	public Audit execute(PageState page, AuditRecord audit_record, DesignSystem design_system) {
@@ -134,32 +134,16 @@ public class PaddingAudit implements IExecutablePageStateAudit {
 		
 
 		return new Audit(AuditCategory.AESTHETICS,
-						 AuditSubcategory.WHITESPACE,
-						 AuditName.PADDING,
-						 points,
-						 issue_messages,
-						 AuditLevel.PAGE,
-						 max_points,
-						 page.getUrl(),
-						 why_it_matters,
-						 description,
-						 false);
-	}
-
-	private Score evaluateSpacingAdherenceToBaseValue(Map<Element, List<String>> elements_padding_map) {
-		//extract baseline padding values
-		
-		//if no baseline exists then score 0 out of 3
-		//check if baseline is a multiple of 4 or 8
-		
-		
-		//if multiple of 8 give 3 out of 3
-		//if multiple of 4 give 2 out of 3
-		//else give score of 1 out of 3
-		
-		//check if other padding values are a multiple of the baseline
-		
-		return new Score(0, 0, new HashSet<>());
+						AuditSubcategory.WHITESPACE,
+						AuditName.PADDING,
+						points,
+						issue_messages,
+						AuditLevel.PAGE,
+						max_points,
+						page.getUrl(),
+						why_it_matters,
+						description,
+						false);
 	}
 	
 	/**
@@ -169,7 +153,7 @@ public class PaddingAudit implements IExecutablePageStateAudit {
 	 * 
 	 * @return {@link Score score}
 	 * 
-	 * @pre elements_padding_map != null
+	 * precondition: elements_padding_map != null
 	 */
 	public Score evaluateSpacingConsistency(Map<ElementState, List<String>> elements_padding_map) {
 		assert elements_padding_map != null;
@@ -206,7 +190,7 @@ public class PaddingAudit implements IExecutablePageStateAudit {
 			gcd_list.remove(1.0);
 			//reduce gcd again.
 			gcd_map.put(unit, gcd_list);
-		}			
+		}
 		
 		log.warn("GCD MAP VALUES ::   "+gcd_map);
 		//reduce gcd_list until no value is divisible by any other
@@ -254,7 +238,7 @@ public class PaddingAudit implements IExecutablePageStateAudit {
 					//remove gcd value from input gcd list
 					gcd_values.remove(largest_gcd);
 					
-					if(largest_gcd_count > 0) {						
+					if(largest_gcd_count > 0) {
 						//add the largest gcd to the list of most applicable gcd values
 						most_common_gcd_values.add(largest_gcd);
 					}
@@ -284,11 +268,11 @@ public class PaddingAudit implements IExecutablePageStateAudit {
 	/**
 	 * Generates {@link Score score} for spacing consistency across elements
 	 * 
-	 * @param elements_margin_map
+	 * @param elements_margins map of {@link ElementState}s to their padding values
 	 * 
 	 * @return {@link Score score}
 	 * 
-	 * @pre elements_margin_map != null
+	 * precondition: elements_margin_map != null
 	 */
 	private Score evaluateSpacingMultipleOf8(Map<ElementState, List<String>> elements_margins) {
 		assert elements_margins != null;
@@ -348,6 +332,11 @@ public class PaddingAudit implements IExecutablePageStateAudit {
 		return new Score(points_earned, max_points, issue_messages);
 	}
 	
+	/**
+	 * Checks if a size is a multiple of 8
+	 * @param size_str size to check
+	 * @return true if the size is a multiple of 8, false otherwise
+	 */
 	public static boolean isMultipleOf8(String size_str) {
 		double size = Double.parseDouble(cleanSizeUnits(size_str));
 		if(size == 0.0) {
@@ -373,9 +362,9 @@ public class PaddingAudit implements IExecutablePageStateAudit {
 	/**
 	 * Generates {@link Score score} based on which units (ie, %, em, rem, px, pt, etc.) are used for vertical(top,bottom) padding
 	 * 
-	 * @param vertical_padding_values
+	 * @param element_padding_map map of {@link ElementState}s to their padding values
 	 * 
-	 * @return
+	 * @return {@link Score score}
 	 */
 	private Score evaluateUnits(Map<ElementState, List<String>> element_padding_map) {
 		assert element_padding_map != null;
@@ -402,8 +391,8 @@ public class PaddingAudit implements IExecutablePageStateAudit {
 					
 					ElementStateIssueMessage issue_message = new ElementStateIssueMessage(
 							Priority.MEDIUM,
-							description, 
-							"For best responsiveness make sure margin values are a multiple of 8.", 
+							description,
+							"For best responsiveness make sure margin values are a multiple of 8.",
 							element,
 							AuditCategory.AESTHETICS,
 							labels,
@@ -419,13 +408,13 @@ public class PaddingAudit implements IExecutablePageStateAudit {
 					
 					ElementStateIssueMessage issue_message = new ElementStateIssueMessage(
 							Priority.MEDIUM,
-							description, 
-							"For best responsiveness make sure margin values are a multiple of 8.", 
+							description,
+							"For best responsiveness make sure margin values are a multiple of 8.",
 							element,
 							AuditCategory.AESTHETICS,
 							labels,
 							ada_compliance,
-							title, 
+							title,
 							0,
 							1);
 					issue_messages.add(issue_message);
@@ -436,7 +425,11 @@ public class PaddingAudit implements IExecutablePageStateAudit {
 		return new Score(points_earned, max_vertical_score, issue_messages);
 	}
 	
-	
+	/**
+	 * Extracts the measure unit from a padding value
+	 * @param padding_value padding value to extract the measure unit from
+	 * @return measure unit
+	 */
 	private String extractMeasureUnit(String padding_value) {
 		if(padding_value.contains("rem")) {
 			return "rem";
@@ -484,6 +477,11 @@ public class PaddingAudit implements IExecutablePageStateAudit {
 		return "";
 	}
 	
+	/**
+	 * Scores a measure unit
+	 * @param unit unit to score
+	 * @return score
+	 */
 	private int scoreMeasureUnit(String unit) {
 		if(unit.contains("rem") || unit.contains("em") || unit.contains("%") ){
 			return 3;
@@ -503,8 +501,8 @@ public class PaddingAudit implements IExecutablePageStateAudit {
 	/**
 	 * Sort units into buckets by mapping unit type to padding sizes
 	 * 
-	 * @param padding_set
-	 * @return
+	 * @param padding_set list of padding values
+	 * @return map of unit types to their padding values
 	 */
 	private Map<String, List<Double>> sortSizeUnits(List<String> padding_set) {
 		Map<String, List<Double>> sorted_paddings = new HashMap<>();
@@ -533,10 +531,20 @@ public class PaddingAudit implements IExecutablePageStateAudit {
 		return sorted_paddings;
 	}
 	
+	/**
+	 * Sorts a list of doubles and makes them distinct
+	 * @param from list of doubles to sort and make distinct
+	 * @return list of distinct doubles
+	 */
 	private static List<Double> sortAndMakeDistinct(List<Double> from){
 		return from.stream().filter(n -> n != 0).map(s -> s*100).distinct().sorted().collect(Collectors.toList());
 	}
 	
+	/**
+	 * Cleans a string of size units
+	 * @param value string to clean
+	 * @return cleaned string
+	 */
 	private static String cleanSizeUnits(String value){
 		return value.replace("!important", "")
 					.replaceAll("px", "")
@@ -554,12 +562,17 @@ public class PaddingAudit implements IExecutablePageStateAudit {
 					
 	}
 	
-	/* * Java method to find GCD of two number using Euclid's method * @return GDC of two numbers in Java */ 
-	private static double findGCD(double number1, double number2) { 
-		//base case 
-		if(number2 == 0){ 
-			return number1; 
-		} 
+	/**
+	 * Finds the GCD of two numbers using Euclid's method
+	 * @param number1 first number
+	 * @param number2 second number
+	 * @return GCD of the two numbers
+	 */
+	private static double findGCD(double number1, double number2) {
+		//base case
+		if(number2 == 0){
+			return number1;
+		}
 		return findGCD(number2, number1%number2);
 	}
 }

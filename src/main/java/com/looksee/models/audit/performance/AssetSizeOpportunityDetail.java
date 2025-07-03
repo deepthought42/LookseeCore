@@ -1,55 +1,41 @@
 package com.looksee.models.audit.performance;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 /**
- * 
+ * Represents an opportunity to reduce the size of an asset
  */
+@Getter
+@Setter
+@NoArgsConstructor
 public class AssetSizeOpportunityDetail extends AuditDetail {
 
 	private String url;
-	private Integer wasted_bytes;
-	private Double wasted_percent;
-	private Integer total_bytes;
+	private Integer wastedBytes;
+	private Double wastedPercent;
+	private Integer totalBytes;
 	
-	public AssetSizeOpportunityDetail() {}
-	
+	/**
+	 * Constructs an {@link AssetSizeOpportunityDetail} object
+	 * 
+	 * @param url url of the asset
+	 * @param wasted_bytes wasted bytes of the asset
+	 * @param wasted_percent wasted percent of the asset
+	 * @param total_bytes total bytes of the asset
+	 * 
+	 * @return {@link AssetSizeOpportunityDetail} object
+	 * 
+	 * precondition: url != null
+	 * precondition: wasted_bytes > 0
+	 * precondition: wasted_percent > 0
+	 * precondition: total_bytes > 0
+	 */
 	public AssetSizeOpportunityDetail(String url, int wasted_bytes, double wasted_percent, int total_bytes) {
 		setUrl(url);
 		setWastedBytes(wasted_bytes);
 		setWastedPercent(wasted_percent);
 		setTotalBytes(total_bytes);
 	}
-
-	/** GETTERS AND SETTERS  */
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-	public Integer getWastedBytes() {
-		return wasted_bytes;
-	}
-
-	public void setWastedBytes(Integer wasted_bytes) {
-		this.wasted_bytes = wasted_bytes;
-	}
-
-	public Double getWastedPercent() {
-		return wasted_percent;
-	}
-
-	public void setWastedPercent(Double wasted_percent) {
-		this.wasted_percent = wasted_percent;
-	}
-
-	public Integer getTotalBytes() {
-		return total_bytes;
-	}
-
-	public void setTotalBytes(Integer total_bytes) {
-		this.total_bytes = total_bytes;
-	}
-
 }

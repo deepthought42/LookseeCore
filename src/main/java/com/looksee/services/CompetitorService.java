@@ -1,15 +1,13 @@
 package com.looksee.services;
 
-import java.time.Instant;
-import java.time.ZoneOffset;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.looksee.models.competitiveanalysis.Competitor;
 import com.looksee.models.competitiveanalysis.brand.Brand;
 import com.looksee.models.repository.CompetitorRepository;
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Contains business logic for interacting with and managing accounts
@@ -49,8 +47,10 @@ public class CompetitorService {
 	/**
 	 * Checks if competitor has a competitive analysis currently in progress
 	 * 
-	 * @param id
-	 * @return
+	 * @param brand {@link Brand} to check if analysis is running for
+	 * @return true if analysis is running for the brand, false otherwise
+	 * 
+	 * precondition: brand != null
 	 */
 	public boolean isAnalysisRunning(Brand brand) {
 		if(brand != null) {

@@ -22,14 +22,11 @@ import com.looksee.models.repository.GroupRepository;
 import com.looksee.models.repository.PageStateRepository;
 import com.looksee.models.repository.TestRepository;
 import com.looksee.utils.PathUtils;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import org.openqa.grid.common.exception.GridException;
-import org.openqa.selenium.WebDriverException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,12 +71,18 @@ public class TestService {
 	 * Runs an {@code Test}
 	 *
 	 * @param test test to be ran
-	 *
-	 * @pre test != null
-	 * @return	{@link TestRecord} indicating passing status and {@link PageVersion} if not passing
-	 * @throws NoSuchAlgorithmException
-	 * @throws WebDriverException
-	 * @throws GridException
+	 * @param browser_name name of the browser to use
+	 * @param last_test_status status of the last test
+	 * @param domain domain to run the test on
+	 * @param user_id user id to run the test on
+	 * 
+	 * @return	{@link TestRecord} indicating passing status and if not passing
+	 * 
+	 * precondition: test != null
+	 * precondition: browser_name != null
+	 * precondition: last_test_status != null
+	 * precondition: domain != null
+	 * precondition: user_id != null
 	 */
 	public TestRecord runTest(Test test, String browser_name, TestStatus last_test_status, Domain domain, String user_id) {
 		assert test != null;
@@ -235,14 +238,14 @@ public class TestService {
     * Checks if url, xpath and remaining keys in path_keys list are present in any of the test paths provided in test_path_object_lists
     * 
     * @param path_keys list of path keys to check
-    * @param tests_path_object_lists list of test path objects to check
+    * @param test_path_object_lists list of test path objects to check
     * @param user_id user id of the user who owns the tests
     * @param url url of the page to check
     * 
-    * @pre path_keys != null
-    * @pre !path_keys.isEmpty()
-    * @pre test_path_object_lists != null
-    * @pre !test_path_object_lists.isEmpty()
+    * precondition: path_keys != null
+    * precondition: !path_keys.isEmpty()
+    * precondition: test_path_object_lists != null
+    * precondition: !test_path_object_lists.isEmpty()
     * 
     * @return {@code true} if the end of the path is unique, {@code false} otherwise
     */

@@ -1,5 +1,6 @@
 package com.looksee.browsing;
 
+import com.looksee.models.Element;
 import com.looksee.models.ElementState;
 import com.looksee.models.enums.Action;
 import com.looksee.utils.TimingUtils;
@@ -24,10 +25,19 @@ public class Crawler {
 
 	
 	/**
-	 * Executes the given {@link ElementAction element action} pair such that
+	 * Executes the given element action pair such that
 	 * the action is executed against the element
 	 *
-	 * @return whether action was able to be performed on element or not
+	 * @param action {@link Action} to perform
+	 * @param elem {@link Element} to perform the action on
+	 * @param driver {@link WebDriver} to perform the action on
+	 * @throws NoSuchElementException if the element is not found
+	 * 
+	 * precondition: action != null
+	 * precondition: elem != null
+	 * precondition: driver != null
+	 * 
+	 * @throws NoSuchElementException if the element is not found
 	 */
 	public static void performAction(Action action, com.looksee.models.Element elem, WebDriver driver) throws NoSuchElementException{
 		ActionFactory actionFactory = new ActionFactory(driver);
@@ -37,10 +47,19 @@ public class Crawler {
 	}
 
 	/**
-	 * Executes the given {@link ElementAction element action} pair such that
+	 * Executes the given element action pair such that
 	 * the action is executed against the element
 	 *
-	 * @return whether action was able to be performed on element or not
+	 * @param action {@link Action} to perform
+	 * @param elem {@link Element} to perform the action on
+	 * @param driver {@link WebDriver} to perform the action on
+	 * @param location {@link Point} to perform the action at
+	 * @throws NoSuchElementException if the element is not found
+	 * 
+	 * precondition: action != null
+	 * precondition: elem != null
+	 * precondition: driver != null
+	 * precondition: location != null
 	 */
 	public static void performAction(Action action, com.looksee.models.Element elem, WebDriver driver, Point location) throws NoSuchElementException{
 		ActionFactory actionFactory = new ActionFactory(driver);
@@ -49,19 +68,31 @@ public class Crawler {
 		TimingUtils.pauseThread(500L);
 	}
 	
+	/**
+	 * Scrolls down the page by a given distance
+	 * 
+	 * @param driver {@link WebDriver} to scroll
+	 * @param distance distance to scroll
+	 * 
+	 * precondition: driver != null
+	 * precondition: distance > 0
+	 */
 	public static void scrollDown(WebDriver driver, int distance)
     {
         ((JavascriptExecutor)driver).executeScript("scroll(0,"+ distance +");");
     }
 	
 	/**
+	 * Generates a random location within an element but not within child elements
 	 * 
-	 * @param web_element
-	 * @return
+	 * @param web_element {@link WebElement} to generate a random location within
+	 * @param child_element {@link ElementState} to check for child elements
+	 * @return random location within the element but not within child elements
 	 * 
-	 * @pre web_element != null
-	 * @pre child_element != null
-	 * @pre offset != null
+	 * precondition: web_element != null
+	 * precondition: child_element != null
+	 * 
+	 * @return {@link Point} with random location within the element but not within child elements
 	 */
 	public static Point generateRandomLocationWithinElementButNotWithinChildElements(WebElement web_element, ElementState child_element) {
 		assert web_element != null;

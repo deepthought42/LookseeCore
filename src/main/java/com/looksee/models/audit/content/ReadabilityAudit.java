@@ -18,12 +18,11 @@ import com.looksee.services.AuditService;
 import com.looksee.services.UXIssueMessageService;
 import com.looksee.utils.ContentUtils;
 import io.whelk.flesch.kincaid.ReadabilityCalculator;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +35,7 @@ import org.springframework.stereotype.Component;
  * WCAG Success Criterion - https://www.w3.org/TR/UNDERSTANDING-WCAG20/meaning-supplements.html
  */
 @Component
+@NoArgsConstructor
 public class ReadabilityAudit implements IExecutablePageStateAudit {
 	@SuppressWarnings("unused")
 	private static Logger log = LoggerFactory.getLogger(ReadabilityAudit.class);
@@ -46,15 +46,19 @@ public class ReadabilityAudit implements IExecutablePageStateAudit {
 	@Autowired
 	private UXIssueMessageService issue_message_service;
 	
-	public ReadabilityAudit() {} 
-
-	
 	/**
 	 * {@inheritDoc}
 	 * 
 	 * Scores readability and relevance of content on a page based on the reading level of the content and the keywords used
-	 * @throws MalformedURLException 
-	 * @throws URISyntaxException 
+	 * 
+	 * @param page_state {@link PageState} to audit
+	 * @param audit_record {@link AuditRecord} to audit
+	 * @param design_system {@link DesignSystem} to audit
+	 * @return {@link Audit} result of the audit
+	 * 
+	 * precondition: page_state != null
+	 * precondition: audit_record != null
+	 * precondition: design_system != null
 	 */
 	@Override
 	public Audit execute(PageState page_state, AuditRecord audit_record, DesignSystem design_system) {

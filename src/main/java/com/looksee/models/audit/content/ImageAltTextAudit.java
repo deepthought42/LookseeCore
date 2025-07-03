@@ -56,7 +56,12 @@ public class ImageAltTextAudit implements IExecutablePageStateAudit {
 	 * format is valid and the url goes to a location that doesn't produce a
 	 * 4xx error
 	 * 
-	 * @param 
+	 * @param page_state {@link PageState} to audit
+	 * @param audit_record {@link AuditRecord} to audit
+	 * @param design_system {@link DesignSystem} to audit
+	 * @return {@link Audit} result of the audit
+	 * 
+	 * precondition: page_state != null
 	 */
 	@Override
 	public Audit execute(PageState page_state,
@@ -93,7 +98,7 @@ public class ImageAltTextAudit implements IExecutablePageStateAudit {
 			Element element = jsoup_doc.getElementsByTag(tag_name).first();
 			
 			//Check if element has "alt" attribute present
-			if(element.hasAttr("alt")) {				
+			if(element.hasAttr("alt")) {
 
 				if(element.attr("alt").isEmpty()) {
 					String title = "Image alternative text value is empty";
@@ -184,16 +189,16 @@ public class ImageAltTextAudit implements IExecutablePageStateAudit {
 		String description = "Images without alternative text defined as a non empty string value";
 
 		Audit audit = new Audit(AuditCategory.CONTENT,
-								 AuditSubcategory.IMAGERY,
-								 AuditName.ALT_TEXT,
-								 points_earned,
-								 new HashSet<>(),
-								 AuditLevel.PAGE,
-								 max_points,
-								 page_state.getUrl(), 
-								 why_it_matters, 
-								 description,
-								 true);
+								AuditSubcategory.IMAGERY,
+								AuditName.ALT_TEXT,
+								points_earned,
+								new HashSet<>(),
+								AuditLevel.PAGE,
+								max_points,
+								page_state.getUrl(),
+								why_it_matters,
+								description,
+								true);
 		audit_service.save(audit);
 		audit_service.addAllIssues(audit.getId(), issue_messages);
 		return audit;

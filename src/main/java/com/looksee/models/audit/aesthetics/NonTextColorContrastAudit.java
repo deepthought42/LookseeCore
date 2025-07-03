@@ -25,8 +25,6 @@ import com.looksee.utils.ColorUtils;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -70,8 +68,14 @@ public class NonTextColorContrastAudit implements IExecutablePageStateAudit {
 	 * 
 	 * Compliance level is determined by the {@link DesignSystem} if it isn't null, otherwise defaults to AAA level
 	 * 
-	 * @throws MalformedURLException 
-	 * @throws URISyntaxException 
+	 * @param page_state {@link PageState} to audit
+	 * @param audit_record {@link AuditRecord} to audit
+	 * @param design_system {@link DesignSystem} to audit
+	 * @return {@link Audit} result of the audit
+	 * 
+	 * precondition: page_state != null
+	 * precondition: audit_record != null
+	 * precondition: design_system != null
 	 */
 	@Override
 	public Audit execute(PageState page_state, AuditRecord audit_record, DesignSystem design_system) {
@@ -125,10 +129,14 @@ public class NonTextColorContrastAudit implements IExecutablePageStateAudit {
 	/**
 	 * Evaluates non text elements for contrast with parent element
 	 * 
-	 * @param page_state
-	 * @param non_text_elements
-	 * @param design_system TODO
-	 * @return
+	 * @param page_state {@link PageState} to audit
+	 * @param non_text_elements {@link List} of {@link ElementState}s to audit
+	 * @param design_system {@link DesignSystem} to audit
+	 * @return {@link Audit} result of the audit
+	 * 
+	 * precondition: page_state != null
+	 * precondition: non_text_elements != null
+	 * precondition: design_system != null
 	 */
 	private Audit evaluateNonTextContrast(PageState page_state, List<ElementState> non_text_elements, DesignSystem design_system) {
 		assert page_state != null;
@@ -361,15 +369,13 @@ public class NonTextColorContrastAudit implements IExecutablePageStateAudit {
 	 * Generates {@link Set} of {@link ColorContrastRecommendation recommendations} based on the text color, background color and font_size
 	 * 	NOTE : assumes a light color scheme only. Doesn't currently account for dark color scheme
 	 * 
-	 * @param font_color
-	 * @param background_color
-	 * @param font_size
-	 * @param is_bold TODO
+	 * @param element {@link ElementState} to generate recommendations for
+	 * @param background_color {@link ColorData} of the background color
 	 * 
-	 * @pre font_color != null
-	 * @pre background_color != null
+	 * @return {@link Set} of {@link ColorContrastRecommendation recommendations}
 	 * 
-	 * @return
+	 * precondition: element != null
+	 * precondition: background_color != null
 	 */
 	private Set<Recommendation> generateNonTextContrastRecommendations(ElementState element,
 																		ColorData background_color) {

@@ -1402,6 +1402,16 @@ public class BrowserUtils {
 		return null;
 	}
 	
+	/**
+	 * Checks if the start and end urls span multiple domains
+	 * 
+	 * @param start_url the start url
+	 * @param end_url the end url
+	 * @param path_objects the path objects
+	 * @return true if the start and end urls span multiple domains, false otherwise
+	 * 
+	 * @throws MalformedURLException if the url is malformed
+	 */
 	public static boolean doesSpanMutlipleDomains(String start_url, String end_url, List<LookseeObject> path_objects) throws MalformedURLException {
 		return !(start_url.trim().contains(new URL(end_url).getHost()) || end_url.contains((new URL(PathUtils.getLastPageStateOLD(path_objects).getUrl()).getHost())));
 	}

@@ -1,7 +1,5 @@
 package com.looksee.models.audit.performance;
 
-import java.util.Date;
-
 /**
  * 
  * 
@@ -103,7 +101,6 @@ public class MetricsDetail extends AuditDetail {
 		setObservedTraceEndTs(observed_trace_end_ts);
 		setSpeedIndex(speed_index);
 		setTotalBlockingTime(total_blocking_time);
-		setCreatedDate(new Date());
 	}
 
 	public Integer getFirstContentfulPaint() {

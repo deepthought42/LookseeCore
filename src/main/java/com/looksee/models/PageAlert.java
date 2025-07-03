@@ -1,14 +1,13 @@
 package com.looksee.models;
 
 
-import org.slf4j.Logger;import org.slf4j.LoggerFactory;
-
 import com.looksee.models.enums.AlertChoice;
-
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.UnhandledAlertException;
 import org.openqa.selenium.WebDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Represents an Alert or Confirmation pop-up that is triggered by javascript within the page
@@ -20,13 +19,8 @@ public class PageAlert extends LookseeObject {
 	private String message;
 	
 	/**
-	 * 
-	 * @param page
-	 * @param alertChoice
-	 * @pre page!=null
-	 * @pre alertChoice != null
-	 * @pre {"accept","reject"}.contains(alertChoice)
-	 * @pre message != null;
+	 * Constructor
+	 * @param message message of the alert
 	 */
 	public PageAlert(String message){
 		this.message = message;
@@ -34,9 +28,9 @@ public class PageAlert extends LookseeObject {
 	}
 	
 	/**
-	 * 
-	 * @param driver
-	 * @param choice 
+	 * Performs a choice on the alert
+	 * @param driver {@link WebDriver} to perform the choice on
+	 * @param choice {@link AlertChoice} to perform
 	 */
 	public void performChoice(WebDriver driver, AlertChoice choice){
 		try{
@@ -53,14 +47,30 @@ public class PageAlert extends LookseeObject {
 		}
 	}
 	
+	/**
+	 * Retrieves the message of the alert
+	 * @return message of the alert
+	 * @throws UnhandledAlertException if the alert is not present
+	 */
 	public String getMessage() throws UnhandledAlertException{
 		return this.message; 
 	}
 	
+	/**
+	 * Retrieves the message of an alert
+	 * @param alert {@link Alert} to retrieve the message from
+	 * @return message of the alert
+	 * @throws UnhandledAlertException if the alert is not present
+	 */
 	public static String getMessage(Alert alert) throws UnhandledAlertException{
 		return alert.getText(); 
 	}
 	
+	/**
+	 * Checks if two {@link PageAlert}s are equal
+	 * @param o {@link Object} to compare to
+	 * @return true if the {@link PageAlert}s are equal, false otherwise
+	 */
 	@Override
 	public boolean equals(Object o){
 		if (this == o) return true;
@@ -69,13 +79,21 @@ public class PageAlert extends LookseeObject {
         PageAlert that = (PageAlert)o;
         
         return this.message.equals(that.getMessage());
-   	}
+	}
 
+	/**
+	 * Clones the {@link PageAlert}
+	 * @return cloned {@link PageAlert}
+	 */
 	@Override
 	public PageAlert clone() {
 		return new PageAlert(this.getMessage());
 	}
 
+	/**
+	 * Generates a key for the {@link PageAlert}
+	 * @return key for the {@link PageAlert}
+	 */
 	@Override
 	public String generateKey() {
 		return "alert"+org.apache.commons.codec.digest.DigestUtils.sha256Hex(this.getMessage());

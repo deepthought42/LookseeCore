@@ -920,24 +920,36 @@ public class AuditRecordService {
 		return audit_record_repo.wasSinglePageAlreadyAudited(pageAuditRecordId, pageId) != null;
 	}
 
+	/**
+	 * Get the number of journeys without a specific status for a domain audit
+	 * 
+	 * @param domain_audit_id the id of the domain audit
+	 * @param status the status of the journey
+	 * @return the number of journeys without the specified status
+	 */
 	public int getNumberOfJourneysWithoutStatus(long domain_audit_id, JourneyStatus status) {
 		return audit_record_repo.getNumberOfJourneysWithoutStatus(domain_audit_id, status.toString());
 	}
 
 	/**
+	 * Find all audit records for an account
 	 * 
-	 * @param acct_id
-	 * @return
+	 * @param acct_id id of the account
+	 * @return {@link List} of {@link AuditRecord}s
+	 * 
+	 * precondition: acct_id > 0
 	 */
     public List<AuditRecord> findByAccountId(long acct_id) {
 		return audit_record_repo.findAuditRecordByAccountId(acct_id);
     }
 
 	/**
-	 * Convert list of {@link AuditRecord audit_records} to list of {@link AuditDTO}
+	 * Convert list of {@link AuditRecord audit_records} to list of {@link AuditRecordDto}
 	 * 
-	 * @param audits_records
-	 * @return
+	 * @param audits_records {@link List} of {@link AuditRecord}s to convert
+	 * @return {@link List} of {@link AuditRecordDto}s
+	 * 
+	 * precondition: audits_records != null
 	 */
     public List<AuditRecordDto> buildAudits(List<AuditRecord> audits_records) {
 		List<AuditRecordDto> auditDtoList = new ArrayList<>();
@@ -949,10 +961,12 @@ public class AuditRecordService {
 	}
 
 	/**
-	 * Convert list of {@link AuditRecord audit_records} to list of {@link AuditDTO}
+	 * Convert list of {@link AuditRecord audit_records} to list of {@link AuditRecordDto}
 	 * 
-	 * @param audits_records
-	 * @return
+	 * @param audit_record {@link AuditRecord} to convert
+	 * @return {@link AuditRecordDto}
+	 * 
+	 * precondition: audit_record != null
 	 */
     public AuditRecordDto buildAudit(AuditRecord audit_record) {
 		Set<Audit> audits = new HashSet<>();

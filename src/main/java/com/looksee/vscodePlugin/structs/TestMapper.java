@@ -10,7 +10,7 @@ import java.util.Map;
  *
  */
 public class TestMapper {
-	private Map<String, Test> testHash;	
+	private Map<String, Test> testHash;
 	
 	/**
 	 * Creates a new instance of the tracker
@@ -22,8 +22,9 @@ public class TestMapper {
 	/**
 	 * Adds a new entry to the element action path
 	 * 
-	 * @param elem
-	 * @param action
+	 * @param test {@link Test} to add
+	 * 
+	 * precondition: test != null
 	 */
 	public void addTest(Test test){
 		int hash_code = test.hashCode();
@@ -36,16 +37,19 @@ public class TestMapper {
 	/**
 	 * Checks if element action sequence exists.
 	 * 
-	 * @param elem
-	 * @param action
-	 * @return
+	 * @param test {@link Test} to check if exists
+	 * @return true if the test exists, false otherwise
+	 * 
+	 * precondition: test != null
 	 */
 	public boolean containsTest(Test test){
 		String hash_key = Integer.toString(test.hashCode());
 		return  this.testHash.containsKey(hash_key);
 	}
 	
-	/** 
+	/**
+	 * Gets the hash of element action sequences
+	 * 
 	 * @return hash of element action sequences
 	 */
 	public Map<String, Test> getTestHash(){

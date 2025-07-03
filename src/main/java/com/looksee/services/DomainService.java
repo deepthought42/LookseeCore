@@ -565,13 +565,16 @@ public class DomainService {
 
 	/**
 	 * Creates a new {@link Domain} in the database and attaches it to the account
-	 * as well as adding a default {@link DesignSystem design system
+	 * as well as adding a default {@link DesignSystem}
 	 * 
-	 * @param url
-	 * @param account_id
-	 * @return
+	 * @param url url of the domain to create
+	 * @param account_id id of the account to create the domain for
+	 * @return created {@link Domain}
 	 */
     public Domain createDomain(URL url, long account_id) {
+		assert url != null;
+		assert account_id > 0;
+		
         String formatted_url = url.toString().replace("http://", "").replace("www.", "");
 		Domain domain = domain_repo.findByAccountId(account_id, formatted_url);
 		

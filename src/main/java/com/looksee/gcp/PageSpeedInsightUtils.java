@@ -25,6 +25,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+/**
+ * Utility class for interacting with the Google PageSpeed Insights API
+ */
 @Component
 public class PageSpeedInsightUtils {
 	private static Logger log = LoggerFactory.getLogger(PageSpeedInsightUtils.class.getName());
@@ -35,13 +38,13 @@ public class PageSpeedInsightUtils {
 	/**
 	 * Retrieves Google PageSpeed Insights result from their API
 	 * 
-	 * @param url
+	 * @param url url to get page insights for
 	 * 
 	 * @throws IOException if an I/O error occurs
 	 * @throws GeneralSecurityException if a security error occurs
 	 * 
-	 * @pre url != null
-	 * @pre !url.isEmpty()
+	 * precondition: url != null
+	 * precondition: !url.isEmpty()
 	 */
 	public PagespeedApiPagespeedResponseV5 getPageInsights(String url) throws IOException, GeneralSecurityException {
 	    assert url != null;
@@ -66,10 +69,12 @@ public class PageSpeedInsightUtils {
 	}
 	
 	/**
-	 * Extracts all accessibility issues from page speed insights api as {@link UXIssueMessages}
+	 * Extracts all accessibility issues from page speed insights api as {@link UXIssueMessage}
 	 * 
-	 * @param page_speed_response
+	 * @param page_speed_response {@link PagespeedApiPagespeedResponseV5} to extract accessibility issues from
 	 * @return list of {@link UXIssueMessage}s
+	 * 
+	 * precondition: page_speed_response != null
 	 */
 	public List<UXIssueMessage> extractAccessibilityIssues(
 			PagespeedApiPagespeedResponseV5 page_speed_response
@@ -117,13 +122,13 @@ public class PageSpeedInsightUtils {
 	}
 	
 	/**
-	 * Extracts all accessibility issues from page speed insights api as {@link UXIssueMessages}
+	 * Extracts all accessibility issues from page speed insights api as {@link UXIssueMessage}
 	 * 
-	 * @param audit_record {@link LighthouseAuditResultV5}
+	 * @param audit_record {@link LighthouseAuditResultV5} to extract accessibility issues from
 	 * 
-	 * @return list of {@link UXIssueMessage}s
+	 * @return list of {@link UXIssueMessage}s with accessibility issues
 	 * 
-	 * @pre details != null;
+	 * precondition: details != null
 	 */
 	public List<UXIssueMessage> extractAccessibilityAuditDetails(LighthouseAuditResultV5 audit_record) {
 		List<UXIssueMessage> ux_issues = new ArrayList<>();
@@ -211,10 +216,10 @@ public class PageSpeedInsightUtils {
 	}
 
 	/**
-	 * Extracts all font size issues from page speed insights api as {@link UXIssueMessages}
+	 * Extracts all font size issues from page speed insights api as {@link UXIssueMessage}
 	 * 
 	 * @param page_speed_response {@link PagespeedApiPagespeedResponseV5}
-	 * @return list of {@link UXIssueMessage}s
+	 * @return list of {@link UXIssueMessage}s with font size issues
 	 */
 	public List<UXIssueMessage> extractFontSizeIssues(PagespeedApiPagespeedResponseV5 page_speed_response) {
 		List<UXIssueMessage> ux_issues = new ArrayList<UXIssueMessage>();
@@ -257,10 +262,10 @@ public class PageSpeedInsightUtils {
 	}
 	
 	/**
-	 * Extracts all issues from page speed insights api as {@link UXIssueMessages}
+	 * Extracts all issues from page speed insights api as {@link UXIssueMessage}
 	 * 
 	 * @param page_speed_response {@link PagespeedApiPagespeedResponseV5}
-	 * @return list of {@link UXIssueMessage}s
+	 * @return list of {@link UXIssueMessage}s with issues from page speed insights api
 	 */
 	public List<UXIssueMessage> extractIssues(PagespeedApiPagespeedResponseV5 page_speed_response) {
 		List<UXIssueMessage> ux_issues = new ArrayList<UXIssueMessage>();

@@ -2,6 +2,8 @@ package com.looksee.models;
 
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,17 +11,25 @@ import org.slf4j.LoggerFactory;
 /**
  * A set of vertex objects that form a sequential movement through a graph
  */
+@Getter
+@Setter
 public class ExploratoryPath {
 	private static Logger log = LoggerFactory.getLogger(ExploratoryPath.class);
 	
-	private List<String> path_keys;
-	private List<LookseeObject> path_objects;
-	private List<ActionOLD> possible_actions;
+	private List<String> pathKeys;
+	private List<LookseeObject> pathObjects;
+	private List<ActionOLD> possibleActions;
 
 	/**
 	 * Creates new instance of path setting it to the given path
 	 * 
-	 * @param current_path
+	 * @param path_keys list of keys to add to path
+	 * @param current_path list of objects to add to path
+	 * @param actions list of actions to add to path
+	 * 
+	 * precondition: path_keys != null
+	 * precondition: current_path != null
+	 * precondition: actions != null
 	 */
 	@Deprecated
 	public ExploratoryPath(List<String> path_keys, List<LookseeObject> current_path, List<ActionOLD> actions){
@@ -31,7 +41,11 @@ public class ExploratoryPath {
 	/**
 	 * Creates new instance of path setting it to the given path
 	 * 
-	 * @param current_path
+	 * @param path_keys list of keys to add to path
+	 * @param current_path list of objects to add to path
+	 * 
+	 * precondition: path_keys != null
+	 * precondition: current_path != null
 	 */
 	public ExploratoryPath(List<String> path_keys, List<LookseeObject> current_path){
 		setPathKeys(path_keys);
@@ -41,13 +55,20 @@ public class ExploratoryPath {
 	/**
 	 * Adds an object to path and sets whether or not this path spans multiple domains
 	 * 
-	 * @param obj
-	 * @return
+	 * @param obj object to add to path
+	 * @return true if the object was added, false otherwise
+	 * 
+	 * precondition: obj != null
 	 */
 	public boolean add(LookseeObject obj){
 		return getPathObjects().add(obj);
 	}
 	
+	/**
+	 * Gets the size of the path
+	 * 
+	 * @return size of the path
+	 */
 	public int size(){
 		return getPathObjects().size();
 	}
@@ -73,11 +94,12 @@ public class ExploratoryPath {
 	/**
 	 * Checks if the path has 2 pages that are the equal
 	 * 
-	 * @param path
+	 * @param path_objects list of {@link PageState}s to check
+	 * @param page {@link PageState} to check for
+	 * @param isSinglePage boolean indicating if the path is a single page
 	 * 
-	 * @pre path_key_list != null
-	 * @pre !path_key_list.isEmpty()
-	 * @pre page != null
+	 * precondition: path_objects != null
+	 * precondition: page != null
 	 * 
 	 * @return true if sequence appears more than once
 	 */
@@ -101,21 +123,21 @@ public class ExploratoryPath {
 	}
 	
 	/**
-	 * Checks if the path has the same page more than once. 
+	 * Checks if the path has the same page more than once.
 	 * 
-	 * @param path
+	 * @param path list of {@link LookseeObject}s to check
 	 * @return true if sequence appears more than once
 	 */
 	public static boolean hasPageCycle(List<LookseeObject> path){
 		for(int i = path.size()-1; i > 0; i--){
 			for(int j = i-1; j>= 0; j--){
-				if(path.get(i) instanceof PageState 
+				if(path.get(i) instanceof PageState
 						&& path.get(j) instanceof PageState
 						&& path.get(i).equals(path.get(j)))
 				{
 					return true;
 				}
-			}			
+			}
 		}
 		return false;
 	}
@@ -133,48 +155,33 @@ public class ExploratoryPath {
 	/**
 	 * Adds an object to path
 	 * 
-	 * @param obj
-	 * @return
+	 * @param key key to add to path
+	 * @return true if the key was added, false otherwise
+	 * 
+	 * precondition: key != null
 	 */
 	public boolean addToPathKeys(String key){
 		return this.getPathKeys().add(key);
 	}
 	
+	/**
+	 * Adds an object to path
+	 * 
+	 * @param path_obj object to add to path
+	 * 
+	 * precondition: path_obj != null
+	 */
 	public void addPathObject(LookseeObject path_obj) {
-		this.path_objects.add(path_obj);
-	}
-
-	public List<LookseeObject> getPathObjects() {
-		return this.path_objects;
-	}
-
-	public void setPathObjects(List<LookseeObject> path_objects) {
-		this.path_objects = path_objects;
-	}
-	
-	public List<ActionOLD> getPossibleActions() {
-		return possible_actions;
-	}
-
-	public void setPossibleActions(List<ActionOLD> possible_actions) {
-		this.possible_actions = possible_actions;
-	}
-
-	public List<String> getPathKeys() {
-		return path_keys;
-	}
-
-	public void setPathKeys(List<String> path_keys) {
-		this.path_keys = path_keys;
+		this.pathObjects.add(path_obj);
 	}
 	
 	/**
-	 * Clone {@link Path} object
+	 * Clone object
 	 * 
-	 * @param path
-	 * @return
+	 * @param path {@link ExploratoryPath} to clone
+	 * @return cloned {@link ExploratoryPath}
 	 */
-	public static ExploratoryPath clone(ExploratoryPath path){		
+	public static ExploratoryPath clone(ExploratoryPath path){
 		List<LookseeObject> path_objects = new ArrayList<LookseeObject>(path.getPathObjects());
 		List<String> path_keys = new ArrayList<String>(path.getPathKeys());
 		

@@ -1,35 +1,44 @@
 package com.looksee.models.dto;
 
+import com.looksee.models.competitiveanalysis.Competitor;
 import com.looksee.models.competitiveanalysis.brand.Brand;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
 /**
- * 
+ * DTO for {@link Competitor}
  */
+@Getter
+@Setter
+@NoArgsConstructor
 public class CompetitorDto {
 	private long id;
-	private String company_name;
+	private String companyName;
 	private String url;
 	private String industry;
-	private boolean analysis_running;
+	private boolean analysisRunning;
 	private Brand brand;
 	
-	public CompetitorDto(){	}
-
 	/**
-	 *
-	 * @param id TODO
-	 * @param username
-	 * @param customer_token
-	 * @param subscription_token
-	 * @pre users != null
+	 * Constructor for {@link CompetitorDto}
+	 * 
+	 * @param id id of the competitor
+	 * @param company_name name of the competitor
+	 * @param url url of the competitor
+	 * @param industry industry of the competitor
+	 * @param analysis_running true if analysis is running for the competitor, false otherwise
+	 * @param brand {@link Brand} of the competitor
+	 * 
+	 * precondition: brand != null
 	 */
 	public CompetitorDto(
-			long id, 
-			String company_name, 
+			long id,
+			String company_name,
 			String url,
 			String industry,
-			boolean analysis_running, 
+			boolean analysis_running,
 			Brand brand
 	){
 		setId(id);
@@ -38,53 +47,5 @@ public class CompetitorDto {
 		setIndustry(industry);
 		setAnalysisRunning(analysis_running);
 		setBrand(brand);
-	}
-
-	public String getCompanyName() {
-		return company_name;
-	}
-
-	public void setCompanyName(String company_name) {
-		this.company_name = company_name;
-	}
-
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-	public String getIndustry() {
-		return industry;
-	}
-
-	public void setIndustry(String industry) {
-		this.industry = industry;
-	}
-
-	public Brand getBrand() {
-		return brand;
-	}
-
-	public void setBrand(Brand brand) {
-		this.brand = brand;
-	}
-
-	public boolean isAnalysisRunning() {
-		return analysis_running;
-	}
-
-	public void setAnalysisRunning(boolean is_analysis_running) {
-		this.analysis_running = is_analysis_running;
-	}
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
 	}
 }

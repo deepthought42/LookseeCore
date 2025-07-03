@@ -114,8 +114,12 @@ public class TitleAndHeaderAudit implements IExecutablePageStateAudit {
 	/**
 	 * Generates a score for headers found on the page
 	 * 
-	 * @param page_state
-	 * @return
+	 * @param page_state {@link PageState} to score
+	 * @return {@link Score}
+	 * 
+	 * precondition: page_state != null
+	 * 
+	 * @pre page_state != null
 	 */
 	private Score scoreHeadings(PageState page_state) {
 		assert page_state != null;
@@ -144,8 +148,12 @@ public class TitleAndHeaderAudit implements IExecutablePageStateAudit {
 	/**
 	 * INCOMPLETE: PLEASE FINISH ME
 	 * 
-	 * @param page_state
-	 * @return
+	 * @param page_state {@link PageState} to score
+	 * @return {@link Score}
+	 * 
+	 * precondition: page_state != null
+	 * 
+	 * @pre page_state != null
 	 */
 	private Score scoreOrderedListHeaders(PageState page_state) {
 		assert page_state != null;
@@ -167,7 +175,7 @@ public class TitleAndHeaderAudit implements IExecutablePageStateAudit {
 			if(ElementStateUtils.isList(element.tagName())) {
 				
 				//check if element has header element sibling preceding it
-			}			
+			}
 		}
 		
 		return new Score(score, max_points, new HashSet<>());
@@ -176,8 +184,12 @@ public class TitleAndHeaderAudit implements IExecutablePageStateAudit {
 	/**
 	 * Generates score based on if text elements have an associated header
 	 * 
-	 * @param page_state
-	 * @return
+	 * @param page_state {@link PageState} to score
+	 * @return {@link Score}
+	 * 
+	 * precondition: page_state != null
+	 * 
+	 * @pre page_state != null
 	 */
 	private Score scoreTextElementHeaders(PageState page_state) {
 		assert page_state != null;
@@ -232,8 +244,10 @@ public class TitleAndHeaderAudit implements IExecutablePageStateAudit {
 	/**
 	 * Generates score based on if favicon is present
 	 * 
-	 * @param page_state
-	 * @return
+	 * @param page_state {@link PageState} to score
+	 * @return {@link Score}
+	 * 
+	 * precondition: page_state != null
 	 * 
 	 * @pre page_state != null
 	 */
@@ -295,7 +309,7 @@ public class TitleAndHeaderAudit implements IExecutablePageStateAudit {
 			favicon_issue = (PageStateIssueMessage) issue_message_service.save(favicon_issue);
 			issue_message_service.addPage(favicon_issue.getId(), page_state.getId());
 			issue_messages.add(favicon_issue);
-			points += 0;			
+			points += 0;
 		}
 		
 		return new Score(points, max_points, issue_messages);
@@ -303,8 +317,11 @@ public class TitleAndHeaderAudit implements IExecutablePageStateAudit {
 
 	/**
 	 * Checks if a {@link PageState} has a favicon defined
-	 * @param page
-	 * @return
+	 * 
+	 * @param page_src {@link String} representing the source of the page
+	 * @return true if the page has a favicon defined, false otherwise
+	 * 
+	 * precondition: page_src != null
 	 */
 	public static boolean hasFavicon(String page_src) {
 		assert page_src != null;
@@ -321,8 +338,11 @@ public class TitleAndHeaderAudit implements IExecutablePageStateAudit {
 
 	/**
 	 * Generate a score for page titles across all pages in this domain
-	 * @param domain
-	 * @return
+	 * 
+	 * @param page_state {@link PageState} to score
+	 * @return {@link Score}
+	 * 
+	 * precondition: page_state != null
 	 */
 	private Score scorePageTitles(PageState page_state) {
 		assert page_state != null;
@@ -390,7 +410,7 @@ public class TitleAndHeaderAudit implements IExecutablePageStateAudit {
 			title_issue = (PageStateIssueMessage) issue_message_service.save(title_issue);
 			issue_message_service.addPage(title_issue.getId(), page_state.getId());
 			issue_messages.add(title_issue);
-			points += 0;				
+			points += 0;
 		}
 		
 		return new Score(points, max_points, issue_messages);

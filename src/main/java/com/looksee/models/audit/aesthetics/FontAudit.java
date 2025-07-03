@@ -1,6 +1,5 @@
 package com.looksee.models.audit.aesthetics;
 
-import com.looksee.models.Element;
 import com.looksee.models.ElementState;
 import com.looksee.models.PageState;
 import com.looksee.models.audit.Audit;
@@ -16,8 +15,6 @@ import com.looksee.models.enums.AuditSubcategory;
 import com.looksee.models.enums.ObservationType;
 import com.looksee.models.enums.Priority;
 import com.looksee.utils.ElementStateUtils;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -25,34 +22,30 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.neo4j.core.schema.Relationship;
 import org.springframework.stereotype.Component;
 
 
 /**
  * Responsible for executing an audit on the hyperlinks on a page for the information architecture audit category
  */
+@NoArgsConstructor
 @Component
 public class FontAudit implements IExecutablePageStateAudit {
 	@SuppressWarnings("unused")
 	private static Logger log = LoggerFactory.getLogger(FontAudit.class);
 	
-	@Relationship(type="FLAGGED")
-	List<Element> flagged_elements = new ArrayList<>();
-	
-	public FontAudit() {
-		//super(buildBestPractices(), getAdaDescription(), getAuditDescription(), AuditSubcategory.TEXT_BACKGROUND_CONTRAST);
-	}
-
 	/**
-	 * {@inheritDoc}
+	 * Executes the audit on the fonts used within a page state as part of the aesthetics audit category
 	 * 
-	 * Identifies colors used on page, the color scheme type used, and the ultimately the score for how the colors used conform to scheme
-	 *  
-	 * @throws MalformedURLException 
-	 * @throws URISyntaxException 
+	 * @param page_state {@link PageState} to audit
+	 * @param audit_record {@link AuditRecord} to audit
+	 * @param design_system {@link DesignSystem} to audit
+	 * @return {@link Audit} result of the audit
+	 * 
+	 * precondition: page_state != null
 	 */
 	@Override
 	public Audit execute(PageState page_state, AuditRecord audit_record, DesignSystem design_system) {
@@ -279,19 +272,23 @@ public class FontAudit implements IExecutablePageStateAudit {
 		
 		//log.warn("FONT AUDIT SCORE   ::   "+(font_size_score + score) +" / " +(total_score + max_score));
 		return new Audit(AuditCategory.AESTHETICS,
-						 AuditSubcategory.TYPOGRAPHY,
-						 AuditName.FONT,
-						 (font_size_score + score),
-						 issue_messages,
-						 AuditLevel.PAGE,
-						 (total_score + max_score),
-						 page_state.getUrl(), 
-						 why_it_matters, 
-						 description,
-						 false);
+						AuditSubcategory.TYPOGRAPHY,
+						AuditName.FONT,
+						(font_size_score + score),
+						issue_messages,
+						AuditLevel.PAGE,
+						(total_score + max_score),
+						page_state.getUrl(),
+						why_it_matters,
+						description,
+						false);
 	}
 	
-
+	/**
+	 * Makes a list of strings distinct
+	 * @param from list of strings to make distinct
+	 * @return list of distinct strings
+	 */
 	public static List<String> makeDistinct(List<String> from){
 		return from.stream().distinct().sorted().collect(Collectors.toList());
 	}

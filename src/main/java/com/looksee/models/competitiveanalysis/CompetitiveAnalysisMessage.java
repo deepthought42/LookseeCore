@@ -18,10 +18,11 @@ public abstract class CompetitiveAnalysisMessage extends Message{
 	}
 	
 	/**
+	 * Constructor for {@link CompetitiveAnalysisMessage}
 	 * 
-	 * @param account_id
-	 * @param audit_record_id TODO
-	 * @param domain eg. example.com
+	 * @param competitor_id id of the competitor
+	 * @param account_id id of the account
+	 * @param audit_record_id id of the audit record
 	 */
 	public CompetitiveAnalysisMessage(long competitor_id, long account_id, long audit_record_id){
 		super(account_id);

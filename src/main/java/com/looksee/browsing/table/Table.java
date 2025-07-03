@@ -19,10 +19,11 @@ public class Table {
 	 * Retrieves all cells in a table header passed
 	 * 
 	 * @param table_header header {@link WebElement}
-	 *  
+	 * @param driver {@link WebDriver} to use
+	 * 
 	 * @return List of {@link Row}s for table header
 	 * 
-	 * @pre table_header != null
+	 * precondition: table_header != null
 	 */
 	public List<Row> loadHeaders(WebElement table_header, WebDriver driver){
 		assert table_header != null;
@@ -57,6 +58,12 @@ public class Table {
 		return rows;
 	}
 	
+	/**
+	 * Loads the rows of a table
+	 * 
+	 * @param table_body {@link WebElement} of the table body
+	 * @return List of {@link Row}s for table body
+	 */
 	public List<Row> loadRows(WebElement table_body){
 		return null;
 	}

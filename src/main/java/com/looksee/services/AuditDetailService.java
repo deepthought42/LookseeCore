@@ -1,13 +1,12 @@
 package com.looksee.services;
 
+import com.looksee.models.audit.performance.AuditDetail;
+import com.looksee.models.repository.AuditDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.looksee.models.audit.performance.AuditDetail;
-import com.looksee.models.repository.AuditDetailRepository;
-
 /**
- * 
+ * Service for interacting with {@link AuditDetail} objects
  */
 @Service
 public class AuditDetailService {
@@ -16,11 +15,12 @@ public class AuditDetailService {
 	private AuditDetailRepository audit_detail_repo;
 	
 	/**
-	 * Objects are expected to be immutable as of 3/14/19. When this method is ran, if the 
-	 * object already exists then it will be loaded from the database by key, otherwise it will be saved
+	 * Saves an {@link AuditDetail} object to the database
 	 * 
-	 * @param audit {@link Audit} 
-	 * @return
+	 * @param audit_detail {@link AuditDetail} to save
+	 * @return {@link AuditDetail}
+	 * 
+	 * precondition: audit_detail != null
 	 */
 	public AuditDetail save(AuditDetail audit_detail){
 		return audit_detail_repo.save( audit_detail );

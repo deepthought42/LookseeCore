@@ -13,8 +13,6 @@ import com.looksee.services.AuditService;
 import com.looksee.services.PageStateService;
 import com.looksee.services.UXIssueMessageService;
 import com.looksee.utils.BrowserUtils;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -44,12 +42,16 @@ public class ImagePolicyAudit implements IExecutablePageStateAudit {
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Scores images on a page based on if the image has an src value present,
+	 * the url format is valid and the url goes to a location that doesn't
+	 * produce a 4xx error. Also checks if the image has adult or violent content.
+	 *
+	 * @param page_state {@link PageState} to audit
+	 * @param audit_record {@link AuditRecord} to audit
+	 * @param design_system {@link DesignSystem} to audit
+	 * @return {@link Audit} result of the audit
 	 * 
-	 * Scores links on a page based on if the link has an href value present, the url format is valid and the 
-	 *   url goes to a location that doesn't produce a 4xx error 
-	 * @throws MalformedURLException 
-	 * @throws URISyntaxException 
+	 * precondition: page_state != null
 	 */
 	@Override
 	public Audit execute(PageState page_state, AuditRecord audit_record, DesignSystem design_system) {
@@ -80,7 +82,6 @@ public class ImagePolicyAudit implements IExecutablePageStateAudit {
 		audit_service.addAllIssues(audit.getId(), image_policy_score.getIssueMessages());
 		return audit;
 	}
-
 
 	/**
 	 * Calculates score of images based on the image policies in place

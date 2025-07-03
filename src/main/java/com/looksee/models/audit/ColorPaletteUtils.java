@@ -26,12 +26,13 @@ public class ColorPaletteUtils {
 
 	/**
 	 * Scores site color palette based on the color scheme it most resembles
-	 * @param palette
-	 * @param scheme
-	 * @return
 	 * 
-	 * @pre palette != null
-	 * @pre scheme != null
+	 * @param palette {@link List} of {@link PaletteColor}s to check
+	 * @param scheme {@link ColorScheme} to check
+	 * @return {@link Score}
+	 * 
+	 * precondition: palette != null
+	 * precondition: scheme != null
 	 */
 	public static Score getPaletteScore(List<PaletteColor> palette, ColorScheme scheme) {
 		assert palette != null;
@@ -88,8 +89,8 @@ public class ColorPaletteUtils {
 	 * 
 	 * @return {@link Score}
 	 * 
-	 * @pre palette != null
-	 * @pre colors != null
+	 * precondition: palette != null
+	 * precondition: colors != null
 	 */
 	public static Score getPaletteScore(List<String> palette, List<ColorData> colors) {
 		assert palette != null;
@@ -196,7 +197,7 @@ public class ColorPaletteUtils {
 	 * @param palette
 	 * @return
 	 * 
-	 * @pre palette != null
+	 * precondition: palette != null
 	 */
 	public static ColorScheme getColorScheme(Collection<PaletteColor> palette) {
 		assert palette != null;
@@ -259,10 +260,10 @@ public class ColorPaletteUtils {
 	 * TODO Needs testing
 	 * Checks if all colors are equidistant on the color wheel
 	 * 
-	 * @param colors
-	 * @return
+	 * @param colors {@link Collection} of {@link PaletteColor}s to check
+	 * @return true if all colors are equidistant, false otherwise
 	 * 
-	 * @pre colors != null;
+	 * precondition: colors != null
 	 */
 	private static boolean areEquidistantColors(Collection<PaletteColor> colors) {
 		assert colors != null;
@@ -294,10 +295,11 @@ public class ColorPaletteUtils {
 
 	/**
 	 * Calculates a score for how well a palette adheres to a complimentary color palette
-	 * @param palette
-	 * @return
 	 * 
-	 * @pre palette != null
+	 * @param palette {@link List} of {@link PaletteColor}s to check
+	 * @return score for how well the palette adheres to a complimentary color palette
+	 * 
+	 * precondition: palette != null
 	 */
 	private static int getComplementaryScore(List<PaletteColor> palette) {
 		assert palette != null;
@@ -339,10 +341,11 @@ public class ColorPaletteUtils {
 
 	/**
 	 * Scores palette based on how well it adheres to a monochromatic color set
-	 * @param palette
-	 * @return
 	 * 
-	 * @pre palette != null
+	 * @param palette {@link List} of {@link PaletteColor}s to check
+	 * @return score for how well the palette adheres to a monochromatic color set
+	 * 
+	 * precondition: palette != null
 	 */
 	private static int getMonochromaticScore(List<PaletteColor> palette) {
 		assert palette != null;
@@ -365,8 +368,10 @@ public class ColorPaletteUtils {
 	/**
 	 * Extracts set of {@link PaletteColor colors} that define a palette based on a set of rgb strings
 	 * 
-	 * @param colors
-	 * @return
+	 * @param colors {@link List} of {@link ColorData}s to extract a palette from
+	 * @return {@link List} of {@link PaletteColor}s extracted from the colors
+	 * 
+	 * precondition: colors != null
 	 */
 	public static List<PaletteColor> extractPalette(List<ColorData> colors) {
 		assert colors != null;
@@ -389,8 +394,10 @@ public class ColorPaletteUtils {
 	/**
 	 * Extracts set of {@link PaletteColor colors} that define a palette based on a set of rgb strings
 	 * 
-	 * @param colors
-	 * @return
+	 * @param colors {@link List} of {@link ColorData}s to extract a palette from
+	 * @return {@link List} of {@link PaletteColor}s extracted from the colors
+	 * 
+	 * precondition: colors != null
 	 */
 	public static List<PaletteColor> extractColors(List<ColorData> colors) {
 		assert colors != null;
@@ -409,8 +416,10 @@ public class ColorPaletteUtils {
 	 * Evaluates each color set to identify the primary color. The primary color is defined as the 
 	 * second most used color in the set. The most used color in the set is defined as the background color
 	 * 
-	 * @param color_sets
-	 * @return
+	 * @param color_sets {@link Set} of {@link Set}s of {@link ColorData}s to identify primary colors from
+	 * @return {@link Set} of {@link ColorData}s that are the primary colors
+	 * 
+	 * precondition: color_sets != null
 	 */
 	private static Set<ColorData> identifyPrimaryColors(Set<Set<ColorData>> color_sets) {
 		assert color_sets != null;
@@ -421,15 +430,16 @@ public class ColorPaletteUtils {
 
 			primary_colors.add(color_list.get(0));
 		}
-		// TODO Auto-generated method stub
 		return primary_colors;
 	}
 
 	/**
+	 * Identifies primary colors from a list of colors
 	 * 
+	 * @param colors {@link List} of {@link ColorData}s to identify primary colors from
+	 * @return {@link Set} of {@link ColorData}s that are the primary colors
 	 * 
-	 * @param colors
-	 * @return
+	 * precondition: colors != null
 	 */
 	@Deprecated
 	public static Set<ColorData> identifyColorSet(List<ColorData> colors) {
@@ -482,8 +492,10 @@ public class ColorPaletteUtils {
 	/**
 	 * Converts a map representing primary and secondary colors within a palette from using {@link ColorData} to {@link String}
 	 * 
-	 * @param palette
-	 * @return
+	 * @param palette {@link Map} of {@link ColorData}s to convert to a string representation
+	 * @return {@link Map} of {@link String}s to {@link Set}s of {@link String}s that represent the palette
+	 * 
+	 * precondition: palette != null
 	 */
 	public static Map<String, Set<String>> convertPaletteToStringRepresentation(Map<ColorData, Set<ColorData>> palette) {
 		assert palette != null;
@@ -503,9 +515,12 @@ public class ColorPaletteUtils {
 	}
 	
 	/**
+	 * Groups colors into sets of similar colors
 	 * 
-	 * @param colors
-	 * @return
+	 * @param colors {@link List} of {@link ColorData}s to group into sets of similar colors
+	 * @return {@link Set} of {@link Set}s of {@link ColorData}s that are the similar colors
+	 * 
+	 * precondition: colors != null
 	 */
 	public static Set<Set<ColorData>> groupColors(List<ColorData> colors) {
 		assert colors != null;
@@ -579,8 +594,11 @@ public class ColorPaletteUtils {
 	/**
 	 *	Checks if 2 colors are within 5 degrees
 	 * 
-	 * @param color1
-	 * @param color2
+	 * @param color1 {@link ColorData} to check if similar to color2
+	 * @param color2 {@link ColorData} to check if similar to color1
+	 * 
+	 * precondition: color1 != null
+	 * precondition: color2 != null
 	 * 
 	 * @return true if the difference between the 2 hues is less 5 degrees, otherwise false
 	 */
@@ -605,12 +623,27 @@ public class ColorPaletteUtils {
 		return hue_diff <= 10;
 	}
 
-	
+	/**
+	 * Checks if a color is a gray scale color
+	 * 
+	 * @param color {@link ColorData} to check if is a gray scale color
+	 * @return true if the color is a gray scale color, false otherwise
+	 * 
+	 * precondition: color != null
+	 */
 	public static boolean isGrayScale(ColorData color) {
 		return ((color.getSaturation() < 15 && color.getBrightness() > 25)
 				|| (color.getBrightness() < 25));
 	}
 
+	/**
+	 * Gets the maximum value of the red, blue, and green components of a color
+	 * 
+	 * @param color {@link ColorData} to get the maximum value of the red, blue, and green components of
+	 * @return the maximum value of the red, blue, and green components of the color
+	 * 
+	 * precondition: color != null
+	 */
 	public static int getMax(ColorData color) {
 		assert color != null;
 		
@@ -626,6 +659,14 @@ public class ColorPaletteUtils {
 		return color.getGreen();
 	}
 	
+	/**
+	 * Gets the minimum value of the red, blue, and green components of a color
+	 * 
+	 * @param color {@link ColorData} to get the minimum value of the red, blue, and green components of
+	 * @return the minimum value of the red, blue, and green components of the color
+	 * 
+	 * precondition: color != null
+	 */
 	public static int getMin(ColorData color) {
 		if(color.getRed() <= color.getBlue()
 				&& color.getRed() <= color.getGreen()) {
