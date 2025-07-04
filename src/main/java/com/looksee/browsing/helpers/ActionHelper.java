@@ -4,16 +4,20 @@ import com.looksee.models.ActionOLD;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Contains the Order of operations for actions. A lower value indicates that
  *   an action has less precedence.
  *
  */
+@Getter
+@Setter
 public class ActionHelper {
 	public static HashMap<String, Integer> actionOrderOfOperationsMap = new HashMap<>();
 	
-	private static List<List<ActionOLD>> action_lists = new ArrayList<>();
+	private static List<List<ActionOLD>> actionLists = new ArrayList<>();
 	
 	/*
 	 * ACTION POLICIES
@@ -51,8 +55,8 @@ public class ActionHelper {
 		//List<Action> keyboard_actions = new ArrayList<Action>();
 		//keyboard_actions.add(new Action("sendKeys"));
 		
-		action_lists.add(mouse_motion_actions);
-		action_lists.add(click_actions);
+		actionLists.add(mouse_motion_actions);
+		actionLists.add(click_actions);
 		//action_lists.add(keyboard_actions);
 	}
 	
@@ -64,14 +68,5 @@ public class ActionHelper {
 	 */
 	public static Integer getOrderOfOperationForAction(String actionName){
 		return actionOrderOfOperationsMap.get(actionName);
-	}
-
-	/**
-	 * Gets the action lists
-	 * 
-	 * @return {@link List} of {@link List} of {@link ActionOLD}s
-	 */
-	public static List<List<ActionOLD>> getActionLists() {
-		return action_lists;
 	}
 }

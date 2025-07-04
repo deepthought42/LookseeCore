@@ -33,8 +33,16 @@ public class AccountUsage {
 	 * @param discoveriesUsed the discoveries used
 	 * @param testLimit the test limit
 	 * @param testsUsed the tests used
+	 *
+	 * precondition: discoveryLimit != null
+	 * precondition: discoveriesUsed != null
+	 * precondition: testLimit != null
+	 * precondition: testsUsed != null
 	 */
-	public AccountUsage(int discoveryLimit, int discoveriesUsed, int testLimit, int testsUsed){
+	public AccountUsage(int discoveryLimit,
+						int discoveriesUsed,
+						int testLimit,
+						int testsUsed){
 		this.setDiscoveryLimit(discoveryLimit);
 		this.setDiscoveriesUsed(discoveriesUsed);
 		this.setTestLimit(testLimit);
@@ -49,8 +57,24 @@ public class AccountUsage {
 	 * @param testLimit the test limit
 	 * @param testsUsed the tests used
 	 * @param totalDiscoveredTestCount the total discovered test count
+	 * @param domainDiscoveries the domain discoveries
+	 * @param domainTotalDiscoveredTestCount the domain total discovered test count
+	 * @param domainTotalTestsRun the domain total tests run
+	 * @param currentDiscoveryStart the current discovery start
+	 * @param discoveryRunTime the discovery run time
+	 * @param timestampOfLastDiscoveredTest the timestamp of the last discovered test
 	 */
-	public AccountUsage(int discoveryLimit, int discoveriesUsed, int testLimit, int testsUsed, int totalDiscoveredTestCount, int domainDiscoveries, int domainTotalDiscoveredTestCount, int domainTotalTestsRun, Date currentDiscoveryStart, long discoveryRunTime, Date timestampOfLastDiscoveredTest){
+	public AccountUsage(int discoveryLimit,
+						int discoveriesUsed,
+						int testLimit,
+						int testsUsed,
+						int totalDiscoveredTestCount,
+						int domainDiscoveries,
+						int domainTotalDiscoveredTestCount,
+						int domainTotalTestsRun,
+						Date currentDiscoveryStart,
+						long discoveryRunTime,
+						Date timestampOfLastDiscoveredTest){
 		this.setDiscoveryLimit(discoveryLimit);
 		this.setDiscoveriesUsed(discoveriesUsed);
 		this.setTestLimit(testLimit);

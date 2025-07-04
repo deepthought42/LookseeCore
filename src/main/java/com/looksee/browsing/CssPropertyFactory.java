@@ -6,10 +6,19 @@ import cz.vutbr.web.css.CSSProperty.Margin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Css property factory
+ */
 public class CssPropertyFactory {
 	@SuppressWarnings("unused")
 	private static Logger log = LoggerFactory.getLogger(CssPropertyFactory.class);
 	
+	/**
+	 * Constructs a CSS property
+	 *
+	 * @param property the property
+	 * @return the constructed property
+	 */
 	public static String construct(CSSProperty property) {
 		log.warn(property.getClass().getName());
 		if(property instanceof Margin) {
@@ -23,6 +32,4 @@ public class CssPropertyFactory {
 		// TODO Auto-generated method stub
 		return property.toString();
 	}
-
-
 }

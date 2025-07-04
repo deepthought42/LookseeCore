@@ -24,10 +24,10 @@ public class CachingDetail extends AuditDetail {
 	 * Constructs a {@link CachingDetail}
 	 * 
 	 * @param url the url
-	 * @param wasted_bytes the wasted bytes
-	 * @param total_bytes the total bytes
-	 * @param cache_hit_probability the cache hit probability
-	 * @param cache_lifetime_ms the cache lifetime ms
+	 * @param wastedBytes the wasted bytes
+	 * @param totalBytes the total bytes
+	 * @param cacheHitProbability the cache hit probability
+	 * @param cacheLifetimeMs the cache lifetime ms
 	 * 
 	 * precondition: url != null
 	 * precondition: wastedBytes != null

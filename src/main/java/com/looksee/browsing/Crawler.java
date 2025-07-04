@@ -87,12 +87,11 @@ public class Crawler {
 	 * 
 	 * @param web_element {@link WebElement} to generate a random location within
 	 * @param child_element {@link ElementState} to check for child elements
-	 * @return random location within the element but not within child elements
+	 * @return {@link Point} with random location within the element but not within child elements
 	 * 
 	 * precondition: web_element != null
 	 * precondition: child_element != null
 	 * 
-	 * @return {@link Point} with random location within the element but not within child elements
 	 */
 	public static Point generateRandomLocationWithinElementButNotWithinChildElements(WebElement web_element, ElementState child_element) {
 		assert web_element != null;

@@ -12,6 +12,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BugMessageRepository extends Neo4jRepository<BugMessage, Long> {
 
+	/**
+	 * Finds a bug message by its message
+	 *
+	 * @param message the message
+	 * @return the bug message
+	 */
 	@Query("MATCH (bm:BugMessage{message:$message}) RETURN bm LIMIT 1")
 	public BugMessage findByMessage(@Param("message") String message);
 }

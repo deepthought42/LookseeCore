@@ -10,17 +10,42 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
  * document is considered settled when the "document.readyState" field stays "complete" and the URL in the browser stops changing.
  */
 public class DocumentSettleCondition<T> implements ExpectedCondition<T> {
+    /**
+     * The condition
+     */
     private final ExpectedCondition<T> condition;
+
+    /**
+     * The settle time in milliseconds
+     */
     private final long settleTimeInMillis;
 
+    /**
+     * The last complete time
+     */
     private long lastComplete = 0L;
+
+    /**
+     * The last URL
+     */
     private String lastUrl;
 
+    /**
+     * Constructs a {@link DocumentSettleCondition} object
+     *
+     * @param condition the condition
+     * @param settleTimeInMillis the settle time in milliseconds
+     */
     public DocumentSettleCondition(ExpectedCondition<T> condition, long settleTimeInMillis) {
         this.condition = condition;
         this.settleTimeInMillis = settleTimeInMillis;
     }
 
+    /**
+     * Constructs a {@link DocumentSettleCondition} object
+     *
+     * @param condition the condition
+     */
     public DocumentSettleCondition(ExpectedCondition<T> condition) {
         this(condition, 2000L);
     }
@@ -32,6 +57,12 @@ public class DocumentSettleCondition<T> implements ExpectedCondition<T> {
         return settleTimeInMillis;
     }
 
+    /**
+     * Applies the condition to the driver
+     *
+     * @param driver the driver
+     * @return the result of the condition
+     */
     @Override
     public T apply(WebDriver driver) {
         if (driver instanceof JavascriptExecutor) {
@@ -60,6 +91,11 @@ public class DocumentSettleCondition<T> implements ExpectedCondition<T> {
         return condition.apply(driver);
     }
 
+    /**
+     * Returns a string representation of the document settle condition
+     *
+     * @return a string representation of the document settle condition
+     */
     @Override
     public String toString() {
         return "Document settle @" + settleTimeInMillis + "ms for " + condition;

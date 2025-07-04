@@ -19,10 +19,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+/**
+ * Deepthought API
+ */
 @Component
 public class DeepthoughtApi {
 	private static Logger log = LoggerFactory.getLogger(DeepthoughtApi.class);
 
+	/**
+	 * Predicts the type of a form
+	 *
+	 * @param form the form
+	 * @throws UnsupportedOperationException if the form type is not supported
+	 * @throws IOException if an I/O error occurs
+	 */
 	public static void predict(Form form) throws UnsupportedOperationException, IOException{
 		ObjectMapper mapper = new ObjectMapper();
 
@@ -95,6 +105,14 @@ public class DeepthoughtApi {
 	  	// form.setPredictions(weights);
 	}
 	
+	/**
+	 * Learns from a form
+	 *
+	 * @param form the form
+	 * @param memory_id the memory ID
+	 * @throws UnsupportedOperationException if the form type is not supported
+	 * @throws IOException if an I/O error occurs
+	 */
 	public static void learn(Form form, Long memory_id) throws UnsupportedOperationException, IOException{
 		log.info("FORM ::    "+form);
 		log.info("FORM MEMORY ID   :::   "+form.getMemoryId());
@@ -132,7 +150,7 @@ public class DeepthoughtApi {
                 }
                 br.close();
                 rl_response = sb.toString();
-                log.info("Response received from RL system :: "+rl_response);	
+                log.info("Response received from RL system :: "+rl_response);
                 break;
             case 400:
             	log.info("***********************************************************");

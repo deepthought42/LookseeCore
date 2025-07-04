@@ -312,14 +312,34 @@ public class AccountService {
 		return account_repo.getDomainsForAccount(account_id);
 	}
 
+	/**
+	 * Adds a domain to an account
+	 *
+	 * @param account_id the ID of the account
+	 * @param domain_id the ID of the domain to add
+	 */
 	public void addDomainToAccount(long account_id, long domain_id){
 		account_repo.addDomain(domain_id, account_id);
 	}
 
+	/**
+	 * Retrieves the discovery records for an account in a given month
+	 *
+	 * @param username the username of the account
+	 * @param month the month to retrieve the discovery records for
+	 * @return the discovery records for the account in the given month
+	 */
 	public Set<DiscoveryRecord> getDiscoveryRecordsByMonth(String username, int month) {
 		return account_repo.getDiscoveryRecordsByMonth(username, month);
 	}
 
+	/**
+	 * Finds the most recent page audits for an account
+	 *
+	 * @param account_id the ID of the account
+	 * @param limit the limit of audits to return
+	 * @return the most recent page audits
+	 */
 	public List<AuditRecord> findMostRecentPageAudits(long account_id, int limit) {
 		return account_repo.findMostRecentAuditsByAccount(account_id, limit);
 	}
@@ -338,7 +358,7 @@ public class AccountService {
 	 * @throws MissingSubscriptionException if the account has no subscription
 	 */
     public Account retrieveAndValidateAccount(Principal userPrincipal)
-		throws UnknownAccountException, MissingSubscriptionException 
+		throws UnknownAccountException, MissingSubscriptionException
 	{
 		assert userPrincipal != null;
 		assert !userPrincipal.getName().isEmpty();

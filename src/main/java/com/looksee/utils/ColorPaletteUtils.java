@@ -372,7 +372,6 @@ public class ColorPaletteUtils {
 		return score;
 	}
 
-
 	/**
 	 * Extracts set of {@link PaletteColor colors} that define a palette based on a set of rgb strings
 	 *
@@ -538,7 +537,7 @@ public class ColorPaletteUtils {
 					continue;
 				}
 				//add similar colors to similar colors set
-				if(isSimilarHue(most_frequent_color, color)) {	
+				if(isSimilarHue(most_frequent_color, color)) {
 					similar_colors.add( color );
 				}
 			}

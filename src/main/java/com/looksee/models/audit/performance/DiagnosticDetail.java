@@ -1,33 +1,74 @@
 package com.looksee.models.audit.performance;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
- * 
+ * Diagnostic detail
  */
+@Getter
+@Setter
+@NoArgsConstructor
 public class DiagnosticDetail extends AuditDetail {
 
-	private Integer num_stylesheets;
+	private Integer numStylesheets;
 	private Double throughput;
-	private Integer num_tasks_over_10ms;
-	private Integer num_tasks_over_25ms;
-	private Integer num_tasks_over_50ms;
-	private Integer num_tasks_over_100ms;
-	private Integer num_tasks_over_500ms;
-	private Integer num_requests;
-	private Double total_task_time;
-	private Integer main_document_transfer_size;
-	private Integer total_byte_weight;
-	private Integer num_tasks;
+	private Integer numTasksOver10ms;
+	private Integer numTasksOver25ms;
+	private Integer numTasksOver50ms;
+	private Integer numTasksOver100ms;
+	private Integer numTasksOver500ms;
+	private Integer numRequests;
+	private Double totalTaskTime;
+	private Integer mainDocumentTransferSize;
+	private Integer totalByteWeight;
+	private Integer numTasks;
 	private Double rtt;
 	private Double maxRtt;
 	private Integer numFonts;
 	private Integer numScripts;
 	
-	public DiagnosticDetail() {}
-	
+	/**
+	 * Constructs a {@link DiagnosticDetail} object
+	 *
+	 * @param num_stylesheets the number of stylesheets
+	 * @param throughput the throughput
+	 * @param num_tasks_over_10ms the number of tasks over 10ms
+	 * @param num_tasks_over_25ms the number of tasks over 25ms
+	 * @param num_tasks_over_50ms the number of tasks over 50ms
+	 * @param num_tasks_over_100ms the number of tasks over 100ms
+	 * @param num_tasks_over_500ms the number of tasks over 500ms
+	 * @param num_requests the number of requests
+	 * @param total_task_time the total task time
+	 * @param main_document_transfer_size the main document transfer size
+	 * @param total_byte_weight the total byte weight
+	 * @param num_tasks the number of tasks
+	 * @param rtt the round trip time
+	 * @param max_rtt the maximum round trip time
+	 * @param num_fonts the number of fonts
+	 * @param num_scripts the number of scripts
+	 *
+	 * precondition: num_stylesheets != null
+	 * precondition: throughput != null
+	 * precondition: num_tasks_over_10ms != null
+	 * precondition: num_tasks_over_25ms != null
+	 * precondition: num_tasks_over_50ms != null
+	 * precondition: num_tasks_over_100ms != null
+	 * precondition: num_tasks_over_500ms != null
+	 * precondition: num_requests != null
+	 * precondition: total_task_time != null
+	 * precondition: main_document_transfer_size != null
+	 * precondition: total_byte_weight != null
+	 * precondition: num_tasks != null
+	 * precondition: rtt != null
+	 * precondition: max_rtt != null
+	 * precondition: num_fonts != null
+	 * precondition: num_scripts != null
+	 */
 	public DiagnosticDetail(
-			Integer num_stylesheets, 
-			Double throughput, 
+			Integer num_stylesheets,
+			Double throughput,
 			Integer num_tasks_over_10ms,
 			Integer num_tasks_over_25ms,
 			Integer num_tasks_over_50ms,
@@ -58,133 +99,5 @@ public class DiagnosticDetail extends AuditDetail {
 		setMaxRtt(max_rtt);
 		setNumFonts(num_fonts);
 		setNumScripts(num_scripts);
-	}
-
-	public Integer getNumStylesheets() {
-		return num_stylesheets;
-	}
-
-	public void setNumStylesheets(Integer num_stylesheets) {
-		this.num_stylesheets = num_stylesheets;
-	}
-
-	public Double getThroughput() {
-		return throughput;
-	}
-
-	public void setThroughput(Double throughput) {
-		this.throughput = throughput;
-	}
-
-	public Integer getNumTasksOver10ms() {
-		return num_tasks_over_10ms;
-	}
-
-	public void setNumTasksOver10ms(Integer num_tasks_over_10ms) {
-		this.num_tasks_over_10ms = num_tasks_over_10ms;
-	}
-
-	public Integer getNumTasksOver25ms() {
-		return num_tasks_over_25ms;
-	}
-
-	public void setNumTasksOver25ms(Integer num_tasks_over_25ms) {
-		this.num_tasks_over_25ms = num_tasks_over_25ms;
-	}
-
-	public Integer getNumTasksOver50ms() {
-		return num_tasks_over_50ms;
-	}
-
-	public void setNumTasksOver50ms(Integer num_tasks_over_50ms) {
-		this.num_tasks_over_50ms = num_tasks_over_50ms;
-	}
-
-	public Integer getNumTasksOver100ms() {
-		return num_tasks_over_100ms;
-	}
-
-	public void setNumTasksOver100ms(Integer num_tasks_over_100ms) {
-		this.num_tasks_over_100ms = num_tasks_over_100ms;
-	}
-
-	public Integer getNumTasksOver500ms() {
-		return num_tasks_over_500ms;
-	}
-
-	public void setNumTasksOver500ms(Integer num_tasks_over_500ms) {
-		this.num_tasks_over_500ms = num_tasks_over_500ms;
-	}
-
-	public Integer getNumRequests() {
-		return num_requests;
-	}
-
-	public void setNumRequests(Integer num_requests) {
-		this.num_requests = num_requests;
-	}
-
-	public Double getTotalTaskTime() {
-		return total_task_time;
-	}
-
-	public void setTotalTaskTime(Double total_task_time) {
-		this.total_task_time = total_task_time;
-	}
-
-	public Integer getMainDocumentTransferSize() {
-		return main_document_transfer_size;
-	}
-
-	public void setMainDocumentTransferSize(Integer main_document_transfer_size) {
-		this.main_document_transfer_size = main_document_transfer_size;
-	}
-
-	public Integer getTotalByteWeight() {
-		return total_byte_weight;
-	}
-
-	public void setTotalByteWeight(Integer total_byte_weight) {
-		this.total_byte_weight = total_byte_weight;
-	}
-
-	public Integer getNumTasks() {
-		return num_tasks;
-	}
-
-	public void setNumTasks(Integer num_tasks) {
-		this.num_tasks = num_tasks;
-	}
-
-	public Double getRtt() {
-		return rtt;
-	}
-
-	public void setRtt(Double rtt) {
-		this.rtt = rtt;
-	}
-
-	public Double getMaxRtt() {
-		return maxRtt;
-	}
-
-	public void setMaxRtt(Double maxRtt) {
-		this.maxRtt = maxRtt;
-	}
-
-	public Integer getNumFonts() {
-		return numFonts;
-	}
-
-	public void setNumFonts(Integer numFonts) {
-		this.numFonts = numFonts;
-	}
-
-	public Integer getNumScripts() {
-		return numScripts;
-	}
-
-	public void setNumScripts(Integer numScripts) {
-		this.numScripts = numScripts;
 	}
 }

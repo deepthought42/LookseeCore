@@ -2,34 +2,30 @@ package com.looksee.models.dto;
 
 import com.looksee.models.ActionOLD;
 import com.looksee.models.Element;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * Data Transfer object that describes an object composed of both
  * {@link Element} and {@link ActionOLD}
  */
+@Getter
+@Setter
+@NoArgsConstructor
 public class ElementActionDto{
 
 	private ElementStateDto element;
 	private ActionDto action;
-	
+
+	/**
+	 * Constructs an {@link ElementActionDto}
+	 * 
+	 * @param elem the element
+	 * @param action the action
+	 */
 	public ElementActionDto(Element elem, ActionOLD action){
 		setElement(new ElementStateDto(elem));
 		setAction(new ActionDto(action));
-	}
-
-	public ElementStateDto getElement() {
-		return element;
-	}
-
-	private void setElement(ElementStateDto element_dto) {
-		this.element = element_dto;
-	}
-
-	public ActionDto getAction() {
-		return action;
-	}
-
-	private void setAction(ActionDto action_dto) {
-		this.action = action_dto;
 	}
 }

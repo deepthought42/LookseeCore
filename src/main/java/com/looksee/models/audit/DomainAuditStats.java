@@ -1,77 +1,61 @@
 package com.looksee.models.audit;
 
 import com.looksee.models.enums.ExecutionStatus;
-
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Domain audit statistics
+ */
+@Getter
+@Setter
+@NoArgsConstructor
 public class DomainAuditStats extends AuditStats{
-	@Getter
-	@Setter
+	
 	private long id;
-	
-	@Getter
-	@Setter
 	private int journeysExplored;
-
-	@Getter
-	@Setter
 	private int journeysTotal;
-
-	@Getter
-	@Setter
 	private int pageCount;
-	
-	@Setter
-	@Getter
 	private double accessibilityScore;
-
-	@Setter
-	@Getter
 	private double contentScore;
-
-	@Getter
-	@Setter
 	private double writtenContentScore;
-
-	@Getter
-	@Setter
 	private double imageryScore;
-	
-	@Getter
-	@Setter
 	private double infoArchitectureScore;
-
-	@Getter
-	@Setter
 	private double seoScore;
-
-	@Getter
-	@Setter
 	private double linkScore;
-	
-	@Getter
-	@Setter
 	private double aestheticScore;
-
-	@Getter
-	@Setter
 	private double textContrastScore;
-
-	@Getter
-	@Setter
 	private double nonTextContrastScore;
-
-	@Getter
-	@Setter
 	private ExecutionStatus status;
 	
-	public DomainAuditStats() {}
-	
+	/**
+	 * Constructs a {@link DomainAuditStats} object
+	 *
+	 * @param audit_record_id the ID of the audit record
+	 */
 	public DomainAuditStats(long audit_record_id) {
 		setId(audit_record_id);
 	}
 	
+	/**
+	 * Constructs a {@link DomainAuditStats} object
+	 *
+	 * @param audit_record_id the ID of the audit record
+	 * @param journeys_explored the number of journeys explored
+	 * @param journeys_total the total number of journeys
+	 * @param accessibility_score the accessibility score
+	 * @param content_score the content score
+	 * @param written_content_score the written content score
+	 * @param imagery_score the imagery score
+	 * @param info_arch_score the info architecture score
+	 * @param seo_score the SEO score
+	 * @param aesthetic_score the aesthetic score
+	 * @param text_contrast_score the text contrast score
+	 * @param non_text_contrast_score the non-text contrast score
+	 * @param status the status
+	 * @param link_score the link score
+	 */
 	public DomainAuditStats(
 			long audit_record_id,
 			int journeys_explored,
