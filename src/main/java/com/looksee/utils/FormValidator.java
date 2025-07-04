@@ -1,6 +1,6 @@
 package com.looksee.utils;
 
-import com.looksee.models.GenericIssue;
+import com.looksee.models.audit.GenericIssue;
 import com.looksee.services.BrowserService;
 import java.util.HashSet;
 import java.util.Set;

@@ -1,18 +1,20 @@
 package com.looksee.services;
 
-import com.looksee.models.Audit;
 import com.looksee.models.ElementState;
-import com.looksee.models.ElementStateIssueMessage;
 import com.looksee.models.ImageElementState;
 import com.looksee.models.PageState;
-import com.looksee.models.PageStateAudits;
 import com.looksee.models.SimpleElement;
 import com.looksee.models.SimplePage;
-import com.looksee.models.UXIssueMessage;
+import com.looksee.models.audit.Audit;
+import com.looksee.models.audit.ElementStateIssueMessage;
+import com.looksee.models.audit.PageStateAudits;
+import com.looksee.models.audit.UXIssueMessage;
 import com.looksee.models.enums.AuditName;
 import com.looksee.models.enums.AuditSubcategory;
+import com.looksee.models.enums.JourneyStatus;
 import com.looksee.models.enums.ObservationType;
 import com.looksee.models.repository.AuditRepository;
+import com.looksee.models.repository.JourneyRepository;
 import io.github.resilience4j.retry.annotation.Retry;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -48,6 +50,9 @@ public class AuditService {
 	
 	@Autowired
 	private PageStateService page_state_service;
+
+	@Autowired
+	private JourneyRepository journey_repo;
 
 	/**
 	 * Saves an audit
@@ -484,5 +489,27 @@ public class AuditService {
 		
 		List<Long> issue_ids = issue_messages.stream().map(x -> x.getId()).collect(Collectors.toList());
 		addAllIssues(audit_id, issue_ids);
+	}
+
+	/**
+	 * Calculates the data extraction progress for an audit
+	 * 
+	 * @param audit_id the id of the audit
+	 * @return the data extraction progress
+	 */
+	public double calculateDataExtractionProgress(long audit_id) {
+//		int verified_journeys = journey_repo.findAllJourneysForDomainAudit(audit_id, JourneyStatus.VERIFIED.toString());
+		int verified_journeys = journey_repo.findAllNonStatusJourneysForDomainAudit(audit_id, JourneyStatus.CANDIDATE.toString());
+		log.warn("verified journeys = "+verified_journeys);
+
+		int candidates = journey_repo.findAllJourneysForDomainAudit(audit_id, JourneyStatus.CANDIDATE.toString());
+		log.warn("candidates :: " + candidates);
+		
+		if( (candidates+verified_journeys) == 0) {
+			return 0.01;
+		}
+		else {
+			return verified_journeys / (double)(verified_journeys+candidates);
+		}
 	}
 }

@@ -1,10 +1,10 @@
 package com.looksee.models.repository;
 
-import com.looksee.models.Audit;
 import com.looksee.models.ElementState;
-import com.looksee.models.PageAuditRecord;
 import com.looksee.models.PageState;
 import com.looksee.models.Screenshot;
+import com.looksee.models.audit.Audit;
+import com.looksee.models.audit.PageAuditRecord;
 import io.github.resilience4j.retry.annotation.Retry;
 import java.util.List;
 import java.util.Optional;
@@ -462,4 +462,23 @@ public interface PageStateRepository extends Neo4jRepository<PageState, Long> {
 	 */
 	@Query("MATCH (step:LandingStep)-[:STARTS_WITH]->(ps:PageState) WHERE id(ps)=$page_id RETURN ps LIMIT 1")
 	public PageState isPageLandable(@Param("page_id") long pageId);
+
+	@Query("MATCH (page_audit:PageAuditRecord{key:$page_audit_key})-[]->(page_state:PageState) RETURN page_state LIMIT 1")
+	@Deprecated
+	public PageState getPageStateForAuditRecord(@Param("page_audit_key") String page_audit_key);
+
+	@Query("MATCH (s:Step) WITH s MATCH (p:PageState) WHERE id(s)=$step_id AND id(p)=$page_state_id MERGE (s)-[:STARTS_WITH]->(p) RETURN p")
+	public PageState addStartPage(@Param("step_id") long id, @Param("page_state_id") long page_state_id);	
+
+	@Query("MATCH (s:LoginStep)-[:STARTS_WITH]->(page:PageState) WHERE id(s)=$step_id RETURN page")
+	public PageState getStartPage(@Param("step_id") long id);
+	
+	@Query("MATCH (s:Step) WITH s MATCH (p:PageState) WHERE id(s)=$step_id AND id(p)=$page_state_id MERGE (s)-[:ENDS_WITH]->(p) RETURN p")
+	public PageState addEndPage(@Param("step_id") long id, @Param("page_state_id") long page_state_id);
+
+	@Query("MATCH (:SimpleStep{key:$step_key})-[:STARTS_WITH]->(p:PageState) RETURN p")
+	public PageState getEndPage(@Param("step_key") String key);
+	
+	@Query("MATCH (:SimpleStep{key:$step_key})-[:ENDS_WITH]->(p:PageState) RETURN p")
+	public PageState getStartPage(@Param("step_key") String key);
 }

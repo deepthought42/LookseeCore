@@ -1,16 +1,13 @@
 package com.looksee.models.repository;
 
+import com.looksee.models.competitiveanalysis.Competitor;
+import com.looksee.models.competitiveanalysis.brand.Brand;
+import io.github.resilience4j.retry.annotation.Retry;
 import java.util.List;
-
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
-import com.looksee.models.Brand;
-import com.looksee.models.Competitor;
-
-import io.github.resilience4j.retry.annotation.Retry;
 
 /**
  * Repository interface for Spring Data Neo4j to handle interactions with {@link Competitor} objects
@@ -55,5 +52,4 @@ public interface CompetitorRepository extends Neo4jRepository<Competitor, Long> 
 	 */
 	@Query("MATCH (d:Domain) WITH d MATCH (competitor:Competitor) WHERE id(d)=$domain_id AND id(competitor)=$competitor_id MERGE (d)-[:COMPETES_WITH]->(competitor) RETURN competitor")
 	public Competitor addCompetitor(@Param("domain_id") long domain_id, @Param("competitor_id") long competitor_id);
-
 }

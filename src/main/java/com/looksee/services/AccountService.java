@@ -1,10 +1,15 @@
 package com.looksee.services;
 
+import com.looksee.exceptions.MissingSubscriptionException;
+import com.looksee.exceptions.UnknownAccountException;
 import com.looksee.models.Account;
-import com.looksee.models.AuditRecord;
+import com.looksee.models.DiscoveryRecord;
 import com.looksee.models.Domain;
-import com.looksee.models.PageAuditRecord;
+import com.looksee.models.audit.AuditRecord;
+import com.looksee.models.audit.PageAuditRecord;
 import com.looksee.models.repository.AccountRepository;
+import java.security.Principal;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import lombok.NoArgsConstructor;
@@ -306,4 +311,68 @@ public class AccountService {
 		
 		return account_repo.getDomainsForAccount(account_id);
 	}
+
+	/**
+	 * Adds a domain to an account
+	 *
+	 * @param account_id the ID of the account
+	 * @param domain_id the ID of the domain to add
+	 */
+	public void addDomainToAccount(long account_id, long domain_id){
+		account_repo.addDomain(domain_id, account_id);
+	}
+
+	/**
+	 * Retrieves the discovery records for an account in a given month
+	 *
+	 * @param username the username of the account
+	 * @param month the month to retrieve the discovery records for
+	 * @return the discovery records for the account in the given month
+	 */
+	public Set<DiscoveryRecord> getDiscoveryRecordsByMonth(String username, int month) {
+		return account_repo.getDiscoveryRecordsByMonth(username, month);
+	}
+
+	/**
+	 * Finds the most recent page audits for an account
+	 *
+	 * @param account_id the ID of the account
+	 * @param limit the limit of audits to return
+	 * @return the most recent page audits
+	 */
+	public List<AuditRecord> findMostRecentPageAudits(long account_id, int limit) {
+		return account_repo.findMostRecentAuditsByAccount(account_id, limit);
+	}
+
+	/**
+	 * Checks that there is an account associated with the given Principal and
+	 * that the account has a subscription assigned
+	 *
+	 * @param userPrincipal user {@link Principal}
+	 * @return the account
+	 *
+	 * precondition: userPrincipal != null
+	 * precondition: !userPrincipal.getName().isEmpty()
+	 *
+	 * @throws UnknownAccountException if the account is not found
+	 * @throws MissingSubscriptionException if the account has no subscription
+	 */
+    public Account retrieveAndValidateAccount(Principal userPrincipal)
+		throws UnknownAccountException, MissingSubscriptionException
+	{
+		assert userPrincipal != null;
+		assert !userPrincipal.getName().isEmpty();
+		
+		String acct_id = userPrincipal.getName();
+		Account acct = findByUserId(acct_id);
+		
+		if(acct == null){
+			throw new UnknownAccountException();
+		}
+		else if(acct.getSubscriptionToken() == null){
+			throw new MissingSubscriptionException();
+		}
+
+		return acct;
+    }
 }

@@ -1,29 +1,26 @@
 package com.looksee.services;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.looksee.models.Audit;
-import com.looksee.models.AuditRecord;
 import com.looksee.models.Domain;
-import com.looksee.models.DomainAuditRecord;
-import com.looksee.models.PageAuditRecord;
 import com.looksee.models.PageState;
+import com.looksee.models.audit.Audit;
+import com.looksee.models.audit.AuditRecord;
+import com.looksee.models.audit.DomainAuditRecord;
+import com.looksee.models.audit.PageAuditRecord;
 import com.looksee.models.dto.DomainDto;
 import com.looksee.models.enums.ExecutionStatus;
 import com.looksee.models.repository.AuditRecordRepository;
 import com.looksee.models.repository.AuditRepository;
 import com.looksee.models.repository.PageStateRepository;
 import com.looksee.utils.AuditUtils;
-
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import lombok.NoArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Service for building domain DTOs.

@@ -1,23 +1,23 @@
 package com.looksee.services;
 
-import com.looksee.models.AuditRecord;
-import com.looksee.models.Competitor;
-import com.looksee.models.DesignSystem;
 import com.looksee.models.Domain;
-import com.looksee.models.DomainAuditRecord;
 import com.looksee.models.Element;
 import com.looksee.models.Form;
-import com.looksee.models.PageAuditRecord;
 import com.looksee.models.PageLoadAnimation;
 import com.looksee.models.PageState;
 import com.looksee.models.Test;
 import com.looksee.models.TestAction;
 import com.looksee.models.TestRecord;
 import com.looksee.models.TestUser;
+import com.looksee.models.audit.AuditRecord;
+import com.looksee.models.audit.DomainAuditRecord;
+import com.looksee.models.audit.PageAuditRecord;
+import com.looksee.models.competitiveanalysis.Competitor;
+import com.looksee.models.designsystem.DesignSystem;
 import com.looksee.models.repository.AuditRecordRepository;
 import com.looksee.models.repository.CompetitorRepository;
-import com.looksee.models.repository.DesignSystemRepository;
 import com.looksee.models.repository.DomainRepository;
+import java.net.URL;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -58,7 +58,10 @@ public class DomainService {
 	private CompetitorRepository competitor_repo;
 
 	@Autowired
-	private DesignSystemRepository design_system_repo;
+	private DesignSystemService design_system_service;
+
+	@Autowired
+	private AccountService account_service;
 
 	/**
 	 * Retrieves all domains
@@ -559,4 +562,35 @@ public class DomainService {
 		
 		return domain_repo.getMostRecentAuditRecord(host);
 	}
+
+	/**
+	 * Creates a new {@link Domain} in the database and attaches it to the account
+	 * as well as adding a default {@link DesignSystem}
+	 * 
+	 * @param url url of the domain to create
+	 * @param account_id id of the account to create the domain for
+	 * @return created {@link Domain}
+	 */
+    public Domain createDomain(URL url, long account_id) {
+		assert url != null;
+		assert account_id > 0;
+		
+        String formatted_url = url.toString().replace("http://", "").replace("www.", "");
+		Domain domain = domain_repo.findByAccountId(account_id, formatted_url);
+		
+		if(domain == null){
+			domain = new Domain(url.getProtocol(), url.getHost(), url.getPath(), null);
+			domain = save(domain);
+			account_service.addDomainToAccount(domain.getId(), account_id);
+			
+			DesignSystem domain_settings = new DesignSystem();
+			domain_settings = design_system_service.save(domain_settings);
+			domain.setDesignSystem(domain_settings);
+			log.warn("adding domain = "+domain.getId() + "  to account = "+account_id);
+			addDesignSystem(domain.getId(), domain_settings.getId());
+		}
+		log.warn("domain record not found. Creating new domain");
+
+		return domain;
+    }
 }

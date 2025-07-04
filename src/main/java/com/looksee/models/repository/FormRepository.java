@@ -1,12 +1,10 @@
 package com.looksee.models.repository;
 
+import com.looksee.models.Form;
 import java.util.Set;
-
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
 import org.springframework.data.repository.query.Param;
-
-import com.looksee.models.Form;
 
 /**
  * Repository for {@link Form}s
@@ -54,5 +52,4 @@ public interface FormRepository extends Neo4jRepository<Form, Long> {
 	 */
 	@Query("MATCH (account:Account)-[:HAS_DOMAIN]->(d:Domain{url:$url}) MATCH (d)-[]->(p:Page) MATCH (p)-[]->(ps:PageState) MATCH (ps)-[]->(f:Form) MATCH a=(f)-[:DEFINED_BY]->() MATCH b=(f)-[:HAS]->(e) OPTIONAL MATCH c=(e)-->() WHERE id(account)=$account_id return a,b,c")
 	public Set<Form> getForms(@Param("account_id") long account_id, @Param("url") String url);
-	
 }

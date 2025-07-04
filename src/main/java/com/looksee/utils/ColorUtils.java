@@ -3,7 +3,7 @@ package com.looksee.utils;
 import com.looksee.models.ColorData;
 import com.looksee.models.ColorUsageStat;
 import com.looksee.models.ElementState;
-import com.looksee.models.recommend.ColorContrastRecommendation;
+import com.looksee.models.audit.recommend.ColorContrastRecommendation;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;

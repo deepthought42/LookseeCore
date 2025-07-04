@@ -1,11 +1,16 @@
 package com.looksee.models.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.looksee.models.Domain;
+import com.looksee.models.enums.AuditLevel;
 import com.looksee.models.enums.ExecutionStatus;
-
+import java.time.LocalDateTime;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -14,7 +19,6 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
 public class PageAuditDto {
 	private long id;
@@ -30,7 +34,34 @@ public class PageAuditDto {
 	private double dataExtractionProgress;
 	private String message;
 	private String status;
+	private String level;
+
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+	@JsonSerialize(using = LocalDateTimeSerializer.class)
+	private LocalDateTime startTime;
+
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+	@JsonSerialize(using = LocalDateTimeSerializer.class)
+	private LocalDateTime endTime;
 	
+	private String targetUserAge;
+	private String targetUserEducation;
+
+
+	public PageAuditDto() {
+		setStartTime(LocalDateTime.now());
+		setStatus(ExecutionStatus.UNKNOWN);
+		setUrl("");
+		setMessage("");
+		setLevel(AuditLevel.UNKNOWN);
+		setContentProgress(0.0);
+		setContentScore(0.0);
+		setInfoArchitectureProgress(0.0);
+		setInfoArchitectureScore(0.0);
+		setAestheticsProgress(0.0);
+		setAestheticsScore(0.0);
+		setDataExtractionProgress(0.0);
+	}
 	/**
 	 * Constructor for {@link PageAuditDto}
 	 *
@@ -76,6 +107,70 @@ public class PageAuditDto {
 		setDataExtractionProgress(data_extraction_progress);
 		setMessage(message);
 		setStatus(status);
+	}
+
+	/**
+	 * Constructor
+	 * @param level TODO
+	 * 
+	 */
+	public PageAuditDto(long id,
+						ExecutionStatus status,
+						AuditLevel level,
+						LocalDateTime startTime,
+						double aestheticAuditProgress,
+						double aestheticScore,
+						double contentAuditScore,
+						double contentAuditProgress,
+						double infoArchScore,
+						double infoArchAuditProgress,
+						double dataExtractionProgress,
+						LocalDateTime created_at,
+						LocalDateTime endTime,
+						String url
+	) {
+		setId(id);
+		setStatus(status);
+		setLevel(level);
+		setStartTime(endTime);
+		setAestheticsProgress(dataExtractionProgress);
+		setAestheticsScore(aestheticScore);
+		setContentScore(contentAuditScore);
+		setContentProgress(contentAuditProgress);
+		setInfoArchitectureScore(infoArchScore);
+		setInfoArchitectureProgress(infoArchAuditProgress);
+		setDataExtractionProgress(dataExtractionProgress);
+		setStartTime(created_at);
+		setEndTime(endTime);
+		setUrl(url);
+	}
+
+
+
+
+	public String generateKey() {
+		return "auditrecord:" + UUID.randomUUID().toString() + org.apache.commons.codec.digest.DigestUtils.sha256Hex(System.currentTimeMillis() + "");
+	}
+
+	@Override
+	public String toString() {
+		return this.getId()+", "+this.getUrl()+", "+this.getStatus()+", "+this.getMessage();
+	}
+	
+	public boolean isComplete() {
+		return (this.getAestheticsProgress() >= 1.0
+				&& this.getContentProgress() >= 1.0
+				&& this.getInfoArchitectureProgress() >= 1.0
+				&& this.getDataExtractionProgress() >= 1.0);
+	}
+
+
+	public AuditLevel getLevel() {
+		return AuditLevel.create(level);
+	}
+
+	public void setLevel(AuditLevel level) {
+		this.level = level.getShortName();
 	}
 
 	/**

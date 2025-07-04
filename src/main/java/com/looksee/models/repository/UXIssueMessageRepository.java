@@ -1,7 +1,7 @@
 package com.looksee.models.repository;
 
 import com.looksee.models.ElementState;
-import com.looksee.models.UXIssueMessage;
+import com.looksee.models.audit.UXIssueMessage;
 import com.looksee.models.enums.AuditName;
 import java.util.Set;
 import org.springframework.data.neo4j.repository.Neo4jRepository;

@@ -2,11 +2,11 @@ package com.looksee.utils;
 
 import com.looksee.models.CIEColorSpace;
 import com.looksee.models.ColorData;
-import com.looksee.models.ColorPaletteIssueMessage;
-import com.looksee.models.DesignSystem;
 import com.looksee.models.PaletteColor;
 import com.looksee.models.Score;
-import com.looksee.models.UXIssueMessage;
+import com.looksee.models.audit.ColorPaletteIssueMessage;
+import com.looksee.models.audit.UXIssueMessage;
+import com.looksee.models.designsystem.DesignSystem;
 import com.looksee.models.enums.AuditCategory;
 import com.looksee.models.enums.ColorScheme;
 import com.looksee.models.enums.Priority;
@@ -134,7 +134,7 @@ public class ColorPaletteUtils {
 																	palette,
 																	AuditCategory.AESTHETICS,
 																	labels,
-																	ada_compliance, 
+																	ada_compliance,
 																	title,
 																	0,
 																	1);
@@ -372,7 +372,6 @@ public class ColorPaletteUtils {
 		return score;
 	}
 
-
 	/**
 	 * Extracts set of {@link PaletteColor colors} that define a palette based on a set of rgb strings
 	 *
@@ -538,7 +537,7 @@ public class ColorPaletteUtils {
 					continue;
 				}
 				//add similar colors to similar colors set
-				if(isSimilarHue(most_frequent_color, color)) {	
+				if(isSimilarHue(most_frequent_color, color)) {
 					similar_colors.add( color );
 				}
 			}

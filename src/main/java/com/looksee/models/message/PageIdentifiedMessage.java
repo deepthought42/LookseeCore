@@ -1,7 +1,6 @@
 package com.looksee.models.message;
 
-import com.looksee.models.DomainAuditRecord;
-
+import com.looksee.models.audit.DomainAuditRecord;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

@@ -1,6 +1,6 @@
 package com.looksee.services;
 
-import com.looksee.models.DesignSystem;
+import com.looksee.models.designsystem.DesignSystem;
 import com.looksee.models.repository.DesignSystemRepository;
 import java.util.Optional;
 import lombok.NoArgsConstructor;

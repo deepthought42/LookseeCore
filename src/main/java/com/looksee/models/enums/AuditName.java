@@ -1,7 +1,7 @@
 package com.looksee.models.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.looksee.models.Audit;
+import com.looksee.models.audit.Audit;
 
 /**
  * Defines all types of {@link Audit audits} that exist in the system.
@@ -108,22 +108,85 @@ public enum AuditName {
 	 * Evaluates the security of the website
 	 */
 	ENCRYPTED("ENCRYPTED"),
+
+	/**
+	 * Evaluates the structure of the header
+	 */
 	HEADER_STRUCTURE("Header_Structure"),
+	
+	/**
+	 * Evaluates the structure of the table
+	 */
 	TABLE_STRUCTURE("Table_Structure"),
+	
+	/**
+	 * Evaluates the structure of the form
+	 */
 	FORM_STRUCTURE("Form_Structure"),
+	
+	/**
+	 * Evaluates the orientation of the page
+	 */
 	ORIENTATION("Orientation"),
+	
+	/**
+	 * Evaluates the purpose of the input
+	 */
 	INPUT_PURPOSE("Input_Purpose"),
+
+	/**
+	 * Evaluates the purpose of the identify
+	 */
 	IDENTIFY_PURPOSE("Identify_Purpose"),
+	
+	/**
+	 * Evaluates the use of color
+	 */
 	USE_OF_COLOR("Use_of_Color"),
+	
+	/**
+	 * Evaluates the control of the audio
+	 */
 	AUDIO_CONTROL("Audio_Control"),
+	
+	/**
+	 * Evaluates the visual presentation of the page
+	 */
 	VISUAL_PRESENTATION("Visual_Presentation"),
-	REFLOW("Reflow"),
+	
+	/**
+	 * Evaluates the reflow of the page
+	 */
 	TEXT_SPACING("Text_Spacing"),
+
+	/**
+	 * Evaluates the language of the page
+	 */
 	PAGE_LANGUAGE("Page_Language"),
+	
+	/**
+	 * Evaluates the structure of the video
+	 */
 	VIDEO_STRUCTURE("Video_Structure"),
+	
+	/**
+	 * Evaluates the structure of the link
+	 */
 	LINK_STRUCTURE("Link_Structure"),
+	
+	/**
+	 * Evaluates the structure of the button
+	 */
 	BUTTON_STRUCTURE("Button"),
+	
+	/**
+	 * Evaluates the structure of the input
+	 */
 	INPUT_STRUCTURE("Input"),
+	
+	/**
+	 * Evaluates the structure of the list
+	 */
 	LIST_STRUCTURE("List");
 
 	/**

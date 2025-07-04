@@ -1,19 +1,23 @@
 package com.looksee.services;
 
 import com.google.cloud.storage.StorageException;
+import com.looksee.browsing.form.ElementRuleExtractor;
+import com.looksee.browsing.helpers.BrowserConnectionHelper;
 import com.looksee.exceptions.ServiceUnavailableException;
 import com.looksee.gcp.CloudVisionUtils;
 import com.looksee.gcp.GoogleCloudStorage;
 import com.looksee.gcp.ImageSafeSearchAnnotation;
 import com.looksee.models.Browser;
-import com.looksee.models.BrowserConnectionHelper;
+import com.looksee.models.Domain;
 import com.looksee.models.ElementState;
+import com.looksee.models.Form;
 import com.looksee.models.ImageElementState;
 import com.looksee.models.ImageFaceAnnotation;
 import com.looksee.models.ImageLandmarkInfo;
 import com.looksee.models.ImageSearchAnnotation;
 import com.looksee.models.Label;
 import com.looksee.models.Logo;
+import com.looksee.models.Page;
 import com.looksee.models.PageState;
 import com.looksee.models.Template;
 import com.looksee.models.enums.BrowserEnvironment;
@@ -23,6 +27,7 @@ import com.looksee.models.enums.TemplateType;
 import com.looksee.utils.BrowserUtils;
 import com.looksee.utils.ElementStateUtils;
 import com.looksee.utils.ImageUtils;
+import cz.vutbr.web.css.RuleSet;
 import io.github.resilience4j.retry.annotation.Retry;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -82,10 +87,19 @@ public class BrowserService {
 
 	@Autowired
 	private ElementStateService element_state_service;
+
+	@Autowired
+	private ElementService element_service;
 	
 	@Autowired
 	private GoogleCloudStorage googleCloudStorage;
 	
+	@Autowired
+	private PageService page_service;
+
+	@Autowired
+	private ElementRuleExtractor extractor;
+
 	/**
 	 * Retrieves a new browser connection
 	 *
@@ -901,8 +915,8 @@ public class BrowserService {
 		int height = element.getHeight();
 		int width = element.getWidth();
 
-		return x >= x_offset 
-				&& y >= y_offset 
+		return x >= x_offset
+				&& y >= y_offset
 				&& ((x-x_offset)+width) <= (browser.getViewportSize().getWidth())
 				&& ((y-y_offset)+height) <= (browser.getViewportSize().getHeight());
 	}
@@ -3001,8 +3015,9 @@ public class BrowserService {
 
 	/**
 	 * Checks if element tag is 'img'
-	 * @param web_element
-	 * @return
+	 *
+	 * @param tag_name the tag name
+	 * @return true if the element tag is 'img', otherwise false
 	 */
 	private boolean isImageElement(String tag_name) {
 		return "img".equalsIgnoreCase(tag_name);
@@ -3192,4 +3207,359 @@ public class BrowserService {
 
         return index;
     }
+
+	/**
+	 *Constructs a page object that contains all child elements that are considered to be potentially expandable.
+	 * 
+	 * @param page_src {@link String} representing the source of the page
+	 * @param page_url {@link String} representing the url of the page
+	 * @param title {@link String} representing the title of the page
+	 * 
+	 * @return {@link Page} representing the page
+	 * 
+	 * precondition: page_url != null
+	 * precondition: page_src != null
+	 * 
+	 * @throws IOException if an error occurs while building the page
+	 * @throws XPathExpressionException if an error occurs while building the page
+	 */
+	public Page buildPage( 	String page_src,
+							String page_url,
+							String title
+    ) throws IOException, XPathExpressionException{
+		assert page_url != null;
+		assert page_src != null;
+		log.warn("building page....");
+		String url_without_params = BrowserUtils.sanitizeUrl(page_url, true);
+		
+		//Element root = html_doc.getElementsByTag("body").get(0);
+		List<String> raw_stylesheets = Browser.extractStylesheets(page_src);
+		List<RuleSet> rule_sets = Browser.extractRuleSetsFromStylesheets(raw_stylesheets, new URL(page_url)); 
+		
+		String clean_source = Browser.cleanSrc(page_src);
+		URL clean_url = new URL(url_without_params);
+		List<com.looksee.models.Element> elements = extractElements(clean_source, clean_url, rule_sets);
+				
+		Page page = new Page(
+				elements,
+				clean_source,
+				title,
+				clean_url.toString(),
+				clean_url.getPath());
+
+		
+		Page record = page_service.findByKey(page.getKey());
+		if(record != null) {
+			return record;
+		}
+		log.warn("built page...now saving page state...");
+		return page;
+	}
+	
+	/**
+ 	 * Constructs an {@link Element} from a JSOUP {@link Element element}
+ 	 * 
+	 * @param xpath {@link String} representing the xpath of the element
+	 * @param attributes {@link Map} of {@link String}s to {@link String}s representing the attributes of the element
+	 * @param jsoup_element {@link Element} to build
+	 * @param classification {@link ElementClassification} of the element
+	 * @param pre_rendered_css_values {@link Map} of {@link String}s to {@link String}s representing the rendered css values of the element
+	 * 
+	 * @return {@link com.looksee.models.Element} representing the element
+	 * 
+	 * precondition: xpath != null
+	 * precondition: !xpath.isEmpty()
+	 * precondition: attributes != null
+	 * precondition: element != null
+	 * precondition: classification != null
+	 * precondition: rendered_css_values != null
+	 */
+	public static com.looksee.models.Element buildElement(
+			String xpath,
+			Map<String, String> attributes,
+			Element jsoup_element,
+			ElementClassification classification,
+			Map<String, String> pre_rendered_css_values
+	) {
+		assert xpath != null && !xpath.isEmpty();
+		assert attributes != null;
+		assert jsoup_element != null;
+		assert classification != null;
+		assert pre_rendered_css_values != null;
+		
+		com.looksee.models.Element element = new com.looksee.models.Element(jsoup_element.ownText(), xpath, jsoup_element.tagName(), attributes, pre_rendered_css_values, jsoup_element.html(), classification, jsoup_element.outerHtml());
+
+		return element;
+	}
+
+	/** MESSAGE GENERATION METHODS **/
+
+	/**
+	 * Extracts all forms including the child inputs and associated labels.
+	 *
+	 * @param account_id id of the account
+	 * @param domain {@link Domain} to extract forms from
+	 * @param browser {@link Browser} to extract forms from
+	 * @return {@link Set} of {@link Form}s
+	 * 
+	 * precondition: account_id > 0
+	 * precondition: domain != null
+	 * precondition: browser != null
+	 * 
+	 * @throws Exception if an error occurs while extracting forms
+	 */
+	@Deprecated
+	public Set<Form> extractAllForms(long account_id, Domain domain, Browser browser) throws Exception {
+		Set<Form> form_list = new HashSet<Form>();
+		log.info("extracting forms from page with url    ::     "+browser.getDriver().getCurrentUrl());
+		List<WebElement> form_elements = browser.getDriver().findElements(By.xpath("//form"));
+
+		//String host = domain.getHost();
+		for(WebElement form_elem : form_elements){
+			//BrowserUtils.detectShortAnimation(browser, page.getUrl());
+			if(!form_elem.isDisplayed() || doesElementHaveNegativePosition(form_elem.getLocation())) {
+				continue;
+			}
+			
+			//BufferedImage img = browser.getElementScreenshot(form_elem);
+			//String checksum = PageState.getFileChecksum(img);
+			//Map<String, String> css_map = Browser.loadCssProperties(form_elem);
+			com.looksee.models.Element form_tag = new com.looksee.models.Element(
+					form_elem.getText(),
+					uniqifyXpath(form_elem, "//form", browser.getDriver()),
+					form_elem.getTagName(),
+					browser.extractAttributes(form_elem),
+					new HashMap<>(),
+					form_elem.getAttribute("innerHTML"),
+					ElementClassification.ANCESTOR,
+					form_elem.getAttribute("outerHTML"));
+
+			form_tag = element_service.saveFormElement(form_tag);
+			
+			/*
+			double[] weights = new double[1];
+		
+			Set<Form> forms = domain_service.getForms(account_id, domain.getUrl());
+			Form form = new Form(form_tag, 
+								 new ArrayList<com.looksee.models.Element>(), 
+								 findFormSubmitButton(form_elem, browser),
+								 "Form #"+(forms.size()+1), 
+								 weights, 
+								 FormType.UNKNOWN, 
+								 new Date(), 
+								 FormStatus.DISCOVERED );
+
+			List<WebElement> input_elements =  form_elem.findElements(By.tagName("input"));
+			
+			input_elements = BrowserService.filterNonDisplayedElements(input_elements);
+			form.setFormFields(buildFormFields(account_id, input_elements, browser));
+
+			log.info("weights :: "+ form.getPrediction());
+			form.setType(FormType.UNKNOWN);
+			form.setDateDiscovered(new Date());
+			log.info("form record discovered date :: "+form.getDateDiscovered());
+
+			Form form_record = form_service.findByKey(account_id, domain.getUrl(), form.getKey());
+			if(form_record != null) {
+				continue;
+			}
+
+			int form_count = domain_service.getFormCount(account_id, domain.getUrl());
+			form.setName("Form #"+(form_count+1));
+			log.info("name :: "+form.getName());
+			
+			form_list.add(form);
+			*/
+		}
+		return form_list;
+	}
+	
+	/**
+	 * Builds form fields from a list of input elements
+	 * 
+	 * @param account_id id of the account
+	 * @param input_elements {@link List} of {@link WebElement}s to build form fields from
+	 * @param browser {@link Browser} to build form fields from
+	 * @return {@link List} of {@link com.looksee.models.Element}s representing the form fields
+	 */
+	private List<com.looksee.models.Element> buildFormFields(long account_id, List<WebElement> input_elements, Browser browser) throws IOException {
+		List<com.looksee.models.Element> elements = new ArrayList<>();
+		for(WebElement input_elem : input_elements){
+			boolean submit_elem_found = false;
+
+			Map<String, String> attributes = browser.extractAttributes(input_elem);
+			for(String attribute : attributes.keySet()){
+				if(attributes.get(attribute).contains("submit")){
+					submit_elem_found = true;
+					break;
+				}
+			}
+
+			if(submit_elem_found){
+				continue;
+			}
+			
+			if(input_elem.getLocation().getX() < 0 || input_elem.getLocation().getY() < 0){
+				log.warn("element location x or y are negative");
+				continue;
+			}
+			
+			com.looksee.models.Element input_tag = new com.looksee.models.Element(input_elem.getText(),
+					generateXpath(input_elem, browser.getDriver(), attributes), 
+					input_elem.getTagName(), 
+					attributes, 
+					new HashMap<>(), 
+					input_elem.getAttribute("innerHTML"), 
+					input_elem.getAttribute("outerHTML"));
+			com.looksee.models.Element tag_record = element_service.findByKeyAndUserId(account_id, input_tag.getKey());
+			if( tag_record != null ) {
+				input_tag = tag_record;
+			}
+			
+			/*
+			if( input_tag.getViewportScreenshotUrl() == null  || input_tag.getViewportScreenshotUrl().isEmpty()) {
+				BufferedImage img = browser.getElementScreenshot(input_elem);
+				String checksum = PageState.getFileChecksum(img);
+				
+				String screenshot = UploadObjectSingleOperation.saveImageToS3ForUser(img, (new URL(browser.getDriver().getCurrentUrl())).getHost(), checksum, BrowserType.create(browser.getBrowserName()), user_id);
+
+				img.flush();
+			}
+			*/
+			input_tag.getRules().addAll(extractor.extractInputRules(input_tag));
+			input_tag = element_service.saveFormElement(input_tag);
+			log.warn("rules applied to input tag   ::   "+input_tag.getRules().size());
+
+			elements.add(input_tag);
+		}
+		
+		return elements;
+	}
+	
+	/**
+	 * Extracts elements from a page
+	 * 
+	 * @param page_src {@link String} representing the source of the page
+	 * @param url {@link URL} representing the url of the page
+	 * @param rule_sets {@link List} of {@link RuleSet}s to extract elements from
+	 * @return {@link List} of {@link com.looksee.models.Element}s representing the elements
+	 * 
+	 * precondition: page_src != null
+	 * precondition: url != null
+	 * precondition: rule_sets != null
+	 * 
+	 * @throws IOException if an error occurs while extracting elements
+	 * @throws XPathExpressionException if an error occurs while extracting elements
+	 */
+	public List<com.looksee.models.Element> extractElements(String page_src, URL url, List<RuleSet> rule_sets) throws IOException, XPathExpressionException {
+		return getDomElements(page_src, url, rule_sets);
+	}
+	
+	/**
+	 * Extracts elements from a page
+	 * 
+	 * @param page_source {@link String} representing the source of the page
+	 * @param url {@link URL} representing the url of the page
+	 * @param rule_sets {@link List} of {@link RuleSet}s to extract elements from
+	 * @param reviewed_xpaths {@link Set} of {@link String}s representing the xpaths of the elements to review
+	 * @return {@link List} of {@link com.looksee.models.Element}s representing the elements
+	 * 
+	 * precondition: page_source != null
+	 * precondition: url != null
+	 * precondition: rule_sets != null
+	 */
+	private synchronized List<com.looksee.models.Element> getDomElements(String page_source, URL url, List<RuleSet> rule_sets) throws IOException, XPathExpressionException {
+		assert page_source != null;
+		assert !page_source.isEmpty();
+		assert url != null;
+		assert rule_sets != null;
+		
+		List<com.looksee.models.Element> visited_elements = new ArrayList<>();
+		Map<String, String> frontier = new HashMap<>();
+		Map<String, Integer> xpath_cnt = new HashMap<>();
+		
+		//get html doc and get root element
+		Document html_doc = Jsoup.parse(page_source);
+		Element root = html_doc.getElementsByTag("body").get(0);
+		
+		//create element state from root node
+		Map<String, String> attributes = generateAttributesMapUsingJsoup(root);
+		log.warn("page source 1 :: "+page_source.length());
+		log.warn("url 1  :: "+url);
+		Map<String, String> css_props = new HashMap<>();
+		try{
+			css_props.putAll(Browser.loadCssPrerenderedPropertiesUsingParser(rule_sets, root));
+		}
+		catch(Exception e) {
+			log.warn(e.getMessage());
+		}
+		
+		com.looksee.models.Element root_element = buildElement("//body", attributes, root, ElementClassification.ANCESTOR, css_props );
+		root_element = element_service.save(root_element);
+
+		//put element on frontier
+		frontier.put("//body",root_element.getKey());
+		while(!frontier.isEmpty()) {
+			String next_xpath = frontier.keySet().iterator().next();
+			String parent_element_key = frontier.remove(next_xpath);
+			//ElementState root_element = frontier.remove(next_xpath);
+			//visited_elements.add(root_element);
+			//get Element by xpath
+			
+			Elements elements = Xsoup.compile(next_xpath).evaluate(html_doc).getElements();
+			if(elements.size() == 0) {
+				log.warn("NO ELEMENTS WITH XPATH FOUND :: "+next_xpath + "   :     url :   "  + url.toString());
+			}
+			Element element = elements.first();
+			//get child elements for element
+			attributes = generateAttributesMapUsingJsoup(element);
+			
+			Map<String, String> pre_render_css_props = new HashMap<>();
+			
+			try{
+				pre_render_css_props.putAll(Browser.loadCssPrerenderedPropertiesUsingParser(rule_sets, element));
+			}
+			catch(Exception e) {
+				log.warn(e.getMessage());
+			}
+			
+			ElementClassification classification = null;
+			List<Element> children = new ArrayList<Element>(element.children());
+			if(children.isEmpty()) {
+				classification = ElementClassification.LEAF;
+			}
+			else if(isSliderElement(element)) {
+				classification = ElementClassification.SLIDER;
+			}
+			else {
+				classification = ElementClassification.ANCESTOR;
+			}
+			
+			com.looksee.models.Element element_state = buildElement(next_xpath, attributes, element, classification, pre_render_css_props);
+			
+			element_state = element_service.save(element_state);
+			visited_elements.add(element_state);
+			element_service.addChildElement(parent_element_key, element_state.getKey());
+			
+			
+			for(Element child : children) {
+				if(isStructureTag(child.tagName())) {
+					continue;
+				}
+				String xpath = next_xpath + "/" + child.tagName();
+				
+				if(xpath_cnt.containsKey(xpath)) {
+					xpath_cnt.put(xpath, xpath_cnt.get(xpath)+1);
+				}
+				else {
+					xpath_cnt.put(xpath, 1);
+				}
+				
+				xpath = xpath + "["+xpath_cnt.get(xpath)+"]";
+
+				frontier.put(xpath, element_state.getKey());
+			}
+		}
+		return visited_elements;
+	}
 }

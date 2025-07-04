@@ -1,12 +1,10 @@
 package com.looksee.services;
 
+import com.looksee.models.competitiveanalysis.brand.Brand;
+import com.looksee.models.repository.BrandRepository;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.looksee.models.Brand;
-import com.looksee.models.repository.BrandRepository;
-
-import lombok.NoArgsConstructor;
 
 /**
  * Service for {@link Brand}
