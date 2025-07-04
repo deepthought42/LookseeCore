@@ -1,62 +1,45 @@
 package com.looksee.models.audit;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+/**
+ * Represents a color usage stat
+ */
+@Getter
+@Setter
+@NoArgsConstructor
 public class ColorUsageStat {
 
 	private float red;
 	private float green;
 	private float blue;
-
-	private double pixel_percent;
+	private double pixelPercent;
 	private float score;
 	
-	public ColorUsageStat(float red, float green, float blue, double pixel_percent, float score) {
+	/**
+	 * Constructs a {@link ColorUsageStat}
+	 * 
+	 * @param red the red value
+	 * @param green the green value
+	 * @param blue the blue value
+	 * @param pixelPercent the pixel percent
+	 * @param score the score
+	 */
+	public ColorUsageStat(float red, float green, float blue, double pixelPercent, float score) {
 		setRed(red);
 		setGreen(green);
 		setBlue(blue);
-		setPixelPercent(pixel_percent);
+		setPixelPercent(pixelPercent);
 		setScore(score);
 	}
 
-	public float getRed() {
-		return red;
-	}
-
-	public void setRed(float red) {
-		this.red = red;
-	}
-
-	public float getGreen() {
-		return green;
-	}
-
-	public void setGreen(float green) {
-		this.green = green;
-	}
-
-	public float getBlue() {
-		return blue;
-	}
-
-	public void setBlue(float blue) {
-		this.blue = blue;
-	}
-
-	public double getPixelPercent() {
-		return pixel_percent;
-	}
-
-	public void setPixelPercent(double pixel_percent) {
-		this.pixel_percent = pixel_percent;
-	}
-
-	public float getScore() {
-		return score;
-	}
-
-	public void setScore(float score) {
-		this.score = score;
-	}
-
+	/**
+	 * Gets the RGB value of the color usage stat
+	 * 
+	 * @return the RGB value of the color usage stat
+	 */
 	public String getRGB() {
 		return ((int)red)+","+((int)green)+","+((int)blue);
 	}

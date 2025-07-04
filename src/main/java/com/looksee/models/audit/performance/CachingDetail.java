@@ -1,81 +1,51 @@
 package com.looksee.models.audit.performance;
 
 import java.util.Map;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
- * 
+ * Represents a caching detail
  */
+@Getter
+@Setter
+@NoArgsConstructor
 public class CachingDetail extends AuditDetail {
 
 	private String url;
-	private Double wasted_bytes;
-	private Integer total_bytes;
-	private Double cache_hit_probability;
-	private Long cache_lifetime_ms;
-	private Map<String, String> debug_data;
+	private Double wastedBytes;
+	private Integer totalBytes;
+	private Double cacheHitProbability;
+	private Long cacheLifetimeMs;
+	private Map<String, String> debugData;
 	
-	public CachingDetail() {}
-
+	/**
+	 * Constructs a {@link CachingDetail}
+	 * 
+	 * @param url the url
+	 * @param wasted_bytes the wasted bytes
+	 * @param total_bytes the total bytes
+	 * @param cache_hit_probability the cache hit probability
+	 * @param cache_lifetime_ms the cache lifetime ms
+	 * 
+	 * precondition: url != null
+	 * precondition: wastedBytes != null
+	 * precondition: totalBytes != null
+	 * precondition: cacheHitProbability != null
+	 * precondition: cacheLifetimeMs != null
+	 */
 	public CachingDetail(
-			String url, 
-			Double wasted_bytes, 
-			Integer total_bytes, 
-			Double cache_hit_probability, 
-			Long cache_lifetime_ms
+			String url,
+			Double wastedBytes,
+			Integer totalBytes,
+			Double cacheHitProbability,
+			Long cacheLifetimeMs
 	) {
 		setUrl(url);
-		setWastedBytes(wasted_bytes);
-		setTotalBytes(total_bytes);
-		setCacheHitProbability(cache_hit_probability);
-		setCacheLifetimeMs(cache_lifetime_ms);
+		setWastedBytes(wastedBytes);
+		setTotalBytes(totalBytes);
+		setCacheHitProbability(cacheHitProbability);
+		setCacheLifetimeMs(cacheLifetimeMs);
 	}
-	
-	public String getUrl() {
-		return url;
-	}
-	
-	public void setUrl(String url) {
-		this.url = url;
-	}
-	
-	public Double getWastedBytes() {
-		return wasted_bytes;
-	}
-	
-	public void setWastedBytes(Double wasted_bytes) {
-		this.wasted_bytes = wasted_bytes;
-	}
-	
-	public Integer getTotalBytes() {
-		return total_bytes;
-	}
-	
-	public void setTotalBytes(Integer total_bytes) {
-		this.total_bytes = total_bytes;
-	}
-	
-	public Double getCacheHitProbability() {
-		return cache_hit_probability;
-	}
-	
-	public void setCacheHitProbability(Double cache_hit_probability) {
-		this.cache_hit_probability = cache_hit_probability;
-	}
-	
-	public Long getCacheLifetimeMs() {
-		return cache_lifetime_ms;
-	}
-	
-	public void setCacheLifetimeMs(Long cache_lifetime_ms) {
-		this.cache_lifetime_ms = cache_lifetime_ms;
-	}
-	
-	public Map<String, String> getDebugData() {
-		return debug_data;
-	}
-	
-	public void setDebugData(Map<String, String> debug_data) {
-		this.debug_data = debug_data;
-	}
-
 }

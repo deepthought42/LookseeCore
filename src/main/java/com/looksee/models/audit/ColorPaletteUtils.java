@@ -540,7 +540,7 @@ public class ColorPaletteUtils {
 					continue;
 				}
 				//add similar colors to similar colors set
-				if(isSimilarHue(most_frequent_color, color)) {	
+				if(isSimilarHue(most_frequent_color, color)) {
 					similar_colors.add( color );
 				}
 			}
@@ -553,6 +553,13 @@ public class ColorPaletteUtils {
 		return color_sets;
 	}
 	
+	/**
+	 * Checks if two colors are similar
+	 * 
+	 * @param color1 the first color
+	 * @param color2 the second color
+	 * @return true if the colors are similar, false otherwise
+	 */
 	public static boolean isSimilar(ColorData color1, ColorData color2) {
 		assert color1 != null;
 		assert color2 != null;

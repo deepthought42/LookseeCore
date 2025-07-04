@@ -26,6 +26,14 @@ public class AccountUsage {
 	private long discoveryRunTime;
 	private Date timestampOfLastDiscoveredTest;
 	
+	/**
+	 * Constructs an {@link AccountUsage} object
+	 * 
+	 * @param discoveryLimit the discovery limit
+	 * @param discoveriesUsed the discoveries used
+	 * @param testLimit the test limit
+	 * @param testsUsed the tests used
+	 */
 	public AccountUsage(int discoveryLimit, int discoveriesUsed, int testLimit, int testsUsed){
 		this.setDiscoveryLimit(discoveryLimit);
 		this.setDiscoveriesUsed(discoveriesUsed);
@@ -33,6 +41,15 @@ public class AccountUsage {
 		this.setTestsUsed(testsUsed);
 	}
 
+	/**
+	 * Constructs an {@link AccountUsage} object
+	 * 
+	 * @param discoveryLimit the discovery limit
+	 * @param discoveriesUsed the discoveries used
+	 * @param testLimit the test limit
+	 * @param testsUsed the tests used
+	 * @param totalDiscoveredTestCount the total discovered test count
+	 */
 	public AccountUsage(int discoveryLimit, int discoveriesUsed, int testLimit, int testsUsed, int totalDiscoveredTestCount, int domainDiscoveries, int domainTotalDiscoveredTestCount, int domainTotalTestsRun, Date currentDiscoveryStart, long discoveryRunTime, Date timestampOfLastDiscoveredTest){
 		this.setDiscoveryLimit(discoveryLimit);
 		this.setDiscoveriesUsed(discoveriesUsed);

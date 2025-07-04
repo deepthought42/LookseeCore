@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Defines detail item for "total-byte-weight" and  in the Google PageSpeed API 
+ * Defines detail item for "total-byte-weight" and  in the Google PageSpeed API
  */
 @Getter
 @Setter
@@ -17,12 +17,10 @@ public class AssetSize extends AuditDetail {
 	
 	/**
 	 * Constructs an {@link AssetSize} object
-	 * 
+	 *
 	 * @param url url of the asset
 	 * @param total_bytes total bytes of the asset
-	 * 
-	 * @return {@link AssetSize} object
-	 * 
+	 *
 	 * precondition: url != null
 	 * precondition: total_bytes > 0
 	 */

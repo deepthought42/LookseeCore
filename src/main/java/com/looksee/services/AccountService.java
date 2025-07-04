@@ -329,10 +329,20 @@ public class AccountService {
 	 * that the account has a subscription assigned
 	 *
 	 * @param userPrincipal user {@link Principal}
+	 * @return the account
+	 *
+	 * precondition: userPrincipal != null
+	 * precondition: !userPrincipal.getName().isEmpty()
+	 *
 	 * @throws UnknownAccountException if the account is not found
 	 * @throws MissingSubscriptionException if the account has no subscription
 	 */
-    public Account retrieveAndValidateAccount(Principal userPrincipal) throws UnknownAccountException, MissingSubscriptionException {
+    public Account retrieveAndValidateAccount(Principal userPrincipal)
+		throws UnknownAccountException, MissingSubscriptionException 
+	{
+		assert userPrincipal != null;
+		assert !userPrincipal.getName().isEmpty();
+		
 		String acct_id = userPrincipal.getName();
 		Account acct = findByUserId(acct_id);
 		

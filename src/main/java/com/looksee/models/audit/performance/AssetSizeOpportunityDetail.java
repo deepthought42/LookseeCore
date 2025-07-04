@@ -19,14 +19,12 @@ public class AssetSizeOpportunityDetail extends AuditDetail {
 	
 	/**
 	 * Constructs an {@link AssetSizeOpportunityDetail} object
-	 * 
+	 *
 	 * @param url url of the asset
 	 * @param wasted_bytes wasted bytes of the asset
 	 * @param wasted_percent wasted percent of the asset
 	 * @param total_bytes total bytes of the asset
-	 * 
-	 * @return {@link AssetSizeOpportunityDetail} object
-	 * 
+	 *
 	 * precondition: url != null
 	 * precondition: wasted_bytes > 0
 	 * precondition: wasted_percent > 0

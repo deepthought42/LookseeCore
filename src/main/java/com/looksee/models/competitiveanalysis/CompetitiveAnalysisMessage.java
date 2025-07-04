@@ -13,6 +13,9 @@ public abstract class CompetitiveAnalysisMessage extends Message{
 	private long competitorId;
 	private long auditRecordId;
 	
+	/**
+	 * Constructs a {@link CompetitiveAnalysisMessage}
+	 */
 	public CompetitiveAnalysisMessage(){
 		super(-1);
 	}
