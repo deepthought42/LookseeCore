@@ -1,69 +1,40 @@
 package com.looksee.models.audit.performance;
 
+import com.looksee.models.ElementState;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.neo4j.core.schema.Relationship;
 
-import com.looksee.models.ElementState;
-
 /**
- * Defines an accessibility audit detail record. 
+ * Defines an accessibility audit detail record.
  */
-public class AccessibilityDetailNode extends AuditDetail {	
+@Getter
+@Setter
+@NoArgsConstructor
+public class AccessibilityDetailNode extends AuditDetail {
 	
 	///THE FOLLOWING ARE THE NEW FIELDS
-	private String[] required_change_messages;
-	private String[] optional_change_messages;
+	private String[] requiredChangeMessages;
+	private String[] optionalChangeMessages;
 	
 	@Relationship(type = "BELONGS_TO")
 	private ElementState element;
 
-	//END OF NEW FIELDS
-
-
-	public AccessibilityDetailNode() {}
-	
 	/**
+	 * Constructs an {@link AccessibilityDetailNode}
 	 * 
-	 * @param node_label
-	 * @param explanation
-	 * @param type
-	 * @param selector
-	 * @param path
-	 * @param snippet
+	 * @param requiredMessages the required change messages
+	 * @param optionalMessages the optional change messages
+	 * @param element the element that the accessibility detail node belongs to
 	 */
 	public AccessibilityDetailNode(
-			String[] required_messages,
-			String[] optional_messages,
+			String[] requiredMessages,
+			String[] optionalMessages,
 			ElementState element
 	) {
-		setRequiredChangeMessages(required_messages);
-		setOptionalChangeMessages(optional_messages);
+		setRequiredChangeMessages(requiredMessages);
+		setOptionalChangeMessages(optionalMessages);
 		setElement(element);
 	}
-
-	/** GETTERS AND SETTERS */
-
-	public ElementState getElement() {
-		return element;
-	}
-
-	public void setElement(ElementState element) {
-		this.element = element;
-	}
-
-	public String[] getRequiredChangeMessages() {
-		return required_change_messages;
-	}
-
-	public void setRequiredChangeMessages(String[] required_change_messages) {
-		this.required_change_messages = required_change_messages;
-	}
-
-	public String[] getOptionalChangeMessages() {
-		return optional_change_messages;
-	}
-
-	public void setOptionalChangeMessages(String[] optional_change_messages) {
-		this.optional_change_messages = optional_change_messages;
-	}
-	
 }
