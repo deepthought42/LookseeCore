@@ -20,14 +20,5 @@ public abstract class AuditDetail {
 	@GeneratedValue
     @Id
 	private Long id;
-	private Date created_date = new Date();
-	
-	/**
-	 * Gets the id of the audit detail
-	 * 
-	 * @return {@link Long} representing the id of the audit detail
-	 */
-	public Long getId() {
-		return this.id;
-	}
+	private Date createdDate = new Date();
 }

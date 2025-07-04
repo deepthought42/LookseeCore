@@ -915,8 +915,8 @@ public class BrowserService {
 		int height = element.getHeight();
 		int width = element.getWidth();
 
-		return x >= x_offset 
-				&& y >= y_offset 
+		return x >= x_offset
+				&& y >= y_offset
 				&& ((x-x_offset)+width) <= (browser.getViewportSize().getWidth())
 				&& ((y-y_offset)+height) <= (browser.getViewportSize().getHeight());
 	}
@@ -3015,8 +3015,9 @@ public class BrowserService {
 
 	/**
 	 * Checks if element tag is 'img'
-	 * @param web_element
-	 * @return
+	 *
+	 * @param tag_name the tag name
+	 * @return true if the element tag is 'img', otherwise false
 	 */
 	private boolean isImageElement(String tag_name) {
 		return "img".equalsIgnoreCase(tag_name);

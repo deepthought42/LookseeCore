@@ -22,9 +22,10 @@ public class ElementRuleExtractor {
 	private RuleService rule_service;
 
 	/**
-	 * 
-	 * @param elem
-	 * @return
+	 * Extracts rules for input {@link Element}s
+	 *
+	 * @param elem the element
+	 * @return the rules
 	 */
 	public List<Rule> extractInputRules(Element elem){
 		List<Rule> rules = new ArrayList<Rule>();
@@ -40,7 +41,13 @@ public class ElementRuleExtractor {
 		return rules;
 	}
 
-	public List<Rule> extractMouseRules(Element page_element) {
+	/**
+	 * Extracts rules for mouse actions
+	 *
+	 * @param pageElement the page element
+	 * @return the rules
+	 */
+	public List<Rule> extractMouseRules(Element pageElement) {
 		List<Rule> rules = new ArrayList<Rule>();
 
 		//iterate over possible mouse actions.

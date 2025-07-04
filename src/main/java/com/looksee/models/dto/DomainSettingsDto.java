@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Data transfer object for {@link DomainSettings}
+ * Data transfer object for {@link DesignSystem} and {@link TestUser}s
  */
 @Getter
 @Setter
@@ -18,7 +18,7 @@ public class DomainSettingsDto {
 	private Set<TestUser> testUsers;
 	
 	/**
-	 * Constructs a {@link DomainSettingsDto}
+	 * Constructor
 	 *
 	 * @param designSystem the design system
 	 * @param testUsers the test users

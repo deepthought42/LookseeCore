@@ -76,7 +76,7 @@ public class ExploratoryPath {
 	/**
 	 * Gets the last Vertex in a path that is of type {@link PageState}
 	 * 
-	 * @return
+	 * @return the last page in the path
 	 */
 	public PageState findLastPage(){
 		List<LookseeObject> path_obj_list = getPathObjects();
@@ -142,6 +142,11 @@ public class ExploratoryPath {
 		return false;
 	}
 
+	/**
+	 * Gets the first page in the path
+	 *
+	 * @return the first page in the path
+	 */
 	public PageState firstPage() {
 		
 		for(LookseeObject obj : getPathObjects()){

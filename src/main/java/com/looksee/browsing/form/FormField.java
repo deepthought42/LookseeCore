@@ -5,6 +5,8 @@ import com.looksee.models.Element;
 import com.looksee.models.rules.Rule;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
@@ -12,9 +14,10 @@ import org.springframework.data.neo4j.core.schema.Node;
 /**
  * Defines a complex element grouping of input and label for a field contained within a form. 
  * Also contains list of rules which can be enforced on the object
- * 
  */
 @Node
+@Getter
+@Setter
 public class FormField {
 	
 	@GeneratedValue
@@ -23,7 +26,7 @@ public class FormField {
 	
 	private String key;
 	private List<Rule> rules;
-	private Element form_field;
+	private Element formField;
 	
 	public FormField() {
 		rules = new ArrayList<>();
@@ -32,26 +35,31 @@ public class FormField {
 	/**
 	 * Constructs new FormField
 	 * 
-	 * @param form_field combo element defining the input grouping for this FormField
+	 * @param formField combo element defining the input grouping for this FormField
 	 */
-	public FormField(Element form_field){
-		this.form_field = form_field;
+	public FormField(Element formField){
+		this.formField = formField;
 		this.rules = new ArrayList<Rule>();
 		setKey(generateKey());
 	}
 	
+	/**
+	 * Generates a key for the form field
+	 *
+	 * @return the key
+	 */
 	private String generateKey() {
-		return form_field.getKey();
+		return formField.getKey();
 	}
 
 	/**
 	 * Constructs new FormField
 	 * 
-	 * @param form_field combo element defining the input grouping for this FormField
+	 * @param formField combo element defining the input grouping for this FormField
 	 * @param rules list of {@link Rule} defined on this FormField
 	 */
-	public FormField(Element form_field, List<Rule> rules){
-		this.form_field = form_field;
+	public FormField(Element formField, List<Rule> rules){
+		this.formField = formField;
 		this.rules = rules;
 	}
 	
@@ -77,46 +85,9 @@ public class FormField {
 	}
 	
 	/**
-	 * @return List of {@link Rule}s defined on this FormField
-	 */
-	public List<Rule> getRules() {
-		return rules;
-	}
-	
-	public void setRules(List<Rule> rules) {
-		this.rules = rules;
-	}
-	
-	public Element getInputElement() {
-		return form_field;
-	}
-	
-	public void setInputElement(Element form_field) {
-		this.form_field = form_field;
-	}
-	
-	/**
-	 * This handles the performing of a {@link ActionOLD} 
+	 * This handles the performing of a {@link ActionOLD}
 	 * 
 	 * @param action
 	 */
-	public void performAction(String action){
-		
-	}
-
-	public String getKey() {
-		return key;
-	}
-
-	public void setKey(String key) {
-		this.key = key;
-	}
-	
-	public long getId() {
-		return this.id;
-	}
-	
-	public void setId(long id) {
-		this.id = id;
-	}
+	public void performAction(String action){}
 }

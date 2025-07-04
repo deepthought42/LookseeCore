@@ -14,6 +14,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * Form service
+ */
 @Service
 public class FormService {
 	private static Logger log = LoggerFactory.getLogger(FormService.class);
@@ -33,14 +36,36 @@ public class FormService {
 	@Autowired
 	private PageStateRepository page_state_repo;
 	
+	/**
+	 * Gets the page state
+	 *
+	 * @param user_id the user ID
+	 * @param url the URL
+	 * @param form the form
+	 * @return the page state
+	 */
 	public PageState getPageState(String user_id, String url, Form form) {
 		return page_state_repo.getPageState(user_id, url, form.getKey());
 	}
 	
+	/**
+	 * Finds a form by its key
+	 *
+	 * @param account_id the account ID
+	 * @param url the URL
+	 * @param key the key
+	 * @return the form
+	 */
 	public Form findByKey(long account_id, String url, String key){
 		return form_repo.findByKeyForUserAndDomain(account_id, url, key);
 	}
 
+	/**
+	 * Saves a form
+	 *
+	 * @param form the form
+	 * @return the saved form
+	 */
 	public Form save(Form form) {
 		Form form_record = form_repo.findById(form.getId()).get();
 		if(form_record == null){
@@ -60,6 +85,14 @@ public class FormService {
 		return form_record;
 	}
 
+	/**
+	 * Finds a form by its ID
+	 *
+	 * @param user_id the user ID
+	 * @param domain_id the domain ID
+	 * @param form_id the form ID
+	 * @return the form
+	 */
 	public Form findById(String user_id, long domain_id, long form_id) {
 		Optional<Form> opt_form = form_repo.findById(form_id);
 		
@@ -88,6 +121,13 @@ public class FormService {
 	}
 	
 	
+	/**
+	 * Adds a bug message to a form
+	 *
+	 * @param form_id the form ID
+	 * @param msg the bug message
+	 * @return the form
+	 */
 	public Form addBugMessage(long form_id, BugMessage msg) {
 		Optional<Form> opt_form = form_repo.findById(form_id);
 		
@@ -121,6 +161,13 @@ public class FormService {
 		return null;
 	}
 	
+	/**
+	 * Removes a bug message from a form
+	 *
+	 * @param form_id the form ID
+	 * @param msg the bug message
+	 * @return the form
+	 */
 	public Form removeBugMessage(long form_id, BugMessage msg) {
 		Optional<Form> opt_form = form_repo.findById(form_id);
 		
@@ -133,6 +180,13 @@ public class FormService {
 		return null;
 	}
 
+	/**
+	 * Clears the bug messages for a form
+	 *
+	 * @param user_id the user ID
+	 * @param form_key the form key
+	 * @return the form
+	 */
 	public Form clearBugMessages(String user_id, String form_key) {
 		return form_repo.clearBugMessages(user_id, form_key);
 	}
