@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import lombok.NoArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -33,22 +34,19 @@ import org.springframework.stereotype.Component;
  *  for the visual audit category
  */
 @Component
+@NoArgsConstructor
 public class ImageAltTextAudit implements IExecutablePageStateAudit {
 	@SuppressWarnings("unused")
 	private static Logger log = LoggerFactory.getLogger(ImageAltTextAudit.class);
 
 	@Autowired
-	private PageStateService page_state_service;
+	private PageStateService pageStateService;
 	
 	@Autowired
-	private AuditService audit_service;
+	private AuditService auditService;
 	
 	@Autowired
-	private UXIssueMessageService issue_message_service;
-	
-	public ImageAltTextAudit() {
-		//super(buildBestPractices(), getAdaDescription(), getAuditDescription(), AuditSubcategory.LINKS);
-	}
+	private UXIssueMessageService issueMessageService;
 
 	
 	/**
@@ -77,7 +75,7 @@ public class ImageAltTextAudit implements IExecutablePageStateAudit {
 		labels.add("wcag");
 		
 		String tag_name = "img";
-		List<ElementState> elements = page_state_service.getElementStates(page_state.getId());
+		List<ElementState> elements = pageStateService.getElementStates(page_state.getId());
 		List<ElementState> image_elements = new ArrayList<>();
 		for(ElementState element : elements) {
 			if(element.getName().equalsIgnoreCase(tag_name)) {
@@ -116,8 +114,8 @@ public class ImageAltTextAudit implements IExecutablePageStateAudit {
 																	0,
 																	1);
 					
-					issue_message = (ElementStateIssueMessage) issue_message_service.save(issue_message);
-					issue_message_service.addElement(issue_message.getId(), image_element.getId());
+					issue_message = (ElementStateIssueMessage) issueMessageService.save(issue_message);
+					issueMessageService.addElement(issue_message.getId(), image_element.getId());
 					issue_messages.add(issue_message);
 				}
 				else {
@@ -136,8 +134,8 @@ public class ImageAltTextAudit implements IExecutablePageStateAudit {
 																	1,
 																	1);
 
-					issue_message = (ElementStateIssueMessage) issue_message_service.save(issue_message);
-					issue_message_service.addElement(issue_message.getId(), image_element.getId());
+					issue_message = (ElementStateIssueMessage) issueMessageService.save(issue_message);
+					issueMessageService.addElement(issue_message.getId(), image_element.getId());
 					issue_messages.add(issue_message);
 				}
 			}
@@ -157,8 +155,8 @@ public class ImageAltTextAudit implements IExecutablePageStateAudit {
 																0,
 																1);
 				
-				issue_message = (ElementStateIssueMessage) issue_message_service.save(issue_message);
-				issue_message_service.addElement(issue_message.getId(), image_element.getId());
+				issue_message = (ElementStateIssueMessage) issueMessageService.save(issue_message);
+				issueMessageService.addElement(issue_message.getId(), image_element.getId());
 				issue_messages.add(issue_message);
 			}
 		}
@@ -199,8 +197,8 @@ public class ImageAltTextAudit implements IExecutablePageStateAudit {
 								why_it_matters,
 								description,
 								true);
-		audit_service.save(audit);
-		audit_service.addAllIssues(audit.getId(), issue_messages);
+		auditService.save(audit);
+		auditService.addAllIssues(audit.getId(), issue_messages);
 		return audit;
 		//the contstant 2 in this equation is the exact number of boolean checks for this audit
 	}

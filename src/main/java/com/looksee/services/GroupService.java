@@ -1,26 +1,40 @@
 package com.looksee.services;
 
+import com.looksee.models.Group;
+import com.looksee.models.repository.GroupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.looksee.models.Group;
-import com.looksee.models.repository.GroupRepository;
-
+/**
+ * Service for {@link Group}s
+ */
 @Service
 public class GroupService {
 
 	@Autowired
-	private GroupRepository group_repo;
+	private GroupRepository groupRepo;
 	
+	/**
+	 * Saves a {@link Group}
+	 *
+	 * @param group the group to save
+	 * @return the saved group
+	 */
 	public Group save(Group group){
-		Group group_record = findByKey(group.getKey());
-		if(group_record == null){
-			group_record = group_repo.save(group);
+		Group groupRecord = findByKey(group.getKey());
+		if(groupRecord == null){
+			groupRecord = groupRepo.save(group);
 		}
-		return group_record;
+		return groupRecord;
 	}
 	
+	/**
+	 * Finds a {@link Group} by its key
+	 *
+	 * @param key the key
+	 * @return the group
+	 */
 	public Group findByKey(String key){
-		return group_repo.findByKey(key);
+		return groupRepo.findByKey(key);
 	}
 }

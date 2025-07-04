@@ -52,6 +52,8 @@ public class DocumentSettleCondition<T> implements ExpectedCondition<T> {
 
     /**
      * Get the settle time in millis.
+     * 
+     * @return the settle time in millis
      */
     public long getSettleTime() {
         return settleTimeInMillis;

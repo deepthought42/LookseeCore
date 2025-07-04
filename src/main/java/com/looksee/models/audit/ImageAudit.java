@@ -15,6 +15,7 @@ import com.looksee.utils.BrowserUtils;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,20 +25,17 @@ import org.springframework.stereotype.Component;
  * Responsible for executing an audit on the hyperlinks on a page for the information architecture audit category
  */
 @Component
+@NoArgsConstructor
 public class ImageAudit implements IExecutablePageStateAudit {
 	@SuppressWarnings("unused")
 	private static Logger log = LoggerFactory.getLogger(ImageAudit.class);
 	
 	@Autowired
-	private AuditService audit_service;
+	private AuditService auditService;
 	
 	@Autowired
-	private UXIssueMessageService issue_message_service;
-	
-	public ImageAudit() {
-	}
+	private UXIssueMessageService issueMessageService;
 
-	
 	/**
 	 * {@inheritDoc}
 	 * 
@@ -70,8 +68,8 @@ public class ImageAudit implements IExecutablePageStateAudit {
 								description,
 								false);
 						
-		audit_service.save(audit);
-		audit_service.addAllIssues(audit.getId(), copyright_score.getIssueMessages());
+		auditService.save(audit);
+		auditService.addAllIssues(audit.getId(), copyright_score.getIssueMessages());
 		return audit;
 	}
 
@@ -115,8 +113,8 @@ public class ImageAudit implements IExecutablePageStateAudit {
 																1,
 																true);
 				
-				issue_message = (StockImageIssueMessage) issue_message_service.save(issue_message);
-				issue_message_service.addElement(issue_message.getId(), element.getId());
+				issue_message = (StockImageIssueMessage) issueMessageService.save(issue_message);
+				issueMessageService.addElement(issue_message.getId(), element.getId());
 				issue_messages.add(issue_message);
 				
 				points_earned += 0;
@@ -142,8 +140,8 @@ public class ImageAudit implements IExecutablePageStateAudit {
 																1,
 																false);
 
-				issue_message = (StockImageIssueMessage) issue_message_service.save(issue_message);
-				issue_message_service.addElement(issue_message.getId(), element.getId());
+				issue_message = (StockImageIssueMessage) issueMessageService.save(issue_message);
+				issueMessageService.addElement(issue_message.getId(), element.getId());
 				issue_messages.add(issue_message);
 			}
 		}

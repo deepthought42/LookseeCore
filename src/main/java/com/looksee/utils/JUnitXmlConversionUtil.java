@@ -5,8 +5,20 @@ import com.looksee.models.enums.TestStatus;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Utility class for converting test records to JUnit XML format
+ */
 public class JUnitXmlConversionUtil {
 
+	/**
+	 * Converts a list of test records to JUnit XML format
+	 *
+	 * @param test_record_list {@link List} of {@link TestRecord}s to convert
+	 * @param failing_cnt the number of failing tests
+	 * @param time_in_sec the time in seconds
+	 * @param date the date
+	 * @return the JUnit XML string
+	 */
 	public static String convertToJUnitXml(List<TestRecord> test_record_list, int failing_cnt, long time_in_sec, Date date){
 		StringBuffer str_buf = new StringBuffer();
 		

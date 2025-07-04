@@ -79,11 +79,11 @@ public interface ElementRepository extends Neo4jRepository<Element, Long> {
 	 * Finds an {@link Element} by its outer HTML
 	 *
 	 * @param user_id the user ID
-	 * @param outer_html the outer HTML
+	 * @param outerHtml the outer HTML
 	 * @return the element
 	 */
 	@Query("MATCH (:Account{user_id:$user_key})-[*]->(e:Element{outer_html:$outer_html}) RETURN e LIMIT 1")
-	public Element findByOuterHtml(@Param("user_id") String user_id, @Param("outer_html") String snippet);
+	public Element findByOuterHtml(@Param("user_id") String user_id, @Param("outer_html") String outerHtml);
 
 	/**
 	 * Clears bug messages for an {@link Element}

@@ -28,6 +28,9 @@ public class FormField {
 	private List<Rule> rules;
 	private Element formField;
 	
+	/**
+	 * Constructor
+	 */
 	public FormField() {
 		rules = new ArrayList<>();
 	}
@@ -87,7 +90,7 @@ public class FormField {
 	/**
 	 * This handles the performing of a {@link ActionOLD}
 	 * 
-	 * @param action
+	 * @param action the action to perform
 	 */
 	public void performAction(String action){}
 }

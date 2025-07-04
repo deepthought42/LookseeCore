@@ -193,9 +193,11 @@ public class ColorPaletteUtils {
 	}
 
 	/**
-	 * // NOTE:: we consider black and white as one color and the shades of gray as shades of 1 extreme meaning that grayscale is 1 color(gray) with many shades.
-	 * @param palette
-	 * @return
+	 * Determines the color scheme of a palette
+	 * NOTE:: we consider black and white as one color and the shades of gray as shades of 1 extreme meaning that grayscale is 1 color(gray) with many shades.
+	 * 
+	 * @param palette {@link Collection} of {@link PaletteColor}s to check
+	 * @return {@link ColorScheme}
 	 * 
 	 * precondition: palette != null
 	 */
