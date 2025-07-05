@@ -98,4 +98,31 @@ public class PageAuditRecord extends AuditRecord {
 	public String generateKey() {
 		return "pageauditrecord:" + org.apache.commons.codec.digest.DigestUtils.sha256Hex(System.currentTimeMillis() + " ");
 	}
+
+	/**
+	 * Adds an audit to the record.
+	 *
+	 * @param audit the audit to add
+	 */
+	public void addAudit(Audit audit) {
+		audits.add(audit);
+	}
+
+	/**
+	 * Removes an audit from the record.
+	 *
+	 * @param audit the audit to remove
+	 */
+	public void removeAudit(Audit audit) {
+		audits.remove(audit);
+	}
+
+	/**
+	 * Adds a set of audits to the record.
+	 *
+	 * @param audits the set of audits to add
+	 */
+	public void addAudits(Set<Audit> audits) {
+		audits.addAll(audits);
+	}
 }
