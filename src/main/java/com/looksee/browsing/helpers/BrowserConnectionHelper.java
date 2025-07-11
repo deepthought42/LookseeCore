@@ -30,30 +30,22 @@ public class BrowserConnectionHelper {
 	 */
 	private static int SELENIUM_HUB_IDX = 0;
 
+	
 	/**
-	 * The IP addresses of the selenium hubs
+	 * Gets the selenium hub URLs, either from environment variable SELENIUM_URLS or fallback to hardcoded list
+	 * 
+	 * @return array of selenium hub URLs
 	 */
-	private static final String[] RESOURCE_HEAVY_REQUEST_HUB_IP_ADDRESS = {	"selenium-standalone-1-uydih6tjpa-uc.a.run.app",
-																			"selenium-standalone-2-uydih6tjpa-uc.a.run.app",
-																			"selenium-standalone-3-uydih6tjpa-uc.a.run.app",
-																			"selenium-standalone-4-uydih6tjpa-uc.a.run.app",
-																			"selenium-standalone-5-uydih6tjpa-uc.a.run.app",
-																			"selenium-standalone-6-uydih6tjpa-uc.a.run.app",
-																			"selenium-standalone-7-uydih6tjpa-uc.a.run.app",
-																			"selenium-standalone-8-uydih6tjpa-uc.a.run.app",
-																			"selenium-standalone-9-uydih6tjpa-uc.a.run.app",
-																			"selenium-standalone-10-uydih6tjpa-uc.a.run.app",
-																			"selenium-standalone-11-uydih6tjpa-uc.a.run.app",
-																			"selenium-standalone-12-uydih6tjpa-uc.a.run.app",
-																			"selenium-standalone-13-uydih6tjpa-uc.a.run.app",
-																			"selenium-standalone-14-uydih6tjpa-uc.a.run.app",
-																			"selenium-standalone-15-uydih6tjpa-uc.a.run.app",
-																			"selenium-standalone-16-uydih6tjpa-uc.a.run.app",
-																			"selenium-standalone-17-uydih6tjpa-uc.a.run.app",
-																			"selenium-standalone-18-uydih6tjpa-uc.a.run.app",
-																			"selenium-standalone-19-uydih6tjpa-uc.a.run.app",
-																			"selenium-standalone-20-uydih6tjpa-uc.a.run.app"};
-																			
+	private static String[] getSeleniumHubUrls() {
+		// Try environment variable first
+		String seleniumUrls = System.getenv("SELENIUM_URLS");
+		if (seleniumUrls != null && !seleniumUrls.trim().isEmpty()) {
+			return seleniumUrls.split(",");
+		}
+		
+		return new String[0];
+	}
+
 	/**
 	 * Creates a {@linkplain WebDriver} connection
 	 *
@@ -75,11 +67,13 @@ public class BrowserConnectionHelper {
 		assert environment != null;
 
 		URL hub_url = null;
+		String[] hubUrls = getSeleniumHubUrls();
+		
 		if(environment.equals(BrowserEnvironment.DISCOVERY) && "chrome".equalsIgnoreCase(browser.toString())){
-			hub_url = new URL( "https://"+RESOURCE_HEAVY_REQUEST_HUB_IP_ADDRESS[SELENIUM_HUB_IDX%RESOURCE_HEAVY_REQUEST_HUB_IP_ADDRESS.length]+"/wd/hub");
+			hub_url = new URL( "https://"+hubUrls[SELENIUM_HUB_IDX%hubUrls.length]+"/wd/hub");
 		}
 		else if(environment.equals(BrowserEnvironment.DISCOVERY) && "firefox".equalsIgnoreCase(browser.toString())){
-			hub_url = new URL( "https://"+RESOURCE_HEAVY_REQUEST_HUB_IP_ADDRESS[SELENIUM_HUB_IDX%RESOURCE_HEAVY_REQUEST_HUB_IP_ADDRESS.length]+"/wd/hub");
+			hub_url = new URL( "https://"+hubUrls[SELENIUM_HUB_IDX%hubUrls.length]+"/wd/hub");
 		}
 		SELENIUM_HUB_IDX++;
 
