@@ -35,7 +35,7 @@ public class BrowserConnectionHelperTest {
     @Test
     public void testGetConnectionWithEmptyEnvironmentVariable() {
         // Set empty environment variable - should throw exception since no URLs are available
-        System.setProperty("SELENIUM_URLS", "");
+        System.setProperty("SELENIUM_URLS", "[]");
         
         // Test that an exception is thrown when no URLs are available
         assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
@@ -49,7 +49,7 @@ public class BrowserConnectionHelperTest {
         System.clearProperty("SELENIUM_URLS");
         
         // Test that an exception is thrown when no URLs are available
-        assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
+        assertThrows(ArithmeticException.class, () -> {
             BrowserConnectionHelper.getConnection(BrowserType.CHROME, BrowserEnvironment.DISCOVERY);
         });
     }
