@@ -8,7 +8,7 @@ The `BrowserConnectionHelper` class has been updated to support parameterized Se
 
 ## Configuration Methods
 
-### 1. Environment Variable (Recommended)
+### 1. Environment Variable (Required)
 
 Set the `SELENIUM_URLS` environment variable with a comma-separated list of Selenium hub URLs:
 
@@ -42,16 +42,9 @@ And add the property to your `application.properties`:
 selenium.urls=selenium-standalone-1-uydih6tjpa-uc.a.run.app,selenium-standalone-2-uydih6tjpa-uc.a.run.app
 ```
 
-### 3. Fallback
+## Important Note
 
-If the environment variable is not set, the system will fall back to the original hardcoded list of 20 Selenium hub URLs.
-
-## Priority Order
-
-The system checks for Selenium URLs in the following order:
-
-1. **Environment Variable** - `SELENIUM_URLS` environment variable
-2. **Fallback** - Hardcoded list of 20 Selenium hub URLs
+The `SELENIUM_URLS` environment variable **must** be set for the application to work properly. If the environment variable is not set or is empty, the application will throw an `ArrayIndexOutOfBoundsException` when trying to create browser connections.
 
 ## Usage
 

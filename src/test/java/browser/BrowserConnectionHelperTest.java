@@ -2,6 +2,7 @@ package browser;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.looksee.browsing.helpers.BrowserConnectionHelper;
 import com.looksee.models.Browser;
@@ -50,28 +51,24 @@ public class BrowserConnectionHelperTest {
     }
     
     @Test
-    public void testGetConnectionWithFallback() throws MalformedURLException {
-        // Clear the environment variable to test fallback
-        System.clearProperty("SELENIUM_URLS");
+    public void testGetConnectionWithEmptyEnvironmentVariable() {
+        // Set empty environment variable - should throw exception since no URLs are available
+        System.setProperty("SELENIUM_URLS", "");
         
-        // Test that the connection is created successfully with fallback URLs
-        Browser browser = BrowserConnectionHelper.getConnection(BrowserType.FIREFOX, BrowserEnvironment.DISCOVERY);
-        
-        assertNotNull(browser);
-        assertEquals("firefox", browser.getBrowserName());
-        assertNotNull(browser.getDriver());
+        // Test that an exception is thrown when no URLs are available
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
+            BrowserConnectionHelper.getConnection(BrowserType.CHROME, BrowserEnvironment.DISCOVERY);
+        });
     }
     
     @Test
-    public void testGetConnectionWithEmptyEnvironmentVariable() throws MalformedURLException {
-        // Set empty environment variable to test fallback
-        System.setProperty("SELENIUM_URLS", "");
+    public void testGetConnectionWithNoEnvironmentVariable() {
+        // Clear the environment variable - should throw exception since no URLs are available
+        System.clearProperty("SELENIUM_URLS");
         
-        // Test that the connection is created successfully with fallback URLs
-        Browser browser = BrowserConnectionHelper.getConnection(BrowserType.CHROME, BrowserEnvironment.DISCOVERY);
-        
-        assertNotNull(browser);
-        assertEquals("chrome", browser.getBrowserName());
-        assertNotNull(browser.getDriver());
+        // Test that an exception is thrown when no URLs are available
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
+            BrowserConnectionHelper.getConnection(BrowserType.CHROME, BrowserEnvironment.DISCOVERY);
+        });
     }
 } 
