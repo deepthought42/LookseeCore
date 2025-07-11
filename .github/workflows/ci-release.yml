@@ -24,16 +24,16 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: '21'
-
+          
+      - name: Test with Maven
+        run: mvn test
+  
       - name: Cache Maven packages
         uses: actions/cache@v3
         with:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
-
-      - name: Test with Maven
-        run: mvn test
 
   bump-version-and-release:
     needs: test
