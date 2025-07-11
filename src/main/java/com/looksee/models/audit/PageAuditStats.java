@@ -9,29 +9,21 @@ import lombok.Setter;
 /**
  * Page audit stats for a page audit record.
  */
+@Getter
+@Setter
 @NoArgsConstructor
 public class PageAuditStats extends AuditStats{
 	
-	@Getter
-	@Setter
 	private LocalDateTime startTime; //time that the page audit started
 
-	@Getter
-	@Setter
 	private LocalDateTime endTime;
 
-	@Getter
-	@Setter
 	private long auditRecordId;
 
 	private String status;
 	
-	@Setter
-	@Getter
 	private double accessibilityScore;
 
-	@Getter
-	@Setter
 	private double contentScore;
 	
 	//content sub-category score
@@ -41,24 +33,14 @@ public class PageAuditStats extends AuditStats{
 	private int auditIssueCount;
 	private int imageCopyrightIssueCount;
 
-	@Getter
-	@Setter
 	private double writtenContentScore;
 
-	@Getter
-	@Setter
 	private double imageryScore;
 
-	@Getter
-	@Setter
 	private double videosScore;
 
-	@Getter
-	@Setter
 	private double audioScore;
 	
-	@Getter
-	@Setter
 	private double infoArchitectureScore;
 	
 	//info architecture audit sub-categories
@@ -67,24 +49,14 @@ public class PageAuditStats extends AuditStats{
 	private int performanceIssueCount;
 	private int linkIssueCount;
 	
-	@Getter
-	@Setter
 	private double seoScore;
 
-	@Getter
-	@Setter
 	private double menuAnalysisScore;
 
-	@Getter
-	@Setter
 	private double performanceScore;
 
-	@Getter
-	@Setter
 	private double linkScore;
 	
-	@Getter
-	@Setter
 	private double aestheticScore;
 	
 	//aesthetic audit sub-categories
@@ -134,6 +106,7 @@ public class PageAuditStats extends AuditStats{
 	 * @param typography_score the typography score
 	 * @param whitespace_score the whitespace score
 	 * @param branding_score the branding score
+	 * @param total_issues the total issues
 	 * @param status the status of the audit
 	 * @param link_score the link score
 	 */
@@ -157,6 +130,7 @@ public class PageAuditStats extends AuditStats{
 			double typography_score,
 			double whitespace_score,
 			double branding_score,
+			int total_issues,
 			ExecutionStatus status,
 			double link_score
 	) {

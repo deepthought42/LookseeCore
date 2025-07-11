@@ -3,17 +3,21 @@ package com.looksee.models.audit;
 import com.looksee.models.SimplePage;
 import com.looksee.models.enums.ExecutionStatus;
 import java.util.UUID;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * Record detailing an set of {@link Audit audits}.
  */
+@NoArgsConstructor
+@Getter
+@Setter
 public class PageAudits {
-	private ElementIssueTwoWayMapping element_issue_map;
-	private SimplePage page_state;
+	private ElementIssueTwoWayMapping elementIssueMap;
+	private SimplePage simplePage;
 	private String status;
-	private long audit_record_id;
-	
-	public PageAudits() {}
+	private long auditRecordId;
 	
 	/**
 	 * Constructor
@@ -50,22 +54,6 @@ public class PageAudits {
 	}
 
 	/**
-	 * Retrieves the {@link ElementIssueTwoWayMapping} for the audit
-	 * @return {@link ElementIssueTwoWayMapping} for the audit
-	 */
-	public ElementIssueTwoWayMapping getElementIssueMap() {
-		return element_issue_map;
-	}
-
-	/**
-	 * Sets the {@link ElementIssueTwoWayMapping} for the audit
-	 * @param element_issue_map {@link ElementIssueTwoWayMapping} for the audit
-	 */
-	public void setElementIssueMap(ElementIssueTwoWayMapping element_issue_map) {
-		this.element_issue_map = element_issue_map;
-	}
-
-	/**
 	 * Retrieves the {@link ExecutionStatus} for the audit
 	 * @return {@link ExecutionStatus} for the audit
 	 */
@@ -79,37 +67,5 @@ public class PageAudits {
 	 */
 	public void setStatus(ExecutionStatus status) {
 		this.status = status.getShortName();
-	}
-
-	/**
-	 * Retrieves the {@link SimplePage} for the audit
-	 * @return {@link SimplePage} for the audit
-	 */
-	public SimplePage getSimplePage() {
-		return page_state;
-	}
-
-	/**
-	 * Sets the {@link SimplePage} for the audit
-	 * @param page_state {@link SimplePage} for the audit
-	 */
-	public void setSimplePage(SimplePage page_state) {
-		this.page_state = page_state;
-	}
-
-	/**
-	 * Retrieves the id of the audit record
-	 * @return id of the audit record
-	 */
-	public long getAuditRecordId() {
-		return audit_record_id;
-	}
-
-	/**
-	 * Sets the id of the audit record
-	 * @param audit_record_id id of the audit record
-	 */
-	public void setAuditRecordId(long audit_record_id) {
-		this.audit_record_id = audit_record_id;
 	}
 }

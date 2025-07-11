@@ -23,14 +23,14 @@ public class NetworkRequestDetail extends AuditDetail {
 	
 	/**
 	 * Constructor for {@link NetworkRequestDetail}
-	 * @param transfer_size
-	 * @param url
-	 * @param status_code
-	 * @param resource_type
-	 * @param mime_type
-	 * @param resource_size
-	 * @param end_time
-	 * @param start_time
+	 * @param transferSize the transfer size
+	 * @param url the url
+	 * @param statusCode the status code
+	 * @param resourceType the resource type
+	 * @param mimeType the mime type
+	 * @param resourceSize the resource size
+	 * @param endTime the end time
+	 * @param startTime the start time
 	 */
 	public NetworkRequestDetail(Integer transferSize,
 								String url,

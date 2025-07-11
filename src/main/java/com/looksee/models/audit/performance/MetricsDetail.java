@@ -42,68 +42,99 @@ public class MetricsDetail extends AuditDetail {
 	private Integer observedFirstPaint;
 	private Integer observedLastVisualChange;
 	private Boolean lcpInvalidated;
-		
+	
+	/**
+	 * Constructor for {@link MetricsDetail}	
+	 * @param firstContentfulPaint the first contentful paint
+	 * @param observedFirstPaintTs the observed first paint timestamp
+	 * @param speedIndex the speed index
+	 * @param observedSpeedIndexTs the observed speed index timestamp
+	 * @param observedFirstContentfulPaint the observed first contentful paint
+	 * @param observedNavigationStartTs the observed navigation start timestamp
+	 * @param observedLargestContentfulPaintTs the observed largest contentful paint timestamp
+	 * @param observedFirstVisualChange the observed first visual change
+	 * @param observedLoadTs the observed load timestamp
+	 * @param firstMeaningfulPaint the first meaningful paint
+	 * @param observedTraceEnd the observed trace end
+	 * @param observedFirstMeaningfulPaint the observed first meaningful paint
+	 * @param firstCpuIdle the first cpu idle
+	 * @param observedTraceEndTs the observed trace end timestamp
+	 * @param observedFirstMeaningfulPaintTs the observed first meaningful paint timestamp
+	 * @param observedDomContentLoaded the observed dom content loaded
+	 * @param observedFirstVisualChangeTs the observed first visual change timestamp
+	 * @param interactive the interactive
+	 * @param observedNavigationStart the observed navigation start
+	 * @param observedFirstContentfulPaintTs the observed first contentful paint timestamp
+	 * @param observedLastVisualChangeTs the observed last visual change timestamp
+	 * @param observedDomContentLoadedTs the observed dom content loaded timestamp
+	 * @param observedSpeedIndex the observed speed index
+	 * @param estimatedInputLatency the estimated input latency
+	 * @param totalBlockingTime the total blocking time
+	 * @param observedFirstPaint the observed first paint
+	 * @param observedLastVisualChange the observed last visual change
+	 * @param lcpInvalidated the lcp invalidated
+	 */
 	public MetricsDetail(
-			Integer first_contentful_paint,
-			Long observed_first_paint_ts,
-			Integer speed_index,
-			Long observed_speed_index_ts,
-			Integer observed_first_contentful_paint,
-			Long observed_navigation_start_ts,
-			Long observed_largest_contentful_paint_ts,
-			Integer observed_first_visual_change,
-			Long observed_load_ts,
-			Integer first_meaningful_paint,
-			Integer observed_trace_end,
-			Integer observed_first_meaningful_paint,
-			Integer first_cpu_idle,
-			Long observed_trace_end_ts,
-			Long observed_first_meaningful_paint_ts,
-			Integer observed_dom_content_loaded,
-			Long observed_first_visual_change_ts,
+			Integer firstContentfulPaint,
+			Long observedFirstPaintTs,
+			Integer speedIndex,
+			Long observedSpeedIndexTs,
+			Integer observedFirstContentfulPaint,
+			Long observedNavigationStartTs,
+			Long observedLargestContentfulPaintTs,
+			Integer observedFirstVisualChange,
+			Long observedLoadTs,
+			Integer firstMeaningfulPaint,
+			Integer observedTraceEnd,
+			Integer observedFirstMeaningfulPaint,
+			Integer firstCpuIdle,
+			Long observedTraceEndTs,
+			Long observedFirstMeaningfulPaintTs,
+			Integer observedDomContentLoaded,
+			Long observedFirstVisualChangeTs,
 			Integer interactive,
-			Integer observed_navigation_start,
-			Long observed_first_contentful_paint_ts,
-			Long observed_last_visual_change_ts,
-			Integer observed_load,
-			Integer observed_largest_contentful_paint,
-			Long observed_dom_content_loaded_ts,
-			Integer observed_speed_index,
-			Integer estimated_input_latency,
-			Integer total_blocking_time,
-			Integer observed_first_paint,
-			Integer observed_last_visual_change,
-			Boolean lcp_invalidated
+			Integer observedNavigationStart,
+			Long observedFirstContentfulPaintTs,
+			Long observedLastVisualChangeTs,
+			Integer observedLoad,
+			Integer observedLargestContentfulPaint,
+			Long observedDomContentLoadedTs,
+			Integer observedSpeedIndex,
+			Integer estimatedInputLatency,
+			Integer totalBlockingTime,
+			Integer observedFirstPaint,
+			Integer observedLastVisualChange,
+			Boolean lcpInvalidated
 	) {
-		setFirstContentfulPaint(first_contentful_paint);
-		setObservedFirstContentfulPaint(observed_first_contentful_paint);
-		setEstimatedInputLatency(estimated_input_latency);
-		setFirstCpuIdle(first_cpu_idle);
-		setFirstMeaningfulPaint(first_meaningful_paint);
+		setFirstContentfulPaint(firstContentfulPaint);
+		setObservedFirstContentfulPaint(observedFirstContentfulPaint);
+		setEstimatedInputLatency(estimatedInputLatency);
+		setFirstCpuIdle(firstCpuIdle);
+		setFirstMeaningfulPaint(firstMeaningfulPaint);
 		setInteractive(interactive);
-		setLcpInvalidated(lcp_invalidated);
-		setObservedFirstMeaningfulPaint(observed_first_meaningful_paint);
-		setObservedFirstVisualChangeTs(observed_first_visual_change_ts);
-		setObservedDomContentLoaded(observed_dom_content_loaded);
-		setObservedDomContentLoadedTs(observed_dom_content_loaded_ts);
-		setObservedFirstContentfulPaint(observed_first_contentful_paint);
-		setObservedFirstContentfulPaintTs(observed_first_contentful_paint_ts);
-		setObservedFirstPaint(observed_first_paint);
-		setObservedFirstPaintTs(observed_first_paint_ts);
-		setObservedFirstVisualChange(observed_first_visual_change);
-		setObservedLargestContentfulPaint(observed_largest_contentful_paint);
-		setObservedLargestContentfulPaintTs(observed_largest_contentful_paint_ts);
-		setObservedLastVisualChange(observed_last_visual_change);
-		setObservedLastVisualChangeTs(observed_last_visual_change_ts);
-		setObservedLoad(observed_load);
-		setObservedLoadTs(observed_load_ts);
-		setObservedNavigationStart(observed_navigation_start);
-		setObservedNavigationStartTs(observed_navigation_start_ts);
-		setObservedSpeedIndex(observed_speed_index);
-		setObservedSpeedIndexTs(observed_speed_index_ts);
-		setObservedTraceEnd(observed_trace_end);
-		setObservedTraceEndTs(observed_trace_end_ts);
-		setSpeedIndex(speed_index);
-		setTotalBlockingTime(total_blocking_time);
+		setLcpInvalidated(lcpInvalidated);
+		setObservedFirstMeaningfulPaint(observedFirstMeaningfulPaint);
+		setObservedFirstVisualChangeTs(observedFirstVisualChangeTs);
+		setObservedDomContentLoaded(observedDomContentLoaded);
+		setObservedDomContentLoadedTs(observedDomContentLoadedTs);
+		setObservedFirstContentfulPaint(observedFirstContentfulPaint);
+		setObservedFirstContentfulPaintTs(observedFirstContentfulPaintTs);
+		setObservedFirstPaint(observedFirstPaint);
+		setObservedFirstPaintTs(observedFirstPaintTs);
+		setObservedFirstVisualChange(observedFirstVisualChange);
+		setObservedLargestContentfulPaint(observedLargestContentfulPaint);
+		setObservedLargestContentfulPaintTs(observedLargestContentfulPaintTs);
+		setObservedLastVisualChange(observedLastVisualChange);
+		setObservedLastVisualChangeTs(observedLastVisualChangeTs);
+		setObservedLoad(observedLoad);
+		setObservedLoadTs(observedLoadTs);
+		setObservedNavigationStart(observedNavigationStart);
+		setObservedNavigationStartTs(observedNavigationStartTs);
+		setObservedSpeedIndex(observedSpeedIndex);
+		setObservedSpeedIndexTs(observedSpeedIndexTs);
+		setObservedTraceEnd(observedTraceEnd);
+		setObservedTraceEndTs(observedTraceEndTs);
+		setSpeedIndex(speedIndex);
+		setTotalBlockingTime(totalBlockingTime);
 	}
 }
