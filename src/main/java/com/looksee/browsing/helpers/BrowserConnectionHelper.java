@@ -64,10 +64,10 @@ public class BrowserConnectionHelper {
 		URL hub_url = null;
 		
 		if(environment.equals(BrowserEnvironment.DISCOVERY) && "chrome".equalsIgnoreCase(browser.toString())){
-			hub_url = new URL( "https://"+HUB_URLS[SELENIUM_HUB_IDX%hubUrls.length]+"/wd/hub");
+			hub_url = new URL( "https://"+HUB_URLS[SELENIUM_HUB_IDX%HUB_URLS.length]+"/wd/hub");
 		}
 		else if(environment.equals(BrowserEnvironment.DISCOVERY) && "firefox".equalsIgnoreCase(browser.toString())){
-			hub_url = new URL( "https://"+HUB_URLS[SELENIUM_HUB_IDX%hubUrls.length]+"/wd/hub");
+			hub_url = new URL( "https://"+HUB_URLS[SELENIUM_HUB_IDX%HUB_URLS.length]+"/wd/hub");
 		}
 		SELENIUM_HUB_IDX++;
 
