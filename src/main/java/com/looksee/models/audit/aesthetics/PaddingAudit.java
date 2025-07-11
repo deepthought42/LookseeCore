@@ -61,7 +61,6 @@ public class PaddingAudit implements IExecutablePageStateAudit {
 	@Override
 	public Audit execute(PageState page, AuditRecord audit_record, DesignSystem design_system) {
 		assert page != null;
-
 		
 		Set<UXIssueMessage> issue_messages = new HashSet<>();
 		Map<ElementState, List<String>> elements_padding_map = new HashMap<>();
@@ -98,7 +97,7 @@ public class PaddingAudit implements IExecutablePageStateAudit {
 			if( element.getRenderedCssValues().containsKey("padding-left")) {
 				padding_value = element.getRenderedCssValues().get("padding-left");
 				paddings.addAll(Arrays.asList(padding_value.split(" ")));
-			}	
+			}
 			
 			elements_padding_map.put(element, paddings);
 		}
@@ -117,7 +116,6 @@ public class PaddingAudit implements IExecutablePageStateAudit {
 		
 		//calculate score for question "Is padding used as padding?" NOTE: The expected calculation expects that paddings are not used as padding
 		log.warn("PADDING SCORE  :::   "+ (spacing_score.getPointsAchieved()) + " / " + (spacing_score.getMaxPossiblePoints() ) );	
-
 		
 		String why_it_matters = "Keeping your use of paddings to a miminum, and when you use them making sure you"
 				+ " the padding values are a multiple of 8 dpi ensures your site is more responsive. Not all users"
@@ -126,11 +124,11 @@ public class PaddingAudit implements IExecutablePageStateAudit {
 		
 		String description = "Evaluation of how whitespace is used";
 		
-    	Set<String> labels = new HashSet<>();
-    	labels.add(AuditSubcategory.WHITESPACE.getShortName());
-    	
-    	Set<String> categories = new HashSet<>();
-    	categories.add(AuditCategory.AESTHETICS.toString());
+		Set<String> labels = new HashSet<>();
+		labels.add(AuditSubcategory.WHITESPACE.getShortName());
+		
+		Set<String> categories = new HashSet<>();
+		categories.add(AuditCategory.AESTHETICS.toString());
 		
 
 		return new Audit(AuditCategory.AESTHETICS,
@@ -149,7 +147,7 @@ public class PaddingAudit implements IExecutablePageStateAudit {
 	/**
 	 * Generates {@link Score score} for spacing consistency across elements
 	 * 
-	 * @param elements_padding_map
+	 * @param elements_padding_map map of {@link ElementState}s to their padding values
 	 * 
 	 * @return {@link Score score}
 	 * 

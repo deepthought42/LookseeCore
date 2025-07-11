@@ -25,8 +25,6 @@ public class BrowserConnectionHelper {
 	
 	/**
 	 * The index of the selenium hub
-	 *
-	 * @see #getConnection(BrowserType, BrowserEnvironment)
 	 */
 	private static int SELENIUM_HUB_IDX = 0;
 
@@ -34,8 +32,7 @@ public class BrowserConnectionHelper {
 	
 	/**
 	 * Gets the selenium hub URLs, either from environment variable SELENIUM_URLS or fallback to hardcoded list
-	 * 
-	 * @return array of selenium hub URLs
+	 * @param urls the selenium hub URLs
 	 */
 	public static void setConfiguredSeleniumUrls(String[] urls) {
 		HUB_URLS=urls;
