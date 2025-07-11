@@ -10,13 +10,18 @@ import lombok.Setter;
 /**
  * Contains the Order of operations for actions. A lower value indicates that
  *   an action has less precedence.
- *
  */
 @Getter
 @Setter
 public class ActionHelper {
+	/**
+	 * Map of action names to their order of operations.
+	 */
 	public static HashMap<String, Integer> actionOrderOfOperationsMap = new HashMap<>();
 	
+	/**
+	 * List of lists of actions.
+	 */
 	private static List<List<ActionOLD>> actionLists = new ArrayList<>();
 	
 	/*

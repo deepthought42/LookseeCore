@@ -2,6 +2,8 @@ package com.looksee.vscodePlugin.structs;
 
 import com.looksee.models.Domain;
 import java.util.Map;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * A data wrapper for messages to be passed around between actors. This wrapper includes in the account
@@ -9,38 +11,37 @@ import java.util.Map;
  * 
  * @param <T> data object that is being passed inside of message
  */
+@Getter
+@Setter
 public class Message<T> {
-	private final String account_key;
-	private final T datum;
+	private final String accountKey;
+	private final T data;
 	private final Map<String, Object> options;
 	private final Domain domain;
 	
-	public Message(String account_key, T data, Map<String, Object> options, Domain domain){
-		this.account_key = account_key;
+	/**
+	 * Constructor for the Message class.
+	 * 
+	 * @param accountKey the account key for the message
+	 * @param data the data for the message
+	 * @param options the options for the message
+	 * @param domain the domain for the message
+	 */
+	public Message(String accountKey, T data, Map<String, Object> options, Domain domain){
+		this.accountKey = accountKey;
 		this.domain = domain;
-		this.datum = data;
+		this.data = data;
 		this.options = options;
 	}
-
-	public String getAccountKey(){
-		return this.account_key;
-	}
 	
-	public T getData(){
-		return this.datum;
-	}
-
-	public Map<String, Object> getOptions() {
-		return options;
-	}
-	
+	/**
+	 * Clones the message.
+	 * 
+	 * @return a clone of the message
+	 */
 	public Message<T> clone(){
 		Message<T> msg = new Message<T>(this.getAccountKey(), this.getData(), this.getOptions(), this.getDomain());
 		return msg;
 		
-	}
-
-	public Domain getDomain() {
-		return domain;
 	}
 }

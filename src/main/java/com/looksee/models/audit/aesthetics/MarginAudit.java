@@ -31,6 +31,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.zip.GZIPInputStream;
 import javax.net.ssl.HttpsURLConnection;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,17 +44,17 @@ import org.springframework.stereotype.Component;
  * 	information architecture audit category
  */
 @Component
+@NoArgsConstructor
+@Getter
+@Setter
 public class MarginAudit implements IExecutablePageStateAudit {
 	private static Logger log = LoggerFactory.getLogger(MarginAudit.class);
 
-	private String[] size_units = {"px", "pt", "%", "em", "rem", "ex", "vh", "vw", "vmax", "vmin", "mm", "cm", "in", "pc"};
+	private String[] sizeUnits = {"px", "pt", "%", "em", "rem", "ex", "vh", "vw", "vmax", "vmin", "mm", "cm", "in", "pc"};
 	
 	@Autowired
 	private PageStateService page_state_service;
 
-	
-	public MarginAudit() {	}
-	
 	/**
 	 * Executes the audit on the margins used within a page state as part of  the 
 	 * 	information architecture audit category
@@ -107,9 +110,6 @@ public class MarginAudit implements IExecutablePageStateAudit {
 			elements_margin_map.put(element, margins);
 		}
 
-		
-
-			
 		log.warn("Element margin map size :: "+elements_margin_map.size());
 		// Score spacing_score = evaluateSpacingConsistency(elements_margin_map);     //commented out because this is old greatest common divisor methodology
 		Score spacing_score = evaluateSpacingMultipleOf8(elements_margin_map);
@@ -147,7 +147,7 @@ public class MarginAudit implements IExecutablePageStateAudit {
 	/**
 	 * Generates {@link Score score} for spacing consistency across elements
 	 * 
-	 * @param elements_margin_map
+	 * @param elements_margin_map map of {@link ElementState}s to their margin values
 	 * 
 	 * @return {@link Score score}
 	 * 
@@ -301,7 +301,6 @@ public class MarginAudit implements IExecutablePageStateAudit {
 		
 
 		//observations.add(new ElementStateObservation(elements, "Margin values are multiple of 8"));
-		
 		return new Score(points_earned, max_points, element_issues);
 	}
 	
@@ -660,7 +659,7 @@ public class MarginAudit implements IExecutablePageStateAudit {
 				continue;
 			}
 			
-			for(String unit : size_units) {
+			for(String unit : this.sizeUnits) {
 				if(margin_value != null && margin_value.contains(unit)) {
 					List<Double> values = new ArrayList<Double>();
 
@@ -748,10 +747,12 @@ public class MarginAudit implements IExecutablePageStateAudit {
 	 * Converts a list of one type to another
 	 * @param from list of one type to convert
 	 * @param func function to convert the list
+	 * @param <T> type of the list to convert
+	 * @param <U> type of the list to convert to
 	 * @return list of the converted type
 	 */
 	public static <T, U> List<U> convertList(List<T> from, Function<T, U> func) {
-	    return from.stream().map(func).collect(Collectors.toList());
+		return from.stream().map(func).collect(Collectors.toList());
 	}
 	
 	/**

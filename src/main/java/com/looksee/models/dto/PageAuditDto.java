@@ -47,7 +47,9 @@ public class PageAuditDto {
 	private String targetUserAge;
 	private String targetUserEducation;
 
-
+	/**
+	 * Constructor for {@link PageAuditDto}
+	 */
 	public PageAuditDto() {
 		setStartTime(LocalDateTime.now());
 		setStatus(ExecutionStatus.UNKNOWN);
@@ -111,8 +113,14 @@ public class PageAuditDto {
 
 	/**
 	 * Constructor
-	 * @param level TODO
-	 * 
+	 * @param id the id of the page audit
+	 * @param status the status of the page audit
+	 * @param level the level of the page audit
+	 * @param startTime the start time of the page audit
+	 * @param aestheticAuditProgress the aesthetic audit progress
+	 * @param aestheticScore the aesthetic score
+	 * @param contentAuditScore the content audit score
+	 * @param contentAuditProgress the content audit progress
 	 */
 	public PageAuditDto(long id,
 						ExecutionStatus status,
