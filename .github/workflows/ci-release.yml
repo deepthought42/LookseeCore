@@ -99,6 +99,12 @@ jobs:
           echo "--- $(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)"
           echo "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> "$GITHUB_OUTPUT"
       
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
       - name: Cache Maven packages
         uses: actions/cache@v3
         with:
