@@ -79,7 +79,7 @@ public class NonTextColorContrastAudit implements IExecutablePageStateAudit {
 	 */
 	@Override
 	public Audit execute(PageState page_state, AuditRecord audit_record, DesignSystem design_system) {
-		assert page_state != null; 
+		assert page_state != null;
 		
 		WCAGComplianceLevel wcag_compliance = WCAGComplianceLevel.AAA;
 		
@@ -100,20 +100,34 @@ public class NonTextColorContrastAudit implements IExecutablePageStateAudit {
 		return evaluateNonTextContrast(page_state, non_text_elements, design_system);
 	}
 
+	/**
+	 * Get all icons from the list of elements
+	 * @param elements the list of elements
+	 * @return the list of icons
+	 */
 	private List<ElementState> getAllIcons(List<ElementState> elements) {
 		//identify font awesome icons
 		
 		return null;
 	}
 
+	/**
+	 * Get all inputs from the list of elements
+	 * @param elements the list of elements
+	 * @return the list of inputs
+	 */
 	private List<ElementState> getAllInputs(List<ElementState> elements) {
 		return elements.parallelStream()
 							.filter(p ->p.getName().equalsIgnoreCase("input"))
 							.distinct()
-							.collect(Collectors.toList());  // iterating price 
-
+							.collect(Collectors.toList());
 	}
 
+	/**
+	 * Get all buttons from the list of elements
+	 * @param elements the list of elements
+	 * @return the list of buttons
+	 */
 	private List<ElementState> getAllButtons(List<ElementState> elements) {
 		return elements.parallelStream()
 							.filter(p -> p.getName().equalsIgnoreCase("button") || (p.getAttributes().containsKey("class") && p.getAttribute("class").toLowerCase().contains("button")))
@@ -121,6 +135,14 @@ public class NonTextColorContrastAudit implements IExecutablePageStateAudit {
 							.collect(Collectors.toList());  // iterating price 
 	}
 	
+	/**
+	 * Get the pixel color from the image URL
+	 * @param image_url the image URL
+	 * @param x the x coordinate
+	 * @param y the y coordinate
+	 * @return the pixel color
+	 * @throws IOException if the image URL is not valid
+	 */
 	public Color getPixelColor(String image_url, int x, int y) throws IOException {
 		BufferedImage image = gcp_storage.getImage(image_url);
 		return new Color(image.getRGB(x, y));
@@ -343,11 +365,21 @@ public class NonTextColorContrastAudit implements IExecutablePageStateAudit {
 	}
 
 
+	/**
+	 * Get the border color from the element
+	 * @param element the element
+	 * @return the border color
+	 */
 	private ColorData getBorderColor(ElementState element) {
 		return new ColorData(element.getRenderedCssValues().get("border-bottom-color"));
 	}
 
 
+	/**
+	 * Check if the border color matches the background color
+	 * @param element the element
+	 * @return true if the border color matches the background color, false otherwise
+	 */
 	private boolean borderColorMatchesBackground(ElementState element) {
 		String border = element.getRenderedCssValues().get("border-bottom-color");
 		String background = element.getRenderedCssValues().get("background-color");
@@ -355,6 +387,11 @@ public class NonTextColorContrastAudit implements IExecutablePageStateAudit {
 	}
 
 
+	/**
+	 * Check if the element has a continuous border
+	 * @param element the element
+	 * @return true if the element has a continuous border, false otherwise
+	 */
 	private boolean hasContinuousBorder(ElementState element) {
 		String bottom = element.getRenderedCssValues().get("border-bottom-color");
 		String top = element.getRenderedCssValues().get("border-top-color");
@@ -405,8 +442,6 @@ public class NonTextColorContrastAudit implements IExecutablePageStateAudit {
 		//generate color suggestions with varying text and background colors that are within a bounded range of the original color
 		// NOTE: This involves pushing these values in opposing directions until we find a pair that meets WCAG 2.1 AAA standards. 
 		//       Then, the pair of colors are shifted together to find new color pairs
-		
-		
 		return recommendations;
 	}
 }

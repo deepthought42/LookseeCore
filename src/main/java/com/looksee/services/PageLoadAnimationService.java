@@ -1,26 +1,36 @@
 package com.looksee.services;
 
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.looksee.models.PageLoadAnimation;
+import com.looksee.models.repository.PageLoadAnimationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.looksee.models.PageLoadAnimation;
-import com.looksee.models.repository.PageLoadAnimationRepository;
-
+/**
+ * Service for page load animations
+ */
 @Service
 public class PageLoadAnimationService {
-	@SuppressWarnings("unused")
-	private static Logger log = LoggerFactory.getLogger(PageLoadAnimation.class.getName());
-
+	/**
+	 * Repository for page load animations
+	 */
 	@Autowired
 	private PageLoadAnimationRepository animation_repo;
 
+	/**
+	 * Find a page load animation by key
+	 * @param key the key of the page load animation
+	 * @return the page load animation
+	 */
 	public PageLoadAnimation findByKey(String key){
 		return animation_repo.findByKey(key);
 	}
-	
+
+	/**
+	 * Save a page load animation
+	 * @param animation the page load animation to save
+	 * @return the saved page load animation
+	 */
 	public PageLoadAnimation save(PageLoadAnimation animation){
 		PageLoadAnimation record = findByKey(animation.getKey());
 		if(record == null){

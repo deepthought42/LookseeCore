@@ -25,25 +25,17 @@ public class BrowserConnectionHelper {
 	
 	/**
 	 * The index of the selenium hub
-	 *
-	 * @see #getConnection(BrowserType, BrowserEnvironment)
 	 */
 	private static int SELENIUM_HUB_IDX = 0;
 
+	private static String[] HUB_URLS;
 	
 	/**
 	 * Gets the selenium hub URLs, either from environment variable SELENIUM_URLS or fallback to hardcoded list
-	 * 
-	 * @return array of selenium hub URLs
+	 * @param urls the selenium hub URLs
 	 */
-	private static String[] getSeleniumHubUrls() {
-		// Try environment variable first
-		String seleniumUrls = System.getenv("SELENIUM_URLS");
-		if (seleniumUrls != null && !seleniumUrls.trim().isEmpty()) {
-			return seleniumUrls.split(",");
-		}
-		
-		return new String[0];
+	public static void setConfiguredSeleniumUrls(String[] urls) {
+		HUB_URLS=urls;
 	}
 
 	/**
@@ -67,13 +59,12 @@ public class BrowserConnectionHelper {
 		assert environment != null;
 
 		URL hub_url = null;
-		String[] hubUrls = getSeleniumHubUrls();
 		
 		if(environment.equals(BrowserEnvironment.DISCOVERY) && "chrome".equalsIgnoreCase(browser.toString())){
-			hub_url = new URL( "https://"+hubUrls[SELENIUM_HUB_IDX%hubUrls.length]+"/wd/hub");
+			hub_url = new URL( "https://"+HUB_URLS[SELENIUM_HUB_IDX%HUB_URLS.length]+"/wd/hub");
 		}
 		else if(environment.equals(BrowserEnvironment.DISCOVERY) && "firefox".equalsIgnoreCase(browser.toString())){
-			hub_url = new URL( "https://"+hubUrls[SELENIUM_HUB_IDX%hubUrls.length]+"/wd/hub");
+			hub_url = new URL( "https://"+HUB_URLS[SELENIUM_HUB_IDX%HUB_URLS.length]+"/wd/hub");
 		}
 		SELENIUM_HUB_IDX++;
 

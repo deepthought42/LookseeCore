@@ -47,7 +47,9 @@ public class PageAuditDto {
 	private String targetUserAge;
 	private String targetUserEducation;
 
-
+	/**
+	 * Constructor for {@link PageAuditDto}
+	 */
 	public PageAuditDto() {
 		setStartTime(LocalDateTime.now());
 		setStatus(ExecutionStatus.UNKNOWN);
@@ -111,8 +113,20 @@ public class PageAuditDto {
 
 	/**
 	 * Constructor
-	 * @param level TODO
-	 * 
+	 * @param id the id of the page audit
+	 * @param status the status of the page audit
+	 * @param level the level of the page audit
+	 * @param startTime the start time of the page audit
+	 * @param aestheticAuditProgress the aesthetic audit progress
+	 * @param aestheticScore the aesthetic score
+	 * @param contentAuditScore the content audit score
+	 * @param contentAuditProgress the content audit progress
+	 * @param infoArchScore the information architecture score
+	 * @param infoArchAuditProgress the information architecture audit progress
+	 * @param dataExtractionProgress the data extraction progress
+	 * @param created_at the created at time
+	 * @param endTime the end time
+	 * @param url the url of the page
 	 */
 	public PageAuditDto(long id,
 						ExecutionStatus status,
@@ -145,18 +159,27 @@ public class PageAuditDto {
 		setUrl(url);
 	}
 
-
-
-
+	/**
+	 * Generate a key for the page audit
+	 * @return the key for the page audit
+	 */
 	public String generateKey() {
 		return "auditrecord:" + UUID.randomUUID().toString() + org.apache.commons.codec.digest.DigestUtils.sha256Hex(System.currentTimeMillis() + "");
 	}
 
+	/**
+	 * Convert the page audit to a string
+	 * @return the string representation of the page audit
+	 */
 	@Override
 	public String toString() {
 		return this.getId()+", "+this.getUrl()+", "+this.getStatus()+", "+this.getMessage();
 	}
 	
+	/**
+	 * Check if the page audit is complete
+	 * @return true if the page audit is complete, false otherwise
+	 */
 	public boolean isComplete() {
 		return (this.getAestheticsProgress() >= 1.0
 				&& this.getContentProgress() >= 1.0
@@ -164,11 +187,18 @@ public class PageAuditDto {
 				&& this.getDataExtractionProgress() >= 1.0);
 	}
 
-
+	/**
+	 * Get the level of the page audit
+	 * @return the level of the page audit
+	 */
 	public AuditLevel getLevel() {
 		return AuditLevel.create(level);
 	}
 
+	/**
+	 * Set the level of the page audit
+	 * @param level the level of the page audit
+	 */
 	public void setLevel(AuditLevel level) {
 		this.level = level.getShortName();
 	}

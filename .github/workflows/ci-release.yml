@@ -22,9 +22,9 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'adopt'
+          distribution: 'temurin'
           java-version: '21'
-
+          
       - name: Cache Maven packages
         uses: actions/cache@v3
         with:
@@ -34,6 +34,7 @@ jobs:
 
       - name: Test with Maven
         run: mvn test
+  
 
   bump-version-and-release:
     needs: test

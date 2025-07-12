@@ -1,113 +1,115 @@
 package com.looksee.models.audit;
 
-import java.time.LocalDateTime;
-
 import com.looksee.models.enums.ExecutionStatus;
-
+import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Page audit stats for a page audit record.
+ */
+@Getter
+@Setter
 @NoArgsConstructor
 public class PageAuditStats extends AuditStats{
 	
-	@Getter
-	@Setter
-	private LocalDateTime startTime; //time that the 
+	private LocalDateTime startTime; //time that the page audit started
 
-	@Getter
-	@Setter
 	private LocalDateTime endTime;
 
-	@Getter
-	@Setter
 	private long auditRecordId;
 
 	private String status;
 	
-	@Setter
-	@Getter
 	private double accessibilityScore;
 
-	@Getter
-	@Setter
 	private double contentScore;
 	
 	//content sub-category score
-	private int written_content_issue_count;
-	private int imagery_issue_count;
-	private int video_issue_count;
-	private int audit_issue_count;
-	private int image_copyright_issue_count;
+	private int writtenContentIssueCount;
+	private int imageryIssueCount;
+	private int videoIssueCount;
+	private int auditIssueCount;
+	private int imageCopyrightIssueCount;
 
-	@Getter
-	@Setter
 	private double writtenContentScore;
 
-	@Getter
-	@Setter
 	private double imageryScore;
 
-	@Getter
-	@Setter
 	private double videosScore;
 
-	@Getter
-	@Setter
 	private double audioScore;
 	
-	@Getter
-	@Setter
 	private double infoArchitectureScore;
 	
 	//info architecture audit sub-categories
-	private int seo_issue_count;
-	private int menu_issue_count;
-	private int performance_issue_count;
-	private int link_issue_count;
+	private int seoIssueCount;
+	private int menuIssueCount;
+	private int performanceIssueCount;
+	private int linkIssueCount;
 	
-	@Getter
-	@Setter
 	private double seoScore;
 
-	@Getter
-	@Setter
 	private double menuAnalysisScore;
 
-	@Getter
-	@Setter
 	private double performanceScore;
 
-	@Getter
-	@Setter
 	private double linkScore;
 	
-	@Getter
-	@Setter
 	private double aestheticScore;
 	
 	//aesthetic audit sub-categories
-	private int text_contrast_issue_count;
-	private int non_text_issue_count;
-	private int typography_issue_count;
-	private int whitespace_issue_count;
-	private int branding_issue_count;
+	private int textContrastIssueCount;
+	private int nonTextContrastIssueCount;
+	private int typographyIssueCount;
+	private int whitespaceIssueCount;
+	private int brandingIssueCount;
 	
-	private double text_contrast_score;
-	private double non_text_contrast_score;
-	private double typography_score;
-	private double whitespace_score;
-	private double branding_score;
+	private double textContrastScore;
+	private double nonTextContrastScore;
+	private double typographyScore;
+	private double whitespaceScore;
+	private double brandingScore;
 		
-	private int total_issues;
-	private double overall_score;
+	private int totalIssues;
+	private double overallScore;
 	
 	
+	/**
+	 * Constructor for {@link PageAuditStats}
+	 * @param audit_record_id the id of the audit record
+	 */
 	public PageAuditStats(long audit_record_id) {
 		setStartTime(LocalDateTime.now());
 		setAuditRecordId(audit_record_id);
 	}
 	
+	/**
+	 * Constructor for {@link PageAuditStats}
+	 * @param audit_record_id the id of the audit record
+	 * @param start_time the start time of the audit
+	 * @param end_time the end time of the audit
+	 * @param accessibility_score the accessibility score
+	 * @param content_score the content score
+	 * @param written_content_score the written content score
+	 * @param imagery_score the imagery score
+	 * @param videos_score the videos score
+	 * @param audio_score the audio score
+	 * @param info_arch_score the information architecture score
+	 * @param seo_score the SEO score
+	 * @param menu_analysis_score the menu analysis score
+	 * @param performance_score the performance score
+	 * @param aesthetic_score the aesthetic score
+	 * @param text_contrast_score the text contrast score
+	 * @param non_text_contrast_score the non-text contrast score
+	 * @param typography_score the typography score
+	 * @param whitespace_score the whitespace score
+	 * @param branding_score the branding score
+	 * @param total_issues the total issues
+	 * @param status the status of the audit
+	 * @param link_score the link score
+	 */
 	public PageAuditStats(
 			long audit_record_id,
 			LocalDateTime start_time,
@@ -128,6 +130,7 @@ public class PageAuditStats extends AuditStats{
 			double typography_score,
 			double whitespace_score,
 			double branding_score,
+			int total_issues,
 			ExecutionStatus status,
 			double link_score
 	) {
@@ -153,179 +156,18 @@ public class PageAuditStats extends AuditStats{
 		setStatus(status);
 	}
 
-
-	public double getOverallScore() {
-		return overall_score;
-	}
-
-	public void setOverallScore(double overall_score) {
-		this.overall_score = overall_score;
-	}
-	
-	public double getTypographyScore() {
-		return typography_score;
-	}
-
-	public void setTypographyScore(double typography_score) {
-		this.typography_score = typography_score;
-	}
-
-	public double getWhitespaceScore() {
-		return whitespace_score;
-	}
-
-	public void setWhitespaceScore(double whitespace_score) {
-		this.whitespace_score = whitespace_score;
-	}
-
-	public double getBrandingScore() {
-		return branding_score;
-	}
-
-	public void setBrandingScore(double branding_score) {
-		this.branding_score = branding_score;
-	}
-
-	public int getWrittenContentIssueCount() {
-		return written_content_issue_count;
-	}
-
-	public void setWrittenContentIssueCount(int written_content_issue_count) {
-		this.written_content_issue_count = written_content_issue_count;
-	}
-
-	public int getImageryIssueCount() {
-		return imagery_issue_count;
-	}
-
-	public void setImageryIssueCount(int imagery_issue_count) {
-		this.imagery_issue_count = imagery_issue_count;
-	}
-
-	public int getVideoIssueCount() {
-		return video_issue_count;
-	}
-
-	public void setVideoIssueCount(int video_issue_count) {
-		this.video_issue_count = video_issue_count;
-	}
-
-	public int getAuditIssueCount() {
-		return audit_issue_count;
-	}
-
-	public void setAuditIssueCount(int audit_issue_count) {
-		this.audit_issue_count = audit_issue_count;
-	}
-
-	public int getSeoIssueCount() {
-		return seo_issue_count;
-	}
-
-	public void setSeoIssueCount(int seo_issue_count) {
-		this.seo_issue_count = seo_issue_count;
-	}
-
-	public int getMenuIssueCount() {
-		return menu_issue_count;
-	}
-
-	public void setMenuIssueCount(int menu_issue_count) {
-		this.menu_issue_count = menu_issue_count;
-	}
-
-	public int getPerformanceIssueCount() {
-		return performance_issue_count;
-	}
-
-	public void setPerformanceIssueCount(int performance_issue_count) {
-		this.performance_issue_count = performance_issue_count;
-	}
-
-	public int getTypographyIssueCount() {
-		return typography_issue_count;
-	}
-
-	public void setTypographyIssueCount(int typography_issue_count) {
-		this.typography_issue_count = typography_issue_count;
-	}
-
-	public int getWhitespaceIssueCount() {
-		return whitespace_issue_count;
-	}
-
-	public void setWhitespaceIssueCount(int whitespace_issue_count) {
-		this.whitespace_issue_count = whitespace_issue_count;
-	}
-
-	public int getBrandingIssueCount() {
-		return branding_issue_count;
-	}
-
-	public void setBrandingIssueCount(int branding_issue_count) {
-		this.branding_issue_count = branding_issue_count;
-	}
-
-	public int getTotalIssues() {
-		return total_issues;
-	}
-
-	public void setTotalIssues(int total_issues) {
-		this.total_issues = total_issues;
-	}
-
-	public int getLinkIssueCount() {
-		return link_issue_count;
-	}
-
-	public void setLinkIssueCount(int link_issue_count) {
-		this.link_issue_count = link_issue_count;
-	}
-
-	public int getTextContrastIssueCount() {
-		return text_contrast_issue_count;
-	}
-
-	public void setTextContrastIssueCount(int text_contrast_issue_count) {
-		this.text_contrast_issue_count = text_contrast_issue_count;
-	}
-
-	public int getNonTextContrastIssueCount() {
-		return non_text_issue_count;
-	}
-
-	public void setNonTextContrastIssueCount(int non_text_issue_count) {
-		this.non_text_issue_count = non_text_issue_count;
-	}
-
-	public double getTextContrastScore() {
-		return text_contrast_score;
-	}
-
-	public void setTextContrastScore(double text_contrast_score) {
-		this.text_contrast_score = text_contrast_score;
-	}
-
-	public double getNonTextContrastScore() {
-		return non_text_contrast_score;
-	}
-
-	public void setNonTextContrastScore(double non_text_contrast_score) {
-		this.non_text_contrast_score = non_text_contrast_score;
-	}
-
-	public int getImageCopyrightIssueCount() {
-		return image_copyright_issue_count;
-	}
-
-	public void setImageCopyrightIssueCount(int image_copyright_issue_count) {
-		this.image_copyright_issue_count = image_copyright_issue_count;
-	}
-
+	/**
+	 * Get the status of the audit
+	 * @return the status of the audit
+	 */
 	public ExecutionStatus getStatus() {
 		return ExecutionStatus.create(status);
 	}
 
+	/**
+	 * Set the status of the audit
+	 * @param status the status of the audit
+	 */
 	public void setStatus(ExecutionStatus status) {
 		this.status = status.toString();
 	}

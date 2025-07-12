@@ -1,346 +1,140 @@
 package com.looksee.models.audit.performance;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 /**
- * 
- * 
+ * This class is used to store the metrics details for a performance audit.
  */
+@NoArgsConstructor
+@Getter
+@Setter
 public class MetricsDetail extends AuditDetail {
 
-	private Integer first_contentful_paint;
-	private Long observed_first_paint_ts;
-	private Integer speed_index;
-	private Long observed_speed_index_ts;
-	private Integer observed_first_contentful_paint;
-	private Long observed_navigation_start_ts;
-	private Long observed_largest_contentful_paint_ts;
-	private Integer observed_first_visual_change;
-	private Long observed_load_ts;
-	private Integer first_meaningful_paint;
-	private Integer observed_trace_end;
-	private Integer observed_first_meaningful_paint;
-	private Integer first_cpu_idle;
-	private Long observed_trace_end_ts;
-	private Long observed_first_meaningful_paint_ts;
-	private Integer observed_dom_content_loaded;
-	private Long observed_first_visual_change_ts;
+	private Integer firstContentfulPaint;
+	private Long observedFirstPaintTs;
+	private Integer speedIndex;
+	private Long observedSpeedIndexTs;
+	private Integer observedFirstContentfulPaint;
+	private Long observedNavigationStartTs;
+	private Long observedLargestContentfulPaintTs;
+	private Integer observedFirstVisualChange;
+	private Long observedLoadTs;
+	private Integer firstMeaningfulPaint;
+	private Integer observedTraceEnd;
+	private Integer observedFirstMeaningfulPaint;
+	private Integer firstCpuIdle;
+	private Long observedTraceEndTs;
+	private Long observedFirstMeaningfulPaintTs;
+	private Integer observedDomContentLoaded;
+	private Long observedFirstVisualChangeTs;
 	private Integer interactive;
-	private Integer observed_navigation_start;
-	private Long observed_first_contentful_paint_ts;
-	private Long observed_last_visual_change_ts;
-	private Integer observed_load;
-	private Integer observed_largest_contentful_paint;
-	private Long observed_dom_content_loaded_ts;
-	private Integer observed_speed_index;
-	private Integer estimated_input_latency;
-	private Integer total_blocking_time;
-	private Integer observed_first_paint;
-	private Integer observed_last_visual_change;
-	private Boolean lcp_invalidated;
+	private Integer observedNavigationStart;
+	private Long observedFirstContentfulPaintTs;
+	private Long observedLastVisualChangeTs;
+	private Integer observedLoad;
+	private Integer observedLargestContentfulPaint;
+	private Long observedDomContentLoadedTs;
+	private Integer observedSpeedIndex;
+	private Integer estimatedInputLatency;
+	private Integer totalBlockingTime;
+	private Integer observedFirstPaint;
+	private Integer observedLastVisualChange;
+	private Boolean lcpInvalidated;
 	
-	public MetricsDetail() {}
-	
+	/**
+	 * Constructor for {@link MetricsDetail}	
+	 * @param firstContentfulPaint the first contentful paint
+	 * @param observedFirstPaintTs the observed first paint timestamp
+	 * @param speedIndex the speed index
+	 * @param observedSpeedIndexTs the observed speed index timestamp
+	 * @param observedFirstContentfulPaint the observed first contentful paint
+	 * @param observedNavigationStartTs the observed navigation start timestamp
+	 * @param observedLargestContentfulPaintTs the observed largest contentful paint timestamp
+	 * @param observedFirstVisualChange the observed first visual change
+	 * @param observedLoadTs the observed load timestamp
+	 * @param firstMeaningfulPaint the first meaningful paint
+	 * @param observedTraceEnd the observed trace end
+	 * @param observedFirstMeaningfulPaint the observed first meaningful paint
+	 * @param firstCpuIdle the first cpu idle
+	 * @param observedTraceEndTs the observed trace end timestamp
+	 * @param observedFirstMeaningfulPaintTs the observed first meaningful paint timestamp
+	 * @param observedDomContentLoaded the observed dom content loaded
+	 * @param observedFirstVisualChangeTs the observed first visual change timestamp
+	 * @param interactive the interactive
+	 * @param observedNavigationStart the observed navigation start
+	 * @param observedFirstContentfulPaintTs the observed first contentful paint timestamp
+	 * @param observedLastVisualChangeTs the observed last visual change timestamp
+	 * @param observedDomContentLoadedTs the observed dom content loaded timestamp
+	 * @param observedSpeedIndex the observed speed index
+	 * @param estimatedInputLatency the estimated input latency
+	 * @param totalBlockingTime the total blocking time
+	 * @param observedFirstPaint the observed first paint
+	 * @param observedLastVisualChange the observed last visual change
+	 * @param lcpInvalidated the lcp invalidated
+	 */
 	public MetricsDetail(
-			Integer first_contentful_paint, 
-			Long observed_first_paint_ts, 
-			Integer speed_index, 
-			Long observed_speed_index_ts,
-			Integer observed_first_contentful_paint, 
-			Long observed_navigation_start_ts, 
-			Long observed_largest_contentful_paint_ts, 
-			Integer observed_first_visual_change,
-			Long observed_load_ts,
-			Integer first_meaningful_paint,
-			Integer observed_trace_end,
-			Integer observed_first_meaningful_paint,
-			Integer first_cpu_idle,
-			Long observed_trace_end_ts,
-			Long observed_first_meaningful_paint_ts,
-			Integer observed_dom_content_loaded,
-			Long observed_first_visual_change_ts,
+			Integer firstContentfulPaint,
+			Long observedFirstPaintTs,
+			Integer speedIndex,
+			Long observedSpeedIndexTs,
+			Integer observedFirstContentfulPaint,
+			Long observedNavigationStartTs,
+			Long observedLargestContentfulPaintTs,
+			Integer observedFirstVisualChange,
+			Long observedLoadTs,
+			Integer firstMeaningfulPaint,
+			Integer observedTraceEnd,
+			Integer observedFirstMeaningfulPaint,
+			Integer firstCpuIdle,
+			Long observedTraceEndTs,
+			Long observedFirstMeaningfulPaintTs,
+			Integer observedDomContentLoaded,
+			Long observedFirstVisualChangeTs,
 			Integer interactive,
-			Integer observed_navigation_start,
-			Long observed_first_contentful_paint_ts,
-			Long observed_last_visual_change_ts,
-			Integer observed_load,
-			Integer observed_largest_contentful_paint,
-			Long observed_dom_content_loaded_ts,
-			Integer observed_speed_index,
-			Integer estimated_input_latency,
-			Integer total_blocking_time,
-			Integer observed_first_paint,
-			Integer observed_last_visual_change,
-			Boolean lcp_invalidated
+			Integer observedNavigationStart,
+			Long observedFirstContentfulPaintTs,
+			Long observedLastVisualChangeTs,
+			Integer observedLoad,
+			Integer observedLargestContentfulPaint,
+			Long observedDomContentLoadedTs,
+			Integer observedSpeedIndex,
+			Integer estimatedInputLatency,
+			Integer totalBlockingTime,
+			Integer observedFirstPaint,
+			Integer observedLastVisualChange,
+			Boolean lcpInvalidated
 	) {
-		setFirstContentfulPaint(first_contentful_paint);
-		setObservedFirstContentfulPaint(observed_first_contentful_paint);
-		setEstimatedInputLatency(estimated_input_latency);
-		setFirstCpuIdle(first_cpu_idle);
-		setFirstMeaningfulPaint(first_meaningful_paint);
+		setFirstContentfulPaint(firstContentfulPaint);
+		setObservedFirstContentfulPaint(observedFirstContentfulPaint);
+		setEstimatedInputLatency(estimatedInputLatency);
+		setFirstCpuIdle(firstCpuIdle);
+		setFirstMeaningfulPaint(firstMeaningfulPaint);
 		setInteractive(interactive);
-		setLcpInvalidated(lcp_invalidated);
-		setObservedFirstMeaningfulPaint(observed_first_meaningful_paint);
-		setObservedFirstVisualChangeTs(observed_first_visual_change_ts);
-		setObservedDomContentLoaded(observed_dom_content_loaded);
-		setObservedDomContentLoadedTs(observed_dom_content_loaded_ts);
-		setObservedFirstContentfulPaint(observed_first_contentful_paint);
-		setObservedFirstContentfulPaintTs(observed_first_contentful_paint_ts);
-		setObservedFirstPaint(observed_first_paint);
-		setObservedFirstPaintTs(observed_first_paint_ts);
-		setObservedFirstVisualChange(observed_first_visual_change);
-		setObservedLargestContentfulPaint(observed_largest_contentful_paint);
-		setObservedLargestContentfulPaintTs(observed_largest_contentful_paint_ts);
-		setObservedLastVisualChange(observed_last_visual_change);
-		setObservedLastVisualChangeTs(observed_last_visual_change_ts);
-		setObservedLoad(observed_load);
-		setObservedLoadTs(observed_load_ts);
-		setObservedNavigationStart(observed_navigation_start);
-		setObservedNavigationStartTs(observed_navigation_start_ts);
-		setObservedSpeedIndex(observed_speed_index);
-		setObservedSpeedIndexTs(observed_speed_index_ts);
-		setObservedTraceEnd(observed_trace_end);
-		setObservedTraceEndTs(observed_trace_end_ts);
-		setSpeedIndex(speed_index);
-		setTotalBlockingTime(total_blocking_time);
+		setLcpInvalidated(lcpInvalidated);
+		setObservedFirstMeaningfulPaint(observedFirstMeaningfulPaint);
+		setObservedFirstVisualChangeTs(observedFirstVisualChangeTs);
+		setObservedDomContentLoaded(observedDomContentLoaded);
+		setObservedDomContentLoadedTs(observedDomContentLoadedTs);
+		setObservedFirstContentfulPaint(observedFirstContentfulPaint);
+		setObservedFirstContentfulPaintTs(observedFirstContentfulPaintTs);
+		setObservedFirstPaint(observedFirstPaint);
+		setObservedFirstPaintTs(observedFirstPaintTs);
+		setObservedFirstVisualChange(observedFirstVisualChange);
+		setObservedLargestContentfulPaint(observedLargestContentfulPaint);
+		setObservedLargestContentfulPaintTs(observedLargestContentfulPaintTs);
+		setObservedLastVisualChange(observedLastVisualChange);
+		setObservedLastVisualChangeTs(observedLastVisualChangeTs);
+		setObservedLoad(observedLoad);
+		setObservedLoadTs(observedLoadTs);
+		setObservedNavigationStart(observedNavigationStart);
+		setObservedNavigationStartTs(observedNavigationStartTs);
+		setObservedSpeedIndex(observedSpeedIndex);
+		setObservedSpeedIndexTs(observedSpeedIndexTs);
+		setObservedTraceEnd(observedTraceEnd);
+		setObservedTraceEndTs(observedTraceEndTs);
+		setSpeedIndex(speedIndex);
+		setTotalBlockingTime(totalBlockingTime);
 	}
-
-	public Integer getFirstContentfulPaint() {
-		return first_contentful_paint;
-	}
-
-	public void setFirstContentfulPaint(Integer first_contentful_paint) {
-		this.first_contentful_paint = first_contentful_paint;
-	}
-
-	public Long getObservedFirstPaintTs() {
-		return observed_first_paint_ts;
-	}
-
-	public void setObservedFirstPaintTs(Long observed_first_paint_ts) {
-		this.observed_first_paint_ts = observed_first_paint_ts;
-	}
-
-	public Integer getSpeedIndex() {
-		return speed_index;
-	}
-
-	public void setSpeedIndex(Integer speed_index) {
-		this.speed_index = speed_index;
-	}
-
-	public Long getObservedSpeedIndexTs() {
-		return observed_speed_index_ts;
-	}
-
-	public void setObservedSpeedIndexTs(Long observed_speed_index_ts) {
-		this.observed_speed_index_ts = observed_speed_index_ts;
-	}
-
-	public Integer getObservedFirstContentfulPaint() {
-		return observed_first_contentful_paint;
-	}
-
-	public void setObservedFirstContentfulPaint(Integer observed_first_contentful_paint) {
-		this.observed_first_contentful_paint = observed_first_contentful_paint;
-	}
-
-	public Long getObservedNavigationStartTs() {
-		return observed_navigation_start_ts;
-	}
-
-	public void setObservedNavigationStartTs(Long observed_navigation_start_ts) {
-		this.observed_navigation_start_ts = observed_navigation_start_ts;
-	}
-
-	public Long getObservedLargestContentfulPaintTs() {
-		return observed_largest_contentful_paint_ts;
-	}
-
-	public void setObservedLargestContentfulPaintTs(Long observed_largest_contentful_paint_ts) {
-		this.observed_largest_contentful_paint_ts = observed_largest_contentful_paint_ts;
-	}
-
-	public Integer getObservedFirstVisualChange() {
-		return observed_first_visual_change;
-	}
-
-	public void setObservedFirstVisualChange(Integer observed_first_visual_change) {
-		this.observed_first_visual_change = observed_first_visual_change;
-	}
-
-	public Long getObservedLoadTs() {
-		return observed_load_ts;
-	}
-
-	public void setObservedLoadTs(Long observed_load_ts) {
-		this.observed_load_ts = observed_load_ts;
-	}
-
-	public Integer getFirstMeaningfulPaint() {
-		return first_meaningful_paint;
-	}
-
-	public void setFirstMeaningfulPaint(Integer first_meaningful_paint) {
-		this.first_meaningful_paint = first_meaningful_paint;
-	}
-
-	public Integer getObservedTraceEnd() {
-		return observed_trace_end;
-	}
-
-	public void setObservedTraceEnd(Integer observed_trace_end) {
-		this.observed_trace_end = observed_trace_end;
-	}
-
-	public Integer getObservedFirstMeaningfulPaint() {
-		return observed_first_meaningful_paint;
-	}
-
-	public void setObservedFirstMeaningfulPaint(Integer observed_first_meaningful_paint) {
-		this.observed_first_meaningful_paint = observed_first_meaningful_paint;
-	}
-
-	public Integer getFirstCpuIdle() {
-		return first_cpu_idle;
-	}
-
-	public void setFirstCpuIdle(Integer first_cpu_idle) {
-		this.first_cpu_idle = first_cpu_idle;
-	}
-
-	public Long getObservedTraceEndTs() {
-		return observed_trace_end_ts;
-	}
-
-	public void setObservedTraceEndTs(Long observed_trace_end_ts) {
-		this.observed_trace_end_ts = observed_trace_end_ts;
-	}
-
-	public Long getObservedFirstMeaningfulPaintTs() {
-		return observed_first_meaningful_paint_ts;
-	}
-
-	public void setObservedFirstMeaningfulPaintTs(Long observed_first_meaningful_paint_ts) {
-		this.observed_first_meaningful_paint_ts = observed_first_meaningful_paint_ts;
-	}
-
-	public Integer getObservedDomContentLoaded() {
-		return observed_dom_content_loaded;
-	}
-
-	public void setObservedDomContentLoaded(Integer observed_dom_content_loaded) {
-		this.observed_dom_content_loaded = observed_dom_content_loaded;
-	}
-
-	public Long getObservedFirstVisualChangeTs() {
-		return observed_first_visual_change_ts;
-	}
-
-	public void setObservedFirstVisualChangeTs(Long observed_first_visual_change_ts) {
-		this.observed_first_visual_change_ts = observed_first_visual_change_ts;
-	}
-
-	public Integer getInteractive() {
-		return interactive;
-	}
-
-	public void setInteractive(Integer interactive) {
-		this.interactive = interactive;
-	}
-
-	public Integer getObservedNavigationStart() {
-		return observed_navigation_start;
-	}
-
-	public void setObservedNavigationStart(Integer observed_navigation_start) {
-		this.observed_navigation_start = observed_navigation_start;
-	}
-
-	public Long getObservedFirstContentfulPaintTs() {
-		return observed_first_contentful_paint_ts;
-	}
-
-	public void setObservedFirstContentfulPaintTs(Long observed_first_contentful_paint_ts) {
-		this.observed_first_contentful_paint_ts = observed_first_contentful_paint_ts;
-	}
-
-	public Long getObservedLastVisualChangeTs() {
-		return observed_last_visual_change_ts;
-	}
-
-	public void setObservedLastVisualChangeTs(Long observed_last_visual_change_ts) {
-		this.observed_last_visual_change_ts = observed_last_visual_change_ts;
-	}
-
-	public Integer getObservedLoad() {
-		return observed_load;
-	}
-
-	public void setObservedLoad(Integer observed_load) {
-		this.observed_load = observed_load;
-	}
-
-	public Integer getObservedLargestContentfulPaint() {
-		return observed_largest_contentful_paint;
-	}
-
-	public void setObservedLargestContentfulPaint(Integer observed_largest_contentful_paint) {
-		this.observed_largest_contentful_paint = observed_largest_contentful_paint;
-	}
-
-	public Long getObservedDomContentLoadedTs() {
-		return observed_dom_content_loaded_ts;
-	}
-
-	public void setObservedDomContentLoadedTs(Long observed_dom_content_loaded_ts) {
-		this.observed_dom_content_loaded_ts = observed_dom_content_loaded_ts;
-	}
-
-	public Integer getObservedSpeedIndex() {
-		return observed_speed_index;
-	}
-
-	public void setObservedSpeedIndex(Integer observed_speed_index) {
-		this.observed_speed_index = observed_speed_index;
-	}
-
-	public Integer getEstimatedInputLatency() {
-		return estimated_input_latency;
-	}
-
-	public void setEstimatedInputLatency(Integer estimated_input_latency) {
-		this.estimated_input_latency = estimated_input_latency;
-	}
-
-	public Integer getTotalBlockingTime() {
-		return total_blocking_time;
-	}
-
-	public void setTotalBlockingTime(Integer total_blocking_time) {
-		this.total_blocking_time = total_blocking_time;
-	}
-
-	public Integer getObservedFirstPaint() {
-		return observed_first_paint;
-	}
-
-	public void setObservedFirstPaint(Integer observed_first_paint) {
-		this.observed_first_paint = observed_first_paint;
-	}
-
-	public Integer getObservedLastVisualChange() {
-		return observed_last_visual_change;
-	}
-
-	public void setObservedLastVisualChange(Integer observed_last_visual_change) {
-		this.observed_last_visual_change = observed_last_visual_change;
-	}
-
-	public Boolean getLcpInvalidated() {
-		return lcp_invalidated;
-	}
-
-	public void setLcpInvalidated(Boolean lcp_invalidated) {
-		this.lcp_invalidated = lcp_invalidated;
-	}
-
 }

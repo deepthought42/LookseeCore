@@ -27,6 +27,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.imageio.ImageIO;
+import lombok.Getter;
+import lombok.Setter;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -39,6 +41,8 @@ import org.springframework.stereotype.Component;
  * Responsible for executing an audit on the hyperlinks on a page for the information architecture audit category
  */
 @Component
+@Getter
+@Setter
 public class LinksAudit implements IExecutablePageStateAudit {
 	@SuppressWarnings("unused")
 	private static Logger log = LoggerFactory.getLogger(LinksAudit.class);
@@ -52,18 +56,21 @@ public class LinksAudit implements IExecutablePageStateAudit {
 	@Autowired
 	private UXIssueMessageService issue_message_service;
 	
-	List<String> bad_link_text_list;
+	List<String> badLinkTextList;
 	
+	/**
+	 * Constructor for the {@link LinksAudit} class.
+	 */
 	public LinksAudit() {
 		//super(buildBestPractices(), getAdaDescription(), getAuditDescription(), AuditSubcategory.LINKS);
 		
-		bad_link_text_list = new ArrayList<>();
-		bad_link_text_list.add("click here");
-		bad_link_text_list.add("here");
-		bad_link_text_list.add("more");
-		bad_link_text_list.add("read more");
-		bad_link_text_list.add("learn more");
-		bad_link_text_list.add("info");
+		badLinkTextList = new ArrayList<>();
+		badLinkTextList.add("click here");
+		badLinkTextList.add("here");
+		badLinkTextList.add("more");
+		badLinkTextList.add("read more");
+		badLinkTextList.add("learn more");
+		badLinkTextList.add("info");
 	}
 
 	
@@ -71,6 +78,11 @@ public class LinksAudit implements IExecutablePageStateAudit {
 	 * Scores links on a page based on if the link has an href value present,
 	 * the url format is valid and the url goes to a location that doesn't
 	 * produce a 4xx error
+	 * 
+	 * @param page_state the page state to audit
+	 * @param audit_record the audit record to audit
+	 * @param design_system the design system to audit
+	 * @return the audit
 	 */
 	@Override
 	public Audit execute(PageState page_state, AuditRecord audit_record, DesignSystem design_system) {
@@ -78,8 +90,8 @@ public class LinksAudit implements IExecutablePageStateAudit {
 		assert audit_record != null;
 		
 		Set<UXIssueMessage> issue_messages = new HashSet<>();
-		List<ElementState> link_elements = page_state_service.getLinkElementStates(page_state.getId());
-		String ada_compliance = "There is no ADA guideline for dead links";
+		List<ElementState> linkElements = page_state_service.getLinkElementStates(page_state.getId());
+		String adaCompliance = "There is no ADA guideline for dead links";
 
 		Set<String> labels = new HashSet<>();
 		labels.add("information architecture");
@@ -89,9 +101,9 @@ public class LinksAudit implements IExecutablePageStateAudit {
 		labels.add("wcag");
 		
 		//score each link element
-		for(ElementState link : link_elements) {
-			Document jsoup_doc = Jsoup.parseBodyFragment(link.getOuterHtml(), page_state.getUrl());
-			Element element = jsoup_doc.getElementsByTag("a").first();
+		for(ElementState link : linkElements) {
+			Document jsoupDoc = Jsoup.parseBodyFragment(link.getOuterHtml(), page_state.getUrl());
+			Element element = jsoupDoc.getElementsByTag("a").first();
 
 			if( element.hasAttr("href") ) {
 				String recommendation = "Make sure links have a url set for the href value.";
@@ -105,7 +117,7 @@ public class LinksAudit implements IExecutablePageStateAudit {
 																null,
 																AuditCategory.INFORMATION_ARCHITECTURE,
 																labels,
-																ada_compliance,
+																adaCompliance,
 																title,
 																1,
 																1);
@@ -126,7 +138,7 @@ public class LinksAudit implements IExecutablePageStateAudit {
 																null,
 																AuditCategory.INFORMATION_ARCHITECTURE,
 																labels,
-																ada_compliance,
+																adaCompliance,
 																title,
 																0,
 																1);
@@ -151,7 +163,7 @@ public class LinksAudit implements IExecutablePageStateAudit {
 																null,
 																AuditCategory.INFORMATION_ARCHITECTURE,
 																labels,
-																ada_compliance,
+																adaCompliance,
 																title,
 																1,
 																1);
@@ -170,11 +182,11 @@ public class LinksAudit implements IExecutablePageStateAudit {
 				ElementStateIssueMessage issue_message = new ElementStateIssueMessage(
 																Priority.NONE,
 																description,
-																recommendation, 
+																recommendation,
 																null,
 																AuditCategory.INFORMATION_ARCHITECTURE,
 																labels,
-																ada_compliance,
+																adaCompliance,
 																title,
 																1,
 																1);
@@ -204,7 +216,7 @@ public class LinksAudit implements IExecutablePageStateAudit {
 																null,
 																AuditCategory.INFORMATION_ARCHITECTURE,
 																labels,
-																ada_compliance,
+																adaCompliance,
 																title,
 																1,
 																1);
@@ -225,7 +237,7 @@ public class LinksAudit implements IExecutablePageStateAudit {
 																null,
 																AuditCategory.INFORMATION_ARCHITECTURE,
 																labels,
-																ada_compliance,
+																adaCompliance,
 																title,
 																0,
 																1);
@@ -264,13 +276,13 @@ public class LinksAudit implements IExecutablePageStateAudit {
 				String title = "Link URL is properly formatted";
 
 				ElementStateIssueMessage issue_message = new ElementStateIssueMessage(
-																Priority.NONE, 
-																description, 
-																recommendation, 
+																Priority.NONE,
+																description,
+																recommendation,
 																null,
 																AuditCategory.INFORMATION_ARCHITECTURE,
 																labels,
-																ada_compliance,
+																adaCompliance,
 																title,
 																1,
 																1);
@@ -290,7 +302,7 @@ public class LinksAudit implements IExecutablePageStateAudit {
 																null,
 																AuditCategory.INFORMATION_ARCHITECTURE,
 																labels,
-																ada_compliance,
+																adaCompliance,
 																title,
 																0,
 																1);
@@ -316,7 +328,7 @@ public class LinksAudit implements IExecutablePageStateAudit {
 																	null,
 																	AuditCategory.INFORMATION_ARCHITECTURE,
 																	labels,
-																	ada_compliance,
+																	adaCompliance,
 																	title,
 																	0,
 																	1);
@@ -338,7 +350,7 @@ public class LinksAudit implements IExecutablePageStateAudit {
 																		null,
 																		AuditCategory.INFORMATION_ARCHITECTURE,
 																		labels,
-																		ada_compliance,
+																		adaCompliance,
 																		title,
 																		1,
 																		1);
@@ -359,7 +371,7 @@ public class LinksAudit implements IExecutablePageStateAudit {
 																		null,
 																		AuditCategory.INFORMATION_ARCHITECTURE,
 																		labels,
-																		ada_compliance,
+																		adaCompliance,
 																		title,
 																		0,
 																		1);
@@ -383,7 +395,7 @@ public class LinksAudit implements IExecutablePageStateAudit {
 																null, 
 																AuditCategory.INFORMATION_ARCHITECTURE, 
 																labels,
-																ada_compliance,
+																adaCompliance,
 																title, 
 																3,
 																4);
@@ -403,7 +415,7 @@ public class LinksAudit implements IExecutablePageStateAudit {
 																			null, 
 																			AuditCategory.INFORMATION_ARCHITECTURE, 
 																			labels,
-																			ada_compliance,
+																			adaCompliance,
 																			title, 
 																			3,
 																			4);
@@ -421,7 +433,7 @@ public class LinksAudit implements IExecutablePageStateAudit {
 				//Does text contain any of the 
 				String link_text = link.getAllText();
 				
-				if(bad_link_text_list.contains(link_text.toLowerCase().trim())) {
+				if(badLinkTextList.contains(link_text.toLowerCase().trim())) {
 					String recommendation = "Replace link text with more informative text that provides proper context of what the user will find on the page that the link points to";
 					String description = "Links should contain informative text. "+link_text.trim()+" does not provide enough context to be considered accessible";
 					String title = "Link text is not considered accessible";
@@ -432,7 +444,7 @@ public class LinksAudit implements IExecutablePageStateAudit {
 																	null,
 																	AuditCategory.INFORMATION_ARCHITECTURE,
 																	labels,
-																	ada_compliance,
+																	adaCompliance,
 																	title,
 																	3,
 																	4);
@@ -452,7 +464,7 @@ public class LinksAudit implements IExecutablePageStateAudit {
 																	null,
 																	AuditCategory.INFORMATION_ARCHITECTURE,
 																	labels,
-																	ada_compliance,
+																	adaCompliance,
 																	title, 
 																	4,
 																	4);
@@ -501,7 +513,7 @@ public class LinksAudit implements IExecutablePageStateAudit {
 					String recommendation = "For best usability make sure links include text. You can assign text to a link by entering text within the link tag or by using an image with text";
 					String description = "Link doesn't contain any text";
 					String title = "Link is missing text";
-					ada_compliance = "WCAG Criterion 2.4.4 requires that links have text that can be used to determine the purpose of a link";
+					adaCompliance = "WCAG Criterion 2.4.4 requires that links have text that can be used to determine the purpose of a link";
 	
 					ElementStateIssueMessage issue_message = new ElementStateIssueMessage(
 																	Priority.HIGH,
@@ -510,7 +522,7 @@ public class LinksAudit implements IExecutablePageStateAudit {
 																	null,
 																	AuditCategory.INFORMATION_ARCHITECTURE,
 																	labels,
-																	ada_compliance,
+																	adaCompliance,
 																	title, 
 																	3,
 																	4);
@@ -530,7 +542,7 @@ public class LinksAudit implements IExecutablePageStateAudit {
 																							null,
 																							AuditCategory.INFORMATION_ARCHITECTURE,
 																							labels,
-																							ada_compliance,
+																							adaCompliance,
 																							title,
 																							4,
 																							4);
