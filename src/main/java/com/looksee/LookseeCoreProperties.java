@@ -69,26 +69,50 @@ public class LookseeCoreProperties {
          */
         private boolean connectionPoolingEnabled = true;
         
+        /**
+         * Gets the connection timeout
+         * @return the connection timeout
+         */
         public int getConnectionTimeout() {
             return connectionTimeout;
         }
         
+        /**
+         * Sets the connection timeout
+         * @param connectionTimeout the connection timeout
+         */
         public void setConnectionTimeout(int connectionTimeout) {
             this.connectionTimeout = connectionTimeout;
         }
         
+        /**
+         * Gets the maximum connection pool size
+         * @return the maximum connection pool size
+         */
         public int getMaxConnectionPoolSize() {
             return maxConnectionPoolSize;
         }
         
+        /**
+         * Sets the maximum connection pool size
+         * @param maxConnectionPoolSize the maximum connection pool size
+         */
         public void setMaxConnectionPoolSize(int maxConnectionPoolSize) {
             this.maxConnectionPoolSize = maxConnectionPoolSize;
         }
         
+        /**
+         * Checks if connection pooling is enabled
+         * @return true if connection pooling is enabled, false otherwise
+         */
         public boolean isConnectionPoolingEnabled() {
             return connectionPoolingEnabled;
         }
         
+        /**
+         * Sets the connection pooling enabled
+         * @param connectionPoolingEnabled the connection pooling enabled
+         */
         public void setConnectionPoolingEnabled(boolean connectionPoolingEnabled) {
             this.connectionPoolingEnabled = connectionPoolingEnabled;
         }

@@ -27,6 +27,9 @@ public class PusherService {
 	@Setter
 	private Pusher pusher;
 	
+	/**
+	 * Constructor for PusherService
+	 */
 	public PusherService() {
 		setPusher(new Pusher(app_id, key, secret));
 		pusher.setCluster(cluster);

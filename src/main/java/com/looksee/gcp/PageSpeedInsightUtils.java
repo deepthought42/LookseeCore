@@ -39,6 +39,7 @@ public class PageSpeedInsightUtils {
 	 * Retrieves Google PageSpeed Insights result from their API
 	 * 
 	 * @param url url to get page insights for
+	 * @return the page insights
 	 * 
 	 * @throws IOException if an I/O error occurs
 	 * @throws GeneralSecurityException if a security error occurs

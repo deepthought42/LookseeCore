@@ -1,42 +1,26 @@
 package com.looksee.models.dto;
 
 import com.looksee.models.PageState;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Data transfer object representing a {@link PageState} in a format readable for browser extensions
  */
+@Getter
+@Setter
 public class PageStateDto {
 
 	private String key;
 	private String url;
 	private String type;
 	
+	/**
+	 * Constructor for PageStateDto
+	 * @param page the page state
+	 */
 	public PageStateDto(PageState page){
 		setKey(page.getKey());
 		setUrl(page.getUrl());
-	}
-
-	public String getKey() {
-		return key;
-	}
-
-	public void setKey(String key) {
-		this.key = key;
-	}
-
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
 	}
 }

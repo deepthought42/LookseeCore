@@ -393,7 +393,11 @@ public class ReadabilityAudit implements IExecutablePageStateAudit {
 		return new Score(0, 2, new HashSet<>());
 	}
 
-
+	/**
+	 * Calculates the score for the readability audit
+	 * @param sentence_count the number of sentences in the paragraph
+	 * @return the score for the readability audit
+	 */
 	public static Score calculateParagraphScore(int sentence_count) {
 		if(sentence_count <= 5) {
 			return new Score(1, 1, new HashSet<>());

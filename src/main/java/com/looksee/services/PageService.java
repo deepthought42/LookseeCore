@@ -36,7 +36,7 @@ public class PageService {
 	 * Saves {@link Page} to database
 	 * 
 	 * @param page {@link Page} to save
-	 * 
+	 * @param user_id the user id of the user who owns the page
 	 * @return {@link Page} object reference to database object
 	 * 
 	 * precondition: page != null;
@@ -136,12 +136,14 @@ public class PageService {
 	
 	/**
 	 * Adds a {@link PerformanceInsight} to a {@link Page} with a given key
-	 * 
+	 *
 	 * @param user_id user id of the user who owns the page
 	 * @param domain_url domain url of the page
 	 * @param page_key key of the {@link Page} to add the performance insight to
 	 * @param performance_insight_key key of the {@link PerformanceInsight} to add
-	 * 
+	 *
+	 * @return true if the performance insight was added, false otherwise
+	 *
 	 * precondition: user_id != null
 	 * precondition: !user_id.isEmpty()
 	 * precondition: domain_url != null;

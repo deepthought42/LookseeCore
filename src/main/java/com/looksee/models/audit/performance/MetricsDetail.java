@@ -44,7 +44,7 @@ public class MetricsDetail extends AuditDetail {
 	private Boolean lcpInvalidated;
 	
 	/**
-	 * Constructor for {@link MetricsDetail}	
+	 * Constructor for {@link MetricsDetail}
 	 * @param firstContentfulPaint the first contentful paint
 	 * @param observedFirstPaintTs the observed first paint timestamp
 	 * @param speedIndex the speed index

@@ -73,13 +73,19 @@ public class PageSpeedAudit extends LookseeObject {
 	public String generateKey() {
 		return "pagespeedaudit"+org.apache.commons.codec.digest.DigestUtils.sha256Hex(getTitle() + getDescription() + getDisplayValue() + getErrorMessage() + getExplanation() + getNumericValue() + getScoreDisplayMode() + getTitle());
 	}
-
-	/* GETTERS AND SETTERS */
-
+	
+	/**
+	 * Gets the type of the page speed audit
+	 * @return the type of the page speed audit
+	 */
 	public InsightType getType() {
 		return InsightType.create(type);
 	}
 
+	/**
+	 * Sets the type of the page speed audit
+	 * @param type the type of the page speed audit
+	 */
 	public void setType(InsightType type) {
 		this.type = type.getShortName();
 	}

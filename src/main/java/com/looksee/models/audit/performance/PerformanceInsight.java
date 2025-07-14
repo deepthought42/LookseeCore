@@ -70,23 +70,42 @@ public class PerformanceInsight extends LookseeObject {
 		setKey(generateKey());
 	}
 	
-	
+	/**
+	 * Gets the captcha result
+	 * @return the captcha result
+	 */
 	public CaptchaResult getCaptchaResult() {
 		return CaptchaResult.create( captchaResult );
 	}
 	
+	/**
+	 * Sets the captcha result
+	 * @param captchaResult the captcha result
+	 */
 	public void setCaptchaResult(CaptchaResult captchaResult) {
 		this.captchaResult = captchaResult.toString();
 	}
 	
+	/**
+	 * Gets the emulated form factor
+	 * @return the emulated form factor
+	 */
 	public FormFactor getEmulatedFormFactor() {
 		return FormFactor.create( emulatedFormFactor );
 	}
 	
+	/**
+	 * Sets the emulated form factor
+	 * @param emulatedFormFactor the emulated form factor
+	 */
 	public void setEmulatedFormFactor(FormFactor emulatedFormFactor) {
 		this.emulatedFormFactor = emulatedFormFactor.toString();
 	}
 
+	/**
+	 * Adds an audit to the performance insight
+	 * @param audit the audit
+	 */
 	public void addAudit(PageSpeedAudit audit) {
 		this.audits.add(audit);
 	}
