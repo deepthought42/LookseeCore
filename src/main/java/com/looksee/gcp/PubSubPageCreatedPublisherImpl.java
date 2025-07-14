@@ -1,22 +1,25 @@
 package com.looksee.gcp;
 
-import lombok.NoArgsConstructor;
+import com.google.cloud.spring.pubsub.core.PubSubTemplate;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.stereotype.Component;
 
 /**
- * Implementation of the PubSubPageCreatedPublisher interface.
+ * Implementation of {@link PubSubPublisher} for page creation
  */
-@NoArgsConstructor
 @Component
+@ConditionalOnClass(name = "com.google.cloud.spring.pubsub.core.PubSubTemplate")
+@ConditionalOnBean(PubSubTemplate.class)
 public class PubSubPageCreatedPublisherImpl extends PubSubPublisher {
 
     @Value("${pubsub.page_built}")
     private String topic;
     
     /**
-     * Returns the topic for the PubSub page created publisher.
-     * @return the topic for the PubSub page created publisher
+     * Returns the topic for page creation
+     * @return the topic for page creation
      */
     @Override
     protected String topic() {

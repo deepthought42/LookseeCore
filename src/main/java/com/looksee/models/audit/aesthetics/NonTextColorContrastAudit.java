@@ -32,6 +32,8 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.stereotype.Component;
 
 
@@ -39,6 +41,8 @@ import org.springframework.stereotype.Component;
  * Responsible for executing an audit on the hyperlinks on a page for the information architecture audit category
  */
 @Component
+@ConditionalOnClass(name = "com.google.cloud.storage.Storage")
+@ConditionalOnBean(GoogleCloudStorage.class)
 public class NonTextColorContrastAudit implements IExecutablePageStateAudit {
 	@SuppressWarnings("unused")
 	private static Logger log = LoggerFactory.getLogger(NonTextColorContrastAudit.class);

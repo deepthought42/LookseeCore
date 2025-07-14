@@ -72,6 +72,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.stereotype.Service;
 import us.codecraft.xsoup.Xsoup;
 
@@ -80,6 +82,8 @@ import us.codecraft.xsoup.Xsoup;
  */
 @NoArgsConstructor
 @Service
+@ConditionalOnClass(name = "com.google.cloud.storage.Storage")
+@ConditionalOnBean(GoogleCloudStorage.class)
 public class BrowserService {
 	private static Logger log = LoggerFactory.getLogger(BrowserService.class);
 	

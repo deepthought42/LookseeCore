@@ -18,12 +18,14 @@ import com.pusher.rest.Pusher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 /**
  * Defines methods for emitting data to subscribed clients
  */
 @Service
+@ConditionalOnProperty(prefix = "pusher", name = {"appId", "key", "secret", "cluster"})
 public class MessageBroadcaster {
 	private static Logger log = LoggerFactory.getLogger(MessageBroadcaster.class);
 	

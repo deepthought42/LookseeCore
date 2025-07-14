@@ -18,6 +18,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.charset.StandardCharsets;
 import javax.imageio.ImageIO;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,7 @@ import org.springframework.stereotype.Service;
 @Retry(name = "gcp")
 @Service
 @ConditionalOnClass(name = "com.google.cloud.storage.Storage")
+@ConditionalOnBean(Storage.class)
 public class GoogleCloudStorage {
 	
 	private final Storage storage;
