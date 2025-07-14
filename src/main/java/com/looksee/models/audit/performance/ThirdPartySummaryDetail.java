@@ -25,18 +25,25 @@ public class ThirdPartySummaryDetail extends AuditDetail {
 	/**
 	 * Constructor for {@link ThirdPartySummaryDetail}
 	 * 
-	 * @param transfer_size the transfer size
-	 * @param blocking_time the blocking time
-	 * @param main_thread_time the main thread time
+	 * @param transferSize the transfer size
+	 * @param blockingTime the blocking time
+	 * @param mainThreadTime the main thread time
 	 * @param entity the entity
 	 */
-	public ThirdPartySummaryDetail(int transferSize, double blockingTime, double mainThreadTime, Map<String, String> entity) {
+	public ThirdPartySummaryDetail(int transferSize,
+									double blockingTime,
+									double mainThreadTime,
+									Map<String, String> entity) {
 		setTransferSize(transferSize);
 		setBlockingTime(blockingTime);
 		setMainThreadTime(mainThreadTime);
 		setEntity(entity);
 	}
 
+	/**
+	 * Generates a key for the third party summary detail
+	 * @return the key
+	 */
 	@Override
 	public String generateKey() {
 		return "thirdpartysummarydetail"+org.apache.commons.codec.digest.DigestUtils.sha256Hex(transferSize.toString() + blockingTime.toString() + mainThreadTime.toString() + entity.toString());

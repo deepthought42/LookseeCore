@@ -160,22 +160,22 @@ public class ReadabilityAudit implements IExecutablePageStateAudit {
 						element_points = 4;
 						description = "Content is short enough to be easily understood by all users";
 					}
-					else {					
+					else {
 						description = generateIssueDescription(element, difficulty_string, ease_of_reading_score, audit_record.getTargetUserEducation());
 					}
 					String title = "Content is easy to read";
 					
-					ReadingComplexityIssueMessage issue_message = new ReadingComplexityIssueMessage(Priority.NONE, 
-																								  description,
-																								  recommendation,
-																								  null,
-																								  AuditCategory.CONTENT,
-																								  labels,
-																								  ada_compliance,
-																								  title,
-																								  element_points,
-																								  4,
-																								  ease_of_reading_score);
+					ReadingComplexityIssueMessage issue_message = new ReadingComplexityIssueMessage(Priority.NONE,
+																								description,
+																								recommendation,
+																								null,
+																								AuditCategory.CONTENT,
+																								labels,
+																								ada_compliance,
+																								title,
+																								element_points,
+																								4,
+																								ease_of_reading_score);
 					
 					issue_message = (ReadingComplexityIssueMessage) issue_message_service.save(issue_message);
 					issue_message_service.addElement(issue_message.getId(), element.getId());
@@ -184,7 +184,7 @@ public class ReadabilityAudit implements IExecutablePageStateAudit {
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
-		}		
+		}
 
 		String why_it_matters = "For people with reading disabilities(including the most highly educated), it is important"
 				+ "to accomodate these users by providing text that is simpler to read."
@@ -214,28 +214,35 @@ public class ReadabilityAudit implements IExecutablePageStateAudit {
 			*/
 		}
 
-		String description = "";		
+		String description = "";
 		Audit audit = new Audit(AuditCategory.CONTENT,
-								 AuditSubcategory.WRITTEN_CONTENT,
-								 AuditName.READING_COMPLEXITY,
-								 points_earned,
-								 new HashSet<>(),
-								 AuditLevel.PAGE,
-								 max_points, 
-								 page_state.getUrl(),
-								 why_it_matters, 
-								 description,
-								 false); 
+								AuditSubcategory.WRITTEN_CONTENT,
+								AuditName.READING_COMPLEXITY,
+								points_earned,
+								new HashSet<>(),
+								AuditLevel.PAGE,
+								max_points,
+								page_state.getUrl(),
+								why_it_matters,
+								description,
+								false);
 		
 		audit_service.save(audit);
 		audit_service.addAllIssues(audit.getId(), issue_messages);
 		return audit;
 	}
 
-
-	private String generateIssueDescription(ElementState element, 
+	/**
+	 * Generates an issue description for a readability issue
+	 * @param element the element
+	 * @param difficulty_string the difficulty string
+	 * @param ease_of_reading_score the ease of reading score
+	 * @param targetUserEducation the target user education
+	 * @return the issue description
+	 */
+	private String generateIssueDescription(ElementState element,
 											String difficulty_string,
-											double ease_of_reading_score, 
+											double ease_of_reading_score,
 											String targetUserEducation) {
 		String description = "The text \"" + element.getAllText() + "\" is " + difficulty_string + " to read for "+getConsumerType(targetUserEducation);
 		
@@ -243,6 +250,11 @@ public class ReadabilityAudit implements IExecutablePageStateAudit {
 	}
 
 
+	/**
+	 * Gets the consumer type
+	 * @param targetUserEducation the target user education
+	 * @return the consumer type
+	 */
 	private String getConsumerType(String targetUserEducation) {
 		String consumer_label = "the average consumer";
 		
@@ -253,7 +265,12 @@ public class ReadabilityAudit implements IExecutablePageStateAudit {
 		return consumer_label;
 	}
 
-
+	/**
+	 * Gets the points for an education level
+	 * @param ease_of_reading_score the ease of reading score
+	 * @param target_user_education the target user education
+	 * @return the points for an education level
+	 */
 	private int getPointsForEducationLevel(double ease_of_reading_score, String target_user_education) {
 		int element_points = 0;
 				
@@ -261,13 +278,13 @@ public class ReadabilityAudit implements IExecutablePageStateAudit {
 			if(target_user_education == null) {
 				element_points = 4;
 			}
-			else if("HS".contentEquals(target_user_education)) {				
+			else if("HS".contentEquals(target_user_education)) {
 				element_points = 4;
 			}
-			else if("College".contentEquals(target_user_education)) {				
+			else if("College".contentEquals(target_user_education)) {
 				element_points = 4;
 			}
-			else if("Advanced".contentEquals(target_user_education)) {				
+			else if("Advanced".contentEquals(target_user_education)) {
 				element_points = 3;
 			}
 			else {
@@ -278,13 +295,13 @@ public class ReadabilityAudit implements IExecutablePageStateAudit {
 			if(target_user_education == null) {
 				element_points = 4;
 			}
-			else if("HS".contentEquals(target_user_education)) {				
+			else if("HS".contentEquals(target_user_education)) {
 				element_points = 4;
 			}
-			else if("College".contentEquals(target_user_education)) {				
+			else if("College".contentEquals(target_user_education)) {
 				element_points = 4;
 			}
-			else if("Advanced".contentEquals(target_user_education)) {				
+			else if("Advanced".contentEquals(target_user_education)) {
 				element_points = 4;
 			}
 			else {
@@ -295,13 +312,13 @@ public class ReadabilityAudit implements IExecutablePageStateAudit {
 			if(target_user_education == null) {
 				element_points = 4;
 			}
-			else if("HS".contentEquals(target_user_education)) {				
+			else if("HS".contentEquals(target_user_education)) {
 				element_points = 4;
 			}
-			else if("College".contentEquals(target_user_education)) {				
+			else if("College".contentEquals(target_user_education)) {
 				element_points = 4;
 			}
-			else if("Advanced".contentEquals(target_user_education)) {				
+			else if("Advanced".contentEquals(target_user_education)) {
 				element_points = 4;
 			}
 			else {
@@ -312,13 +329,13 @@ public class ReadabilityAudit implements IExecutablePageStateAudit {
 			if(target_user_education == null) {
 				element_points = 3;
 			}
-			else if("HS".contentEquals(target_user_education)) {				
+			else if("HS".contentEquals(target_user_education)) {
 				element_points = 3;
 			}
-			else if("College".contentEquals(target_user_education)) {				
+			else if("College".contentEquals(target_user_education)) {
 				element_points = 4;
 			}
-			else if("Advanced".contentEquals(target_user_education)) {				
+			else if("Advanced".contentEquals(target_user_education)) {
 				element_points = 4;
 			}
 			else {
@@ -329,13 +346,13 @@ public class ReadabilityAudit implements IExecutablePageStateAudit {
 			if(target_user_education == null) {
 				element_points = 2;
 			}
-			else if("HS".contentEquals(target_user_education)) {				
+			else if("HS".contentEquals(target_user_education)) {
 				element_points = 2;
 			}
-			else if("College".contentEquals(target_user_education)) {				
+			else if("College".contentEquals(target_user_education)) {
 				element_points = 3;
 			}
-			else if("Advanced".contentEquals(target_user_education)) {				
+			else if("Advanced".contentEquals(target_user_education)) {
 				element_points = 4;
 			}
 			else {
@@ -346,27 +363,27 @@ public class ReadabilityAudit implements IExecutablePageStateAudit {
 			if(target_user_education == null) {
 				element_points = 1;
 			}
-			else if("HS".contentEquals(target_user_education)) {				
+			else if("HS".contentEquals(target_user_education)) {
 				element_points = 1;
 			}
-			else if("College".contentEquals(target_user_education)) {				
+			else if("College".contentEquals(target_user_education)) {
 				element_points = 2;
 			}
-			else if("Advanced".contentEquals(target_user_education)) {				
+			else if("Advanced".contentEquals(target_user_education)) {
 				element_points = 3;
 			}
 			else {
 				element_points = 0;
-			}		
+			}
 		}
 		else if(ease_of_reading_score < 30) {
 			if(target_user_education == null) {
 				element_points = 0;
 			}
-			else if("College".contentEquals(target_user_education)) {				
+			else if("College".contentEquals(target_user_education)) {
 				element_points = 1;
 			}
-			else if("Advanced".contentEquals(target_user_education)) {				
+			else if("Advanced".contentEquals(target_user_education)) {
 				element_points = 2;
 			}
 			else {
@@ -378,9 +395,12 @@ public class ReadabilityAudit implements IExecutablePageStateAudit {
 		return element_points;
 	}
 
-
+	/**
+	 * Calculates the score for a sentence
+	 * @param sentence the sentence
+	 * @return the score for the sentence
+	 */
 	public static Score calculateSentenceScore(String sentence) {
-		//    		for each sentence check that sentence is no longer than 20 words
 		String[] words = sentence.split(" ");
 		
 		if(words.length <= 10) {
