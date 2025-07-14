@@ -236,6 +236,8 @@ public class TestService {
     * Retrieves list of path objects from database and puts them in the correct order
     *
     * @param test_key key of {@link Test} that we want path objects for
+    * @param url the url of the page
+    * @param account_id the id of the account
     *
     * @return List of ordered {@link LookseeObject}s
     */
@@ -331,7 +333,7 @@ public class TestService {
 							break;
 						}
 						current_idx++;
-					}	
+					}
 				}
 
 				if(matching_test_found) {

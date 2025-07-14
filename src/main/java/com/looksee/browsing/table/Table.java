@@ -16,7 +16,14 @@ import org.openqa.selenium.WebElement;
 @Setter
 @NoArgsConstructor
 public class Table {
+	/**
+	 * The headers of the table
+	 */
 	public List<Row> headers;
+	
+	/**
+	 * The rows of the table
+	 */
 	public List<Row> tableRows;
 	
 	/**

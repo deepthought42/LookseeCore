@@ -25,7 +25,7 @@ public class TestDto {
 
 	/**
 	 * Constructor for {@link TestDto}
-	 * @param test
+	 * @param test the {@link Test} to convert
 	 */
 	public TestDto(Test test){
 		setKey(test.getKey());

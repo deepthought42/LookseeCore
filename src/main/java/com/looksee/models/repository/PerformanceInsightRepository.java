@@ -13,6 +13,11 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface PerformanceInsightRepository  extends Neo4jRepository<PerformanceInsight, Long> {
+	/**
+	 * Finds a performance insight by key
+	 * @param key the key of the performance insight
+	 * @return the performance insight
+	 */
 	public PerformanceInsight findByKey(@Param("key") String key);
 
 	/**

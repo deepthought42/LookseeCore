@@ -30,18 +30,34 @@ public class LookseeCoreProperties {
      */
     private Neo4j neo4j = new Neo4j();
     
+    /**
+     * Checks if LookseeCore is enabled
+     * @return true if LookseeCore is enabled, false otherwise
+     */
     public boolean isEnabled() {
         return enabled;
     }
     
+    /**
+     * Sets the enabled state
+     * @param enabled the enabled state
+     */
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
     
+    /**
+     * Gets the Neo4j configuration
+     * @return the Neo4j configuration
+     */
     public Neo4j getNeo4j() {
         return neo4j;
     }
     
+    /**
+     * Sets the Neo4j configuration
+     * @param neo4j the Neo4j configuration
+     */
     public void setNeo4j(Neo4j neo4j) {
         this.neo4j = neo4j;
     }

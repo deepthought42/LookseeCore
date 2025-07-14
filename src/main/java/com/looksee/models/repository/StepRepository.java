@@ -151,5 +151,5 @@ public interface StepRepository extends Neo4jRepository<Step, Long>{
 	 * @return the step
 	 */
 	@Query("MATCH (j:Journey) WITH j MATCH (s:Step) WHERE id(s)=$step_id AND id(j)=$journey_id MERGE (j)-[:HAS]->(s) RETURN s")
-	public Step addStep(@Param("journey_id") long journey_id, @Param("step_id") long id);
+	public Step addStep(@Param("journey_id") long journey_id, @Param("step_id") long step_id);
 }

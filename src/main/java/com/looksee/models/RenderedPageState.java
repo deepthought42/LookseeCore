@@ -1,13 +1,25 @@
 package com.looksee.models;
 
+import lombok.Getter;
+import lombok.Setter;
+
+/**
+ * Rendered page state
+ */
+@Getter
+@Setter
 public class RenderedPageState {
 
-	private PageState page_state;
+	/**
+	 * The page state
+	 */
+	private PageState pageState;
+
+	/**
+	 * Constructor for {@link RenderedPageState}
+	 * @param page the {@link PageState} to render
+	 */
 	public RenderedPageState(PageState page) {
-		this.page_state = page;
-	}
-	
-	public PageState getPageState() {
-		return page_state;
+		this.pageState = page;
 	}
 }

@@ -106,7 +106,6 @@ public interface PageRepository extends Neo4jRepository<Page, Long> {
 	 * Adds a page state to a page
 	 * @param page_key the key of the page
 	 * @param page_state_id the id of the page state
-	 * @return the page state
 	 */
 	@Query("MATCH (p:Page{key:{page_key}}) WITH p MATCH (ps:PageState) WHERE id(ps)=$page_state_id CREATE (p)-[h:HAS]->(ps) RETURN ps")
 	public void addPageState(@Param("page_key") String page_key, @Param("page_state_id") long page_state_id);

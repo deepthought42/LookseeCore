@@ -52,8 +52,10 @@ public class MetricsDetail extends AuditDetail {
 	 * @param observedFirstContentfulPaint the observed first contentful paint
 	 * @param observedNavigationStartTs the observed navigation start timestamp
 	 * @param observedLargestContentfulPaintTs the observed largest contentful paint timestamp
+	 * @param observedLargestContentfulPaint the observed largest contentful paint
 	 * @param observedFirstVisualChange the observed first visual change
 	 * @param observedLoadTs the observed load timestamp
+	 * @param observedLoad the observed load
 	 * @param firstMeaningfulPaint the first meaningful paint
 	 * @param observedTraceEnd the observed trace end
 	 * @param observedFirstMeaningfulPaint the observed first meaningful paint
@@ -73,6 +75,13 @@ public class MetricsDetail extends AuditDetail {
 	 * @param observedFirstPaint the observed first paint
 	 * @param observedLastVisualChange the observed last visual change
 	 * @param lcpInvalidated the lcp invalidated
+	 * 
+	 * precondition: firstContentfulPaint != null
+	 * precondition: observedFirstPaintTs != null
+	 * precondition: speedIndex != null
+	 * precondition: observedSpeedIndexTs != null
+	 * precondition: observedFirstContentfulPaint != null
+	 * precondition: observedNavigationStartTs != null
 	 */
 	public MetricsDetail(
 			Integer firstContentfulPaint,
