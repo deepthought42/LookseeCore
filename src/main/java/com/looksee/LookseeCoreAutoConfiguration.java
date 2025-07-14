@@ -25,6 +25,11 @@ import org.springframework.data.neo4j.repository.config.EnableNeo4jRepositories;
 @EnableConfigurationProperties(LookseeCoreProperties.class)
 @ConditionalOnProperty(prefix = "looksee.core", name = "enabled", havingValue = "true", matchIfMissing = true)
 @ComponentScan(basePackages = {
+    "com.looksee",
+    "com.looksee.models",
+    "com.looksee.models.domain",
+    "com.looksee.models.audit",
+    "com.looksee.models.competitiveanalysis",
     "com.looksee.services",
     "com.looksee.models.repository",
     "com.looksee.models.competitiveanalysis.brand",
