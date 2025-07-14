@@ -7,18 +7,26 @@ import com.looksee.models.PageState;
 import com.looksee.models.Test;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * Data transfer object for {@link Test} object that is designed to comply with
  * the data format for browser extensions
  */
+@Getter
+@Setter
+@NoArgsConstructor
 public class TestDto {
 	private String key;
 	private String name;
 	private List<Object> path;
 
-	public TestDto(){}
-
+	/**
+	 * Constructor for {@link TestDto}
+	 * @param test
+	 */
 	public TestDto(Test test){
 		setKey(test.getKey());
 		setName(test.getName());
@@ -46,29 +54,5 @@ public class TestDto {
 				this.path.add(new ElementActionDto((Element)ordered_path_objects.get(idx), (ActionOLD)ordered_path_objects.get(++idx)));
 			}
 		}
-	}
-
-	public String getKey() {
-		return key;
-	}
-
-	public void setKey(String key) {
-		this.key = key;
-	}
-
-	public List<Object> getPath() {
-		return path;
-	}
-
-	public void setPath(List<Object> path) {
-		this.path = path;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 }

@@ -2,51 +2,55 @@ package com.looksee.browsing.table;
 
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 /**
- * 
+ * Table object for a table on a page
  */
+@Getter
+@Setter
+@NoArgsConstructor
 public class Table {
 	public List<Row> headers;
-	public List<Row> table_rows;
-	
-	public Table(){}
+	public List<Row> tableRows;
 	
 	/**
 	 * Retrieves all cells in a table header passed
 	 * 
-	 * @param table_header header {@link WebElement}
+	 * @param tableHeader header {@link WebElement}
 	 * @param driver {@link WebDriver} to use
 	 * 
 	 * @return List of {@link Row}s for table header
 	 * 
 	 * precondition: table_header != null
 	 */
-	public List<Row> loadHeaders(WebElement table_header, WebDriver driver){
-		assert table_header != null;
+	public List<Row> loadHeaders(WebElement tableHeader, WebDriver driver){
+		assert tableHeader != null;
 				
-		List<WebElement> header_rows = table_header.findElements(By.xpath("./tr"));
+		List<WebElement> headerRows = tableHeader.findElements(By.xpath("./tr"));
 		List<Row> rows = new ArrayList<Row>();
 		/*
 		int cnt = 1;
-		for(WebElement header_row : header_rows){
-			List<WebElement> header_cells = new ArrayList<WebElement>();
+		for(WebElement headerRow : headerRows){
+			List<WebElement> headerCells = new ArrayList<WebElement>();
 
-			header_cells.addAll(header_row.findElements(By.xpath("./td")));
-			header_cells.addAll(header_row.findElements(By.xpath("./th")));
+			headerCells.addAll(headerRow.findElements(By.xpath("./td")));
+			headerCells.addAll(headerRow.findElements(By.xpath("./th")));
 			
 			Row row = new Row();
 			String row_xpath = "//tr["+ cnt + "]";
-			for(WebElement elem : header_cells){
+			for(WebElement elem : headerCells){
 				ElementState page_elem = new ElementState(elem.getText(), browser.generateXpath(elem, row_xpath, null, driver), elem.getTagName(), extractAttributes(elem, (JavascriptExecutor)driver), Browser.loadCssProperties(elem) );
 				ElementNode<ElementState> node = new ElementNode<ElementState>(page_elem);
 				//load all child elements into tree
 				List<WebElement> children = Browser.getChildElements(elem);
-				for(WebElement child_elem : children){
-					ElementState child_page_elem = new ElementState(child_elem.getText(), Browser.generateXpath(child_elem, row_xpath, null, driver), child_elem.getTagName(), Browser.extractAttributes(child_elem, (JavascriptExecutor)driver), Browser.loadCssProperties(child_elem));
+				for(WebElement childElem : children){
+					ElementState childPageElem = new ElementState(childElem.getText(), Browser.generateXpath(childElem, rowXpath, null, driver), childElem.getTagName(), Browser.extractAttributes(childElem, (JavascriptExecutor)driver), Browser.loadCssProperties(childElem));
 					node.addChild(child_page_elem);
 				}
 				
@@ -61,10 +65,10 @@ public class Table {
 	/**
 	 * Loads the rows of a table
 	 * 
-	 * @param table_body {@link WebElement} of the table body
+	 * @param tableBody {@link WebElement} of the table body
 	 * @return List of {@link Row}s for table body
 	 */
-	public List<Row> loadRows(WebElement table_body){
+	public List<Row> loadRows(WebElement tableBody){
 		return null;
 	}
 }

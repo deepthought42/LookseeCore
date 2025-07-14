@@ -32,10 +32,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/**
+ * Service for working with {@link Test tests}
+ */
 @Component
 public class TestService {
 	private static Logger log = LoggerFactory.getLogger(TestService.class);
-
 
 	@Autowired
 	private TestRepository test_repo;
@@ -124,6 +126,14 @@ public class TestService {
 		return test_record;
 	}
 
+	/**
+	 * Saves a {@link Test}
+	 * @param test the test to save
+	 * @param url the url of the page
+	 * @param account_id the id of the account
+	 * @return the saved test
+	 * @throws Exception if the test cannot be saved
+	 */
 	public Test save(Test test, String url, long account_id) throws Exception {
 		assert test != null;
 		Test record = test_repo.findByKey(test.getKey(), url, account_id);
@@ -190,14 +200,34 @@ public class TestService {
 		}
 	}
 
+	/**
+	 * Finds tests with a specific element state
+	 * @param page_state_key the key of the page state
+	 * @param element_state_key the key of the element state
+	 * @return the tests with the specific element state
+	 */
 	public List<Test> findTestsWithElementState(String page_state_key, String element_state_key){
 		return test_repo.findTestWithElementState(page_state_key, element_state_key);
 	}
 
+	/**
+	 * Finds a test by key
+	 * @param key the key of the test
+	 * @param url the url of the page
+	 * @param account_id the id of the account
+	 * @return the test if found
+	 */
 	public Test findByKey(String key, String url, long account_id){
 		return test_repo.findByKey(key, url, account_id);
 	}
 
+	/**
+	 * Finds tests with a specific page state
+	 * @param page_state_key the key of the page state
+	 * @param url the url of the page
+	 * @param account_id the id of the account
+	 * @return the tests with the specific page state
+	 */
 	public List<Test> findTestsWithPageState(String page_state_key, String url, long account_id) {
 		return test_repo.findTestWithPageState(page_state_key, url, account_id);
 	}
@@ -226,10 +256,22 @@ public class TestService {
 		return ordered_list;
 	}
 
+	/**
+	 * Gets the groups for a test
+	 * @param key the key of the test
+	 * @return the groups for the test
+	 */
 	public Set<Group> getGroups(String key) {
 		return group_repo.getGroups(key);
 	}
-	
+
+	/**
+	 * Gets the result for a test
+	 * @param key the key of the test
+	 * @param url the url of the page
+	 * @param user_id the id of the user
+	 * @return the result for the test
+	 */
 	public PageState getResult(String key, String url, String user_id) {
 		return page_state_repo.getResult(key, url, user_id);
 	}
@@ -301,6 +343,12 @@ public class TestService {
 		return false;
 	}
 
+	/**
+	 * Loads path objects using path keys
+	 * @param user_id the id of the user
+	 * @param path_keys the path keys
+	 * @return the path objects
+	 */
 	public List<LookseeObject> loadPathObjects(String user_id, List<String> path_keys) {
 		//load path objects using path keys
 		List<LookseeObject> path_objects = new ArrayList<LookseeObject>();
@@ -319,14 +367,34 @@ public class TestService {
 		return path_objects;
 	}
 
+	/**
+	 * Finds all test records containing a specific key
+	 * @param path_object_key the key of the path object
+	 * @param url the url of the page
+	 * @param user_id the id of the user
+	 * @return the test records containing the key
+	 */
 	public Set<Test> findAllTestRecordsContainingKey(String path_object_key, String url, String user_id) {
 		return test_repo.findAllTestRecordsContainingKey(path_object_key, url, user_id);
 	}
 
+	/**
+	 * Checks if the end of the path already exists in the path
+	 * @param resultPage the result page
+	 * @param path_keys the path keys
+	 * @return true if the end of the path already exists in the path, false otherwise
+	 */
 	public boolean checkIfEndOfPathAlreadyExistsInPath(PageState resultPage, List<String> path_keys) {
 		return path_keys.contains(resultPage.getKey());
 	}
 
+	/**
+	 * Adds a group to a test
+	 * @param test_key the key of the test
+	 * @param group the group to add
+	 * @param url the url of the page
+	 * @param user_id the id of the user
+	 */
 	public void addGroup(String test_key, Group group, String url, String user_id) {
 		Group group_record = group_service.save(group);
 		test_repo.addGroup(test_key, group_record.getKey(), url, user_id);
