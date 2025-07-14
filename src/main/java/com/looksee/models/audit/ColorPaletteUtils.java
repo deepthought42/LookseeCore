@@ -19,7 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 	
+ * Utility class for color palette audit
  */
 public class ColorPaletteUtils {
 	private static Logger log = LoggerFactory.getLogger(ColorPaletteUtils.class);
