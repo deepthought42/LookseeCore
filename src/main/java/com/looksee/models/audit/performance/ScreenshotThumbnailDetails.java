@@ -1,45 +1,36 @@
 package com.looksee.models.audit.performance;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
- * 
+ * Screenshot thumbnail details
  */
+@Getter
+@Setter
+@NoArgsConstructor
 public class ScreenshotThumbnailDetails extends AuditDetail {
 
 	private Double timing;
 	private Long timestamp;
 	private String data;
 	
-	public ScreenshotThumbnailDetails() {}
-	
+	/**
+	 * Constructor for {@link ScreenshotThumbnailDetails}
+	 * 
+	 * @param timing the timing
+	 * @param timestamp the timestamp
+	 * @param data the data
+	 */
 	public ScreenshotThumbnailDetails(Double timing, Long timestamp, String data) {
 		setTiming(timing);
 		setTimestamp(timestamp);
 		setData(data);
 	}
 
-	public Double getTiming() {
-		return timing;
+	@Override
+	public String generateKey() {
+		return "screenshotthumbnaildetails"+org.apache.commons.codec.digest.DigestUtils.sha256Hex(timing.toString() + timestamp.toString() + data);
 	}
-
-	public void setTiming(Double timing) {
-		this.timing = timing;
-	}
-
-	public Long getTimestamp() {
-		return timestamp;
-	}
-
-	public void setTimestamp(Long timestamp) {
-		this.timestamp = timestamp;
-	}
-
-	public String getData() {
-		return data;
-	}
-
-	public void setData(String data) {
-		this.data = data;
-	}
-
 }

@@ -91,8 +91,13 @@ public class PerformanceInsight extends LookseeObject {
 		this.audits.add(audit);
 	}
 
+	/**
+	 * Generates a key for the performance insight
+	 * 
+	 * @return the key for the performance insight
+	 */
 	@Override
 	public String generateKey() {
-		return org.apache.commons.codec.digest.DigestUtils.sha256Hex(this.getRequestId() + this.getExecutedAt());
+		return "performanceinsight"+org.apache.commons.codec.digest.DigestUtils.sha256Hex(this.getRequestId() + this.getExecutedAt());
 	}
 }

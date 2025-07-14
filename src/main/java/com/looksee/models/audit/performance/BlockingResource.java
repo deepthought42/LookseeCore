@@ -28,4 +28,9 @@ public class BlockingResource extends AuditDetail {
 		setTotalBytes(total_bytes);
 		setWastedMs(wasted_ms);
 	}
+
+	@Override
+	public String generateKey() {
+		return "blockingresource"+org.apache.commons.codec.digest.DigestUtils.sha256Hex(url);
+	}
 }

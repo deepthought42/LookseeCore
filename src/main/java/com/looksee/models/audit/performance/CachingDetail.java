@@ -48,4 +48,9 @@ public class CachingDetail extends AuditDetail {
 		setCacheHitProbability(cacheHitProbability);
 		setCacheLifetimeMs(cacheLifetimeMs);
 	}
+
+	@Override
+	public String generateKey() {
+		return "cachingdetail"+org.apache.commons.codec.digest.DigestUtils.sha256Hex(url);
+	}
 }

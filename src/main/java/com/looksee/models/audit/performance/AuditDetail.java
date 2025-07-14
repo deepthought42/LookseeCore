@@ -17,4 +17,10 @@ import org.springframework.data.neo4j.core.schema.Node;
 public abstract class AuditDetail extends LookseeObject {
 
 	private Date createdDate = new Date();
+
+	@Override
+	public String generateKey() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'generateKey'");
+	}
 }

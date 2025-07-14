@@ -28,4 +28,9 @@ public class GroupWorkBreakdown extends AuditDetail {
 		setGroupLabel(groupLabel);
 		setDuration(duration);
 	}
+
+	@Override
+	public String generateKey() {
+		return "groupworkbreakdown"+org.apache.commons.codec.digest.DigestUtils.sha256Hex(group + groupLabel + duration.toString());
+	}
 }

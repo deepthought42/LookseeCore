@@ -36,4 +36,9 @@ public class AssetSizeOpportunityDetail extends AuditDetail {
 		setWastedPercent(wasted_percent);
 		setTotalBytes(total_bytes);
 	}
+
+	@Override
+	public String generateKey() {
+		return "assetopportunitydetail"+org.apache.commons.codec.digest.DigestUtils.sha256Hex(url);
+	}
 }

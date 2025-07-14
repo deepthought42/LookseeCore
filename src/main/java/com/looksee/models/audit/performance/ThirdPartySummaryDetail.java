@@ -2,59 +2,43 @@ package com.looksee.models.audit.performance;
 
 import java.util.HashMap;
 import java.util.Map;
-
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.neo4j.core.schema.CompositeProperty;
 
 /**
- * 
+ * Third party summary detail
  */
+@Getter
+@Setter
+@NoArgsConstructor
 public class ThirdPartySummaryDetail extends AuditDetail {
 
-	private Integer transfer_size;
-	private Double blocking_time;
-	private Double main_thread_time;
+	private Integer transferSize;
+	private Double blockingTime;
+	private Double mainThreadTime;
 	
 	@CompositeProperty
 	private Map<String, String> entity = new HashMap<>();
 	
-	public ThirdPartySummaryDetail() {}
-	
-	public ThirdPartySummaryDetail(int transfer_size, double blocking_time, double main_thread_time, Map<String, String> entity) {
-		setTransferSize(transfer_size);
-		setBlockingTime(blocking_time);
-		setMainThreadTime(main_thread_time);
+	/**
+	 * Constructor for {@link ThirdPartySummaryDetail}
+	 * 
+	 * @param transfer_size the transfer size
+	 * @param blocking_time the blocking time
+	 * @param main_thread_time the main thread time
+	 * @param entity the entity
+	 */
+	public ThirdPartySummaryDetail(int transferSize, double blockingTime, double mainThreadTime, Map<String, String> entity) {
+		setTransferSize(transferSize);
+		setBlockingTime(blockingTime);
+		setMainThreadTime(mainThreadTime);
 		setEntity(entity);
 	}
 
-	public Integer getTransferSize() {
-		return transfer_size;
-	}
-	
-	public void setTransferSize(Integer transfer_size) {
-		this.transfer_size = transfer_size;
-	}
-	
-	public Double getBlockingTime() {
-		return blocking_time;
-	}
-	
-	public void setBlockingTime(Double blocking_time) {
-		this.blocking_time = blocking_time;
-	}
-	
-	public Double getMainThreadTime() {
-		return main_thread_time;
-	}
-	
-	public void setMainThreadTime(Double main_thread_time) {
-		this.main_thread_time = main_thread_time;
-	}
-	
-	public Map<String, String> getEntity() {
-		return entity;
-	}
-	
-	public void setEntity(Map<String, String> entity) {
-		this.entity = entity;
+	@Override
+	public String generateKey() {
+		return "thirdpartysummarydetail"+org.apache.commons.codec.digest.DigestUtils.sha256Hex(transferSize.toString() + blockingTime.toString() + mainThreadTime.toString() + entity.toString());
 	}
 }

@@ -1,56 +1,42 @@
 package com.looksee.models.audit.performance;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
- * 
+ * WebP image detail for performance audit
  */
+@Getter
+@Setter
+@NoArgsConstructor
 public class WebPImageDetail extends AuditDetail {
 
-	private int wasted_bytes;
+	private int wastedBytes;
 	private String url;
-	private boolean from_protocol;
-	private boolean is_cross_origin;
-	private int total_bytes;
+	private boolean fromProtocol;
+	private boolean crossOrigin;
+	private int totalBytes;
 	
-	public WebPImageDetail() {}
-	
-	public WebPImageDetail(int wasted_bytes, String url, boolean from_protocol, boolean is_cross_origin, int total_bytes) {
-		setWastedBytes(wasted_bytes);
+	/**
+	 * Constructor for {@link WebPImageDetail}
+	 * 
+	 * @param wastedBytes the wasted bytes
+	 * @param url the url
+	 * @param fromProtocol the from protocol
+	 * @param isCrossOrigin the is cross origin
+	 * @param totalBytes the total bytes
+	 */
+	public WebPImageDetail(int wastedBytes, String url, boolean fromProtocol, boolean isCrossOrigin, int totalBytes) {
+		setWastedBytes(wastedBytes);
 		setUrl(url);
-		setFromProtocol(from_protocol);
-		setIsCrossOrigin(is_cross_origin);
-		setTotalBytes(total_bytes);
-	}
-	
-	public int getWastedBytes() {
-		return wasted_bytes;
-	}
-	public void setWastedBytes(int wasted_bytes) {
-		this.wasted_bytes = wasted_bytes;
-	}
-	public String getUrl() {
-		return url;
-	}
-	public void setUrl(String url) {
-		this.url = url;
-	}
-	public boolean isFromProtocol() {
-		return from_protocol;
-	}
-	public void setFromProtocol(boolean from_protocol) {
-		this.from_protocol = from_protocol;
-	}
-	public boolean isIsCrossOrigin() {
-		return is_cross_origin;
-	}
-	public void setIsCrossOrigin(boolean is_cross_origin) {
-		this.is_cross_origin = is_cross_origin;
-	}
-	public int getTotalBytes() {
-		return total_bytes;
-	}
-	public void setTotalBytes(int total_bytes) {
-		this.total_bytes = total_bytes;
+		setFromProtocol(fromProtocol);
+		setCrossOrigin(isCrossOrigin);
+		setTotalBytes(totalBytes);
 	}
 
+	@Override
+	public String generateKey() {
+		return "webpimagedetail"+org.apache.commons.codec.digest.DigestUtils.sha256Hex(wastedBytes + url + fromProtocol + crossOrigin + totalBytes);
+	}
 }

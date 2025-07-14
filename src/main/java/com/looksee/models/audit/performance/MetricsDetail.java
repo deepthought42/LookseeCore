@@ -137,4 +137,9 @@ public class MetricsDetail extends AuditDetail {
 		setSpeedIndex(speedIndex);
 		setTotalBlockingTime(totalBlockingTime);
 	}
+
+	@Override
+	public String generateKey() {
+		return "metricsdetail"+org.apache.commons.codec.digest.DigestUtils.sha256Hex(firstContentfulPaint.toString() + observedFirstPaintTs.toString() + speedIndex.toString() + observedSpeedIndexTs.toString() + observedFirstContentfulPaint.toString() + observedNavigationStartTs.toString() + observedLargestContentfulPaintTs.toString() + observedFirstVisualChange.toString() + observedLoadTs.toString() + firstMeaningfulPaint.toString() + observedTraceEnd.toString() + observedFirstMeaningfulPaint.toString() + firstCpuIdle.toString() + observedTraceEndTs.toString() + observedFirstMeaningfulPaintTs.toString() + observedDomContentLoaded.toString() + observedFirstVisualChangeTs.toString() + interactive.toString() + observedNavigationStart.toString() + observedFirstContentfulPaintTs.toString() + observedLastVisualChangeTs.toString() + observedLoad.toString() + observedLargestContentfulPaint.toString() + observedDomContentLoadedTs.toString() + observedSpeedIndex.toString() + estimatedInputLatency.toString() + totalBlockingTime.toString() + observedFirstPaint.toString() + observedLastVisualChange.toString() + lcpInvalidated.toString());
+	}
 }
