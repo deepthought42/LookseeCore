@@ -481,7 +481,7 @@ public interface PageStateRepository extends Neo4jRepository<PageState, Long> {
 	 * @return the page state if found
 	 */
 	@Query("MATCH (s:Step) WITH s MATCH (p:PageState) WHERE id(s)=$step_id AND id(p)=$page_state_id MERGE (s)-[:STARTS_WITH]->(p) RETURN p")
-	public PageState addStartPage(@Param("step_id") long id, @Param("page_state_id") long page_state_id);	
+	public PageState addStartPage(@Param("step_id") long step_id, @Param("page_state_id") long page_state_id);
 
 	/**
 	 * Retrieves the start page for a login step.
