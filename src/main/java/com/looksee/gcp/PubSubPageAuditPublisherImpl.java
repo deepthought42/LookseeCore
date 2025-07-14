@@ -1,17 +1,19 @@
 package com.looksee.gcp;
 
+import com.google.cloud.spring.pubsub.core.PubSubTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.stereotype.Component;
 
-import lombok.NoArgsConstructor;
-
 /**
- * Implementation of the PubSubPageAuditPublisher interface.
+ * Implementation of {@link PubSubPublisher} for page audits
  */
 @Component
-@NoArgsConstructor
+@ConditionalOnClass(name = "com.google.cloud.spring.pubsub.core.PubSubTemplate")
+@ConditionalOnBean(PubSubTemplate.class)
 public class PubSubPageAuditPublisherImpl extends PubSubPublisher {
 
     @SuppressWarnings("unused")
@@ -21,8 +23,8 @@ public class PubSubPageAuditPublisherImpl extends PubSubPublisher {
     private String topic;
     
     /**
-     * Returns the topic for the PubSub page audit publisher.
-     * @return the topic for the PubSub page audit publisher
+     * Returns the topic for page audits
+     * @return the topic for page audits
      */
     @Override
     protected String topic() {

@@ -1,22 +1,24 @@
 package com.looksee.gcp;
 
+import com.google.cloud.spring.pubsub.core.PubSubTemplate;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.stereotype.Component;
 
-import lombok.NoArgsConstructor;
-
 /**
- * Implementation of the PubSubErrorPublisher interface.
+ * Implementation of {@link PubSubPublisher} for errors
  */
 @Component
-@NoArgsConstructor
+@ConditionalOnClass(name = "com.google.cloud.spring.pubsub.core.PubSubTemplate")
+@ConditionalOnBean(PubSubTemplate.class)
 public class PubSubErrorPublisherImpl extends PubSubPublisher {
     @Value("${pubsub.error_topic}")
     private String topic;
     
     /**
-     * Returns the topic for the PubSub error publisher.
-     * @return the topic for the PubSub error publisher
+     * Returns the topic for errors
+     * @return the topic for errors
      */
     @Override
     protected String topic() {

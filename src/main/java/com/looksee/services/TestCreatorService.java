@@ -47,6 +47,8 @@ public class TestCreatorService {
 	 * @param domain {@link Domain} of the page
 	 * @param account_id id of the account
 	 * 
+	 * @return the generated {@link Test}
+	 * 
 	 * @throws MalformedURLException if there is an error parsing the URL
 	 * @throws IOException if there is an error reading the file
 	 * @throws NullPointerException if the path objects are null

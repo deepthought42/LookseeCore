@@ -31,4 +31,9 @@ public class BootUpTime extends AuditDetail {
 		setScriptLoadTime(script_load_time);
 		setScriptParseTime(script_parse_time);
 	}
+
+	@Override
+	public String generateKey() {
+		return "bootuptime"+org.apache.commons.codec.digest.DigestUtils.sha256Hex(url);
+	}
 }

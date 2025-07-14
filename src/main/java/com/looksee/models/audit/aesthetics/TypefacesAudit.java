@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,7 @@ import org.springframework.stereotype.Component;
  * Responsible for executing an audit on the hyperlinks on a page for the information architecture audit category
  */
 @Component
+@NoArgsConstructor
 public class TypefacesAudit implements IExecutablePageStateAudit {
 	@SuppressWarnings("unused")
 	private static Logger log = LoggerFactory.getLogger(TypefacesAudit.class);
@@ -50,10 +52,6 @@ public class TypefacesAudit implements IExecutablePageStateAudit {
 	@Autowired
 	private PageStateService page_state_service;
 	
-	public TypefacesAudit() {
-		//super(buildBestPractices(), getAdaDescription(), getAuditDescription(), AuditSubcategory.TEXT_BACKGROUND_CONTRAST);
-	}
-
 	/**
 	 * {@inheritDoc}
 	 * 

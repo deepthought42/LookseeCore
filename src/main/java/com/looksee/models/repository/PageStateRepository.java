@@ -282,7 +282,7 @@ public interface PageStateRepository extends Neo4jRepository<PageState, Long> {
 	 * @return the page state that was added as start page
 	 */
 	@Query("MATCH (s:Step) MATCH (p:PageState) WHERE id(s)=$step_id AND id(p)=$page_state_id MERGE (s)-[:STARTS_WITH]->(p) RETURN p")
-	public PageState addStartPageToStep(@Param("step_id") long step_id, @Param("page_state_id") long page_state_id);	
+	public PageState addStartPageToStep(@Param("step_id") long step_id, @Param("page_state_id") long page_state_id);
 
 	/**
 	 * Retrieves the start page for a login step.
@@ -463,22 +463,60 @@ public interface PageStateRepository extends Neo4jRepository<PageState, Long> {
 	@Query("MATCH (step:LandingStep)-[:STARTS_WITH]->(ps:PageState) WHERE id(ps)=$page_id RETURN ps LIMIT 1")
 	public PageState isPageLandable(@Param("page_id") long pageId);
 
+	/**
+	 * Retrieves the page state for a page audit record.
+	 *
+	 * @param page_audit_key the key of the page audit record
+	 * @return the page state if found
+	 */
 	@Query("MATCH (page_audit:PageAuditRecord{key:$page_audit_key})-[]->(page_state:PageState) RETURN page_state LIMIT 1")
 	@Deprecated
 	public PageState getPageStateForAuditRecord(@Param("page_audit_key") String page_audit_key);
 
+	/**
+	 * Adds a start page to a step.
+	 *
+	 * @param step_id the ID of the step
+	 * @param page_state_id the ID of the page state
+	 * @return the page state if found
+	 */
 	@Query("MATCH (s:Step) WITH s MATCH (p:PageState) WHERE id(s)=$step_id AND id(p)=$page_state_id MERGE (s)-[:STARTS_WITH]->(p) RETURN p")
-	public PageState addStartPage(@Param("step_id") long id, @Param("page_state_id") long page_state_id);	
+	public PageState addStartPage(@Param("step_id") long step_id, @Param("page_state_id") long page_state_id);
 
+	/**
+	 * Retrieves the start page for a login step.
+	 *
+	 * @param step_id the ID of the step
+	 * @return the page state if found
+	 */
 	@Query("MATCH (s:LoginStep)-[:STARTS_WITH]->(page:PageState) WHERE id(s)=$step_id RETURN page")
-	public PageState getStartPage(@Param("step_id") long id);
-	
-	@Query("MATCH (s:Step) WITH s MATCH (p:PageState) WHERE id(s)=$step_id AND id(p)=$page_state_id MERGE (s)-[:ENDS_WITH]->(p) RETURN p")
-	public PageState addEndPage(@Param("step_id") long id, @Param("page_state_id") long page_state_id);
+	public PageState getStartPage(@Param("step_id") long step_id);
 
+	/**
+	 * Adds an end page to a step.
+	 *
+	 * @param step_id the ID of the step
+	 * @param page_state_id the ID of the page state
+	 * @return the page state if found
+	 */
+	@Query("MATCH (s:Step) WITH s MATCH (p:PageState) WHERE id(s)=$step_id AND id(p)=$page_state_id MERGE (s)-[:ENDS_WITH]->(p) RETURN p")
+	public PageState addEndPage(@Param("step_id") long step_id, @Param("page_state_id") long page_state_id);
+
+	/**
+	 * Retrieves the end page for a simple step.
+	 *
+	 * @param step_key the key of the step
+	 * @return the page state if found
+	 */
 	@Query("MATCH (:SimpleStep{key:$step_key})-[:STARTS_WITH]->(p:PageState) RETURN p")
-	public PageState getEndPage(@Param("step_key") String key);
-	
+	public PageState getEndPage(@Param("step_key") String step_key);
+
+	/**
+	 * Retrieves the start page for a simple step.
+	 *
+	 * @param step_key the key of the step
+	 * @return the page state if found
+	 */
 	@Query("MATCH (:SimpleStep{key:$step_key})-[:ENDS_WITH]->(p:PageState) RETURN p")
-	public PageState getStartPage(@Param("step_key") String key);
+	public PageState getStartPage(@Param("step_key") String step_key);
 }

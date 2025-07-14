@@ -100,4 +100,9 @@ public class DiagnosticDetail extends AuditDetail {
 		setNumFonts(num_fonts);
 		setNumScripts(num_scripts);
 	}
+
+	@Override
+	public String generateKey() {
+		return "diagnosticdetail"+org.apache.commons.codec.digest.DigestUtils.sha256Hex(numStylesheets.toString() + throughput.toString() + numTasksOver10ms.toString() + numTasksOver25ms.toString() + numTasksOver50ms.toString() + numTasksOver100ms.toString() + numTasksOver500ms.toString() + numRequests.toString() + totalTaskTime.toString() + mainDocumentTransferSize.toString() + totalByteWeight.toString() + numTasks.toString() + rtt.toString() + maxRtt.toString() + numFonts.toString() + numScripts.toString());
+	}
 }

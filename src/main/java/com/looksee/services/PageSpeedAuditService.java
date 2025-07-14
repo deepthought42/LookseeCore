@@ -5,9 +5,15 @@ import com.looksee.models.repository.PageSpeedAuditRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service for page speed audits
+ */
 @Service
 public class PageSpeedAuditService {
 
+	/**
+	 * Repository for page speed audits
+	 */
 	@Autowired
 	private PageSpeedAuditRepository audit_repo;
 	

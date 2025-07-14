@@ -1,44 +1,67 @@
 package com.looksee.models.dto;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
- * A simplified data set for page consisting of full page and viewport screenshots, url and the height and width
- *  of the full page screenshot
- *
+ * A simplified data set for page consisting of full page and viewport
+ * screenshots, url and the height and width of the full page screenshot
  */
+@Getter
+@Setter
 public class PageStatisticDto {
 	private long id;
 	private String url;
-	private long audit_record_id;
-	private String screenshot_url;
-	private double content_score;
-	private double content_progress;
-	private double info_arch_score;
-	private double info_arch_progress;
-	private double accessibility_score;
-	private double accessibility_progress;
-	private double aesthetic_score;
-	private double aesthetic_progress;
-	private double data_extraction_progress;
-	private long elements_extracted;
-	private long elements_reviewed;
-	private boolean is_complete;
+	private long auditRecordId;
+	private String screenshotUrl;
+	private double contentScore;
+	private double contentProgress;
+	private double infoArchScore;
+	private double infoArchProgress;
+	private double accessibilityScore;
+	private double accessibilityProgress;
+	private double aestheticScore;
+	private double aestheticProgress;
+	private double dataExtractionProgress;
+	private long elementsExtracted;
+	private long elementsReviewed;
+	private boolean isComplete;
 	
+	/**
+	 * Constructor for PageStatisticDto
+	 * @param id the id
+	 * @param url the url
+	 * @param screenshot_url the screenshot url
+	 * @param content_score the content score
+	 * @param content_progress the content progress
+	 * @param info_arch_score the info arch score
+	 * @param info_arch_progress the info arch progress
+	 * @param accessibility_score the accessibility score
+	 * @param accessibility_progress the accessibility progress
+	 * @param aesthetic_score the aesthetic score
+	 * @param aesthetic_progress the aesthetic progress
+	 * @param audit_record_id the audit record id
+	 * @param elements_reviewed the elements reviewed
+	 * @param elements_extracted the elements extracted
+	 * @param is_complete the is complete
+	 * @param data_extraction_progress the data extraction progress
+	 */
 	public PageStatisticDto(
-			long id, 
-			String url, 
-			String screenshot_url, 
-			double content_score, 
-			double content_progress, 
-			double info_arch_score, 
-			double info_arch_progress, 
-			double accessibility_score, 
-			double accessibility_progress, 
-			double aesthetic_score, 
-			double aesthetic_progress, 
-			long audit_record_id, 
-			long elements_reviewed, 
-			long elements_extracted, 
-			boolean is_complete, 
+			long id,
+			String url,
+			String screenshot_url,
+			double content_score,
+			double content_progress,
+			double info_arch_score,
+			double info_arch_progress,
+			double accessibility_score,
+			double accessibility_progress,
+			double aesthetic_score,
+			double aesthetic_progress,
+			long audit_record_id,
+			long elements_reviewed,
+			long elements_extracted,
+			boolean is_complete,
 			double data_extraction_progress
 	) {
 		setId(id);
@@ -58,133 +81,4 @@ public class PageStatisticDto {
 		setDataExtractionProgress(data_extraction_progress);
 		setComplete(is_complete);
 	}
-
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-	public String getScreenshotUrl() {
-		return screenshot_url;
-	}
-
-	public void setScreenshotUrl(String screenshot_url) {
-		this.screenshot_url = screenshot_url;
-	}
-
-	public double getContentScore() {
-		return content_score;
-	}
-
-	public void setContentScore(double content_score) {
-		this.content_score = content_score;
-	}
-
-	public double getInfoArchScore() {
-		return info_arch_score;
-	}
-
-	public void setInfoArchScore(double info_arch_score) {
-		this.info_arch_score = info_arch_score;
-	}
-
-	public double getAccessibilityScore() {
-		return accessibility_score;
-	}
-
-	public void setAccessibilityScore(double accessibility_score) {
-		this.accessibility_score = accessibility_score;
-	}
-
-	public double getAestheticScore() {
-		return aesthetic_score;
-	}
-
-	public void setAestheticScore(double aesthetic_score) {
-		this.aesthetic_score = aesthetic_score;
-	}
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public long getAuditRecordId() {
-		return audit_record_id;
-	}
-
-	public void setAuditRecordId(long audit_record_id) {
-		this.audit_record_id = audit_record_id;
-	}
-
-	public long getElementsExtracted() {
-		return elements_extracted;
-	}
-
-	public void setElementsExtracted(long elements_extracted) {
-		this.elements_extracted = elements_extracted;
-	}
-
-	public long getElementsReviewed() {
-		return elements_reviewed;
-	}
-
-	public void setElementsReviewed(long elements_reviewed) {
-		this.elements_reviewed = elements_reviewed;
-	}
-
-	public double getContentProgress() {
-		return content_progress;
-	}
-
-	public void setContentProgress(double content_progress) {
-		this.content_progress = content_progress;
-	}
-
-	public double getInfoArchProgress() {
-		return info_arch_progress;
-	}
-
-	public void setInfoArchProgress(double info_arch_progress) {
-		this.info_arch_progress = info_arch_progress;
-	}
-
-	public double getAccessibilityProgress() {
-		return accessibility_progress;
-	}
-
-	public void setAccessibilityProgress(double accessibility_progress) {
-		this.accessibility_progress = accessibility_progress;
-	}
-
-	public double getAestheticProgress() {
-		return aesthetic_progress;
-	}
-
-	public void setAestheticProgress(double aesthetic_progress) {
-		this.aesthetic_progress = aesthetic_progress;
-	}
-
-	public boolean isComplete() {
-		return is_complete;
-	}
-
-	public void setComplete(boolean is_complete) {
-		this.is_complete = is_complete;
-	}
-
-	public double getDataExtractionProgress() {
-		return data_extraction_progress;
-	}
-
-	public void setDataExtractionProgress(double data_extraction_progress) {
-		this.data_extraction_progress = data_extraction_progress;
-	}
-
 }

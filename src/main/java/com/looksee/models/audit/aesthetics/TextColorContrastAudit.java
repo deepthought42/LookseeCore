@@ -25,6 +25,7 @@ import com.looksee.utils.ColorUtils;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,7 @@ import org.springframework.stereotype.Component;
  * Responsible for executing an audit on the hyperlinks on a page for the information architecture audit category
  */
 @Component
+@NoArgsConstructor
 public class TextColorContrastAudit implements IExecutablePageStateAudit {
 	@SuppressWarnings("unused")
 	private static Logger log = LoggerFactory.getLogger(TextColorContrastAudit.class);
@@ -48,8 +50,6 @@ public class TextColorContrastAudit implements IExecutablePageStateAudit {
 	@Autowired
 	private UXIssueMessageService issue_message_service;
 	
-	public TextColorContrastAudit() {}
-
 	/**
 	 * {@inheritDoc}
 	 * 
@@ -101,7 +101,7 @@ public class TextColorContrastAudit implements IExecutablePageStateAudit {
 				
 				//if(!element.getOwnedText().isEmpty()){
 				/*
-					ColorData font_color = new ColorData(element.getRenderedCssValues().get("color"));				
+					ColorData font_color = new ColorData(element.getRenderedCssValues().get("color"));
 					//extract opacity color
 					ColorData bkg_color = null;
 					if(element.getScreenshotUrl().trim().isEmpty()) {
@@ -110,7 +110,7 @@ public class TextColorContrastAudit implements IExecutablePageStateAudit {
 					else {
 						log.warn("extracting background color");
 						bkg_color = ImageUtils.extractBackgroundColor( new URL(element.getScreenshotUrl()),
-																	   font_color);
+																	font_color);
 						
 						log.warn("done extracting background color");
 					}
@@ -167,7 +167,7 @@ public class TextColorContrastAudit implements IExecutablePageStateAudit {
 
 							low_header_contrast_observation = issue_message_service.saveColorContrast(low_header_contrast_observation);
 							issue_message_service.addElement(low_header_contrast_observation.getId(), element.getId());
-							issue_messages.add(low_header_contrast_observation);							
+							issue_messages.add(low_header_contrast_observation);
 							//MessageBroadcaster.sendIssueMessage(page_state.getId(), low_header_contrast_observation);
 						}
 						else if(element.getTextContrast() >= 3 && element.getTextContrast() < 4.5) {

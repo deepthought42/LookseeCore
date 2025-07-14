@@ -28,4 +28,9 @@ public class AssetSize extends AuditDetail {
 		setUrl(url);
 		setTotalBytes(total_bytes);
 	}
+
+	@Override
+	public String generateKey() {
+		return "assetsize"+org.apache.commons.codec.digest.DigestUtils.sha256Hex(url);
+	}
 }

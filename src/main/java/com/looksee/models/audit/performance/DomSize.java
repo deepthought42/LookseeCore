@@ -39,4 +39,9 @@ public class DomSize extends AuditDetail {
 		setValue(value);
 		setElementDefinition(elementDefinition);
 	}
+
+	@Override
+	public String generateKey() {
+		return "domsize"+org.apache.commons.codec.digest.DigestUtils.sha256Hex(statistic + value + elementDefinition.toString());
+	}
 }

@@ -49,4 +49,9 @@ public class NetworkRequestDetail extends AuditDetail {
 		setEndTime(endTime);
 		setStartTime(startTime);
 	}
+
+	@Override
+	public String generateKey() {
+		return "networkrequestdetail"+org.apache.commons.codec.digest.DigestUtils.sha256Hex(url + transferSize.toString() + statusCode.toString() + resourceType.toString() + mimeType.toString() + resourceSize.toString() + endTime.toString() + startTime.toString());
+	}
 }

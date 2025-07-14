@@ -17,6 +17,9 @@ import com.looksee.utils.BrowserUtils;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +28,9 @@ import org.springframework.stereotype.Component;
 /**
  * Responsible for executing an audit on the hyperlinks on a page for the information architecture audit category
  */
+@Getter
+@Setter
+@NoArgsConstructor
 @Component
 public class ParagraphingAudit implements IExecutablePageStateAudit {
 	@SuppressWarnings("unused")
@@ -38,11 +44,6 @@ public class ParagraphingAudit implements IExecutablePageStateAudit {
 	
 	@Autowired
 	private UXIssueMessageService issue_message_service;
-	
-	
-	public ParagraphingAudit() {
-	}
-
 	
 	/**
 	 * {@inheritDoc}
@@ -116,17 +117,17 @@ public class ParagraphingAudit implements IExecutablePageStateAudit {
 		String description = "";
 
 		Audit audit = new Audit(AuditCategory.CONTENT,
-						 AuditSubcategory.WRITTEN_CONTENT, 
-						 AuditName.PARAGRAPHING, 
-						 points_earned, 
-						 new HashSet<>(), 
-						 AuditLevel.PAGE, 
-						 max_points, 
-						 page_state.getUrl(),
-						 why_it_matters, 
-						 description,
-						 false); 
-						 
+						AuditSubcategory.WRITTEN_CONTENT,
+						AuditName.PARAGRAPHING,
+						points_earned,
+						new HashSet<>(),
+						AuditLevel.PAGE,
+						max_points,
+						page_state.getUrl(),
+						why_it_matters,
+						description,
+						false);
+
 		audit_service.save(audit);
 		audit_service.addAllIssues(audit.getId(), issue_messages);
 		return audit;
@@ -136,9 +137,9 @@ public class ParagraphingAudit implements IExecutablePageStateAudit {
 	/**
 	 * Reviews list of sentences and gives a score based on how many of those sentences have 
 	 * 		25 words or less. This is considered the maximum sentence length allowed in EU government documentation
-	 * @param sentences
-	 * @param element
-	 * @return
+	 * @param sentences the sentences to review
+	 * @param element the element to review
+	 * @return the score for the paragraphing audit
 	 */
 	public Score calculateSentenceScore(List<Sentence> sentences, ElementState element) {
 		//    		for each sentence check that sentence is no longer than 25 words
@@ -207,10 +208,14 @@ public class ParagraphingAudit implements IExecutablePageStateAudit {
 				issue_messages.add(issue_message);
 			}
 		}
-		return new Score(points_earned, max_points, issue_messages);					
+		return new Score(points_earned, max_points, issue_messages);
 	}
 
-
+	/**
+	 * Calculates the score for the paragraphing audit
+	 * @param sentence_count the number of sentences in the paragraph
+	 * @return the score for the paragraphing audit
+	 */
 	public static Score calculateParagraphScore(int sentence_count) {
 		if(sentence_count <= 5) {
 			return new Score(1, 1, new HashSet<>());

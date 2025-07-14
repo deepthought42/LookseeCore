@@ -37,4 +37,9 @@ public class AccessibilityDetailNode extends AuditDetail {
 		setOptionalChangeMessages(optionalMessages);
 		setElement(element);
 	}
+
+	@Override
+	public String generateKey() {
+		return "accessibilitydetailnode"+org.apache.commons.codec.digest.DigestUtils.sha256Hex(element.getKey());
+	}
 }

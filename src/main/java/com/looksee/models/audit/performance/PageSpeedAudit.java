@@ -1,35 +1,47 @@
 package com.looksee.models.audit.performance;
 
-import java.util.List;
-
-import org.springframework.data.neo4j.core.schema.Relationship;
-
 import com.looksee.models.LookseeObject;
 import com.looksee.models.enums.InsightType;
+import java.util.List;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.data.neo4j.core.schema.Relationship;
 
 /**
  * Google Page speed audit
  */
+@Getter
+@Setter
+@NoArgsConstructor
 public class PageSpeedAudit extends LookseeObject {
 
 	private String name;
 	private String title;
 	private String description; //definition
 	private Double score;      //scoring
-	private String score_display_mode;
-	private String display_value;
+	private String scoreDisplayMode;
+	private String displayValue;
 	private String explanation; //meaning
-	private String error_message;
-	private Double numeric_value;
+	private String errorMessage;
+	private Double numericValue;
 	private String type;
 	
 	@Relationship(type = "HAS")
 	private List<AuditDetail> details;
 	
-	public PageSpeedAudit() {
-		super();
-	}
-	
+	/**
+	 * Constructor for {@link PageSpeedAudit}
+	 * 
+	 * @param name the name of the page speed audit
+	 * @param description the description of the page speed audit
+	 * @param display_value the display value of the page speed audit
+	 * @param error_message the error message of the page speed audit
+	 * @param explanation the explanation of the page speed audit
+	 * @param numeric_value the numeric value of the page speed audit
+	 * @param score_display_value the score display value of the page speed audit
+	 * @param title the title of the page speed audit
+	 */
 	public PageSpeedAudit(
 			String name,
 			String description,
@@ -49,102 +61,32 @@ public class PageSpeedAudit extends LookseeObject {
 		setNumericValue(numeric_value);
 		setScoreDisplayMode(score_display_value);
 		setTitle(title);
-		setKey(generateKey());		
+		setKey(generateKey());
 	}
 	
-	
+	/**
+	 * Generates a key for the page speed audit
+	 * 
+	 * @return the key for the page speed audit
+	 */
 	@Override
 	public String generateKey() {
-		return org.apache.commons.codec.digest.DigestUtils.sha256Hex(getTitle());
-	}
-
-	/* GETTERS AND SETTERS */
-
-	public String getTitle() {
-		return title;
+		return "pagespeedaudit"+org.apache.commons.codec.digest.DigestUtils.sha256Hex(getTitle() + getDescription() + getDisplayValue() + getErrorMessage() + getExplanation() + getNumericValue() + getScoreDisplayMode() + getTitle());
 	}
 	
-	public void setTitle(String title) {
-		this.title = title;
-	}
-	
-	public String getDescription() {
-		return description;
-	}
-	
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	
-	public Double getScore() {
-		return score;
-	}
-	
-	public void setScore(Double score) {
-		this.score = score;
-	}
-	
-	public String getScoreDisplayMode() {
-		return score_display_mode;
-	}
-	
-	public void setScoreDisplayMode(String score_display_mode) {
-		this.score_display_mode = score_display_mode;
-	}
-	
-	public String getDisplayValue() {
-		return display_value;
-	}
-	
-	public void setDisplayValue(String display_value) {
-		this.display_value = display_value;
-	}
-	
-	public String getExplanation() {
-		return explanation;
-	}
-	
-	public void setExplanation(String explanation) {
-		this.explanation = explanation;
-	}
-	
-	public String getErrorMessage() {
-		return error_message;
-	}
-	
-	public void setErrorMessage(String error_message) {
-		this.error_message = error_message;
-	}
-	
-	public Double getNumericValue() {
-		return numeric_value;
-	}
-	
-	public void setNumericValue(Double numeric_value) {
-		this.numeric_value = numeric_value;
-	}
-
+	/**
+	 * Gets the type of the page speed audit
+	 * @return the type of the page speed audit
+	 */
 	public InsightType getType() {
 		return InsightType.create(type);
 	}
 
+	/**
+	 * Sets the type of the page speed audit
+	 * @param type the type of the page speed audit
+	 */
 	public void setType(InsightType type) {
 		this.type = type.getShortName();
-	}
-	
-	public String getName() {
-		return name;
-	}
-	
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	public List<AuditDetail> getDetails() {
-		return details;
-	}
-
-	public void setDetails(List<AuditDetail> details) {
-		this.details = details;
 	}
 }

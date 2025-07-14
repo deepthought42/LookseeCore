@@ -44,7 +44,7 @@ public class MetricsDetail extends AuditDetail {
 	private Boolean lcpInvalidated;
 	
 	/**
-	 * Constructor for {@link MetricsDetail}	
+	 * Constructor for {@link MetricsDetail}
 	 * @param firstContentfulPaint the first contentful paint
 	 * @param observedFirstPaintTs the observed first paint timestamp
 	 * @param speedIndex the speed index
@@ -52,8 +52,10 @@ public class MetricsDetail extends AuditDetail {
 	 * @param observedFirstContentfulPaint the observed first contentful paint
 	 * @param observedNavigationStartTs the observed navigation start timestamp
 	 * @param observedLargestContentfulPaintTs the observed largest contentful paint timestamp
+	 * @param observedLargestContentfulPaint the observed largest contentful paint
 	 * @param observedFirstVisualChange the observed first visual change
 	 * @param observedLoadTs the observed load timestamp
+	 * @param observedLoad the observed load
 	 * @param firstMeaningfulPaint the first meaningful paint
 	 * @param observedTraceEnd the observed trace end
 	 * @param observedFirstMeaningfulPaint the observed first meaningful paint
@@ -73,6 +75,13 @@ public class MetricsDetail extends AuditDetail {
 	 * @param observedFirstPaint the observed first paint
 	 * @param observedLastVisualChange the observed last visual change
 	 * @param lcpInvalidated the lcp invalidated
+	 * 
+	 * precondition: firstContentfulPaint != null
+	 * precondition: observedFirstPaintTs != null
+	 * precondition: speedIndex != null
+	 * precondition: observedSpeedIndexTs != null
+	 * precondition: observedFirstContentfulPaint != null
+	 * precondition: observedNavigationStartTs != null
 	 */
 	public MetricsDetail(
 			Integer firstContentfulPaint,
@@ -136,5 +145,10 @@ public class MetricsDetail extends AuditDetail {
 		setObservedTraceEndTs(observedTraceEndTs);
 		setSpeedIndex(speedIndex);
 		setTotalBlockingTime(totalBlockingTime);
+	}
+
+	@Override
+	public String generateKey() {
+		return "metricsdetail"+org.apache.commons.codec.digest.DigestUtils.sha256Hex(firstContentfulPaint.toString() + observedFirstPaintTs.toString() + speedIndex.toString() + observedSpeedIndexTs.toString() + observedFirstContentfulPaint.toString() + observedNavigationStartTs.toString() + observedLargestContentfulPaintTs.toString() + observedFirstVisualChange.toString() + observedLoadTs.toString() + firstMeaningfulPaint.toString() + observedTraceEnd.toString() + observedFirstMeaningfulPaint.toString() + firstCpuIdle.toString() + observedTraceEndTs.toString() + observedFirstMeaningfulPaintTs.toString() + observedDomContentLoaded.toString() + observedFirstVisualChangeTs.toString() + interactive.toString() + observedNavigationStart.toString() + observedFirstContentfulPaintTs.toString() + observedLastVisualChangeTs.toString() + observedLoad.toString() + observedLargestContentfulPaint.toString() + observedDomContentLoadedTs.toString() + observedSpeedIndex.toString() + estimatedInputLatency.toString() + totalBlockingTime.toString() + observedFirstPaint.toString() + observedLastVisualChange.toString() + lcpInvalidated.toString());
 	}
 }

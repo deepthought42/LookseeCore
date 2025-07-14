@@ -1,7 +1,7 @@
 package com.looksee.utils;
 
-import com.looksee.models.Score;
 import com.looksee.models.audit.Audit;
+import com.looksee.models.audit.Score;
 import com.looksee.models.enums.AuditSubcategory;
 import java.util.ArrayList;
 import java.util.HashMap;

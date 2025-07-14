@@ -1,63 +1,17 @@
-# Looksee Core
+# Look-see Core
 
-A core library containing POJOs (Plain Old Java Objects), Services, and Repository objects used across all Look-see microservices. This library provides the foundational data models and business logic for the Look-see platform.
+A comprehensive Spring Boot library for web auditing, browser automation, and UX analysis.
 
-## Overview
+## Features
 
-Looksee Core is a Java library that provides the core data models and services for the Look-see platform. It handles various aspects of web application analysis, including:
+- **Browser Automation**: Selenium-based web scraping and interaction
+- **Audit Management**: Comprehensive UX and accessibility auditing
+- **Neo4j Integration**: Graph database persistence for complex relationships
+- **Google Cloud Integration**: Image analysis, NLP, and cloud storage
+- **Journey Mapping**: User journey discovery and analysis
+- **Design System Analysis**: Color palette, typography, and visual consistency
 
-- Domain and page state management
-- Browser automation and interaction
-- Audit and compliance checking
-- Design system management
-- Image analysis and processing
-- User journey mapping
-- UX issue tracking
-
-## Key Components
-
-### Models
-
-The library provides several core data models:
-
-- `Domain`: Represents a web domain with its associated pages, audit records, and design system
-- `PageState`: Captures the state of a webpage including its elements and screenshots
-- `ElementState`: Represents the state of HTML elements on a webpage
-- `AuditRecord`: Stores audit results and compliance information
-- `DesignSystem`: Manages design system information and components
-- `Browser`: Handles browser automation and interaction
-- `LookseeObject`: Base class for all persistable objects with common fields (id, key, createdAt)
-
-### Services
-
-Core services that provide business logic:
-
-- `DomainService`: Manages domain-related operations
-- `PageStateService`: Handles page state persistence and retrieval
-- `BrowserService`: Provides browser automation capabilities
-- `AuditService`: Manages audit operations and compliance checking
-- `ElementStateService`: Handles element state management
-- `DesignSystemService`: Manages design system operations
-- `UXIssueMessageService`: Tracks and manages UX issues
-- `DomainMapService`: Handles user journey mapping
-
-### Utilities
-
-- `CloudVisionUtils`: Google Cloud Vision API integration for image analysis
-- `GoogleCloudStorage`: Handles file storage in Google Cloud
-- `PDFDocUtils`: PDF document generation and manipulation
-- `ImageUtils`: Image processing utilities
-
-### Repositories
-
-Neo4j-based repositories for data persistence:
-
-- `AuditRecordRepository`: Manages audit record persistence
-- `DomainRepository`: Handles domain data storage
-- `PageStateRepository`: Manages page state persistence
-- `ElementStateRepository`: Handles element state storage
-
-## Usage
+## Quick Start
 
 ### Adding to Your Project
 
@@ -67,13 +21,44 @@ Add the following dependency to your project:
 <dependency>
     <groupId>com.looksee</groupId>
     <artifactId>core</artifactId>
-    <version>0.0.1</version>
+    <version>0.2.6</version>
 </dependency>
 ```
 
-### Key Features
+### Auto-Configuration
 
-1. **Domain Management**
+This library includes Spring Boot auto-configuration that automatically registers all repositories and services when included as a dependency. No additional configuration is required!
+
+The auto-configuration will:
+- Scan and register all `@Repository` beans in `com.looksee.models.repository`
+- Scan and register all `@Service` beans in `com.looksee.services`
+- Configure Neo4j repositories with proper transaction management
+- Enable component scanning for all library packages
+
+### Configuration
+
+You can configure the library behavior in your `application.yml` or `application.properties`:
+
+```yaml
+looksee:
+  core:
+    enabled: true  # Enable/disable auto-configuration (default: true)
+    neo4j:
+      connection-timeout: 30000
+      max-connection-pool-size: 50
+      connection-pooling-enabled: true
+
+spring:
+  neo4j:
+    uri: bolt://localhost:7687
+    authentication:
+      username: neo4j
+      password: your-password
+```
+
+### Usage Examples
+
+#### Domain Management
 ```java
 @Autowired
 private DomainService domainService;
@@ -86,7 +71,7 @@ domain = domainService.save(domain);
 Domain found = domainService.findByKey("domainKey", "username");
 ```
 
-2. **Browser Automation**
+#### Browser Automation
 ```java
 @Autowired
 private BrowserService browserService;
@@ -97,7 +82,7 @@ browser.navigate("https://example.com");
 browser.takeScreenshot();
 ```
 
-3. **Audit Management**
+#### Audit Management
 ```java
 @Autowired
 private AuditService auditService;
@@ -107,7 +92,7 @@ AuditRecord record = auditService.performAudit(pageState);
 auditService.save(record);
 ```
 
-4. **Design System Integration**
+#### Design System Integration
 ```java
 @Autowired
 private DesignSystemService designSystemService;
@@ -117,16 +102,39 @@ DesignSystem designSystem = new DesignSystem();
 designSystem = designSystemService.save(designSystem);
 ```
 
-## Requirements
+## Troubleshooting
 
-- Java 11 or higher
-- Spring Boot 2.x
-- Neo4j Database
-- Google Cloud Platform (for image analysis and storage features)
+### Common Issues
 
-## Configuration
+#### 1. "No qualifying bean of type 'AuditRecordRepository' available"
 
-The library requires the following configuration in your `application.properties` or `application.yml`:
+This error occurs when Spring Boot cannot find the repository beans. The auto-configuration should resolve this automatically, but if you're still experiencing issues:
+
+**Solution**: Ensure your main application class has `@SpringBootApplication` and is in a parent package of `com.looksee`:
+
+```java
+@SpringBootApplication
+public class YourApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(YourApplication.class, args);
+    }
+}
+```
+
+**Alternative Solution**: If your application is in a different package structure, explicitly enable component scanning:
+
+```java
+@SpringBootApplication
+@ComponentScan(basePackages = {"your.package", "com.looksee"})
+@EnableNeo4jRepositories(basePackages = {"your.package.repository", "com.looksee.models.repository"})
+public class YourApplication {
+    // ...
+}
+```
+
+#### 2. Neo4j Connection Issues
+
+Ensure your Neo4j configuration is correct:
 
 ```yaml
 spring:
@@ -135,22 +143,90 @@ spring:
     authentication:
       username: neo4j
       password: your-password
+    database: neo4j  # Optional, defaults to 'neo4j'
+```
 
-google:
-  cloud:
-    project: your-project-id
-    storage:
-      bucket: your-bucket-name
+#### 3. Disabling Auto-Configuration
+
+If you need to disable the auto-configuration:
+
+```yaml
+looksee:
+  core:
+    enabled: false
+```
+
+Then manually configure the components you need:
+
+```java
+@Configuration
+@ComponentScan(basePackages = "com.looksee.services")
+@EnableNeo4jRepositories(basePackages = "com.looksee.models.repository")
+public class LookseeCoreManualConfiguration {
+    // Your manual configuration
+}
+```
+
+## Architecture
+
+### Core Components
+
+- **Services**: Business logic layer (`com.looksee.services`)
+- **Repositories**: Data access layer (`com.looksee.models.repository`)
+- **Models**: Domain entities and DTOs (`com.looksee.models`)
+- **Utils**: Utility classes and helpers (`com.looksee.utils`)
+- **Browsing**: Browser automation components (`com.looksee.browsing`)
+
+### Key Services
+
+- `DomainService`: Domain management and operations
+- `AuditService`: Audit execution and management
+- `BrowserService`: Browser automation and page interaction
+- `DesignSystemService`: Design system analysis
+- `JourneyService`: User journey mapping and analysis
+
+### Key Repositories
+
+- `AuditRecordRepository`: Audit record persistence
+- `DomainRepository`: Domain data storage
+- `PageStateRepository`: Page state persistence
+- `ElementStateRepository`: Element state storage
+
+## Requirements
+
+- Java 17 or higher
+- Spring Boot 2.6.x or higher
+- Neo4j Database
+- Google Cloud Platform (for image analysis and storage features)
+
+## Development
+
+### Building
+
+```bash
+mvn clean install
+```
+
+### Testing
+
+```bash
+mvn test
+```
+
+### Publishing
+
+```bash
+mvn clean deploy
 ```
 
 ## Contributing
 
 1. Fork the repository
 2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
+3. Make your changes
+4. Add tests
+5. Submit a pull request
 
 ## License
 
-This project is proprietary and confidential. Unauthorized copying, distribution, or use is strictly prohibited.
+[Add your license information here]

@@ -1,18 +1,30 @@
 package com.looksee.models.audit.performance;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 /**
- * 
- * 
+ * Timing detail for performance audit
  */
+@Getter
+@Setter
+@NoArgsConstructor
 public class TimingDetail extends AuditDetail {
 
 	private String name;
-	private Double start_time;
+	private Double startTime;
 	private Double duration;
-	private String timing_type;
+	private String timingType;
 	
-	public TimingDetail() {}
-	
+	/**
+	 * Constructor for {@link TimingDetail}
+	 * 
+	 * @param name the name
+	 * @param start_time the start time
+	 * @param duration the duration
+	 * @param timing_type the timing type
+	 */
 	public TimingDetail(String name, Double start_time, Double duration, String timing_type) {
 		setName(name);
 		setStartTime(start_time);
@@ -20,37 +32,8 @@ public class TimingDetail extends AuditDetail {
 		setTimingType(timing_type);
 	}
 
-	public String getName() {
-		return name;
+	@Override
+	public String generateKey() {
+		return "timingdetail"+org.apache.commons.codec.digest.DigestUtils.sha256Hex(name + startTime.toString() + duration.toString() + timingType);
 	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public Double getStartTime() {
-		return start_time;
-	}
-
-	public void setStartTime(Double start_time) {
-		this.start_time = start_time;
-	}
-
-	public Double getDuration() {
-		return duration;
-	}
-
-	public void setDuration(Double duration) {
-		this.duration = duration;
-	}
-
-	public String getTimingType() {
-		return timing_type;
-	}
-
-	public void setTimingType(String timing_type) {
-		this.timing_type = timing_type;
-	}
-	
-	
 }

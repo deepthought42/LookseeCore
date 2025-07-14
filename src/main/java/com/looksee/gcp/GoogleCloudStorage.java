@@ -18,8 +18,8 @@ import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.charset.StandardCharsets;
 import javax.imageio.ImageIO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.stereotype.Service;
 
 /**
@@ -27,15 +27,14 @@ import org.springframework.stereotype.Service;
  */
 @Retry(name = "gcp")
 @Service
+@ConditionalOnClass(name = "com.google.cloud.storage.Storage")
+@ConditionalOnBean(Storage.class)
 public class GoogleCloudStorage {
 	
-	@SuppressWarnings("unused")
-	private static Logger log = LoggerFactory.getLogger(GoogleCloudStorage.class);
 	private final Storage storage;
     private final String bucketName;
     private final String publicUrl;
 
-	//private static String bucket_name     = "look-see-data";
 	/**
 	 * Constructor for {@link GoogleCloudStorage}
 	 *

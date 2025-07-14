@@ -19,6 +19,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +32,9 @@ import org.springframework.stereotype.Component;
  * Responsible for executing an audit on the hyperlinks on a page for the information architecture audit category
  */
 @Component
+@Getter
+@Setter
+@NoArgsConstructor
 public class SecurityAudit implements IExecutablePageStateAudit {
 	@SuppressWarnings("unused")
 	private static Logger log = LoggerFactory.getLogger(SecurityAudit.class);
@@ -38,10 +44,6 @@ public class SecurityAudit implements IExecutablePageStateAudit {
 	
 	@Autowired
 	private UXIssueMessageService issue_message_service;
-	
-	public SecurityAudit() {
-		//super(buildBestPractices(), getAdaDescription(), getAuditDescription(), AuditSubcategory.TEXT_BACKGROUND_CONTRAST);
-	}
 
 	/**
 	 * {@inheritDoc}
@@ -100,8 +102,8 @@ public class SecurityAudit implements IExecutablePageStateAudit {
 											labels,
 											why_it_matters,
 											title,
-											1, 
-											1, 
+											1,
+											1,
 											recommendation);
 
 			issue_messages.add(issue_message_service.save(ux_issue));
@@ -119,23 +121,27 @@ public class SecurityAudit implements IExecutablePageStateAudit {
 		//log.warn("SECURITY AUDIT SCORE   ::   "+ points_earned +" / " +max_points);
 		//page_state = page_state_service.findById(page_state.getId()).get();
 		Audit audit = new Audit(AuditCategory.INFORMATION_ARCHITECTURE,
-								 AuditSubcategory.SECURITY,
-								 AuditName.FONT,
-								 points_earned,
-								 new HashSet<>(),
-								 AuditLevel.PAGE,
-								 max_points,
-								 page_state.getUrl(), 
-								 why_it_matters,
-								 description,
-								 false);
+								AuditSubcategory.SECURITY,
+								AuditName.FONT,
+								points_earned,
+								new HashSet<>(),
+								AuditLevel.PAGE,
+								max_points,
+								page_state.getUrl(),
+								why_it_matters,
+								description,
+								false);
 		
 		audit_service.save(audit);
 		audit_service.addAllIssues(audit.getId(), issue_messages);
 		return audit;
 	}
 	
-
+	/**
+	 * Makes a list of strings distinct and sorted
+	 * @param from the list of strings to make distinct
+	 * @return the distinct and sorted list of strings
+	 */
 	public static List<String> makeDistinct(List<String> from){
 		return from.stream().distinct().sorted().collect(Collectors.toList());
 	}

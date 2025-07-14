@@ -2,17 +2,35 @@ package com.looksee.browsing;
 
 import java.util.ArrayList;
 import java.util.Random;
+import lombok.Getter;
+import lombok.Setter;
 
 
 /**
  * Encapsulates the possible values for a value field as a domain of values.
  */
+@Getter
+@Setter
 public class ValueDomain {
 	
+	/**
+	 * The values of the domain
+	 */
 	private ArrayList<String> values = new ArrayList<String>();
+	
+	/**
+	 * The alphabet
+	 */
 	private String alphabet="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	
+	/**
+	 * The special characters
+	 */
 	private String specialCharacters = alphabet+"+={}/\\:;!@#$%^&*()~|<>?[]-_";
 	
+	/**
+	 * Constructor for {@link ValueDomain}
+	 */
 	public ValueDomain(){
 		//add empty string as bare minimum
 		values.add("");
@@ -85,16 +103,11 @@ public class ValueDomain {
 		}
 	}
 	
-	public ArrayList<String> getValues(){
-		return this.values;
-	}
-	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public String toString(){
-
 		return "";
 	}
 }

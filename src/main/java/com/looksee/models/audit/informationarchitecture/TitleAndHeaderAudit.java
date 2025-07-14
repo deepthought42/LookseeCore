@@ -20,6 +20,7 @@ import com.looksee.utils.ElementStateUtils;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import lombok.NoArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -34,6 +35,7 @@ import org.springframework.stereotype.Component;
  * Responsible for executing an audit on the hyperlinks on a page for the information architecture audit category
  */
 @Component
+@NoArgsConstructor
 public class TitleAndHeaderAudit implements IExecutablePageStateAudit {
 	private static Logger log = LoggerFactory.getLogger(TitleAndHeaderAudit.class);
 	
@@ -42,8 +44,6 @@ public class TitleAndHeaderAudit implements IExecutablePageStateAudit {
 	
 	@Autowired
 	private UXIssueMessageService issue_message_service;
-	
-	public TitleAndHeaderAudit() {}
 	
 	/**
 	 * {@inheritDoc}
