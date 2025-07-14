@@ -2,29 +2,23 @@ package com.looksee.browsing.form;
 
 import com.looksee.models.ActionOLD;
 import com.looksee.models.Element;
+import com.looksee.models.LookseeObject;
 import com.looksee.models.rules.Rule;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.neo4j.core.schema.GeneratedValue;
-import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 
 /**
- * Defines a complex element grouping of input and label for a field contained within a form. 
+ * Defines a complex element grouping of input and label for a field contained within a form.
  * Also contains list of rules which can be enforced on the object
  */
 @Node
 @Getter
 @Setter
-public class FormField {
+public class FormField extends LookseeObject{
 	
-	@GeneratedValue
-    @Id
-	private Long id;
-	
-	private String key;
 	private List<Rule> rules;
 	private Element formField;
 	
@@ -51,7 +45,8 @@ public class FormField {
 	 *
 	 * @return the key
 	 */
-	private String generateKey() {
+	@Override
+	public String generateKey() {
 		return formField.getKey();
 	}
 

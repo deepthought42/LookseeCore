@@ -1,20 +1,15 @@
 package com.looksee.models;
 
+import com.looksee.models.enums.TestStatus;
 import java.util.Date;
 import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.data.neo4j.core.schema.GeneratedValue;
-import org.springframework.data.neo4j.core.schema.Id;
-import org.springframework.data.neo4j.core.schema.Node;
-import org.springframework.data.neo4j.core.schema.Relationship;
-
-import com.looksee.models.enums.TestStatus;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.neo4j.core.schema.Node;
+import org.springframework.data.neo4j.core.schema.Relationship;
 
 /**
  * A {@link Test} record for reflecting an execution of a test 
@@ -32,11 +27,6 @@ public class TestRecord extends LookseeObject {
 	@SuppressWarnings("unused")
 	private static Logger log = LoggerFactory.getLogger(TestRecord.class);
 
-	@GeneratedValue
-    @Id
-	private Long id;
-	
-	private String key;
 	private Date ranAt;
 	private String browser;
 	private TestStatus status;

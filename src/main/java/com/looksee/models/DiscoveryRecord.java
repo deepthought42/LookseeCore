@@ -1,19 +1,14 @@
 package com.looksee.models;
 
+import com.looksee.models.enums.ExecutionStatus;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-
-import org.springframework.data.neo4j.core.schema.GeneratedValue;
-import org.springframework.data.neo4j.core.schema.Id;
-import org.springframework.data.neo4j.core.schema.Node;
-
-import com.looksee.models.enums.ExecutionStatus;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.neo4j.core.schema.Node;
 
 /**
  * Record detailing a "Discovery" ran by an account.
@@ -23,12 +18,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class DiscoveryRecord extends LookseeObject {
-
-	@GeneratedValue
-    @Id
-	private Long id;
-
-	private String key;
+	
 	private Date startTime;
 	private String browserName;
 	private String domainUrl;

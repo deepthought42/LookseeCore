@@ -1,12 +1,9 @@
 package com.looksee.models;
 
-import org.springframework.data.neo4j.core.schema.GeneratedValue;
-import org.springframework.data.neo4j.core.schema.Id;
-import org.springframework.data.neo4j.core.schema.Node;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.neo4j.core.schema.Node;
 
 /**
  * Defines a name and color used to group {@link Test}s.
@@ -16,12 +13,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class Group extends LookseeObject {
-	
-	@GeneratedValue
-    @Id
-	private Long id;
-	
-	private String key;
+
 	private String name;
 	private String description;
 	

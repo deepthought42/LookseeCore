@@ -17,8 +17,6 @@ import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.neo4j.core.schema.CompositeProperty;
-import org.springframework.data.neo4j.core.schema.GeneratedValue;
-import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
 
@@ -35,11 +33,6 @@ public class Test extends LookseeObject {
     @SuppressWarnings("unused")
 	private static Logger log = LoggerFactory.getLogger(Test.class);
 	
-    @GeneratedValue
-    @Id
-	private Long id;
-	
-	private String key;
 	private String name;
 	private TestStatus status;
 	private boolean isUseful = false;
@@ -264,6 +257,7 @@ public class Test extends LookseeObject {
 	 * 
 	 * @return the key
 	 */
+	@Override
 	public String generateKey() {
 		String path_key =  String.join("", getPathKeys());
 		path_key += getResult().getKey();
