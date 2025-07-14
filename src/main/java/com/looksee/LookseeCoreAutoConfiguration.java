@@ -30,9 +30,13 @@ import org.springframework.data.neo4j.repository.config.EnableNeo4jRepositories;
     "com.looksee.models.domain",
     "com.looksee.models.audit",
     "com.looksee.models.competitiveanalysis",
+    "com.looksee.models.competitiveanalysis.brand",
+    "com.looksee.designsystem",
+    "com.looksee.models.journeys",
+    "com.looksee.models.rules",
+    "com.looksee.exceptions",
     "com.looksee.services",
     "com.looksee.models.repository",
-    "com.looksee.models.competitiveanalysis.brand",
     "com.looksee.gcp",
     "com.looksee.integrations",
     "com.looksee.browsing",
@@ -41,7 +45,8 @@ import org.springframework.data.neo4j.repository.config.EnableNeo4jRepositories;
     "com.looksee.browsing.table",
     "com.looksee.mapper",
     "com.looksee.utils",
-    "com.looksee.vscodePlugin.structs"
+    "com.looksee.vscodePlugin.structs",
+    "com.looksee.vscodePlugin.structs.dto"
 })
 @EnableNeo4jRepositories(
     basePackages = "com.looksee.models.repository",
