@@ -143,6 +143,13 @@ public interface StepRepository extends Neo4jRepository<Step, Long>{
 	@Query("MATCH (step:Step) WHERE id(step)=$step_id SET step.status=$status RETURN step")
 	public void updateStatus(@Param("step_id") long step_id, @Param("status") JourneyStatus status);
 
+	/**
+	 * Adds a step to a journey
+	 *
+	 * @param journey_id the ID of the journey
+	 * @param step_id the ID of the step
+	 * @return the step
+	 */
 	@Query("MATCH (j:Journey) WITH j MATCH (s:Step) WHERE id(s)=$step_id AND id(j)=$journey_id MERGE (j)-[:HAS]->(s) RETURN s")
 	public Step addStep(@Param("journey_id") long journey_id, @Param("step_id") long id);
 }

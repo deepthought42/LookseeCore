@@ -13,8 +13,19 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+/**
+ * Service for generating reports
+ */
 public class ReportService {
 
+	/**
+	 * Generates an Excel spreadsheet for a list of audit messages
+	 * @param audit_messages the list of audit messages
+	 * @param url the url of the page
+	 * @return the Excel spreadsheet
+	 * @throws FileNotFoundException if the file is not found
+	 * @throws IOException if an error occurs while writing the file
+	 */
 	public static XSSFWorkbook generateExcelSpreadsheet(
 			List<UXIssueReportDto> audit_messages,
 			URL url
@@ -103,6 +114,14 @@ public class ReportService {
         return workbook;
 	}
 	
+	/**
+	 * Generates an Excel spreadsheet for a list of UX issues
+	 * @param ux_issues the list of UX issues
+	 * @param url the url of the page
+	 * @return the Excel spreadsheet
+	 * @throws FileNotFoundException if the file is not found
+	 * @throws IOException if an error occurs while writing the file
+	 */
 	public static XSSFWorkbook generateDomainExcelSpreadsheet(
 			List<UXIssueReportDto> ux_issues,
 			URL url

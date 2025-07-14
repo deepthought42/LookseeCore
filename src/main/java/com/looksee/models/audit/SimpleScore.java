@@ -1,27 +1,28 @@
 package com.looksee.models.audit;
 
 import java.time.LocalDateTime;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+/**
+ * Simple score object for an audit
+ */
+@Getter
+@Setter
+@NoArgsConstructor
 public class SimpleScore {
 
-	private LocalDateTime date_performed;
+	private LocalDateTime datePerformed;
 	private double score;
 	
-	public SimpleScore(LocalDateTime date_performed, double score) {
-		setDatePerformed(date_performed);
+	/**
+	 * Constructor for {@link SimpleScore}
+	 * @param datePerformed the date the score was performed
+	 * @param score the score
+	 */
+	public SimpleScore(LocalDateTime datePerformed, double score) {
+		setDatePerformed(datePerformed);
 		setScore(score);
-	}
-	
-	public LocalDateTime getDatePerformed() {
-		return date_performed;
-	}
-	public void setDatePerformed(LocalDateTime date_performed) {
-		this.date_performed = date_performed;
-	}
-	public double getScore() {
-		return score;
-	}
-	public void setScore(double score) {
-		this.score = score;
 	}
 }

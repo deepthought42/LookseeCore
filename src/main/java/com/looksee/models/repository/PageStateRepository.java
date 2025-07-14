@@ -490,7 +490,7 @@ public interface PageStateRepository extends Neo4jRepository<PageState, Long> {
 	 * @return the page state if found
 	 */
 	@Query("MATCH (s:LoginStep)-[:STARTS_WITH]->(page:PageState) WHERE id(s)=$step_id RETURN page")
-	public PageState getStartPage(@Param("step_id") long id);
+	public PageState getStartPage(@Param("step_id") long step_id);
 
 	/**
 	 * Adds an end page to a step.
@@ -500,7 +500,7 @@ public interface PageStateRepository extends Neo4jRepository<PageState, Long> {
 	 * @return the page state if found
 	 */
 	@Query("MATCH (s:Step) WITH s MATCH (p:PageState) WHERE id(s)=$step_id AND id(p)=$page_state_id MERGE (s)-[:ENDS_WITH]->(p) RETURN p")
-	public PageState addEndPage(@Param("step_id") long id, @Param("page_state_id") long page_state_id);
+	public PageState addEndPage(@Param("step_id") long step_id, @Param("page_state_id") long page_state_id);
 
 	/**
 	 * Retrieves the end page for a simple step.
@@ -509,7 +509,7 @@ public interface PageStateRepository extends Neo4jRepository<PageState, Long> {
 	 * @return the page state if found
 	 */
 	@Query("MATCH (:SimpleStep{key:$step_key})-[:STARTS_WITH]->(p:PageState) RETURN p")
-	public PageState getEndPage(@Param("step_key") String key);
+	public PageState getEndPage(@Param("step_key") String step_key);
 
 	/**
 	 * Retrieves the start page for a simple step.
@@ -518,5 +518,5 @@ public interface PageStateRepository extends Neo4jRepository<PageState, Long> {
 	 * @return the page state if found
 	 */
 	@Query("MATCH (:SimpleStep{key:$step_key})-[:ENDS_WITH]->(p:PageState) RETURN p")
-	public PageState getStartPage(@Param("step_key") String key);
+	public PageState getStartPage(@Param("step_key") String step_key);
 }
