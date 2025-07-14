@@ -20,6 +20,7 @@ import java.nio.charset.StandardCharsets;
 import javax.imageio.ImageIO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -31,7 +32,9 @@ public class GoogleCloudStorage {
 	
 	@SuppressWarnings("unused")
 	private static Logger log = LoggerFactory.getLogger(GoogleCloudStorage.class);
-	private final Storage storage;
+
+	@Autowired
+	private Storage storage;
     private final String bucketName;
     private final String publicUrl;
 
