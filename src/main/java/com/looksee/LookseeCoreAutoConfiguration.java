@@ -1,5 +1,6 @@
 package com.looksee;
 
+import com.looksee.gcp.GoogleCloudStorageProperties;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -22,7 +23,7 @@ import org.springframework.data.neo4j.repository.config.EnableNeo4jRepositories;
  */
 @Configuration
 @EnableAutoConfiguration
-@EnableConfigurationProperties(LookseeCoreProperties.class)
+@EnableConfigurationProperties({LookseeCoreProperties.class, GoogleCloudStorageProperties.class})
 @ConditionalOnProperty(prefix = "looksee.core", name = "enabled", havingValue = "true", matchIfMissing = true)
 @ComponentScan(basePackages = {
     "com.looksee",
@@ -70,6 +71,7 @@ public class LookseeCoreAutoConfiguration {
      * 2. Discover and register all @Service beans in com.looksee.services
      * 3. Discover and register all @Component beans in the scanned packages
      * 4. Configure Neo4j repositories with proper transaction management
+     * 5. Provide Google Cloud Storage services if Google Cloud Storage is available
      * 
      * This eliminates the need for consuming applications to manually configure
      * component scanning or repository scanning for this library's components.

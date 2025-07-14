@@ -22,7 +22,9 @@ class LookseeCoreAutoConfigurationTest {
             .withPropertyValues(
                     "spring.neo4j.uri=bolt://localhost:7687",
                     "spring.neo4j.authentication.username=neo4j",
-                    "spring.neo4j.authentication.password=password"
+                    "spring.neo4j.authentication.password=password",
+                    "gcs.bucket.bucket-name=test-bucket",
+                    "gcs.bucket.public-url=https://storage.googleapis.com/test-bucket"
             );
 
     @Test
@@ -52,7 +54,9 @@ class LookseeCoreAutoConfigurationTest {
                         "looksee.core.enabled=false",
                         "spring.neo4j.uri=bolt://localhost:7687",
                         "spring.neo4j.authentication.username=neo4j",
-                        "spring.neo4j.authentication.password=password"
+                        "spring.neo4j.authentication.password=password",
+                        "gcs.bucket.bucket-name=test-bucket",
+                        "gcs.bucket.public-url=https://storage.googleapis.com/test-bucket"
                 );
 
         disabledContextRunner.run(context -> {
@@ -71,7 +75,9 @@ class LookseeCoreAutoConfigurationTest {
                 .withPropertyValues(
                         "spring.neo4j.uri=bolt://localhost:7687",
                         "spring.neo4j.authentication.username=neo4j",
-                        "spring.neo4j.authentication.password=password"
+                        "spring.neo4j.authentication.password=password",
+                        "gcs.bucket.bucket-name=test-bucket",
+                        "gcs.bucket.public-url=https://storage.googleapis.com/test-bucket"
                 );
 
         mainAppRunner.run(context -> {
