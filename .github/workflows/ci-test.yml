@@ -30,7 +30,9 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
 
       - name: Test with Maven
-        run: mvn test
+        run: mvn test -Dspring.profiles.active=test
+        env:
+          SPRING_PROFILES_ACTIVE: test
         
   build:
     needs: test
@@ -56,4 +58,6 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
 
       - name: Maven install
-        run: mvn clean install
+        run: mvn clean install -Dspring.profiles.active=test
+        env:
+          SPRING_PROFILES_ACTIVE: test
