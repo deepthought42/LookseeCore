@@ -2,6 +2,7 @@ package com.looksee;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.looksee.config.GcpTestConfiguration;
 import com.looksee.services.AuditService;
 import com.looksee.services.DomainService;
 import org.junit.jupiter.api.Test;
@@ -18,8 +19,10 @@ class LookseeCoreAutoConfigurationTest {
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(LookseeCoreAutoConfiguration.class))
+            .withUserConfiguration(GcpTestConfiguration.class)
             .withPropertyValues(
                 "spring.cloud.gcp.pubsub.enabled=false",
+                "spring.cloud.gcp.storage.enabled=false",
                 "spring.cloud.gcp.project-id=test-project",
                 "management.health.pubsub.enabled=false",
                 "logging.level.org.springframework.cloud.gcp=OFF"
