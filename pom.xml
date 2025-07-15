@@ -34,6 +34,14 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+			<dependency>
+				<!-- Google Cloud Libraries BOM -->
+				<groupId>com.google.cloud</groupId>
+				<artifactId>libraries-bom</artifactId>
+				<version>26.63.0</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -58,6 +66,13 @@
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
 			<version>20240303</version>
+		</dependency>
+
+		<!-- Google API Client -->
+		<dependency>
+			<groupId>com.google.api-client</groupId>
+			<artifactId>google-api-client</artifactId>
+			<version>1.31.1</version>
 		</dependency>
 
 		<dependency>
@@ -160,7 +175,7 @@
 		<dependency>
 			<groupId>com.google.cloud</groupId>
 			<artifactId>spring-cloud-gcp-starter-secretmanager</artifactId>
-			<version>4.3.0</version>
+			<version>3.9.5</version>
 		</dependency>
 
 
@@ -201,19 +216,13 @@
 			<version>0.3.1</version>
 		</dependency>
 
-		<dependency>
-			<groupId>com.google.cloud</groupId>
-			<artifactId>spring-cloud-gcp-dependencies</artifactId>
-			<version>3.0.0</version>
-			<type>pom</type>
-			<scope>provided</scope>
-		</dependency>
+		<!-- Removed duplicate spring-cloud-gcp-dependencies - now managed by libraries-bom -->
 
 		<!-- https://mvnrepository.com/artifact/com.google.cloud/spring-cloud-gcp-starter-storage -->
 		<dependency>
 			<groupId>com.google.cloud</groupId>
 			<artifactId>spring-cloud-gcp-starter-vision</artifactId>
-			<version>3.4.0</version>
+			<version>3.9.5</version>
 		</dependency>
 
 				
@@ -221,7 +230,7 @@
 		<dependency>
 			<groupId>com.google.cloud</groupId>
 			<artifactId>spring-cloud-gcp-starter-storage</artifactId>
-			<version>3.4.0</version>
+			<version>3.9.5</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/net.sf.cssbox/jstyleparser -->
@@ -318,7 +327,7 @@
 		<dependency>
 			<groupId>com.google.cloud</groupId>
 			<artifactId>google-cloud-language</artifactId>
-			<version>2.7.0</version>
+			<!-- Version managed by libraries-bom -->
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/ru.yandex.qatools.ashot/ashot -->
@@ -339,7 +348,7 @@
 		<dependency>
 			<groupId>com.google.cloud</groupId>
 			<artifactId>spring-cloud-gcp-pubsub-stream-binder</artifactId>
-			<version>3.2.1</version>
+			<version>3.9.5</version>
 		</dependency>
 
 		<dependency>
