@@ -3,6 +3,7 @@ package com.looksee.config;
 import static org.mockito.Mockito.mock;
 
 import com.google.cloud.storage.Storage;
+import com.google.cloud.vision.v1.ImageAnnotatorClient;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
@@ -10,7 +11,7 @@ import org.springframework.context.annotation.Profile;
 
 /**
  * Test configuration class to provide mock beans for Google Cloud Platform services
- * that may not be available during testing (like Storage and PubSub).
+ * that may not be available during testing (like Storage, PubSub, and Vision).
  * This prevents authentication and dependency errors in test environments.
  */
 @TestConfiguration
@@ -35,6 +36,27 @@ public class GcpTestConfiguration {
     @Primary
     public Object mockPubSubTemplate() {
         // Use Object type to avoid importing PubSubTemplate if not available
+        return mock(Object.class);
+    }
+
+    /**
+     * Provides a mock ImageAnnotatorClient bean for testing to avoid GCP Vision dependencies
+     * This prevents the "Your default credentials were not found" error for Vision API
+     */
+    @Bean
+    @Primary
+    public ImageAnnotatorClient mockImageAnnotatorClient() {
+        return mock(ImageAnnotatorClient.class);
+    }
+
+    /**
+     * Provides a mock DocumentOcrTemplate bean for testing to avoid GCP Vision dependencies
+     * This prevents Vision OCR template creation issues in tests
+     */
+    @Bean
+    @Primary
+    public Object mockDocumentOcrTemplate() {
+        // Use Object type to avoid importing DocumentOcrTemplate if not available
         return mock(Object.class);
     }
 } 

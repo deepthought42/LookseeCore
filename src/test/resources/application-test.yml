@@ -9,6 +9,8 @@ spring:
         enabled: false
       storage:
         enabled: false
+      vision:
+        enabled: false
       project-id: test-project
       credentials:
         location: ""
