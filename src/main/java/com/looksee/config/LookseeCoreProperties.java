@@ -15,6 +15,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  *     neo4j:
  *       connection-timeout: 30000
  *       max-connection-pool-size: 50
+
  */
 @ConfigurationProperties(prefix = "looksee.core")
 public class LookseeCoreProperties {
@@ -29,6 +30,8 @@ public class LookseeCoreProperties {
      * Neo4j connection properties.
      */
     private Neo4j neo4j = new Neo4j();
+    
+
     
     /**
      * Checks if LookseeCore is enabled
@@ -61,6 +64,8 @@ public class LookseeCoreProperties {
     public void setNeo4j(Neo4j neo4j) {
         this.neo4j = neo4j;
     }
+    
+
     
     /**
      * Neo4j-specific configuration properties.
@@ -133,4 +138,6 @@ public class LookseeCoreProperties {
             this.connectionPoolingEnabled = connectionPoolingEnabled;
         }
     }
+    
+
 } 

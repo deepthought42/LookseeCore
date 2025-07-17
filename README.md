@@ -48,13 +48,28 @@ looksee:
       max-connection-pool-size: 50
       connection-pooling-enabled: true
 
+
 spring:
   neo4j:
     uri: bolt://localhost:7687
     authentication:
       username: neo4j
       password: your-password
+
+# Optional: Real-time messaging with Pusher
+pusher:
+  appId: "your-pusher-app-id"
+  key: "your-pusher-key"
+  secret: "your-pusher-secret"
+  cluster: "your-pusher-cluster"
+  encrypted: true  # default: true
 ```
+
+#### Real-time Messaging (Optional)
+
+If you need real-time messaging capabilities, configure Pusher credentials as shown above. The `MessageBroadcaster` service will be automatically available when Pusher is configured.
+
+For detailed Pusher configuration options and troubleshooting, see [Pusher Configuration Guide](docs/PUSHER_CONFIGURATION.md).
 
 ### Usage Examples
 
@@ -100,6 +115,22 @@ private DesignSystemService designSystemService;
 // Save design system information
 DesignSystem designSystem = new DesignSystem();
 designSystem = designSystemService.save(designSystem);
+```
+
+#### Real-time Messaging (Optional)
+```java
+@Autowired(required = false)
+private MessageBroadcaster messageBroadcaster;
+
+// Broadcast messages to clients via Pusher
+if (messageBroadcaster != null) {
+    try {
+        messageBroadcaster.broadcastTest(test, "example.com");
+        messageBroadcaster.broadcastAudit("example.com", audit);
+    } catch (JsonProcessingException e) {
+        // Handle serialization error
+    }
+}
 ```
 
 ## Troubleshooting
