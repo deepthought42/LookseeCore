@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.looksee.LookseeCoreAutoConfiguration
+com.looksee.config.LookseeCoreAutoConfiguration

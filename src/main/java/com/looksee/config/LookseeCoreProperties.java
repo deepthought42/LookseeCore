@@ -1,4 +1,4 @@
-package com.looksee;
+package com.looksee.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
