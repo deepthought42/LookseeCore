@@ -1,5 +1,9 @@
 package com.looksee.services;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -15,10 +19,6 @@ import com.looksee.models.audit.UXIssueMessage;
 import com.looksee.models.dto.AuditUpdateDto;
 import com.looksee.models.dto.DomainDto;
 import com.pusher.rest.Pusher;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.stereotype.Service;
 
 /**
  * Defines methods for emitting data to subscribed clients
@@ -27,7 +27,6 @@ import org.springframework.stereotype.Service;
  * which happens when the required Pusher configuration properties are provided.
  */
 @Service
-@ConditionalOnBean(Pusher.class)
 public class MessageBroadcaster {
 	private static Logger log = LoggerFactory.getLogger(MessageBroadcaster.class);
 	
