@@ -17,39 +17,30 @@ import com.looksee.models.dto.DomainDto;
 import com.pusher.rest.Pusher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.stereotype.Service;
 
 /**
  * Defines methods for emitting data to subscribed clients
+ * 
+ * This service is only enabled when a Pusher client bean is available,
+ * which happens when the required Pusher configuration properties are provided.
  */
 @Service
-@ConditionalOnProperty(prefix = "pusher", name = {"appId", "key", "secret", "cluster"})
+@ConditionalOnBean(Pusher.class)
 public class MessageBroadcaster {
 	private static Logger log = LoggerFactory.getLogger(MessageBroadcaster.class);
 	
-	@Value("${pusher.appId}")
-	private String appId;
-
-	@Value("${pusher.key}")
-	private String key;
-
-	@Value("${pusher.secret}")
-	private String secret;
-
-	@Value("${pusher.cluster}")
-	private String cluster;
-
-	private Pusher pusher;
+	private final Pusher pusher;
 	
 	/**
-	 * constructor for the message broadcaster
+	 * Constructor for the message broadcaster
+	 * 
+	 * @param pusher the configured Pusher client
 	 */
-	public MessageBroadcaster() {
-		pusher = new Pusher(appId, key, secret);
-		pusher.setCluster(cluster);
-		pusher.setEncrypted(true);
+	public MessageBroadcaster(Pusher pusher) {
+		this.pusher = pusher;
+		log.info("MessageBroadcaster initialized with Pusher client");
 	}
 	
 	/**
