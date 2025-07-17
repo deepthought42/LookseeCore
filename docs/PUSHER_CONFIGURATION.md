@@ -22,7 +22,7 @@ pusher:
 Or in `application.properties`:
 
 ```properties
-pusher.app-id=your-pusher-app-id
+pusher.appId=your-pusher-app-id
 pusher.key=your-pusher-key
 pusher.secret=your-pusher-secret
 pusher.cluster=your-pusher-cluster
@@ -89,9 +89,8 @@ If you don't need Pusher functionality in your application, simply don't provide
 
 If the MessageBroadcaster service is not being created, check:
 
-1. All required Pusher properties are configured (`app-id`, `key`, `secret`, `cluster`)
-2. Property names are correct (note the kebab-case format for YAML: `app-id` not `appId`)
-3. LookseeCore is enabled (`looksee.core.enabled=true`)
+1. All required Pusher properties are configured (`appId`, `key`, `secret`, `cluster`)
+2. LookseeCore is enabled (`looksee.core.enabled=true`)
 
 ### Migrating from Previous Configuration
 
@@ -99,7 +98,6 @@ If you're migrating from a previous version that used nested configuration:
 
 1. Remove any `looksee.core.pusher.*` properties 
 2. Use the new `pusher.*` format instead
-3. Change property format from camelCase to kebab-case (`appId` → `app-id`)
 
 ### Debug Logging
 
@@ -112,4 +110,4 @@ logging:
 ```
 
 You should see log messages like:
-- "Configuring Pusher client with app ID: your-app-id, cluster: your-cluster" 
+- "Configuring Pusher client with app ID: your-app-id, cluster: your-cluster"

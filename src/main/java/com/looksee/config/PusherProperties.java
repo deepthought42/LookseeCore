@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * Configuration properties for Pusher real-time messaging.
  * 
  * This allows applications to configure Pusher credentials using either:
- * - pusher.* properties (e.g., pusher.app-id, pusher.key, etc.)
+ * - pusher.* properties (e.g., pusher.appId, pusher.key, etc.)
  * - Environment variables (e.g., PUSHER_APP_ID, PUSHER_KEY, etc.)
  */
 @ConfigurationProperties(prefix = "pusher")
