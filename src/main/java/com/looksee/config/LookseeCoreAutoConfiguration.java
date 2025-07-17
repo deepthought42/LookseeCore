@@ -1,4 +1,4 @@
-package com.looksee;
+package com.looksee.config;
 
 import com.looksee.gcp.GoogleCloudStorageProperties;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;

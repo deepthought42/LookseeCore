@@ -15,11 +15,12 @@
 		<java.version>17</java.version>
 		<springboot.version>2.6.13</springboot.version>
 		<lombok.version>1.18.30</lombok.version>
+		<spring-cloud-gcp.version>3.9.5</spring-cloud-gcp.version>
 	</properties>
 	
 	<dependencyManagement>
 		<dependencies>
-			<dependency>
+						<dependency>
 				<!-- Import dependency management from Spring Boot -->
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-dependencies</artifactId>
@@ -31,6 +32,14 @@
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-dependencies</artifactId>
 				<version>2021.0.0</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<!-- Import Spring Cloud GCP BOM -->
+				<groupId>com.google.cloud</groupId>
+				<artifactId>spring-cloud-gcp-dependencies</artifactId>
+				<version>${spring-cloud-gcp.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -348,6 +357,13 @@
 		<dependency>
 			<groupId>com.google.cloud</groupId>
 			<artifactId>spring-cloud-gcp-pubsub-stream-binder</artifactId>
+			<version>3.9.5</version>
+		</dependency>
+
+		<!-- Google Cloud Pub/Sub -->
+		<dependency>
+			<groupId>com.google.cloud</groupId>
+			<artifactId>spring-cloud-gcp-starter-pubsub</artifactId>
 			<version>3.9.5</version>
 		</dependency>
 
