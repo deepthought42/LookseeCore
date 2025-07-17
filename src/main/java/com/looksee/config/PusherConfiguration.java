@@ -26,7 +26,7 @@ public class PusherConfiguration {
      * @return configured Pusher client
      */
     @Bean
-    @ConditionalOnProperty(prefix = "pusher", name = {"app-id", "key", "secret", "cluster"})
+    @ConditionalOnProperty(prefix = "pusher", name = {"appId", "key", "secret", "cluster"})
     public Pusher pusherClient(PusherProperties pusherProperties) {
         log.info("Configuring Pusher client with app ID: {}, cluster: {}", 
                  pusherProperties.getAppId(), pusherProperties.getCluster());
