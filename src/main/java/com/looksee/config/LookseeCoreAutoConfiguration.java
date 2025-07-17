@@ -26,9 +26,8 @@ import org.springframework.data.neo4j.repository.config.EnableNeo4jRepositories;
 @EnableConfigurationProperties({LookseeCoreProperties.class, GoogleCloudStorageProperties.class})
 @ConditionalOnProperty(prefix = "looksee.core", name = "enabled", havingValue = "true", matchIfMissing = true)
 @ComponentScan(basePackages = {
-    "com.looksee",
-    "com.looksee.exceptions",
     "com.looksee.designsystem",
+    "com.looksee.exceptions",
     "com.looksee.models",
     "com.looksee.models.domain",
     "com.looksee.models.audit",
@@ -56,9 +55,7 @@ import org.springframework.data.neo4j.repository.config.EnableNeo4jRepositories;
     "com.looksee.vscodePlugin.structs.dto"
 })
 @EnableNeo4jRepositories(
-    basePackages = "com.looksee.models.repository",
-    repositoryImplementationPostfix = "Impl",
-    namedQueriesLocation = "classpath*:META-INF/neo4j-named-queries.properties"
+    basePackages = "com.looksee.models.repository"
 )
 public class LookseeCoreAutoConfiguration {
     
