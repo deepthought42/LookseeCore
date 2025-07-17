@@ -1,3 +1,7 @@
+.vscode/
+.idea/
+.classpath
+.project
 
 target/*
 node_modules/
