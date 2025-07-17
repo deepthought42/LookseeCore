@@ -56,9 +56,7 @@ import org.springframework.data.neo4j.repository.config.EnableNeo4jRepositories;
     "com.looksee.vscodePlugin.structs.dto"
 })
 @EnableNeo4jRepositories(
-    basePackages = "com.looksee.models.repository",
-    repositoryImplementationPostfix = "Impl",
-    namedQueriesLocation = "classpath*:META-INF/neo4j-named-queries.properties"
+    basePackages = "com.looksee.models.repository"
 )
 public class LookseeCoreAutoConfiguration {
     
