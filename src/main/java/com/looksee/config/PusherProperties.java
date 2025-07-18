@@ -1,6 +1,7 @@
 package com.looksee.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.ConstructorBinding;
 
 /**
  * Configuration properties for Pusher real-time messaging.
@@ -10,33 +11,51 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * - Environment variables (e.g., PUSHER_APP_ID, PUSHER_KEY, etc.)
  */
 @ConfigurationProperties(prefix = "pusher")
+@ConstructorBinding
 public class PusherProperties {
 
     /**
      * Pusher application ID.
      */
-    private String appId;
+    private final String appId;
 
     /**
      * Pusher key.
      */
-    private String key;
+    private final String key;
 
     /**
      * Pusher secret.
      */
-    private String secret;
+    private final String secret;
 
     /**
      * Pusher cluster.
      */
-    private String cluster;
+    private final String cluster;
 
     /**
      * Whether to enable encryption.
      * Default is true.
      */
-    private boolean encrypted = true;
+    private final boolean encrypted;
+
+    /**
+     * Constructor for PusherProperties
+     * 
+     * @param appId the Pusher application ID
+     * @param key the Pusher key
+     * @param secret the Pusher secret
+     * @param cluster the Pusher cluster
+     * @param encrypted whether to enable encryption (defaults to true)
+     */
+    public PusherProperties(String appId, String key, String secret, String cluster, Boolean encrypted) {
+        this.appId = appId;
+        this.key = key;
+        this.secret = secret;
+        this.cluster = cluster;
+        this.encrypted = encrypted != null ? encrypted : true;
+    }
 
     /**
      * Gets the Pusher application ID
@@ -44,14 +63,6 @@ public class PusherProperties {
      */
     public String getAppId() {
         return appId;
-    }
-
-    /**
-     * Sets the Pusher application ID
-     * @param appId the Pusher application ID
-     */
-    public void setAppId(String appId) {
-        this.appId = appId;
     }
 
     /**
@@ -63,27 +74,11 @@ public class PusherProperties {
     }
 
     /**
-     * Sets the Pusher key
-     * @param key the Pusher key
-     */
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    /**
      * Gets the Pusher secret
      * @return the Pusher secret
      */
     public String getSecret() {
         return secret;
-    }
-
-    /**
-     * Sets the Pusher secret
-     * @param secret the Pusher secret
-     */
-    public void setSecret(String secret) {
-        this.secret = secret;
     }
 
     /**
@@ -95,26 +90,10 @@ public class PusherProperties {
     }
 
     /**
-     * Sets the Pusher cluster
-     * @param cluster the Pusher cluster
-     */
-    public void setCluster(String cluster) {
-        this.cluster = cluster;
-    }
-
-    /**
      * Checks if encryption is enabled
      * @return true if encryption is enabled, false otherwise
      */
     public boolean isEncrypted() {
         return encrypted;
-    }
-
-    /**
-     * Sets the encryption enabled
-     * @param encrypted the encryption enabled
-     */
-    public void setEncrypted(boolean encrypted) {
-        this.encrypted = encrypted;
     }
 } 
