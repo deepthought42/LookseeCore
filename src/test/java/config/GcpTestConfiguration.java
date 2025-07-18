@@ -1,16 +1,19 @@
 package config;
 
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.*;
 
-import com.google.cloud.storage.Storage;
-import com.google.cloud.vision.v1.ImageAnnotatorClient;
+import org.neo4j.driver.Driver;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.neo4j.core.Neo4jTemplate;
+
+import com.google.cloud.storage.Storage;
+import com.google.cloud.vision.v1.ImageAnnotatorClient;
 
 /**
  * Test configuration class to provide mock beans for Google Cloud Platform services
- * that may not be available during testing (like Storage, PubSub, and Vision).
+ * and Neo4j services that may not be available during testing.
  * This prevents authentication and dependency errors in test environments.
  */
 @TestConfiguration
@@ -56,5 +59,25 @@ public class GcpTestConfiguration {
     public Object mockDocumentOcrTemplate() {
         // Use Object type to avoid importing DocumentOcrTemplate if not available
         return mock(Object.class);
+    }
+
+    /**
+     * Provides a mock Neo4j Driver bean for testing to avoid Neo4j database dependencies
+     * This prevents the "Cannot connect to Neo4j database" error in tests
+     */
+    @Bean
+    @Primary
+    public Driver mockNeo4jDriver() {
+        return mock(Driver.class);
+    }
+
+    /**
+     * Provides a mock Neo4j Template bean for testing to avoid Neo4j database dependencies
+     * This prevents the "No bean named 'neo4jTemplate' available" error in tests
+     */
+    @Bean
+    @Primary
+    public Neo4jTemplate mockNeo4jTemplate() {
+        return mock(Neo4jTemplate.class);
     }
 } 
