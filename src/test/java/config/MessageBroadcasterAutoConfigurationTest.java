@@ -16,6 +16,8 @@ import com.pusher.rest.Pusher;
  * MessageBroadcaster bean regardless of Pusher configuration.
  * 
  * This tests the lightweight auto-configuration that doesn't depend on Neo4j.
+ * MessageBroadcasterAutoConfiguration imports PusherConfiguration to ensure
+ * a Pusher bean (real or fallback) is always available.
  */
 @ActiveProfiles("test")
 class MessageBroadcasterAutoConfigurationTest {
