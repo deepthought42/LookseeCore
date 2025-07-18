@@ -56,14 +56,92 @@ export PUSHER_CLUSTER=your-cluster
 
 ### **Diagnostic Logging**
 After deploying with the latest LookseeCore, check the logs for:
+
+**MessageBroadcaster Auto-Configuration (Always Loads):**
 ```
-=== Pusher Configuration Diagnostic ===
-pusher.appId: <SET>
-pusher.key: <SET>
-pusher.secret: <SET>
-pusher.cluster: <SET>
-✅ All required Pusher properties are configured
+🎯 MessageBroadcasterAutoConfiguration loaded - ensuring MessageBroadcaster is always available
+✅ Creating MessageBroadcaster bean - guaranteed to be available
+MessageBroadcaster initialized with real Pusher client - real-time messaging enabled
 ```
+
+**OR (if Pusher properties missing):**
+```
+🎯 MessageBroadcasterAutoConfiguration loaded - ensuring MessageBroadcaster is always available
+Creating fallback Pusher client - real-time messaging disabled
+✅ Creating MessageBroadcaster bean - guaranteed to be available
+MessageBroadcaster initialized with fallback Pusher client - real-time messaging disabled
+```
+
+### **🚨 If Auto-Configuration Is Not Loading**
+
+**If you don't see the MessageBroadcasterAutoConfiguration logs above**, the auto-configuration is not being loaded. Check:
+
+#### **1. Dependency Configuration**
+Ensure LookseeCore is properly included in your `pom.xml`:
+```xml
+<dependency>
+    <groupId>com.looksee</groupId>
+    <artifactId>lookseecore</artifactId>
+    <version>LATEST_VERSION</version>
+</dependency>
+```
+
+#### **2. Main Application Class**
+Ensure your main class has `@SpringBootApplication`:
+```java
+@SpringBootApplication  // This includes @EnableAutoConfiguration
+public class YourApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(YourApplication.class, args);
+    }
+}
+```
+
+#### **3. Auto-Configuration Enabled**
+Check that auto-configuration isn't disabled:
+```properties
+# Make sure this is NOT in your application.properties
+# spring.boot.enableautoconfiguration=false
+```
+
+#### **4. Enable Debug Logging**
+Add this to `application.properties` to see auto-configuration details:
+```properties
+logging.level.org.springframework.boot.autoconfigure=DEBUG
+logging.level.com.looksee=INFO
+```
+
+#### **5. Check Auto-Configuration Report**
+Add this to see which auto-configurations are loading:
+```properties
+debug=true
+```
+
+Then look for `MessageBroadcasterAutoConfiguration` in the auto-configuration report.
+
+## **🆕 Dual Auto-Configuration Architecture**
+
+LookseeCore now uses a **dual auto-configuration** approach for maximum reliability:
+
+### **1. MessageBroadcasterAutoConfiguration (Lightweight)**
+- **Always loads** regardless of other dependencies
+- **Provides MessageBroadcaster** with guaranteed availability
+- **No Neo4j dependency** - won't fail if database isn't configured
+- **Registered separately** in `spring.factories`
+
+### **2. LookseeCoreAutoConfiguration (Full Featured)**
+- **Loads repositories, services, and other components**
+- **May fail** if Neo4j or other dependencies aren't configured
+- **Includes the full LookseeCore functionality**
+- **Optional** - won't prevent MessageBroadcaster from working
+
+### **Why This Approach?**
+This ensures that **MessageBroadcaster is always available** even if:
+- Neo4j is not configured
+- Other LookseeCore dependencies have issues
+- The consuming service only needs messaging functionality
+
+Your application will **always get MessageBroadcaster** and can **optionally get** the full LookseeCore features if properly configured.
 
 ---
 

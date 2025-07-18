@@ -2,7 +2,7 @@ package com.looksee.services;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
+import org.springframework.core.env.Environment;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,8 +26,9 @@ import com.pusher.rest.Pusher;
  * This service is always available and will use either a real Pusher client
  * (when properly configured) or a fallback client (when Pusher properties are missing).
  * When using the fallback client, operations are logged but no real messages are sent.
+ * 
+ * This class is instantiated as a @Bean in MessageBroadcasterAutoConfiguration to ensure guaranteed availability.
  */
-@Service
 public class MessageBroadcaster {
 	private static Logger log = LoggerFactory.getLogger(MessageBroadcaster.class);
 	
@@ -38,20 +39,34 @@ public class MessageBroadcaster {
 	 * Constructor for the message broadcaster
 	 * 
 	 * @param pusher the configured Pusher client (real or fallback)
+	 * @param environment Spring Environment for property resolution (optional, can be null)
 	 */
-	public MessageBroadcaster(Pusher pusher) {
+	public MessageBroadcaster(Pusher pusher, Environment environment) {
 		this.pusher = pusher;
-		// Detect if this is the fallback Pusher by checking if all required properties are set
-		// This is simpler than trying to inspect the Pusher object directly
-		String appId = System.getProperty("pusher.appId", System.getenv("PUSHER_APP_ID"));
-		String key = System.getProperty("pusher.key", System.getenv("PUSHER_KEY"));
-		String secret = System.getProperty("pusher.secret", System.getenv("PUSHER_SECRET"));
-		String cluster = System.getProperty("pusher.cluster", System.getenv("PUSHER_CLUSTER"));
 		
-		this.isRealPusher = appId != null && !appId.trim().isEmpty() &&
-							key != null && !key.trim().isEmpty() &&
-							secret != null && !secret.trim().isEmpty() &&
-							cluster != null && !cluster.trim().isEmpty();
+		// Detect if this is the fallback Pusher by checking if all required properties are set
+		if (environment != null) {
+			String appId = environment.getProperty("pusher.appId");
+			String key = environment.getProperty("pusher.key");
+			String secret = environment.getProperty("pusher.secret");
+			String cluster = environment.getProperty("pusher.cluster");
+			
+			this.isRealPusher = appId != null && !appId.trim().isEmpty() &&
+								key != null && !key.trim().isEmpty() &&
+								secret != null && !secret.trim().isEmpty() &&
+								cluster != null && !cluster.trim().isEmpty();
+		} else {
+			// Fallback to system properties and environment variables if Environment not available
+			String appId = System.getProperty("pusher.appId", System.getenv("PUSHER_APP_ID"));
+			String key = System.getProperty("pusher.key", System.getenv("PUSHER_KEY"));
+			String secret = System.getProperty("pusher.secret", System.getenv("PUSHER_SECRET"));
+			String cluster = System.getProperty("pusher.cluster", System.getenv("PUSHER_CLUSTER"));
+			
+			this.isRealPusher = appId != null && !appId.trim().isEmpty() &&
+								key != null && !key.trim().isEmpty() &&
+								secret != null && !secret.trim().isEmpty() &&
+								cluster != null && !cluster.trim().isEmpty();
+		}
 		
 		if (isRealPusher) {
 			log.info("MessageBroadcaster initialized with real Pusher client - real-time messaging enabled");
@@ -59,6 +74,15 @@ public class MessageBroadcaster {
 			log.warn("MessageBroadcaster initialized with fallback Pusher client - real-time messaging disabled");
 			log.warn("Messages will be logged only. To enable real-time messaging, configure Pusher properties.");
 		}
+	}
+	
+	/**
+	 * Legacy constructor for backward compatibility
+	 * 
+	 * @param pusher the configured Pusher client (real or fallback)
+	 */
+	public MessageBroadcaster(Pusher pusher) {
+		this(pusher, null);
 	}
 	
 	/**
