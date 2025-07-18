@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,10 +16,11 @@ import com.pusher.rest.Pusher;
 /**
  * Configuration class for Pusher client used within the full LookseeCore auto-configuration.
  * 
- * Note: MessageBroadcaster is now configured separately in MessageBroadcasterAutoConfiguration
- * to ensure it's available even when the full LookseeCore configuration has dependency issues.
+ * This is the single source of truth for Pusher client creation, providing both real and fallback clients.
+ * MessageBroadcaster configuration imports this to ensure a Pusher bean is always available.
  */
 @Configuration
+@EnableConfigurationProperties({PusherProperties.class})
 public class PusherConfiguration {
     
     private static final Logger log = LoggerFactory.getLogger(PusherConfiguration.class);

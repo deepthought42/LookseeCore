@@ -119,27 +119,34 @@ debug=true
 
 Then look for `MessageBroadcasterAutoConfiguration` in the auto-configuration report.
 
-## **🆕 Dual Auto-Configuration Architecture**
+## **🆕 Focused Auto-Configuration Architecture**
 
-LookseeCore now uses a **dual auto-configuration** approach for maximum reliability:
+LookseeCore now uses a **focused auto-configuration** approach for maximum reliability and no duplication:
 
-### **1. MessageBroadcasterAutoConfiguration (Lightweight)**
+### **1. PusherConfiguration (Pusher Provider)**
+- **Single source of truth** for Pusher client creation
+- **Handles both scenarios**: real client (when properties configured) and fallback client
+- **Comprehensive validation** and diagnostic logging
+- **Reusable** by other configurations
+
+### **2. MessageBroadcasterAutoConfiguration (Lightweight)**
+- **Imports PusherConfiguration** to ensure Pusher bean availability
 - **Always loads** regardless of other dependencies
 - **Provides MessageBroadcaster** with guaranteed availability
 - **No Neo4j dependency** - won't fail if database isn't configured
 - **Registered separately** in `spring.factories`
 
-### **2. LookseeCoreAutoConfiguration (Full Featured)**
+### **3. LookseeCoreAutoConfiguration (Full Featured)**
 - **Loads repositories, services, and other components**
 - **May fail** if Neo4j or other dependencies aren't configured
 - **Includes the full LookseeCore functionality**
 - **Optional** - won't prevent MessageBroadcaster from working
 
 ### **Why This Approach?**
-This ensures that **MessageBroadcaster is always available** even if:
-- Neo4j is not configured
-- Other LookseeCore dependencies have issues
-- The consuming service only needs messaging functionality
+- **No Duplication**: PusherConfiguration is the single source for Pusher logic
+- **MessageBroadcaster Always Available**: Even if Neo4j is not configured
+- **Clean Separation**: Each configuration has focused responsibilities
+- **Graceful Degradation**: Works with or without full LookseeCore setup
 
 Your application will **always get MessageBroadcaster** and can **optionally get** the full LookseeCore features if properly configured.
 
