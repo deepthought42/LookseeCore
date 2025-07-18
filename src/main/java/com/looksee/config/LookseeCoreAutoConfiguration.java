@@ -1,6 +1,5 @@
 package com.looksee.config;
 
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
@@ -24,7 +23,6 @@ import com.looksee.gcp.GoogleCloudStorageProperties;
  * library is included as a dependency in other Spring Boot applications.
  */
 @Configuration
-@EnableAutoConfiguration
 @EnableConfigurationProperties({LookseeCoreProperties.class, GoogleCloudStorageProperties.class, PusherProperties.class})
 @ConditionalOnProperty(prefix = "looksee.core", name = "enabled", havingValue = "true", matchIfMissing = true)
 @Import(PusherConfiguration.class)
