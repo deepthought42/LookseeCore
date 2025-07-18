@@ -1,6 +1,71 @@
 # Pusher Configuration Guide
 
-This guide explains how to configure Pusher messaging in applications that use LookseeCore as a dependency.
+## ✅ **MessageBroadcaster Always Available - Issue Resolved**
+
+**Previous Error**: `UnsatisfiedDependencyException: Error creating bean with name 'auditController': Unsatisfied dependency expressed through field 'messageBroadcaster'`
+
+### **✅ SOLUTION IMPLEMENTED**
+
+**MessageBroadcaster is now ALWAYS available as a required dependency.**
+
+- ✅ **No more dependency injection errors**
+- ✅ **No more `@Autowired(required = false)` needed**
+- ✅ **No more Optional<MessageBroadcaster> needed**
+
+### **How It Works Now**
+
+```java
+@RestController
+public class AuditController {
+    
+    @Autowired  // Normal required dependency - always works!
+    private MessageBroadcaster messageBroadcaster;
+    
+    public void someMethod() {
+        // Always available - just call it directly
+        messageBroadcaster.broadcastSomething();
+        
+        // Optional: Check if real-time messaging is enabled
+        if (messageBroadcaster.isRealTimeMessagingEnabled()) {
+            log.info("Real-time messaging is active");
+        } else {
+            log.info("Fallback mode - messages logged only");
+        }
+    }
+}
+```
+
+### **Behavior Based on Configuration**
+
+#### **With Pusher Properties Configured:**
+```bash
+export PUSHER_APP_ID=your-app-id
+export PUSHER_KEY=your-key
+export PUSHER_SECRET=your-secret
+export PUSHER_CLUSTER=your-cluster
+```
+- ✅ **Real-time messaging ENABLED**
+- ✅ **Messages sent to Pusher channels**
+- ✅ **Full functionality available**
+
+#### **Without Pusher Properties:**
+- ✅ **MessageBroadcaster still available** (no dependency errors)
+- ⚠️ **Real-time messaging DISABLED** 
+- 📝 **Messages logged only** (not sent to Pusher)
+- ✅ **Application starts normally**
+
+### **Diagnostic Logging**
+After deploying with the latest LookseeCore, check the logs for:
+```
+=== Pusher Configuration Diagnostic ===
+pusher.appId: <SET>
+pusher.key: <SET>
+pusher.secret: <SET>
+pusher.cluster: <SET>
+✅ All required Pusher properties are configured
+```
+
+---
 
 ## Overview
 
@@ -54,10 +119,15 @@ This modular approach ensures reliable auto-configuration without circular impor
 
 ## Bean Dependencies
 
-The following beans are created conditionally:
+The following beans are ALWAYS created:
 
-1. **`Pusher`** bean - Created when all four properties (`appId`, `key`, `secret`, `cluster`) are configured
-2. **`MessageBroadcaster`** bean - Created when `Pusher` bean exists
+1. **`Pusher`** bean - Either real client (when properties configured) or fallback client (when properties missing)
+2. **`MessageBroadcaster`** bean - ALWAYS available, uses real or fallback Pusher client automatically
+
+### Bean Creation Logic:
+- **Real Pusher client**: Created when all four properties (`appId`, `key`, `secret`, `cluster`) are configured
+- **Fallback Pusher client**: Created when any properties are missing - provides no-op functionality
+- **MessageBroadcaster**: Always created using whichever Pusher client is available
 
 ## Troubleshooting
 
