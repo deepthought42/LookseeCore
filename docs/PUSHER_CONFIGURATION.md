@@ -83,15 +83,11 @@ This error occurs when the MessageBroadcaster bean cannot be created. Follow the
    - Look for: `"Configuring Pusher client with app ID: ..., cluster: ..."`
    - If missing, the Pusher bean is not being created
 
-3. **Verify property naming:**
-   - ✅ Correct: `PUSHER_APP_ID` → `pusher.appId`
-   - ❌ Incorrect: `PUSHER_APP_ID` → `pusher.app_id` (old format)
-
-4. **Check for empty values:**
+3. **Verify property values:**
    - All properties must be non-null and non-empty
    - Whitespace-only values will cause configuration to fail
 
-5. **Verify Spring Boot auto-configuration:**
+4. **Verify Spring Boot auto-configuration:**
    - Ensure `looksee.core.enabled=true` (default)
    - Check that LookseeCoreAutoConfiguration is being loaded
 
@@ -167,25 +163,3 @@ public class MyController {
     }
 }
 ```
-
-## Migration from Old PusherService
-
-If you're migrating from the deprecated `PusherService` class:
-
-### Old Configuration (Deprecated)
-```properties
-pusher.app_id=your-app-id
-pusher.key=your-key
-pusher.secret=your-secret
-pusher.cluster=your-cluster
-```
-
-### New Configuration (Current)
-```properties
-pusher.appId=your-app-id
-pusher.key=your-key
-pusher.secret=your-secret
-pusher.cluster=your-cluster
-```
-
-**Note:** The only change is `app_id` → `appId`. The new system provides better integration with Spring Boot's configuration properties and auto-configuration features.
