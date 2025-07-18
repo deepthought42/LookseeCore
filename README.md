@@ -63,6 +63,18 @@ pusher:
   secret: "your-pusher-secret"
   cluster: "your-pusher-cluster"
   encrypted: true  # default: true
+
+# Optional: Google Cloud Pub/Sub configuration
+pubsub:
+  # Configure only the topics your service needs
+  audit_update: "your-audit-update-topic"
+  error_topic: "your-error-topic"
+  page_audit_topic: "your-page-audit-topic"
+  page_built: "your-page-built-topic"
+  url_topic: "your-url-topic"
+  journey_verified: "your-journey-verified-topic"
+  journey_candidate: "your-journey-candidate-topic"
+  discarded_journey_topic: "your-discarded-journey-topic"
 ```
 
 #### Real-time Messaging (Optional)
@@ -70,6 +82,38 @@ pusher:
 If you need real-time messaging capabilities, configure Pusher credentials as shown above. The `MessageBroadcaster` service will be automatically available when Pusher is configured.
 
 For detailed Pusher configuration options and troubleshooting, see [Pusher Configuration Guide](docs/PUSHER_CONFIGURATION.md).
+
+#### Google Cloud Pub/Sub (Optional)
+
+The library includes conditional Pub/Sub publishers that are only created when their corresponding topics are configured. This allows each service to configure only the topics it needs without causing bean creation errors for unused publishers.
+
+Available publisher beans:
+- `PubSubAuditUpdatePublisherImpl` - Created when `pubsub.audit_update` is configured
+- `PubSubErrorPublisherImpl` - Created when `pubsub.error_topic` is configured
+- `PubSubPageAuditPublisherImpl` - Created when `pubsub.page_audit_topic` is configured
+- `PubSubPageBuiltPublisherImpl` - Created when `pubsub.page_built` is configured
+- `PubSubPageCreatedPublisherImpl` - Created when `pubsub.page_built` is configured (shares same topic)
+- `PubSubUrlMessagePublisherImpl` - Created when `pubsub.url_topic` is configured
+- `PubSubJourneyVerifiedPublisherImpl` - Created when `pubsub.journey_verified` is configured
+- `PubSubJourneyCandidatePublisherImpl` - Created when `pubsub.journey_candidate` is configured
+- `PubSubDiscardedJourneyPublisherImpl` - Created when `pubsub.discarded_journey_topic` is configured
+
+**Example configurations for different services:**
+
+Service A (only needs error and audit topics):
+```yaml
+pubsub:
+  error_topic: "service-a-errors"
+  audit_update: "service-a-audits"
+```
+
+Service B (only needs journey-related topics):
+```yaml
+pubsub:
+  journey_verified: "verified-journeys"
+  journey_candidate: "candidate-journeys"
+  discarded_journey_topic: "discarded-journeys"
+```
 
 ### Usage Examples
 
@@ -133,6 +177,41 @@ if (messageBroadcaster != null) {
 }
 ```
 
+#### Google Cloud Pub/Sub Integration (Optional)
+```java
+// Only inject the publishers your service has configured
+@Autowired(required = false)
+private PubSubAuditUpdatePublisherImpl auditPublisher;
+
+@Autowired(required = false)
+private PubSubErrorPublisherImpl errorPublisher;
+
+@Autowired(required = false)
+private PubSubJourneyVerifiedPublisherImpl journeyPublisher;
+
+public void publishAuditUpdate(String auditJson) {
+    if (auditPublisher != null) {
+        try {
+            auditPublisher.publish(auditJson);
+        } catch (ExecutionException | InterruptedException e) {
+            // Handle publishing error
+            log.error("Failed to publish audit update", e);
+        }
+    }
+}
+
+public void publishError(String errorJson) {
+    if (errorPublisher != null) {
+        try {
+            errorPublisher.publish(errorJson);
+        } catch (ExecutionException | InterruptedException e) {
+            // Handle publishing error
+            log.error("Failed to publish error", e);
+        }
+    }
+}
+```
+
 ## Troubleshooting
 
 ### Common Issues
@@ -177,7 +256,32 @@ spring:
     database: neo4j  # Optional, defaults to 'neo4j'
 ```
 
-#### 3. Disabling Auto-Configuration
+#### 3. Pub/Sub Configuration Issues
+
+**Error**: `BeanCreationException: Could not resolve placeholder 'pubsub.page_audit_topic'`
+
+This error occurs when a Pub/Sub publisher bean is being created but its required property is not configured.
+
+**Solution**: Only configure the Pub/Sub topics your service actually needs. The publishers are now conditionally created based on property presence:
+
+```yaml
+# Only configure topics you use
+pubsub:
+  error_topic: "my-error-topic"  # This will create PubSubErrorPublisherImpl
+  audit_update: "my-audit-topic" # This will create PubSubAuditUpdatePublisherImpl
+  # Other topics are not configured, so their publishers won't be created
+```
+
+**Alternative**: If you need all publishers but some topics are optional, you can provide empty/placeholder values:
+
+```yaml
+pubsub:
+  error_topic: "error-topic"
+  audit_update: "audit-topic"
+  page_audit_topic: ""  # Empty but present - bean will be created
+```
+
+#### 4. Disabling Auto-Configuration
 
 If you need to disable the auto-configuration:
 
