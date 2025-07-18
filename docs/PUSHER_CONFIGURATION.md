@@ -31,26 +31,88 @@ pusher.encrypted=true
 
 ## Environment Variables
 
-You can also use environment variables:
+You can also use environment variables with the following exact mappings:
+
+| Environment Variable | Property | Required |
+|---------------------|----------|----------|
+| `PUSHER_APP_ID`     | `pusher.appId` | ✅ |
+| `PUSHER_KEY`        | `pusher.key` | ✅ |
+| `PUSHER_SECRET`     | `pusher.secret` | ✅ |
+| `PUSHER_CLUSTER`    | `pusher.cluster` | ✅ |
+| `PUSHER_ENCRYPTED`  | `pusher.encrypted` | ❌ (defaults to `true`) |
+
+### Example Environment Variable Configuration
 
 ```bash
 export PUSHER_APP_ID=your-pusher-app-id
 export PUSHER_KEY=your-pusher-key
 export PUSHER_SECRET=your-pusher-secret
 export PUSHER_CLUSTER=your-pusher-cluster
+export PUSHER_ENCRYPTED=true
 ```
 
 ## Conditional Configuration
 
 The MessageBroadcaster service is only created when:
 
-1. A Pusher client bean is available
-2. The required Pusher configuration properties are provided
+1. **ALL required Pusher properties are provided** (`appId`, `key`, `secret`, `cluster`)
+2. A Pusher client bean is successfully created
+3. The properties contain non-empty values
 
 This means:
-- If Pusher is not configured, the MessageBroadcaster service won't be created
+- If any required Pusher property is missing or empty, the MessageBroadcaster service won't be created
 - Other services that depend on MessageBroadcaster should use `@Autowired(required = false)` or check for its availability
 - No errors will occur if Pusher is not configured - the service simply won't be available
+
+## Troubleshooting
+
+### Error: "MessageBroadcaster bean could not be found"
+
+This error occurs when the MessageBroadcaster bean cannot be created. Follow these steps:
+
+1. **Verify all required properties are set:**
+   ```bash
+   # Check environment variables
+   echo $PUSHER_APP_ID
+   echo $PUSHER_KEY  
+   echo $PUSHER_SECRET
+   echo $PUSHER_CLUSTER
+   ```
+
+2. **Check application logs for Pusher configuration messages:**
+   - Look for: `"Configuring Pusher client with app ID: ..., cluster: ..."`
+   - If missing, the Pusher bean is not being created
+
+3. **Verify property values:**
+   - All properties must be non-null and non-empty
+   - Whitespace-only values will cause configuration to fail
+
+4. **Verify Spring Boot auto-configuration:**
+   - Ensure `looksee.core.enabled=true` (default)
+   - Check that LookseeCoreAutoConfiguration is being loaded
+
+### Alternative: Optional Injection
+
+If Pusher is not always required, modify your controller to use optional injection:
+
+```java
+@RestController
+public class MyController {
+    
+    @Autowired(required = false)
+    private MessageBroadcaster messageBroadcaster;
+    
+    public void sendMessage() {
+        if (messageBroadcaster != null) {
+            // Send message via Pusher
+            messageBroadcaster.broadcastTest(test, host);
+        } else {
+            // Handle case where Pusher is not configured
+            log.warn("MessageBroadcaster not available - Pusher not configured");
+        }
+    }
+}
+```
 
 ## Example Usage in Consuming Applications
 
@@ -58,56 +120,46 @@ This means:
 
 ```java
 @RestController
-public class TestController {
+public class MyController {
     
-    @Autowired(required = false)
+    @Autowired
     private MessageBroadcaster messageBroadcaster;
     
-    @PostMapping("/broadcast-test")
-    public ResponseEntity<String> broadcastTest(@RequestBody Test test) {
-        if (messageBroadcaster != null) {
-            try {
-                messageBroadcaster.broadcastTest(test, "example.com");
-                return ResponseEntity.ok("Test broadcasted successfully");
-            } catch (JsonProcessingException e) {
-                return ResponseEntity.status(500).body("Failed to broadcast test");
-            }
-        } else {
-            return ResponseEntity.status(503).body("MessageBroadcaster not available - Pusher not configured");
+    @PostMapping("/notify")
+    public ResponseEntity<String> notify(@RequestBody NotificationRequest request) {
+        try {
+            messageBroadcaster.broadcastTest(request.getTest(), request.getHost());
+            return ResponseEntity.ok("Notification sent");
+        } catch (JsonProcessingException e) {
+            return ResponseEntity.status(500).body("Failed to send notification");
         }
     }
 }
 ```
 
-### Application Without Pusher
+### Spring Boot Application without Pusher
 
-If you don't need Pusher functionality in your application, simply don't provide the Pusher configuration properties. The MessageBroadcaster service won't be created, and LookseeCore will work normally without it.
-
-## Troubleshooting
-
-### MessageBroadcaster Not Available
-
-If the MessageBroadcaster service is not being created, check:
-
-1. All required Pusher properties are configured (`appId`, `key`, `secret`, `cluster`)
-2. LookseeCore is enabled (`looksee.core.enabled=true`)
-
-### Migrating from Previous Configuration
-
-If you're migrating from a previous version that used nested configuration:
-
-1. Remove any `looksee.core.pusher.*` properties 
-2. Use the new `pusher.*` format instead
-
-### Debug Logging
-
-Enable debug logging to see Pusher configuration details:
-
-```yaml
-logging:
-  level:
-    com.looksee.config.PusherConfiguration: DEBUG
+```java
+@RestController  
+public class MyController {
+    
+    @Autowired(required = false)
+    private MessageBroadcaster messageBroadcaster;
+    
+    @PostMapping("/notify")
+    public ResponseEntity<String> notify(@RequestBody NotificationRequest request) {
+        if (messageBroadcaster != null) {
+            try {
+                messageBroadcaster.broadcastTest(request.getTest(), request.getHost());
+                return ResponseEntity.ok("Notification sent via Pusher");
+            } catch (JsonProcessingException e) {
+                return ResponseEntity.status(500).body("Failed to send notification");
+            }
+        } else {
+            // Alternative notification method or just log
+            log.info("Would send notification (Pusher not configured)");
+            return ResponseEntity.ok("Notification logged (Pusher not available)");
+        }
+    }
+}
 ```
-
-You should see log messages like:
-- "Configuring Pusher client with app ID: your-app-id, cluster: your-cluster"

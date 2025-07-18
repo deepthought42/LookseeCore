@@ -22,6 +22,11 @@ public class PusherConfiguration {
     /**
      * Creates a Pusher client bean using the PusherProperties configuration.
      * 
+     * This bean is only created when all required Pusher properties are provided.
+     * The properties can be configured via:
+     * - application.properties: pusher.appId, pusher.key, pusher.secret, pusher.cluster
+     * - Environment variables: PUSHER_APP_ID, PUSHER_KEY, PUSHER_SECRET, PUSHER_CLUSTER
+     * 
      * @param pusherProperties the Pusher configuration properties
      * @return configured Pusher client
      */
@@ -31,10 +36,25 @@ public class PusherConfiguration {
         log.info("Configuring Pusher client with app ID: {}, cluster: {}", 
                  pusherProperties.getAppId(), pusherProperties.getCluster());
         
+        // Validate that all required properties are present
+        if (pusherProperties.getAppId() == null || pusherProperties.getAppId().trim().isEmpty()) {
+            throw new IllegalArgumentException("Pusher appId is required but not configured");
+        }
+        if (pusherProperties.getKey() == null || pusherProperties.getKey().trim().isEmpty()) {
+            throw new IllegalArgumentException("Pusher key is required but not configured");
+        }
+        if (pusherProperties.getSecret() == null || pusherProperties.getSecret().trim().isEmpty()) {
+            throw new IllegalArgumentException("Pusher secret is required but not configured");
+        }
+        if (pusherProperties.getCluster() == null || pusherProperties.getCluster().trim().isEmpty()) {
+            throw new IllegalArgumentException("Pusher cluster is required but not configured");
+        }
+        
         Pusher pusher = new Pusher(pusherProperties.getAppId(), pusherProperties.getKey(), pusherProperties.getSecret());
         pusher.setCluster(pusherProperties.getCluster());
         pusher.setEncrypted(pusherProperties.isEncrypted());
         
+        log.info("Pusher client successfully configured and ready for use");
         return pusher;
     }
 } 
