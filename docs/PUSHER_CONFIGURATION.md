@@ -1,6 +1,108 @@
 # Pusher Configuration Guide
 
-This guide explains how to configure Pusher messaging in applications that use LookseeCore as a dependency.
+## 🚨 **URGENT: MessageBroadcaster Dependency Error**
+
+**Error**: `UnsatisfiedDependencyException: Error creating bean with name 'auditController': Unsatisfied dependency expressed through field 'messageBroadcaster'`
+
+### **Immediate Solutions** (Choose One):
+
+#### **Solution 1: Make MessageBroadcaster Optional (Recommended)**
+```java
+@RestController
+public class AuditController {
+    
+    @Autowired(required = false)
+    private MessageBroadcaster messageBroadcaster;
+    
+    public void someMethod() {
+        if (messageBroadcaster != null) {
+            // Use MessageBroadcaster when available
+            messageBroadcaster.broadcastSomething();
+        } else {
+            // Handle case when Pusher is not configured
+            log.info("MessageBroadcaster not available - Pusher not configured");
+        }
+    }
+}
+```
+
+#### **Solution 2: Use Optional Injection**
+```java
+@RestController
+public class AuditController {
+    
+    @Autowired
+    private Optional<MessageBroadcaster> messageBroadcaster;
+    
+    public void someMethod() {
+        messageBroadcaster.ifPresent(mb -> mb.broadcastSomething());
+    }
+}
+```
+
+#### **Solution 3: Configure All Required Pusher Properties**
+Set **ALL FOUR** environment variables:
+```bash
+export PUSHER_APP_ID=your-app-id
+export PUSHER_KEY=your-key
+export PUSHER_SECRET=your-secret
+export PUSHER_CLUSTER=your-cluster
+```
+
+Or in `application.properties`:
+```properties
+pusher.appId=your-app-id
+pusher.key=your-key
+pusher.secret=your-secret
+pusher.cluster=your-cluster
+```
+
+#### **Solution 4: Create a Wrapper Service (Alternative)**
+If you need guaranteed availability, create a wrapper service in your consuming application:
+
+```java
+@Service
+public class MessageBroadcasterWrapper {
+    
+    @Autowired(required = false)
+    private MessageBroadcaster messageBroadcaster;
+    
+    public void broadcastTest(Object test, String host) {
+        if (messageBroadcaster != null) {
+            messageBroadcaster.broadcastTest(test, host);
+        } else {
+            log.debug("MessageBroadcaster not available - Pusher not configured");
+        }
+    }
+    
+    public void broadcastDiscoveryUpdate(Object discoveryRecord, String host) {
+        if (messageBroadcaster != null) {
+            messageBroadcaster.broadcastDiscoveryUpdate(discoveryRecord, host);
+        } else {
+            log.debug("MessageBroadcaster not available - Pusher not configured");
+        }
+    }
+    
+    public boolean isAvailable() {
+        return messageBroadcaster != null;
+    }
+}
+```
+
+Then inject `MessageBroadcasterWrapper` instead of `MessageBroadcaster` in your controllers.
+
+### **Diagnostic Logging**
+After deploying with the latest LookseeCore, check the logs for:
+```
+=== Pusher Configuration Diagnostic ===
+pusher.appId: <SET>
+pusher.key: <SET>
+pusher.secret: <SET>
+pusher.cluster: <SET>
+✅ All required Pusher properties are configured
+```
+
+---
 
 ## Overview
 

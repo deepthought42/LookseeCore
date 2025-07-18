@@ -2,7 +2,6 @@ package com.looksee.services;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -24,24 +23,71 @@ import com.pusher.rest.Pusher;
 /**
  * Defines methods for emitting data to subscribed clients
  * 
- * This service is only enabled when a Pusher client bean is available,
- * which happens when the required Pusher configuration properties are provided.
+ * This service is always available and will use either a real Pusher client
+ * (when properly configured) or a fallback client (when Pusher properties are missing).
+ * When using the fallback client, operations are logged but no real messages are sent.
  */
 @Service
-@ConditionalOnBean(Pusher.class)
 public class MessageBroadcaster {
 	private static Logger log = LoggerFactory.getLogger(MessageBroadcaster.class);
 	
 	private final Pusher pusher;
+	private final boolean isRealPusher;
 	
 	/**
 	 * Constructor for the message broadcaster
 	 * 
-	 * @param pusher the configured Pusher client
+	 * @param pusher the configured Pusher client (real or fallback)
 	 */
 	public MessageBroadcaster(Pusher pusher) {
 		this.pusher = pusher;
-		log.info("MessageBroadcaster initialized with Pusher client");
+		// Detect if this is the fallback Pusher by checking if all required properties are set
+		// This is simpler than trying to inspect the Pusher object directly
+		String appId = System.getProperty("pusher.appId", System.getenv("PUSHER_APP_ID"));
+		String key = System.getProperty("pusher.key", System.getenv("PUSHER_KEY"));
+		String secret = System.getProperty("pusher.secret", System.getenv("PUSHER_SECRET"));
+		String cluster = System.getProperty("pusher.cluster", System.getenv("PUSHER_CLUSTER"));
+		
+		this.isRealPusher = appId != null && !appId.trim().isEmpty() &&
+							key != null && !key.trim().isEmpty() &&
+							secret != null && !secret.trim().isEmpty() &&
+							cluster != null && !cluster.trim().isEmpty();
+		
+		if (isRealPusher) {
+			log.info("MessageBroadcaster initialized with real Pusher client - real-time messaging enabled");
+		} else {
+			log.warn("MessageBroadcaster initialized with fallback Pusher client - real-time messaging disabled");
+			log.warn("Messages will be logged only. To enable real-time messaging, configure Pusher properties.");
+		}
+	}
+	
+	/**
+	 * Checks if real-time messaging is available
+	 * 
+	 * @return true if using real Pusher client, false if using fallback
+	 */
+	public boolean isRealTimeMessagingEnabled() {
+		return isRealPusher;
+	}
+	
+	/**
+	 * Helper method to conditionally trigger Pusher events based on whether real Pusher is available
+	 * 
+	 * @param channel the channel to trigger on
+	 * @param event the event name
+	 * @param data the data to send
+	 */
+	private void conditionalTrigger(String channel, String event, Object data) {
+		if (isRealPusher) {
+			try {
+				pusher.trigger(channel, event, data);
+				log.debug("Real-time message sent - Channel: {}, Event: {}", channel, event);
+			} catch (Exception e) {
+				log.error("Failed to send real-time message - Channel: {}, Event: {}, Error: {}", channel, event, e.getMessage());
+			}
+		} else {
+			log.debug("Fallback mode - Would send message - Channel: {}, Event: {}", channel, event);
+		}
 	}
 	
 	/**
@@ -57,7 +103,7 @@ public class MessageBroadcaster {
         mapper.registerModule(new JavaTimeModule());
         String audit_json = mapper.writeValueAsString(audit);
 
-		pusher.trigger(host, "audit-update", audit_json);
+		conditionalTrigger(host, "audit-update", audit_json);
 	}
 	
 	/**
@@ -78,7 +124,7 @@ public class MessageBroadcaster {
         int id_start_idx = account.getUserId().indexOf('|');
 		String user_id = account.getUserId().substring(id_start_idx+1);
         
-		pusher.trigger(user_id, "subscription-exceeded", "");
+		conditionalTrigger(user_id, "subscription-exceeded", "");
 	}
 	
     /**
@@ -95,7 +141,7 @@ public class MessageBroadcaster {
         mapper.registerModule(new JavaTimeModule());
         String test_json = mapper.writeValueAsString(test);
 
-		pusher.trigger(user_id+host, "test-discovered", test_json);
+		conditionalTrigger(user_id+host, "test-discovered", test_json);
 	}
 
     /**
@@ -113,7 +159,7 @@ public class MessageBroadcaster {
         mapper.registerModule(new JavaTimeModule());
         String form_json = mapper.writeValueAsString(form);
         
-		pusher.trigger(""+domain_id, "discovered-form", form_json);
+		conditionalTrigger(""+domain_id, "discovered-form", form_json);
 		log.info("broadcasted a discovered form");
 	}
 	
@@ -137,7 +183,7 @@ public class MessageBroadcaster {
         log.warn("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
         log.warn("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 		
-        pusher.trigger(host, "test", test_json);
+        		conditionalTrigger(host, "test", test_json);
 	}
 	
 	/**
@@ -155,7 +201,7 @@ public class MessageBroadcaster {
         //Object to JSON in String
         String path_object_json = mapper.writeValueAsString(path_object);
         
-		pusher.trigger(user_id+host, "path_object", path_object_json);
+		conditionalTrigger(user_id+host, "path_object", path_object_json);
 	}
 	
 	/**
@@ -173,7 +219,7 @@ public class MessageBroadcaster {
         //Object to JSON in String
         String discovery_json = mapper.writeValueAsString(record);
         
-		pusher.trigger(record.getDomainUrl(), "discovery-status", discovery_json);
+		conditionalTrigger(record.getDomainUrl(), "discovery-status", discovery_json);
 	}
 
 	/**
@@ -208,7 +254,7 @@ public class MessageBroadcaster {
         mapper.registerModule(new JavaTimeModule());
 
 		String test_confirmation_json = mapper.writeValueAsString(domain_dto);
-		pusher.trigger(user_id.replace("|", ""), "domain-added", test_confirmation_json);
+		conditionalTrigger(user_id.replace("|", ""), "domain-added", test_confirmation_json);
 	}
 
 	/**
@@ -222,7 +268,7 @@ public class MessageBroadcaster {
 
 		try {
 			String audit_record_json = mapper.writeValueAsString(issue);
-			pusher.trigger(page_id+"", "ux-issue-added", audit_record_json);
+			conditionalTrigger(page_id+"", "ux-issue-added", audit_record_json);
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
@@ -239,7 +285,7 @@ public class MessageBroadcaster {
         mapper.registerModule(new JavaTimeModule());
 
 		String domain_dto_json = mapper.writeValueAsString(domain_dto);
-		pusher.trigger(user_id, "audit-record", domain_dto_json);
+		conditionalTrigger(user_id, "audit-record", domain_dto_json);
 	}
 
 	/**
@@ -260,6 +306,6 @@ public class MessageBroadcaster {
 		ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         String audit_record_json = mapper.writeValueAsString(audit_update);
-		pusher.trigger(channel_id, "audit-progress", audit_record_json);
+		conditionalTrigger(channel_id, "audit-progress", audit_record_json);
 	}
 }

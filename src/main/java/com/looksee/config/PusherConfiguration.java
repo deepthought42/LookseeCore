@@ -2,9 +2,13 @@ package com.looksee.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 
 import com.pusher.rest.Pusher;
 
@@ -13,6 +17,8 @@ import com.pusher.rest.Pusher;
  * 
  * This configuration creates a Pusher client bean when the required Pusher properties
  * are provided via the PusherProperties configuration class.
+ * If properties are not available, a fallback no-op Pusher is created to ensure
+ * MessageBroadcaster can always be instantiated.
  */
 @Configuration
 public class PusherConfiguration {
@@ -20,7 +26,7 @@ public class PusherConfiguration {
     private static final Logger log = LoggerFactory.getLogger(PusherConfiguration.class);
     
     /**
-     * Creates a Pusher client bean using the PusherProperties configuration.
+     * Creates a fully functional Pusher client bean using the PusherProperties configuration.
      * 
      * This bean is only created when all required Pusher properties are provided.
      * The properties can be configured via:
@@ -56,5 +62,67 @@ public class PusherConfiguration {
         
         log.info("Pusher client successfully configured and ready for use");
         return pusher;
+    }
+    
+    /**
+     * Creates a fallback no-op Pusher client when real Pusher properties are not configured.
+     * This ensures MessageBroadcaster can always be instantiated as a required dependency.
+     * 
+     * The fallback client logs operations but doesn't actually send messages.
+     * 
+     * @return fallback Pusher client
+     */
+    @Bean
+    @ConditionalOnMissingBean(Pusher.class)
+    public Pusher fallbackPusherClient() {
+        log.warn("Creating fallback Pusher client - real-time messaging will be disabled");
+        log.warn("To enable Pusher functionality, configure: pusher.appId, pusher.key, pusher.secret, pusher.cluster");
+        
+        // Create a basic Pusher instance that will be used for logging only
+        // The actual trigger methods won't be called in the MessageBroadcaster when using fallback
+        Pusher fallbackPusher = new Pusher("fallback-app-id", "fallback-key", "fallback-secret");
+        fallbackPusher.setCluster("fallback-cluster");
+        
+        log.info("Fallback Pusher client created - MessageBroadcaster will detect this and log operations only");
+        return fallbackPusher;
+    }
+    
+    /**
+     * Diagnostic bean to log Pusher configuration status during application startup.
+     * This helps identify why Pusher/MessageBroadcaster beans might not be created.
+     */
+    @Bean
+    public ApplicationListener<ApplicationReadyEvent> pusherDiagnosticListener(Environment environment) {
+        return event -> {
+            log.info("=== Pusher Configuration Diagnostic ===");
+            
+            // Check each required property
+            String appId = environment.getProperty("pusher.appId");
+            String key = environment.getProperty("pusher.key"); 
+            String secret = environment.getProperty("pusher.secret");
+            String cluster = environment.getProperty("pusher.cluster");
+            
+            log.info("pusher.appId: {}", appId != null ? (appId.isEmpty() ? "<EMPTY>" : "<SET>") : "<NULL>");
+            log.info("pusher.key: {}", key != null ? (key.isEmpty() ? "<EMPTY>" : "<SET>") : "<NULL>");
+            log.info("pusher.secret: {}", secret != null ? (secret.isEmpty() ? "<EMPTY>" : "<SET>") : "<NULL>");
+            log.info("pusher.cluster: {}", cluster != null ? (cluster.isEmpty() ? "<EMPTY>" : "<SET>") : "<NULL>");
+            
+            boolean allPropertiesSet = appId != null && !appId.trim().isEmpty() &&
+                                     key != null && !key.trim().isEmpty() &&
+                                     secret != null && !secret.trim().isEmpty() &&
+                                     cluster != null && !cluster.trim().isEmpty();
+            
+            if (allPropertiesSet) {
+                log.info("✅ All required Pusher properties are configured - Real-time messaging ENABLED");
+                log.info("✅ MessageBroadcaster will use fully functional Pusher client");
+            } else {
+                log.warn("⚠️  Missing required Pusher properties - Using fallback client");
+                log.warn("⚠️  Real-time messaging is DISABLED (messages will be logged only)");
+                log.warn("✅ MessageBroadcaster will still be available as a required dependency");
+                log.warn("💡 To enable real-time messaging, set: PUSHER_APP_ID, PUSHER_KEY, PUSHER_SECRET, PUSHER_CLUSTER");
+            }
+            
+            log.info("=== End Pusher Configuration Diagnostic ===");
+        };
     }
 } 
