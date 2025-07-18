@@ -29,19 +29,9 @@ pusher.cluster=your-pusher-cluster
 pusher.encrypted=true
 ```
 
-## Environment Variables
+### Environment Variables
 
-You can also use environment variables with the following exact mappings:
-
-| Environment Variable | Property | Required |
-|---------------------|----------|----------|
-| `PUSHER_APP_ID`     | `pusher.appId` | ✅ |
-| `PUSHER_KEY`        | `pusher.key` | ✅ |
-| `PUSHER_SECRET`     | `pusher.secret` | ✅ |
-| `PUSHER_CLUSTER`    | `pusher.cluster` | ✅ |
-| `PUSHER_ENCRYPTED`  | `pusher.encrypted` | ❌ (defaults to `true`) |
-
-### Example Environment Variable Configuration
+The configuration also supports environment variables with automatic binding:
 
 ```bash
 export PUSHER_APP_ID=your-pusher-app-id
@@ -51,115 +41,88 @@ export PUSHER_CLUSTER=your-pusher-cluster
 export PUSHER_ENCRYPTED=true
 ```
 
-## Conditional Configuration
+## Auto-Configuration Architecture
 
-The MessageBroadcaster service is only created when:
+LookseeCore uses a modular auto-configuration approach to prevent circular dependencies:
 
-1. **ALL required Pusher properties are provided** (`appId`, `key`, `secret`, `cluster`)
-2. A Pusher client bean is successfully created
-3. The properties contain non-empty values
+- **`LookseeCoreAutoConfiguration`** - Main entry point that imports focused configurations
+- **`LookseeCoreComponentConfiguration`** - Handles component scanning for services and utilities
+- **`LookseeCoreRepositoryConfiguration`** - Handles Neo4j repository configuration
+- **`PusherConfiguration`** - Handles Pusher client configuration
 
-This means:
-- If any required Pusher property is missing or empty, the MessageBroadcaster service won't be created
-- Other services that depend on MessageBroadcaster should use `@Autowired(required = false)` or check for its availability
-- No errors will occur if Pusher is not configured - the service simply won't be available
+This modular approach ensures reliable auto-configuration without circular import issues.
+
+## Bean Dependencies
+
+The following beans are created conditionally:
+
+1. **`Pusher`** bean - Created when all four properties (`appId`, `key`, `secret`, `cluster`) are configured
+2. **`MessageBroadcaster`** bean - Created when `Pusher` bean exists
 
 ## Troubleshooting
 
-### Error: "MessageBroadcaster bean could not be found"
+### MessageBroadcaster Bean Not Found
 
-This error occurs when the MessageBroadcaster bean cannot be created. Follow these steps:
+**Error**: `Field messageBroadcaster required a bean of type 'com.looksee.services.MessageBroadcaster' that could not be found`
 
-1. **Verify all required properties are set:**
-   ```bash
-   # Check environment variables
-   echo $PUSHER_APP_ID
-   echo $PUSHER_KEY  
-   echo $PUSHER_SECRET
-   echo $PUSHER_CLUSTER
+**Cause**: The `MessageBroadcaster` depends on a `Pusher` bean, which is only created when **all four** Pusher properties are configured.
+
+**Solutions**:
+1. **Set all required Pusher properties**:
+   ```properties
+   pusher.appId=your-app-id
+   pusher.key=your-key  
+   pusher.secret=your-secret
+   pusher.cluster=your-cluster
    ```
 
-2. **Check application logs for Pusher configuration messages:**
-   - Look for: `"Configuring Pusher client with app ID: ..., cluster: ..."`
-   - If missing, the Pusher bean is not being created
+2. **Make MessageBroadcaster optional** in your controller:
+   ```java
+   @Autowired(required = false)
+   private MessageBroadcaster messageBroadcaster;
+   ```
 
-3. **Verify property values:**
-   - All properties must be non-null and non-empty
-   - Whitespace-only values will cause configuration to fail
+3. **Use conditional injection**:
+   ```java
+   @Autowired
+   private Optional<MessageBroadcaster> messageBroadcaster;
+   ```
 
-4. **Verify Spring Boot auto-configuration:**
-   - Ensure `looksee.core.enabled=true` (default)
-   - Check that LookseeCoreAutoConfiguration is being loaded
+### Circular Import Errors
 
-### Alternative: Optional Injection
+**Error**: `A circular @Import has been detected: LookseeCoreAutoConfiguration->LookseeCoreAutoConfiguration`
 
-If Pusher is not always required, modify your controller to use optional injection:
+**Cause**: This was an issue in earlier versions where auto-configuration had circular dependencies.
 
-```java
-@RestController
-public class MyController {
-    
-    @Autowired(required = false)
-    private MessageBroadcaster messageBroadcaster;
-    
-    public void sendMessage() {
-        if (messageBroadcaster != null) {
-            // Send message via Pusher
-            messageBroadcaster.broadcastTest(test, host);
-        } else {
-            // Handle case where Pusher is not configured
-            log.warn("MessageBroadcaster not available - Pusher not configured");
-        }
-    }
-}
-```
+**Solution**: Update to the latest version of LookseeCore (v1.1.0+) which uses modular auto-configuration to prevent circular imports.
 
-## Example Usage in Consuming Applications
+### Verification
 
-### Spring Boot Application with Pusher
+To verify Pusher configuration is working:
 
-```java
-@RestController
-public class MyController {
-    
-    @Autowired
-    private MessageBroadcaster messageBroadcaster;
-    
-    @PostMapping("/notify")
-    public ResponseEntity<String> notify(@RequestBody NotificationRequest request) {
-        try {
-            messageBroadcaster.broadcastTest(request.getTest(), request.getHost());
-            return ResponseEntity.ok("Notification sent");
-        } catch (JsonProcessingException e) {
-            return ResponseEntity.status(500).body("Failed to send notification");
-        }
-    }
-}
-```
+1. **Check logs** for Pusher initialization:
+   ```
+   INFO : Configuring Pusher client with app ID: your-app-id, cluster: your-cluster
+   INFO : Pusher client successfully configured and ready for use
+   ```
 
-### Spring Boot Application without Pusher
+2. **Test bean availability**:
+   ```java
+   @Autowired(required = false)
+   private Pusher pusher;
+   
+   @Autowired(required = false) 
+   private MessageBroadcaster messageBroadcaster;
+   
+   public void checkPusherSetup() {
+       log.info("Pusher available: {}", pusher != null);
+       log.info("MessageBroadcaster available: {}", messageBroadcaster != null);
+   }
+   ```
 
-```java
-@RestController  
-public class MyController {
-    
-    @Autowired(required = false)
-    private MessageBroadcaster messageBroadcaster;
-    
-    @PostMapping("/notify")
-    public ResponseEntity<String> notify(@RequestBody NotificationRequest request) {
-        if (messageBroadcaster != null) {
-            try {
-                messageBroadcaster.broadcastTest(request.getTest(), request.getHost());
-                return ResponseEntity.ok("Notification sent via Pusher");
-            } catch (JsonProcessingException e) {
-                return ResponseEntity.status(500).body("Failed to send notification");
-            }
-        } else {
-            // Alternative notification method or just log
-            log.info("Would send notification (Pusher not configured)");
-            return ResponseEntity.ok("Notification logged (Pusher not available)");
-        }
-    }
-}
-```
+## Notes
+
+- All four Pusher properties (`appId`, `key`, `secret`, `cluster`) must be provided for Pusher to be configured
+- Environment variable names follow Spring Boot conventions: `PUSHER_APP_ID`, `PUSHER_KEY`, etc.
+- The `encrypted` property defaults to `true` and is optional
+- If Pusher is not configured, the MessageBroadcaster will not be available, but your application will still start successfully
