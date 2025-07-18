@@ -13,17 +13,19 @@ import org.springframework.core.env.Environment;
 import com.pusher.rest.Pusher;
 
 /**
- * Configuration class for Pusher client.
+ * Configuration class for Pusher client used within the full LookseeCore auto-configuration.
  * 
- * This configuration creates a Pusher client bean when the required Pusher properties
- * are provided via the PusherProperties configuration class.
- * If properties are not available, a fallback no-op Pusher is created to ensure
- * MessageBroadcaster can always be instantiated.
+ * Note: MessageBroadcaster is now configured separately in MessageBroadcasterAutoConfiguration
+ * to ensure it's available even when the full LookseeCore configuration has dependency issues.
  */
 @Configuration
 public class PusherConfiguration {
     
     private static final Logger log = LoggerFactory.getLogger(PusherConfiguration.class);
+    
+    public PusherConfiguration() {
+        log.info("🔧 PusherConfiguration loaded - part of full LookseeCore auto-configuration");
+    }
     
     /**
      * Creates a fully functional Pusher client bean using the PusherProperties configuration.
@@ -122,6 +124,7 @@ public class PusherConfiguration {
                 log.warn("💡 To enable real-time messaging, set: PUSHER_APP_ID, PUSHER_KEY, PUSHER_SECRET, PUSHER_CLUSTER");
             }
             
+            log.info("🎯 MessageBroadcaster bean should be available via MessageBroadcasterAutoConfiguration");
             log.info("=== End Pusher Configuration Diagnostic ===");
         };
     }
