@@ -187,7 +187,12 @@ public enum AuditName {
 	/**
 	 * Evaluates the structure of the list
 	 */
-	LIST_STRUCTURE("List");
+	LIST_STRUCTURE("List"),
+
+	/**
+	 * Evaluates the structure of the reflow
+	 */
+	REFLOW("Reflow");
 
 	/**
 	 * The human-readable name of the audit type
