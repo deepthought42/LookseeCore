@@ -48,13 +48,20 @@ looksee:
       max-connection-pool-size: 50
       connection-pooling-enabled: true
 
-
 spring:
   neo4j:
     uri: bolt://localhost:7687
     authentication:
       username: neo4j
       password: your-password
+
+# Optional: Selenium WebDriver configuration
+selenium:
+  urls: "http://selenium-hub:4444/wd/hub,http://localhost:4444/wd/hub"
+  connectionTimeout: 30000      # Connection timeout in milliseconds (default: 30000)
+  maxRetries: 3                 # Maximum retry attempts (default: 3)
+  implicitWaitEnabled: true     # Enable implicit waits (default: true)
+  implicitWaitTimeout: 10000    # Implicit wait timeout in milliseconds (default: 10000)
 
 # Optional: Real-time messaging with Pusher
 pusher:
@@ -82,6 +89,36 @@ pubsub:
 If you need real-time messaging capabilities, configure Pusher credentials as shown above. The `MessageBroadcaster` service will be automatically available when Pusher is configured.
 
 For detailed Pusher configuration options and troubleshooting, see [Pusher Configuration Guide](docs/PUSHER_CONFIGURATION.md).
+
+#### Selenium WebDriver (Optional)
+
+If you need browser automation capabilities, configure Selenium WebDriver URLs and settings. The `SeleniumConfiguration` will automatically initialize the browser connection helper with the provided configuration.
+
+```yaml
+selenium:
+  urls: "http://selenium-hub:4444/wd/hub,http://localhost:4444/wd/hub"
+  connectionTimeout: 30000      # Connection timeout in milliseconds (default: 30000)
+  maxRetries: 3                 # Maximum retry attempts (default: 3)
+  implicitWaitEnabled: true     # Enable implicit waits (default: true)
+  implicitWaitTimeout: 10000    # Implicit wait timeout in milliseconds (default: 10000)
+```
+
+**Configuration Options:**
+- `urls` (required): Comma-separated list of Selenium hub URLs
+- `connectionTimeout`: WebDriver connection timeout in milliseconds
+- `maxRetries`: Maximum number of connection retry attempts
+- `implicitWaitEnabled`: Whether to enable implicit waits for element finding
+- `implicitWaitTimeout`: Timeout for implicit waits in milliseconds
+
+**Environment Variables:**
+You can also configure via environment variables:
+- `SELENIUM_URLS`
+- `SELENIUM_CONNECTION_TIMEOUT`
+- `SELENIUM_MAX_RETRIES`
+- `SELENIUM_IMPLICIT_WAIT_ENABLED`
+- `SELENIUM_IMPLICIT_WAIT_TIMEOUT`
+
+The configuration is completely optional - if not provided, the SeleniumConfiguration bean will not be created.
 
 #### Google Cloud Pub/Sub (Optional)
 
@@ -139,6 +176,9 @@ private BrowserService browserService;
 Browser browser = new Browser();
 browser.navigate("https://example.com");
 browser.takeScreenshot();
+
+// The SeleniumConfiguration automatically configures WebDriver URLs
+// when selenium.urls property is provided
 ```
 
 #### Audit Management
@@ -281,7 +321,22 @@ pubsub:
   page_audit_topic: ""  # Empty but present - bean will be created
 ```
 
-#### 4. Disabling Auto-Configuration
+#### 4. Selenium Configuration Issues
+
+**Error**: No Selenium URLs configured or WebDriver connection failures.
+
+**Solution**: Configure Selenium WebDriver URLs if you're using browser automation features:
+
+```yaml
+selenium:
+  urls: "http://selenium-hub:4444/wd/hub,http://localhost:4444/wd/hub"
+  connectionTimeout: 30000  # Optional: Adjust timeouts as needed
+  maxRetries: 3            # Optional: Configure retry behavior
+```
+
+If you don't need browser automation, you can simply omit this configuration and the SeleniumConfiguration bean won't be created.
+
+#### 5. Disabling Auto-Configuration
 
 If you need to disable the auto-configuration:
 
