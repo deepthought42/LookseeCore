@@ -17,12 +17,13 @@ import com.looksee.gcp.GoogleCloudStorageProperties;
  * library is included as a dependency in other Spring Boot applications.
  */
 @Configuration
-@EnableConfigurationProperties({LookseeCoreProperties.class, GoogleCloudStorageProperties.class, PusherProperties.class})
+@EnableConfigurationProperties({LookseeCoreProperties.class, GoogleCloudStorageProperties.class, PusherProperties.class, SeleniumProperties.class})
 @ConditionalOnProperty(prefix = "looksee.core", name = "enabled", havingValue = "true", matchIfMissing = true)
 @Import({
     LookseeCoreComponentConfiguration.class,
     LookseeCoreRepositoryConfiguration.class,
-    PusherConfiguration.class
+    PusherConfiguration.class,
+    SeleniumConfiguration.class
 })
 public class LookseeCoreAutoConfiguration {
     
@@ -33,6 +34,7 @@ public class LookseeCoreAutoConfiguration {
      * 1. LookseeCoreComponentConfiguration - handles component scanning
      * 2. LookseeCoreRepositoryConfiguration - handles Neo4j repository configuration
      * 3. PusherConfiguration - handles Pusher client configuration
+     * 4. SeleniumConfiguration - handles Selenium WebDriver configuration (optional)
      * 
      * This approach prevents circular dependencies and provides better separation of concerns.
      * 
