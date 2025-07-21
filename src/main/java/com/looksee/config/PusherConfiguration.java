@@ -25,6 +25,10 @@ public class PusherConfiguration {
     
     private static final Logger log = LoggerFactory.getLogger(PusherConfiguration.class);
     
+    /**
+     * Constructor for the PusherConfiguration class.
+     * Logs a message when the PusherConfiguration is loaded.
+     */
     public PusherConfiguration() {
         log.info("🔧 PusherConfiguration loaded - part of full LookseeCore auto-configuration");
     }
@@ -94,6 +98,9 @@ public class PusherConfiguration {
     /**
      * Diagnostic bean to log Pusher configuration status during application startup.
      * This helps identify why Pusher/MessageBroadcaster beans might not be created.
+     * 
+     * @param environment the environment
+     * @return the pusher diagnostic listener
      */
     @Bean
     public ApplicationListener<ApplicationReadyEvent> pusherDiagnosticListener(Environment environment) {

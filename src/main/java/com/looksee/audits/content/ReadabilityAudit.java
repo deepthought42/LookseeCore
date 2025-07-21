@@ -1,7 +1,5 @@
 package com.looksee.audits.content;
 
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -16,7 +14,6 @@ import com.looksee.models.ElementState;
 import com.looksee.models.PageState;
 import com.looksee.models.audit.Audit;
 import com.looksee.models.audit.AuditRecord;
-import com.looksee.models.audit.Score;
 import com.looksee.models.audit.interfaces.IExecutablePageStateAudit;
 import com.looksee.models.audit.messages.ReadingComplexityIssueMessage;
 import com.looksee.models.audit.messages.UXIssueMessage;
@@ -56,8 +53,6 @@ public class ReadabilityAudit implements IExecutablePageStateAudit {
 	 * {@inheritDoc}
 	 * 
 	 * Scores readability and relevance of content on a page based on the reading level of the content and the keywords used
-	 * @throws MalformedURLException 
-	 * @throws URISyntaxException 
 	 */
 	@Override
 	public Audit execute(PageState page_state, AuditRecord audit_record, DesignSystem design_system) {
@@ -231,7 +226,14 @@ public class ReadabilityAudit implements IExecutablePageStateAudit {
 		return audit;
 	}
 
-
+	/**
+	 * Generates a string describing the difficulty of reading the element
+	 * @param element the element to describe
+	 * @param difficulty_string the difficulty of reading the element
+	 * @param ease_of_reading_score the ease of reading score
+	 * @param targetUserEducation the target user education
+	 * @return the string describing the difficulty of reading the element
+	 */
 	private String generateIssueDescription(ElementState element, 
 											String difficulty_string,
 											double ease_of_reading_score, 
@@ -241,7 +243,11 @@ public class ReadabilityAudit implements IExecutablePageStateAudit {
 		return description;
 	}
 
-
+	/**
+	 * Generates a string describing the target user education level
+	 * @param targetUserEducation the target user education level
+	 * @return the string describing the target user education level
+	 */
 	private String getConsumerType(String targetUserEducation) {
 		String consumer_label = "the average consumer";
 		
@@ -252,7 +258,12 @@ public class ReadabilityAudit implements IExecutablePageStateAudit {
 		return consumer_label;
 	}
 
-
+	/**
+	 * Calculates the points for a given education level based on the ease of reading score
+	 * @param ease_of_reading_score the ease of reading score
+	 * @param target_user_education the target user education
+	 * @return the points for the education level
+	 */
 	private int getPointsForEducationLevel(double ease_of_reading_score, String target_user_education) {
 		int element_points = 0;
 				
@@ -375,31 +386,5 @@ public class ReadabilityAudit implements IExecutablePageStateAudit {
 		}
 		
 		return element_points;
-	}
-
-
-	public static Score calculateSentenceScore(String sentence) {
-		//    		for each sentence check that sentence is no longer than 20 words
-		String[] words = sentence.split(" ");
-		
-		if(words.length <= 10) {
-			return new Score(2, 2, new HashSet<>());
-		}
-		else if(words.length <= 20) {
-			return new Score(1, 2, new HashSet<>());
-		}
-
-		return new Score(0, 2, new HashSet<>());
-	}
-
-
-	public static Score calculateParagraphScore(int sentence_count) {
-		if(sentence_count <= 5) {
-			return new Score(1, 1, new HashSet<>());
-		}
-
-		return new Score(0, 1, new HashSet<>());
-		//	  		Verify that there are no more than 5 sentences
-		// validate that spacing between paragraphs is at least 2x the font size within the paragraphs
 	}
 }

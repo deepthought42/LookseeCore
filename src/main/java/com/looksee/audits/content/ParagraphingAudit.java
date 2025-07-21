@@ -131,11 +131,11 @@ public class ParagraphingAudit implements IExecutablePageStateAudit {
 
 
 	/**
-	 * Reviews list of sentences and gives a score based on how many of those sentences have 
-	 * 		25 words or less. This is considered the maximum sentence length allowed in EU government documentation
-	 * @param sentences
-	 * @param element
-	 * @return
+	 * Reviews list of sentences and gives a score based on how many of those sentences have 25 words or less.
+	 * This is considered the maximum sentence length allowed in EU government documentation
+	 * @param sentences the list of sentences to review
+	 * @param element the element that the sentences belong to
+	 * @return the score for the sentences
 	 */
 	public Score calculateSentenceScore(List<Sentence> sentences, ElementState element) {
 		//    		for each sentence check that sentence is no longer than 25 words
