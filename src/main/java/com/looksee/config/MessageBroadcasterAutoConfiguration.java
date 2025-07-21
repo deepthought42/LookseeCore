@@ -25,6 +25,10 @@ public class MessageBroadcasterAutoConfiguration {
     
     private static final Logger log = LoggerFactory.getLogger(MessageBroadcasterAutoConfiguration.class);
     
+    /**
+     * Constructor for the MessageBroadcasterAutoConfiguration class.
+     * Logs a message when the MessageBroadcasterAutoConfiguration is loaded.
+     */
     public MessageBroadcasterAutoConfiguration() {
         log.info("🎯 MessageBroadcasterAutoConfiguration loaded - ensuring MessageBroadcaster is always available");
         log.info("📦 Importing PusherConfiguration to provide Pusher client (real or fallback)");

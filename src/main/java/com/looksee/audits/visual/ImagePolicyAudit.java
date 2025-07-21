@@ -1,7 +1,5 @@
 package com.looksee.audits.visual;
 
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -32,11 +30,14 @@ import com.looksee.services.PageStateService;
 import com.looksee.services.UXIssueMessageService;
 import com.looksee.utils.BrowserUtils;
 
+import lombok.NoArgsConstructor;
+
 /**
  * Responsible for executing an audit on the images on a page for the information architecture audit category
  * 	based on the domain policy
  */
 @Component
+@NoArgsConstructor
 public class ImagePolicyAudit implements IExecutablePageStateAudit {
 	@SuppressWarnings("unused")
 	private static Logger log = LoggerFactory.getLogger(ImagePolicyAudit.class);
@@ -50,16 +51,10 @@ public class ImagePolicyAudit implements IExecutablePageStateAudit {
 	@Autowired
 	private UXIssueMessageService issue_message_service;
 	
-	public ImagePolicyAudit() {
-	}
-
-	
 	/**
 	 * {@inheritDoc}
 	 * 
 	 * Scores images on a page based on if the image is allowed based on the domain policy
-	 * @throws MalformedURLException 
-	 * @throws URISyntaxException 
 	 */
 	@Override
 	public Audit execute(PageState page_state, AuditRecord audit_record, DesignSystem design_system) {
@@ -96,9 +91,9 @@ public class ImagePolicyAudit implements IExecutablePageStateAudit {
 	/**
 	 * Calculates score of images based on the image policies in place
 	 * 
-	 * @param element_list
-	 * @param design_system
-	 * @return
+	 * @param element_list the list of elements to score
+	 * @param design_system the design system to use
+	 * @return the score for the images
 	 */
 	private Score calculateImagePolicyViolationScore(List<ElementState> element_list, DesignSystem design_system) {
 		int points_earned = 0;
@@ -192,6 +187,6 @@ public class ImagePolicyAudit implements IExecutablePageStateAudit {
 				}
 			}
 		}
-		return new Score(points_earned, max_points, issue_messages);	
+		return new Score(points_earned, max_points, issue_messages);
 	}
 }

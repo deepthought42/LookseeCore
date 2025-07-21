@@ -30,12 +30,15 @@ import com.looksee.services.AuditService;
 import com.looksee.services.PageStateService;
 import com.looksee.services.UXIssueMessageService;
 
+import lombok.NoArgsConstructor;
+
 
 /**
  * Responsible for executing an audit on the images on a page to determine adherence to alternate text best practices 
  *  for the visual audit category
  */
 @Component
+@NoArgsConstructor
 public class ImageAltTextAudit implements IExecutablePageStateAudit {
 	@SuppressWarnings("unused")
 	private static Logger log = LoggerFactory.getLogger(ImageAltTextAudit.class);
@@ -49,16 +52,11 @@ public class ImageAltTextAudit implements IExecutablePageStateAudit {
 	@Autowired
 	private UXIssueMessageService issue_message_service;
 	
-	public ImageAltTextAudit() {
-		//super(buildBestPractices(), getAdaDescription(), getAuditDescription(), AuditSubcategory.LINKS);
-	}
-
-	
 	/**
 	 * {@inheritDoc}
 	 * 
 	 * Scores images on a page based on if the image has an "alt" value present, format is valid and the
-	 *   url goes to a location that doesn't produce a 4xx error 
+	 *   url goes to a location that doesn't produce a 4xx error
 	 */
 	@Override
 	public Audit execute(PageState page_state, AuditRecord audit_record, DesignSystem design_system) {

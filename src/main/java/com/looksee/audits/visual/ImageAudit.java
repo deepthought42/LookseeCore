@@ -27,10 +27,13 @@ import com.looksee.services.AuditService;
 import com.looksee.services.UXIssueMessageService;
 import com.looksee.utils.BrowserUtils;
 
+import lombok.NoArgsConstructor;
+
 /**
  * Responsible for executing an audit on the images on a page for the information architecture audit category
  */
 @Component
+@NoArgsConstructor
 public class ImageAudit implements IExecutablePageStateAudit {
 	@SuppressWarnings("unused")
 	private static Logger log = LoggerFactory.getLogger(ImageAudit.class);
@@ -40,10 +43,6 @@ public class ImageAudit implements IExecutablePageStateAudit {
 	
 	@Autowired
 	private UXIssueMessageService issue_message_service;
-	
-	public ImageAudit() {
-	}
-
 	
 	/**
 	 * {@inheritDoc}
@@ -85,9 +84,8 @@ public class ImageAudit implements IExecutablePageStateAudit {
 	 * Reviews image for potential copyright infringement / lack of uniqueness by checking if other sites have 
 	 * 		the exact same image
 	 * 
-	 * @param sentences
-	 * @param element
-	 * @return
+	 * @param elements the list of elements to score
+	 * @return the score for the images
 	 */
 	public Score calculateCopyrightScore(List<ImageElementState> elements) {
 		int points_earned = 0;
