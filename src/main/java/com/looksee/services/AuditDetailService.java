@@ -1,6 +1,6 @@
 package com.looksee.services;
 
-import com.looksee.models.audit.performance.AuditDetail;
+import com.looksee.audits.performance.AuditDetail;
 import com.looksee.models.repository.AuditDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

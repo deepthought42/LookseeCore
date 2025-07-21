@@ -1,9 +1,10 @@
 package com.looksee.models.repository;
 
+import com.looksee.audits.performance.PerformanceInsight;
 import com.looksee.models.Element;
 import com.looksee.models.Page;
 import com.looksee.models.PageState;
-import com.looksee.models.audit.performance.PerformanceInsight;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;

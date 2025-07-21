@@ -1,7 +1,8 @@
 package com.looksee.models.repository;
 
-import com.looksee.models.audit.AuditSubcategoryStat;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
+
+import com.looksee.models.audit.stats.AuditSubcategoryStat;
 
 /**
  * Repository for {@link AuditSubcategoryStat}

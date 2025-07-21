@@ -1,6 +1,6 @@
 package com.looksee.services;
 
-import com.looksee.models.audit.performance.PageSpeedAudit;
+import com.looksee.audits.performance.PageSpeedAudit;
 import com.looksee.models.repository.PageSpeedAuditRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

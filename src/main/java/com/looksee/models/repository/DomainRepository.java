@@ -1,5 +1,6 @@
 package com.looksee.models.repository;
 
+import com.looksee.audits.performance.PerformanceInsight;
 import com.looksee.models.Domain;
 import com.looksee.models.Element;
 import com.looksee.models.Form;
@@ -11,7 +12,6 @@ import com.looksee.models.TestRecord;
 import com.looksee.models.TestUser;
 import com.looksee.models.audit.AuditRecord;
 import com.looksee.models.audit.DomainAuditRecord;
-import com.looksee.models.audit.performance.PerformanceInsight;
 import com.looksee.models.designsystem.DesignSystem;
 import com.looksee.models.journeys.Redirect;
 import io.github.resilience4j.retry.annotation.Retry;

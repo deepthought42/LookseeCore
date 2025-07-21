@@ -1,6 +1,8 @@
 package com.looksee.models.audit;
 
 import com.looksee.models.SimpleElement;
+import com.looksee.models.audit.messages.UXIssueMessage;
+
 import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;

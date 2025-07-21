@@ -1,15 +1,5 @@
 package com.looksee.utils;
 
-import com.looksee.models.CIEColorSpace;
-import com.looksee.models.ColorData;
-import com.looksee.models.PaletteColor;
-import com.looksee.models.audit.ColorPaletteIssueMessage;
-import com.looksee.models.audit.Score;
-import com.looksee.models.audit.UXIssueMessage;
-import com.looksee.models.designsystem.DesignSystem;
-import com.looksee.models.enums.AuditCategory;
-import com.looksee.models.enums.ColorScheme;
-import com.looksee.models.enums.Priority;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
@@ -18,9 +8,22 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import lombok.NoArgsConstructor;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.looksee.models.CIEColorSpace;
+import com.looksee.models.ColorData;
+import com.looksee.models.PaletteColor;
+import com.looksee.models.audit.Score;
+import com.looksee.models.audit.messages.ColorPaletteIssueMessage;
+import com.looksee.models.audit.messages.UXIssueMessage;
+import com.looksee.models.designsystem.DesignSystem;
+import com.looksee.models.enums.AuditCategory;
+import com.looksee.models.enums.ColorScheme;
+import com.looksee.models.enums.Priority;
+
+import lombok.NoArgsConstructor;
 
 /**
  * Utility class for color palette operations

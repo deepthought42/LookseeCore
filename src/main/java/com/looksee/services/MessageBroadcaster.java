@@ -15,7 +15,7 @@ import com.looksee.models.LookseeObject;
 import com.looksee.models.Test;
 import com.looksee.models.audit.Audit;
 import com.looksee.models.audit.AuditRecord;
-import com.looksee.models.audit.UXIssueMessage;
+import com.looksee.models.audit.messages.UXIssueMessage;
 import com.looksee.models.dto.AuditUpdateDto;
 import com.looksee.models.dto.DomainDto;
 import com.pusher.rest.Pusher;

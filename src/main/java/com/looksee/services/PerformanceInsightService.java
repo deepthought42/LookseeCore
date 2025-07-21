@@ -1,7 +1,7 @@
 package com.looksee.services;
 
-import com.looksee.models.audit.performance.PageSpeedAudit;
-import com.looksee.models.audit.performance.PerformanceInsight;
+import com.looksee.audits.performance.PageSpeedAudit;
+import com.looksee.audits.performance.PerformanceInsight;
 import com.looksee.models.repository.PerformanceInsightRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

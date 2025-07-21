@@ -1,6 +1,6 @@
 package com.looksee.services;
 
-import com.looksee.models.audit.AuditSubcategoryStat;
+import com.looksee.models.audit.stats.AuditSubcategoryStat;
 import com.looksee.models.repository.AuditSubcategoryStatRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

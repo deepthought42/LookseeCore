@@ -8,7 +8,7 @@ import com.google.api.client.util.ArrayMap;
 import com.google.api.services.pagespeedonline.v5.PagespeedInsights;
 import com.google.api.services.pagespeedonline.v5.model.LighthouseAuditResultV5;
 import com.google.api.services.pagespeedonline.v5.model.PagespeedApiPagespeedResponseV5;
-import com.looksee.models.audit.UXIssueMessage;
+import com.looksee.models.audit.messages.UXIssueMessage;
 import com.looksee.models.audit.recommend.Recommendation;
 import com.looksee.models.enums.AuditCategory;
 import com.looksee.models.enums.ObservationType;

@@ -1,9 +1,9 @@
 package com.looksee.services;
 
+import com.looksee.audits.performance.PerformanceInsight;
 import com.looksee.models.Element;
 import com.looksee.models.Page;
 import com.looksee.models.PageState;
-import com.looksee.models.audit.performance.PerformanceInsight;
 import com.looksee.models.repository.PageRepository;
 import com.looksee.models.repository.PageStateRepository;
 import com.looksee.models.repository.PerformanceInsightRepository;

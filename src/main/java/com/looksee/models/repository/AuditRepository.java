@@ -2,7 +2,8 @@ package com.looksee.models.repository;
 
 import com.looksee.models.ElementState;
 import com.looksee.models.audit.Audit;
-import com.looksee.models.audit.UXIssueMessage;
+import com.looksee.models.audit.messages.UXIssueMessage;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;

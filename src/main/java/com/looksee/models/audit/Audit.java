@@ -1,6 +1,7 @@
 package com.looksee.models.audit;
 
 import com.looksee.models.LookseeObject;
+import com.looksee.models.audit.messages.UXIssueMessage;
 import com.looksee.models.enums.AuditCategory;
 import com.looksee.models.enums.AuditLevel;
 import com.looksee.models.enums.AuditName;
