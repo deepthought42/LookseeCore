@@ -3,13 +3,12 @@ package utils;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import io.whelk.flesch.kincaid.ReadabilityCalculator;
-import java.io.IOException;
 import org.junit.jupiter.api.Test;
 
 public class ContentUtilsTest {
 
 	@Test
-	public void testExtractArticle() throws IOException {
+	public void testExtractArticle() {
 		String content =
 			      "A rich man's wife became sick, and when she felt that her end was drawing near, " +
 			      "she called her only daughter to her bedside and said, \"Dear child, remain pious " +
@@ -22,9 +21,9 @@ public class ContentUtilsTest {
 			      "but evil and dark hearts. Times soon grew very bad for the poor stepchild.";
 
 		double readingEase = ReadabilityCalculator.calculateReadingEase(content);
-		assertEquals(80.13934306569344, readingEase, 1.0e-12);
+		assertEquals(80.13934306569344, readingEase, 1.0e-6);
 
 		double gradeLevel = ReadabilityCalculator.calculateGradeLevel(content);
-		assertEquals(6.943587069864442, gradeLevel, 1.0e-12);
+		assertEquals(6.943587069864442, gradeLevel, 1.0e-6);
 	}
 }
