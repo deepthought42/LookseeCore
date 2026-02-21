@@ -55,7 +55,7 @@ class PageServiceTest {
         Page saved = pageService.saveForUser(userId, inputPage);
 
         assertSame(existingPage, saved);
-        verify(pageRepository, never()).save(inputPage);
+        verify(pageRepository).save(existingPage);
     }
 
     @Test
@@ -129,7 +129,6 @@ class PageServiceTest {
         PageState pageState = new PageState();
         pageState.setKey("state-key");
 
-        when(pageStateRepository.findByKeyAndUsername(userId, "state-key")).thenReturn(pageState);
         when(pageRepository.findByKeyAndUser(userId, pageKey)).thenReturn(null);
 
         pageService.addPageState(userId, pageKey, pageState);
