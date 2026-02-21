@@ -409,6 +409,30 @@ mvn test
 mvn clean deploy
 ```
 
+
+## Code Review Notes
+
+### Issues Fixed in This Revision
+
+- `PageService.saveForUser(...)` now updates only pages that belong to the provided user (`findByKeyAndUser`) instead of matching globally by key. This prevents accidental cross-user page updates when keys collide.
+- Removed debug `System.out.println(...)` statements from `PageService` and replaced them with structured debug logging.
+- `PageService.findLatestInsight(...)` now safely returns `null` when no insight exists instead of dereferencing a null value.
+- `PageService.addPageState(...)` now guards against a missing page record and logs a warning rather than throwing a `NullPointerException`.
+- `ContentUtilsTest` now uses `assertEquals(..., delta)` for floating-point assertions and removes noisy console output.
+
+### Remaining High-Value Fixes to Schedule
+
+The codebase still contains a number of broad quality issues (for example: `printStackTrace`, `System.out.println`, and placeholder `TODO` sections in production classes). Recommended follow-up work:
+
+1. Replace remaining `printStackTrace` calls with logger-based error handling and actionable context.
+2. Remove or convert remaining direct console output to logger calls.
+3. Resolve placeholder `TODO Auto-generated` blocks and unreachable/commented exception paths.
+4. Add targeted service-level tests for null and error branches (similar to `PageServiceTest`) to prevent regressions.
+
+### Build Environment Note
+
+If `mvn test` fails with dependency BOM resolution errors (HTTP 403 from `https://repo.maven.apache.org/maven2`), verify your environment has access to Maven Central or configure your corporate artifact proxy mirror in Maven `settings.xml`.
+
 ## Contributing
 
 1. Fork the repository

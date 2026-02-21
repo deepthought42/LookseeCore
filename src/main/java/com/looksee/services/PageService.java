@@ -19,8 +19,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class PageService {
-	@SuppressWarnings("unused")
-	private static Logger log = LoggerFactory.getLogger(PageService.class);
+	private static final Logger log = LoggerFactory.getLogger(PageService.class);
 	
 	@Autowired
 	private PageRepository page_repo;
@@ -45,14 +44,13 @@ public class PageService {
 		assert page != null;
 		assert user_id != null;
 		
-		Page page_record = findByKey(page.getKey());
+		Page page_record = page_repo.findByKeyAndUser(user_id, page.getKey());
 		if(page_record != null){
 			page_record.setPageStates(page.getPageStates());
 			return page_repo.save(page_record);
 		}
-		
-		System.out.println("page repo ::  "+page_repo);
-		System.out.println("Page   ::   "+page);
+
+		log.debug("Saving new page for user {} with key {}", user_id, page.getKey());
 		return page_repo.save(page);
 	}
 	
@@ -202,6 +200,9 @@ public class PageService {
 		assert !page_key.isEmpty();
 		
 		PerformanceInsight insight = page_repo.getLatestPerformanceInsight(page_key);
+		if(insight == null) {
+			return null;
+		}
 		insight.setAudits(performance_insight_repo.getAllAudits(page_key, insight.getKey()));
 		return insight;
 	}
@@ -225,11 +226,16 @@ public class PageService {
 		assert !page_key.isEmpty();
 		assert page_state != null;
 		
+		Page page = page_repo.findByKeyAndUser(user_id, page_key);
+		if(page == null) {
+			log.warn("Unable to add page state {} to missing page {} for user {}", page_state.getKey(), page_key, user_id);
+			return;
+		}
+
 		PageState page_state_record = page_state_service.findByKeyAndUsername(user_id, page_state.getKey());
 		if(page_state_record == null) {
 			page_state_record = page_state_service.save(page_state);
 		}
-		Page page = page_repo.findByKey(page_key);
 		page.addPageState(page_state_record);
 		page_repo.save(page);
 	}
