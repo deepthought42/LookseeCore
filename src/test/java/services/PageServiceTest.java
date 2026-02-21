@@ -9,8 +9,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.looksee.audits.performance.PerformanceInsight;
-import com.looksee.models.PageState;
 import com.looksee.models.Page;
+import com.looksee.models.PageState;
 import com.looksee.models.repository.PageRepository;
 import com.looksee.models.repository.PageStateRepository;
 import com.looksee.models.repository.PerformanceInsightRepository;
@@ -58,7 +58,6 @@ class PageServiceTest {
         verify(pageRepository, never()).save(inputPage);
     }
 
-
     @Test
     void saveForUserCreatesNewPageWhenUserScopedRecordDoesNotExist() {
         String userId = "user-1";
@@ -101,7 +100,7 @@ class PageServiceTest {
     }
 
     @Test
-    void addPageStateSkipsSaveWhenTargetPageIsMissing() {
+    void addPageStateSkipsSaveWhenTargetPageForUserIsMissing() {
         String userId = "user-1";
         String pageKey = "missing-page";
 
@@ -109,11 +108,10 @@ class PageServiceTest {
         pageState.setKey("state-key");
 
         when(pageStateRepository.findByKeyAndUsername(userId, "state-key")).thenReturn(pageState);
-        when(pageRepository.findByKey(pageKey)).thenReturn(null);
+        when(pageRepository.findByKeyAndUser(userId, pageKey)).thenReturn(null);
 
         pageService.addPageState(userId, pageKey, pageState);
 
         verify(pageRepository, never()).save(any(Page.class));
     }
-
 }

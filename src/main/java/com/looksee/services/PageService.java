@@ -230,7 +230,7 @@ public class PageService {
 		if(page_state_record == null) {
 			page_state_record = page_state_service.save(page_state);
 		}
-		Page page = page_repo.findByKey(page_key);
+		Page page = page_repo.findByKeyAndUser(user_id, page_key);
 		if(page == null) {
 			log.warn("Unable to add page state {} to missing page {}", page_state.getKey(), page_key);
 			return;
