@@ -226,14 +226,15 @@ public class PageService {
 		assert !page_key.isEmpty();
 		assert page_state != null;
 		
+		Page page = page_repo.findByKeyAndUser(user_id, page_key);
+		if(page == null) {
+			log.warn("Unable to add page state {} to missing page {} for user {}", page_state.getKey(), page_key, user_id);
+			return;
+		}
+
 		PageState page_state_record = page_state_service.findByKeyAndUsername(user_id, page_state.getKey());
 		if(page_state_record == null) {
 			page_state_record = page_state_service.save(page_state);
-		}
-		Page page = page_repo.findByKeyAndUser(user_id, page_key);
-		if(page == null) {
-			log.warn("Unable to add page state {} to missing page {}", page_state.getKey(), page_key);
-			return;
 		}
 		page.addPageState(page_state_record);
 		page_repo.save(page);

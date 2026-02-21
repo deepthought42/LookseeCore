@@ -99,6 +99,28 @@ class PageServiceTest {
         assertTrue(result.getAudits().isEmpty());
     }
 
+
+    @Test
+    void addPageStatePersistsStateAndPageWhenTargetPageExists() {
+        String userId = "user-1";
+        String pageKey = "page-key";
+
+        Page page = new Page();
+        page.setKey(pageKey);
+
+        PageState pageState = new PageState();
+        pageState.setKey("state-key");
+
+        when(pageRepository.findByKeyAndUser(userId, pageKey)).thenReturn(page);
+        when(pageStateRepository.findByKeyAndUsername(userId, "state-key")).thenReturn(null);
+        when(pageStateRepository.save(pageState)).thenReturn(pageState);
+
+        pageService.addPageState(userId, pageKey, pageState);
+
+        verify(pageStateRepository).save(pageState);
+        verify(pageRepository).save(page);
+    }
+
     @Test
     void addPageStateSkipsSaveWhenTargetPageForUserIsMissing() {
         String userId = "user-1";
@@ -113,5 +135,6 @@ class PageServiceTest {
         pageService.addPageState(userId, pageKey, pageState);
 
         verify(pageRepository, never()).save(any(Page.class));
+        verify(pageStateRepository, never()).save(any(PageState.class));
     }
 }
