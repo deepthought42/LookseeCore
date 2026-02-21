@@ -19,8 +19,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class PageService {
-	@SuppressWarnings("unused")
-	private static Logger log = LoggerFactory.getLogger(PageService.class);
+	private static final Logger log = LoggerFactory.getLogger(PageService.class);
 	
 	@Autowired
 	private PageRepository page_repo;
@@ -45,7 +44,7 @@ public class PageService {
 		assert page != null;
 		assert user_id != null;
 		
-		Page page_record = findByKeyAndUser(user_id, page.getKey());
+		Page page_record = page_repo.findByKeyAndUser(user_id, page.getKey());
 		if(page_record != null){
 			page_record.setPageStates(page.getPageStates());
 			return page_repo.save(page_record);

@@ -9,6 +9,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.looksee.audits.performance.PerformanceInsight;
+import com.looksee.models.PageState;
 import com.looksee.models.Page;
 import com.looksee.models.repository.PageRepository;
 import com.looksee.models.repository.PageStateRepository;
@@ -57,6 +58,24 @@ class PageServiceTest {
         verify(pageRepository, never()).save(inputPage);
     }
 
+
+    @Test
+    void saveForUserCreatesNewPageWhenUserScopedRecordDoesNotExist() {
+        String userId = "user-1";
+        String pageKey = "page-key";
+
+        Page inputPage = new Page();
+        inputPage.setKey(pageKey);
+
+        when(pageRepository.findByKeyAndUser(userId, pageKey)).thenReturn(null);
+        when(pageRepository.save(inputPage)).thenReturn(inputPage);
+
+        Page saved = pageService.saveForUser(userId, inputPage);
+
+        assertSame(inputPage, saved);
+        verify(pageRepository).save(inputPage);
+    }
+
     @Test
     void findLatestInsightReturnsNullWhenNoInsightsExist() {
         when(pageRepository.getLatestPerformanceInsight("page-key")).thenReturn(null);
@@ -80,4 +99,21 @@ class PageServiceTest {
         assertSame(insight, result);
         assertTrue(result.getAudits().isEmpty());
     }
+
+    @Test
+    void addPageStateSkipsSaveWhenTargetPageIsMissing() {
+        String userId = "user-1";
+        String pageKey = "missing-page";
+
+        PageState pageState = new PageState();
+        pageState.setKey("state-key");
+
+        when(pageStateRepository.findByKeyAndUsername(userId, "state-key")).thenReturn(pageState);
+        when(pageRepository.findByKey(pageKey)).thenReturn(null);
+
+        pageService.addPageState(userId, pageKey, pageState);
+
+        verify(pageRepository, never()).save(any(Page.class));
+    }
+
 }
