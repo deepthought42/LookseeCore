@@ -84,4 +84,19 @@ class EnumCreateMethodsTest {
         assertThrows(IllegalArgumentException.class, () -> FormStatus.create(null));
         assertThrows(IllegalArgumentException.class, () -> FormStatus.create("pending"));
     }
+
+
+    @Test
+    void testStatusCreateSupportsCaseInsensitiveValues() {
+        assertEquals(TestStatus.PASSING, TestStatus.create("passing"));
+        assertEquals(TestStatus.FAILING, TestStatus.create("FAILING"));
+        assertEquals("UNVERIFIED", TestStatus.UNVERIFIED.toString());
+    }
+
+    @Test
+    void testStatusCreateRejectsNullAndUnknownValues() {
+        assertThrows(IllegalArgumentException.class, () -> TestStatus.create(null));
+        assertThrows(IllegalArgumentException.class, () -> TestStatus.create("blocked"));
+    }
+
 }
