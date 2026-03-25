@@ -277,7 +277,8 @@ To verify Pusher configuration is working:
 
 ## Notes
 
-- All four Pusher properties (`appId`, `key`, `secret`, `cluster`) must be provided for Pusher to be configured
+- All four Pusher properties (`appId`, `key`, `secret`, `cluster`) must be provided for real-time messaging
 - Environment variable names follow Spring Boot conventions: `PUSHER_APP_ID`, `PUSHER_KEY`, etc.
 - The `encrypted` property defaults to `true` and is optional
-- If Pusher is not configured, the MessageBroadcaster will not be available, but your application will still start successfully
+- If Pusher is not configured, the MessageBroadcaster still starts (fallback mode) - messages are logged but not sent
+- The `isRealTimeMessagingEnabled()` method can be used to check if real Pusher is active

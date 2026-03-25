@@ -21,7 +21,7 @@ Add the following dependency to your project:
 <dependency>
     <groupId>com.looksee</groupId>
     <artifactId>core</artifactId>
-    <version>0.2.6</version>
+    <version>0.3.22</version>
 </dependency>
 ```
 
@@ -403,43 +403,82 @@ mvn clean install
 mvn test
 ```
 
+The project includes a comprehensive test suite covering:
+
+- **Enum classes** (37 enums): Factory methods, case-insensitive creation, round-trip serialization, null/invalid input handling
+- **Model/entity classes**: Constructors, getters/setters, key generation, equality, cloning, business logic
+- **DTO classes**: Constructor variants, field access, serialization readiness
+- **Exception classes**: Default/custom messages, HTTP status annotations, inheritance hierarchy
+- **Audit model classes**: Audit records, scores, statistics, issue messages, recommendations
+- **Rule classes**: Rule factory, rule type enum, all rule implementations
+- **Journey classes**: Journey lifecycle, step types, domain maps
+- **Message classes**: All message types for inter-service communication
+- **Utility classes**: Color analysis, audit scoring, form classification, content readability, journey utils
+- **Service classes**: Business logic with mocked repositories using Mockito
+- **Configuration classes**: Property binding, auto-configuration, Pusher/Selenium setup
+- **Browsing classes**: Coordinates, element nodes, value domains, form fields
+- **Design system and competitive analysis**: Model construction and field access
+- **VS Code plugin**: Tree structures, session tracking, test mapping
+
+Test configuration disables external dependencies (Neo4j, GCP, Pub/Sub) for fast, isolated unit testing.
+
 ### Publishing
 
 ```bash
 mvn clean deploy
 ```
 
+## Project Structure
 
-## Code Review Notes
+```
+src/
+├── main/java/com/looksee/
+│   ├── audits/performance/    # Performance audit detail models
+│   ├── browsing/              # Browser automation (Selenium)
+│   │   ├── form/              # Form field extraction
+│   │   ├── helpers/           # Action and connection helpers
+│   │   └── table/             # Table parsing
+│   ├── config/                # Spring Boot auto-configuration
+│   ├── exceptions/            # Custom exception types
+│   ├── gcp/                   # Google Cloud Platform integrations
+│   ├── integrations/          # External API clients
+│   ├── mapper/                # JSON/Base64 deserializers
+│   ├── models/                # Domain entities
+│   │   ├── audit/             # Audit records, scores, issues
+│   │   ├── competitiveanalysis/ # Competitor profiling
+│   │   ├── designsystem/      # Design system snapshots
+│   │   ├── dto/               # Data transfer objects
+│   │   ├── enums/             # 37 enum types
+│   │   ├── journeys/          # User journey models
+│   │   ├── message/           # Inter-service messages
+│   │   ├── repository/        # Neo4j repositories
+│   │   ├── rules/             # Validation rules
+│   │   └── serializer/        # Custom deserializers
+│   ├── services/              # Business logic layer
+│   ├── utils/                 # Utility classes
+│   └── vscodePlugin/          # VS Code extension support
+└── test/java/                 # Test suite
+    ├── browser/               # Browser automation tests
+    ├── com/looksee/
+    │   ├── browsing/          # Browsing component tests
+    │   ├── config/            # Configuration tests
+    │   ├── exceptions/        # Exception tests
+    │   ├── mapper/            # Mapper tests
+    │   ├── models/            # Model, DTO, enum, audit tests
+    │   ├── utils/             # Utility tests
+    │   └── vscodePlugin/      # VS Code plugin tests
+    ├── config/                # Auto-config tests
+    ├── services/              # Service tests
+    └── utils/                 # Additional utility tests
+```
 
-### Issues Fixed in This Revision
-
-- `PageService.saveForUser(...)` now updates only pages that belong to the provided user (`findByKeyAndUser`) instead of matching globally by key. This prevents accidental cross-user page updates when keys collide.
-- Removed debug `System.out.println(...)` statements from `PageService` and replaced them with structured debug logging.
-- `PageService.findLatestInsight(...)` now safely returns `null` when no insight exists instead of dereferencing a null value.
-- `PageService.addPageState(...)` now guards against a missing page record and logs a warning rather than throwing a `NullPointerException`.
-- `ContentUtilsTest` now uses `assertEquals(..., delta)` for floating-point assertions and removes noisy console output.
-
-### Remaining High-Value Fixes to Schedule
-
-The codebase still contains a number of broad quality issues (for example: `printStackTrace`, `System.out.println`, and placeholder `TODO` sections in production classes). Recommended follow-up work:
-
-1. Replace remaining `printStackTrace` calls with logger-based error handling and actionable context.
-2. Remove or convert remaining direct console output to logger calls.
-3. Resolve placeholder `TODO Auto-generated` blocks and unreachable/commented exception paths.
-4. Add targeted service-level tests for null and error branches (similar to `PageServiceTest`) to prevent regressions.
-
-### Build Environment Note
+## Build Environment Note
 
 If `mvn test` fails with dependency BOM resolution errors (HTTP 403 from `https://repo.maven.apache.org/maven2`), verify your environment has access to Maven Central or configure your corporate artifact proxy mirror in Maven `settings.xml`.
 
 ## Contributing
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests
-5. Submit a pull request
+See [CONTRIBUTING.md](CONTRIBUTING.md) for development guidelines.
 
 ## License
 
