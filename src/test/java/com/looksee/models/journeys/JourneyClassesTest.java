@@ -50,11 +50,11 @@ class JourneyClassesTest {
     }
 
     @Test
-    void journeyClone() {
-        List<Step> steps = new ArrayList<>();
-        Journey original = new Journey(steps, JourneyStatus.VERIFIED);
-        Journey clone = original.clone();
-        assertNotSame(original, clone);
+    void journeyAddStep() {
+        Journey journey = new Journey();
+        SimpleStep step = new SimpleStep();
+        assertTrue(journey.addStep(step));
+        assertEquals(1, journey.getSteps().size());
     }
 
     // ===== DomainMap =====
