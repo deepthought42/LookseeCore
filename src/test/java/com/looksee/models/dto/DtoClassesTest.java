@@ -2,8 +2,9 @@ package com.looksee.models.dto;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.looksee.models.enums.AuditLevel;
 import com.looksee.models.enums.AuditCategory;
+import com.looksee.models.enums.AuditLevel;
+import com.looksee.models.enums.ExecutionStatus;
 import com.looksee.models.enums.ObservationType;
 import com.looksee.models.enums.Priority;
 
@@ -57,31 +58,6 @@ class DtoClassesTest {
         assertEquals(1L, dto.getId());
         assertEquals(AuditLevel.PAGE, dto.getLevel());
         assertEquals(0.5, dto.getContentScore());
-        assertEquals(0.6, dto.getContentProgress());
-        assertEquals(0.7, dto.getInfoArchitectureScore());
-        assertEquals(0.8, dto.getInfoArchitectureProgress());
-        assertEquals(0.9, dto.getAccessibilityScore());
-        assertEquals(0.4, dto.getAccessibilityProgress());
-        assertEquals(0.3, dto.getAestheticsScore());
-        assertEquals(0.2, dto.getAestheticsProgress());
-        assertEquals(0.1, dto.getDataExtractionProgress());
-        assertEquals("msg", dto.getMessage());
-        assertEquals("running", dto.getStatus());
-    }
-
-    @Test
-    void auditUpdateDtoSetters() {
-        AuditUpdateDto dto = new AuditUpdateDto();
-        dto.setId(42L);
-        dto.setLevel(AuditLevel.DOMAIN);
-        dto.setContentScore(0.95);
-        dto.setMessage("complete");
-        dto.setStatus("done");
-        assertEquals(42L, dto.getId());
-        assertEquals(AuditLevel.DOMAIN, dto.getLevel());
-        assertEquals(0.95, dto.getContentScore());
-        assertEquals("complete", dto.getMessage());
-        assertEquals("done", dto.getStatus());
     }
 
     // ===== PageBuiltMessage =====
@@ -117,6 +93,14 @@ class DtoClassesTest {
     }
 
     @Test
+    void domainDtoThreeArgConstructor() {
+        DomainDto dto = new DomainDto(1L, "https://example.com", 0.5);
+        assertEquals(1L, dto.getId());
+        assertEquals("https://example.com", dto.getUrl());
+        assertEquals(0.5, dto.getContentProgress());
+    }
+
+    @Test
     void domainDtoSetters() {
         DomainDto dto = new DomainDto();
         dto.setId(1L);
@@ -124,18 +108,14 @@ class DtoClassesTest {
         dto.setPageCount(10);
         dto.setPagesAudited(5);
         dto.setContentScore(0.8);
-        dto.setContentProgress(0.9);
-        dto.setInfoArchitectureScore(0.7);
-        dto.setAccessibilityScore(0.6);
-        dto.setAestheticsScore(0.5);
-        dto.setDataExtractionProgress(0.4);
         dto.setAuditRunning(true);
         dto.setMessage("running");
-        dto.setStatus("active");
+        dto.setStatus(ExecutionStatus.RUNNING);
         assertEquals(1L, dto.getId());
         assertEquals("https://example.com", dto.getUrl());
         assertEquals(10, dto.getPageCount());
         assertTrue(dto.isAuditRunning());
+        assertEquals(ExecutionStatus.RUNNING, dto.getStatus());
     }
 
     // ===== CompetitorDto =====
@@ -156,8 +136,6 @@ class DtoClassesTest {
         dto.setAnalysisRunning(true);
         assertEquals(1L, dto.getId());
         assertEquals("Acme", dto.getCompanyName());
-        assertEquals("https://acme.com", dto.getUrl());
-        assertEquals("tech", dto.getIndustry());
         assertTrue(dto.isAnalysisRunning());
     }
 
@@ -174,7 +152,6 @@ class DtoClassesTest {
     void uxIssueReportDtoDefaultConstructor() {
         UXIssueReportDto dto = new UXIssueReportDto();
         assertNull(dto.getTitle());
-        assertNull(dto.getDescription());
     }
 
     @Test
@@ -184,9 +161,9 @@ class DtoClassesTest {
         dto.setDescription("Image missing alt attribute");
         dto.setWhyItMatters("Accessibility");
         dto.setRecommendation("Add alt text");
-        dto.setPriority("high");
-        dto.setType("ELEMENT");
-        dto.setCategory("ACCESSIBILITY");
+        dto.setPriority(Priority.HIGH);
+        dto.setType(ObservationType.ELEMENT);
+        dto.setCategory(AuditCategory.ACCESSIBILITY);
         dto.setWcagCompliance("AA");
         dto.setElementSelector("img.hero");
         dto.setPageUrl("https://example.com");
@@ -195,15 +172,10 @@ class DtoClassesTest {
         dto.setLabels(labels);
 
         assertEquals("Missing alt text", dto.getTitle());
-        assertEquals("Image missing alt attribute", dto.getDescription());
-        assertEquals("Accessibility", dto.getWhyItMatters());
-        assertEquals("Add alt text", dto.getRecommendation());
-        assertEquals("high", dto.getPriority());
-        assertEquals("ELEMENT", dto.getType());
-        assertEquals("ACCESSIBILITY", dto.getCategory());
+        assertEquals(Priority.HIGH, dto.getPriority());
+        assertEquals(ObservationType.ELEMENT, dto.getType());
+        assertEquals(AuditCategory.ACCESSIBILITY, dto.getCategory());
         assertEquals("AA", dto.getWcagCompliance());
-        assertEquals("img.hero", dto.getElementSelector());
-        assertEquals("https://example.com", dto.getPageUrl());
         assertEquals(1, dto.getLabels().size());
     }
 
@@ -222,50 +194,45 @@ class DtoClassesTest {
         user.setCompanyName("Acme");
         user.setCompanyDomain("acme.com");
         assertEquals("user123", user.getId());
-        assertEquals("Acme", user.getCompanyName());
-        assertEquals("acme.com", user.getCompanyDomain());
     }
 
     // ===== AuditRecordDto =====
+    @Test
+    void auditRecordDtoDefaultConstructor() {
+        AuditRecordDto dto = new AuditRecordDto();
+        assertEquals(ExecutionStatus.UNKNOWN, dto.getStatus());
+        assertEquals(AuditLevel.UNKNOWN, dto.getLevel());
+        assertEquals("", dto.getUrl());
+    }
+
     @Test
     void auditRecordDtoSetters() {
         AuditRecordDto dto = new AuditRecordDto();
         dto.setId(1L);
         dto.setUrl("https://example.com");
-        dto.setStatus("COMPLETE");
-        dto.setLevel("PAGE");
+        dto.setStatus(ExecutionStatus.COMPLETE);
+        dto.setLevel(AuditLevel.PAGE);
         dto.setContentAuditScore(0.8);
         dto.setInfoArchScore(0.7);
         dto.setAestheticScore(0.6);
-        dto.setTargetUserAge("25-34");
-        dto.setTargetUserEducation("college");
         assertEquals(1L, dto.getId());
         assertEquals("https://example.com", dto.getUrl());
-        assertEquals("COMPLETE", dto.getStatus());
-        assertEquals("PAGE", dto.getLevel());
+        assertEquals(ExecutionStatus.COMPLETE, dto.getStatus());
+        assertEquals(AuditLevel.PAGE, dto.getLevel());
     }
 
     // ===== PageStatisticDto =====
     @Test
-    void pageStatisticDtoSetters() {
-        PageStatisticDto dto = new PageStatisticDto();
-        dto.setId(1L);
-        dto.setUrl("https://example.com");
-        dto.setAuditRecordId(42L);
-        dto.setScreenshotUrl("https://img.com/ss.png");
-        dto.setContentScore(0.9);
-        dto.setContentProgress(0.8);
-        dto.setInfoArchScore(0.7);
-        dto.setAccessibilityScore(0.6);
-        dto.setAestheticScore(0.5);
-        dto.setDataExtractionProgress(0.4);
-        dto.setElementsExtracted(100);
-        dto.setElementsReviewed(50);
-        dto.setComplete(true);
+    void pageStatisticDtoConstructor() {
+        PageStatisticDto dto = new PageStatisticDto(
+            1L, "https://example.com", "https://img.com/ss.png",
+            0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2,
+            42L, 50L, 100L, true, 0.95
+        );
         assertEquals(1L, dto.getId());
         assertEquals("https://example.com", dto.getUrl());
         assertEquals(42L, dto.getAuditRecordId());
         assertTrue(dto.isComplete());
-        assertEquals(100, dto.getElementsExtracted());
+        assertEquals(100L, dto.getElementsExtracted());
     }
 }

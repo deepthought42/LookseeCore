@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import com.looksee.models.ColorData;
 import com.looksee.models.audit.Audit;
+import com.looksee.models.audit.AuditScore;
 import com.looksee.models.audit.messages.UXIssueMessage;
 import com.looksee.models.enums.*;
 
@@ -17,57 +18,44 @@ import com.looksee.models.enums.*;
 class AuditUtilsTest {
 
     @Test
-    void calculateOverallScoreWithEmptyAudits() {
+    void calculateScoreWithEmptyAudits() {
         Set<Audit> audits = new HashSet<>();
-        double score = AuditUtils.calculateOverallScore(audits);
-        assertEquals(0.0, score, 0.01);
+        double score = AuditUtils.calculateScore(audits);
+        assertEquals(-1.0, score, 0.01);
     }
 
     @Test
-    void calculateOverallScoreWithAudits() {
+    void calculateScoreWithAudits() {
         Set<Audit> audits = new HashSet<>();
         audits.add(createAudit(AuditCategory.CONTENT, AuditSubcategory.WRITTEN_CONTENT, AuditName.PARAGRAPHING, 8, 10));
         audits.add(createAudit(AuditCategory.AESTHETICS, AuditSubcategory.COLOR_MANAGEMENT, AuditName.COLOR_PALETTE, 6, 10));
-        double score = AuditUtils.calculateOverallScore(audits);
-        assertTrue(score >= 0.0 && score <= 1.0);
+        double score = AuditUtils.calculateScore(audits);
+        assertTrue(score >= 0.0 && score <= 100.0);
     }
 
     @Test
-    void calculateScoreByCategoryWithEmptyAudits() {
+    void calculateScoreWithZeroPointAudits() {
         Set<Audit> audits = new HashSet<>();
-        double score = AuditUtils.calculateScoreByCategory(audits, AuditCategory.CONTENT);
-        assertEquals(0.0, score, 0.01);
+        audits.add(createAudit(AuditCategory.CONTENT, AuditSubcategory.WRITTEN_CONTENT, AuditName.PARAGRAPHING, 0, 0));
+        double score = AuditUtils.calculateScore(audits);
+        assertEquals(-1.0, score, 0.01); // filtered out because totalPossiblePoints == 0
     }
 
     @Test
-    void calculateScoreByCategoryWithMatchingAudits() {
+    void extractAuditScoreWithEmptyAudits() {
+        Set<Audit> audits = new HashSet<>();
+        AuditScore score = AuditUtils.extractAuditScore(audits);
+        assertNotNull(score);
+    }
+
+    @Test
+    void extractAuditScoreWithAudits() {
         Set<Audit> audits = new HashSet<>();
         audits.add(createAudit(AuditCategory.CONTENT, AuditSubcategory.WRITTEN_CONTENT, AuditName.PARAGRAPHING, 8, 10));
-        audits.add(createAudit(AuditCategory.CONTENT, AuditSubcategory.WRITTEN_CONTENT, AuditName.READING_COMPLEXITY, 5, 10));
-        double score = AuditUtils.calculateScoreByCategory(audits, AuditCategory.CONTENT);
-        assertTrue(score >= 0.0 && score <= 1.0);
-    }
-
-    @Test
-    void calculateScoreBySubcategoryWithEmptyAudits() {
-        Set<Audit> audits = new HashSet<>();
-        double score = AuditUtils.calculateScoreBySubcategory(audits, AuditSubcategory.WRITTEN_CONTENT);
-        assertEquals(0.0, score, 0.01);
-    }
-
-    @Test
-    void calculateScoreByNameWithEmptyAudits() {
-        Set<Audit> audits = new HashSet<>();
-        double score = AuditUtils.calculateScoreByName(audits, AuditName.ALT_TEXT);
-        assertEquals(0.0, score, 0.01);
-    }
-
-    @Test
-    void calculateProgressByCategory() {
-        Set<Audit> audits = new HashSet<>();
-        // Empty set should return 0
-        double progress = AuditUtils.calculateProgressByCategory(audits, AuditCategory.CONTENT, 5);
-        assertEquals(0.0, progress, 0.01);
+        audits.add(createAudit(AuditCategory.AESTHETICS, AuditSubcategory.COLOR_MANAGEMENT, AuditName.COLOR_PALETTE, 6, 10));
+        audits.add(createAudit(AuditCategory.ACCESSIBILITY, AuditSubcategory.TEXT_CONTRAST, AuditName.TEXT_BACKGROUND_CONTRAST, 9, 10));
+        AuditScore score = AuditUtils.extractAuditScore(audits);
+        assertNotNull(score);
     }
 
     @Test

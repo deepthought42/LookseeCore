@@ -2,6 +2,8 @@ package com.looksee.models.message;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.Test;
 
 import com.looksee.models.enums.*;
@@ -13,9 +15,19 @@ class MessageClassesTest {
 
     // ===== AuditError =====
     @Test
-    void auditErrorConstructorAndGetters() {
-        AuditError error = new AuditError();
-        assertNotNull(error);
+    void auditErrorConstructor() {
+        AuditError error = new AuditError(1L, 2L, "something failed", AuditCategory.CONTENT, 0.5);
+        assertEquals("something failed", error.getErrorMessage());
+        assertEquals(AuditCategory.CONTENT, error.getAuditCategory());
+        assertEquals(0.5, error.getProgress());
+        assertEquals(2L, error.getAuditRecordId());
+    }
+
+    @Test
+    void auditErrorInvalidProgress() {
+        assertThrows(IllegalArgumentException.class, () ->
+            new AuditError(1L, 2L, "err", AuditCategory.CONTENT, 1.5)
+        );
     }
 
     // ===== AuditProgressUpdate =====
@@ -97,8 +109,10 @@ class MessageClassesTest {
 
     // ===== AuditSetMessage =====
     @Test
-    void auditSetMessageDefaultConstructor() {
-        AuditSetMessage msg = new AuditSetMessage();
+    void auditSetMessageConstructor() {
+        AuditSetMessage msg = new AuditSetMessage(1L, new ArrayList<>(), "https://example.com");
         assertNotNull(msg);
+        assertEquals("https://example.com", msg.getUrl());
+        assertNotNull(msg.getAudits());
     }
 }

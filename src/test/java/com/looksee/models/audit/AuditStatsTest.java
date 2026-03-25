@@ -24,11 +24,18 @@ class AuditStatsTest {
         stats.setContentScore(0.9);
         stats.setAccessibilityScore(0.8);
         stats.setAestheticScore(0.7);
-        stats.setInfoArchScore(0.6);
+        stats.setInfoArchitectureScore(0.6);
         assertEquals(0.9, stats.getContentScore());
         assertEquals(0.8, stats.getAccessibilityScore());
         assertEquals(0.7, stats.getAestheticScore());
-        assertEquals(0.6, stats.getInfoArchScore());
+        assertEquals(0.6, stats.getInfoArchitectureScore());
+    }
+
+    @Test
+    void pageAuditStatsWithRecordId() {
+        PageAuditStats stats = new PageAuditStats(42L);
+        assertEquals(42L, stats.getAuditRecordId());
+        assertNotNull(stats.getStartTime());
     }
 
     // ===== DomainAuditStats =====

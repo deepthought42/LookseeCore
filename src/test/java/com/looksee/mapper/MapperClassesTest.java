@@ -14,24 +14,27 @@ class MapperClassesTest {
     void bodyDefaultConstructor() {
         Body body = new Body();
         assertNotNull(body);
+        assertNull(body.getMessage());
     }
 
     @Test
-    void bodySetters() {
+    void bodySetMessage() {
         Body body = new Body();
-        body.setSubscription("test-sub");
-        assertEquals("test-sub", body.getSubscription());
+        // Body.Message is an inner class, needs enclosing instance
+        Body.Message msg = body.new Message("msg123", "2024-01-01T00:00:00Z", "dGVzdA==");
+        body.setMessage(msg);
+        assertNotNull(body.getMessage());
+        assertEquals("msg123", body.getMessage().getMessageId());
+        assertEquals("2024-01-01T00:00:00Z", body.getMessage().getPublishTime());
+        assertEquals("dGVzdA==", body.getMessage().getData());
     }
 
     @Test
-    void bodyMessageSetters() {
-        Body.Message msg = new Body.Message();
-        msg.setData("dGVzdA=="); // base64 for "test"
-        msg.setMessageId("msg123");
-        msg.setPublishTime("2024-01-01T00:00:00Z");
-        assertEquals("dGVzdA==", msg.getData());
-        assertEquals("msg123", msg.getMessageId());
-        assertEquals("2024-01-01T00:00:00Z", msg.getPublishTime());
+    void bodyMessageDefaultConstructor() {
+        Body body = new Body();
+        Body.Message msg = body.new Message();
+        assertNull(msg.getMessageId());
+        assertNull(msg.getData());
     }
 
     // ===== Base64StringDeserializer =====

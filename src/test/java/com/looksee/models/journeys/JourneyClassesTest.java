@@ -19,15 +19,19 @@ class JourneyClassesTest {
     void journeyDefaultConstructor() {
         Journey journey = new Journey();
         assertNotNull(journey);
+        assertNotNull(journey.getSteps());
+        assertNotNull(journey.getOrderedIds());
+        assertNotNull(journey.getKey());
     }
 
     @Test
     void journeyParameterizedConstructor() {
         List<Step> steps = new ArrayList<>();
-        Journey journey = new Journey(steps, JourneyStatus.CANDIDATE, "https://example.com");
+        Journey journey = new Journey(steps, JourneyStatus.CANDIDATE);
         assertEquals(JourneyStatus.CANDIDATE, journey.getStatus());
-        assertEquals("https://example.com", journey.getUrl());
         assertNotNull(journey.getSteps());
+        assertNotNull(journey.getKey());
+        assertNotNull(journey.getCandidateKey());
     }
 
     @Test
@@ -35,6 +39,21 @@ class JourneyClassesTest {
         Journey journey = new Journey();
         journey.setStatus(JourneyStatus.VERIFIED);
         assertEquals(JourneyStatus.VERIFIED, journey.getStatus());
+    }
+
+    @Test
+    void journeyGenerateKey() {
+        Journey journey = new Journey();
+        String key = journey.generateKey();
+        assertNotNull(key);
+        assertTrue(key.startsWith("journey"));
+    }
+
+    @Test
+    void journeyClone() {
+        Journey original = new Journey();
+        Journey clone = original.clone();
+        assertNotSame(original, clone);
     }
 
     // ===== DomainMap =====

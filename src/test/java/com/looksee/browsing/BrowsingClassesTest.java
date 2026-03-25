@@ -6,8 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 
-import com.looksee.models.Element;
-
 /**
  * Unit tests for browsing package classes.
  */
@@ -64,37 +62,24 @@ class BrowsingClassesTest {
 
     // ===== ValueDomain =====
     @Test
-    void valueDomainGetRandomNumber() {
+    void valueDomainDefaultConstructor() {
         ValueDomain domain = new ValueDomain();
-        String result = domain.getRandomNumber(5);
-        assertNotNull(result);
-        assertEquals(5, result.length());
-        assertTrue(result.matches("[0-9]+"));
+        assertNotNull(domain.getValues());
+        assertFalse(domain.getValues().isEmpty()); // contains empty string
     }
 
     @Test
-    void valueDomainGetRandomDecimal() {
+    void valueDomainGenerateAllValueTypes() {
         ValueDomain domain = new ValueDomain();
-        String result = domain.getRandomDecimal(5);
-        assertNotNull(result);
-        assertTrue(result.contains("."));
+        int initialSize = domain.getValues().size();
+        domain.addRandomRealNumbers();
+        assertTrue(domain.getValues().size() > initialSize);
     }
 
     @Test
-    void valueDomainGetRandomAlphabeticString() {
+    void valueDomainToString() {
         ValueDomain domain = new ValueDomain();
-        String result = domain.getRandomAlphabeticString(8);
-        assertNotNull(result);
-        assertEquals(8, result.length());
-        assertTrue(result.matches("[a-zA-Z]+"));
-    }
-
-    @Test
-    void valueDomainGetRandomSpecialCharacterString() {
-        ValueDomain domain = new ValueDomain();
-        String result = domain.getRandomSpecialCharacterString(5);
-        assertNotNull(result);
-        assertEquals(5, result.length());
+        assertEquals("", domain.toString());
     }
 
     // ===== Row =====

@@ -2,17 +2,19 @@ package com.looksee.models.audit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.HashSet;
+
 import org.junit.jupiter.api.Test;
 
 import com.looksee.models.audit.messages.*;
 import com.looksee.models.audit.recommend.*;
+import com.looksee.models.enums.Priority;
 
 /**
  * Unit tests for audit message and recommendation classes.
  */
 class AuditMessagesTest {
 
-    // ===== UXIssueMessage subclasses =====
     @Test
     void elementStateIssueMessageDefaultConstructor() {
         ElementStateIssueMessage msg = new ElementStateIssueMessage();
@@ -62,8 +64,10 @@ class AuditMessagesTest {
     }
 
     @Test
-    void stylingMissingIssueMessageDefaultConstructor() {
-        StylingMissingIssueMessage msg = new StylingMissingIssueMessage();
+    void stylingMissingIssueMessageConstructor() {
+        StylingMissingIssueMessage msg = new StylingMissingIssueMessage(
+            "Missing padding", new HashSet<>(), Priority.HIGH
+        );
         assertNotNull(msg);
     }
 
