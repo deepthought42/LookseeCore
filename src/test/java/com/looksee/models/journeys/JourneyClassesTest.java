@@ -51,7 +51,8 @@ class JourneyClassesTest {
 
     @Test
     void journeyClone() {
-        Journey original = new Journey();
+        List<Step> steps = new ArrayList<>();
+        Journey original = new Journey(steps, JourneyStatus.VERIFIED);
         Journey clone = original.clone();
         assertNotSame(original, clone);
     }

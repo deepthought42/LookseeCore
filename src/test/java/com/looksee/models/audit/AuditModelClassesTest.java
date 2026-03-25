@@ -147,10 +147,15 @@ class AuditModelClassesTest {
 
     @Test
     void auditRecordClone() {
-        AuditRecord original = new AuditRecord();
-        original.setStatus(ExecutionStatus.COMPLETE);
+        LocalDateTime now = LocalDateTime.now();
+        AuditRecord original = new AuditRecord(
+            1L, ExecutionStatus.COMPLETE, AuditLevel.PAGE, "key1",
+            now, 0.5, 0.6, 0.7, 0.8, 0.9, 0.4, 0.3,
+            now, now.plusHours(1), "https://example.com"
+        );
         AuditRecord clone = original.clone();
         assertEquals(original.getStatus(), clone.getStatus());
+        assertEquals(original.getUrl(), clone.getUrl());
     }
 
     // ===== PageAuditRecord =====

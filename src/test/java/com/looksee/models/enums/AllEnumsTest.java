@@ -122,8 +122,8 @@ class AllEnumsTest {
     }
 
     @Test
-    void auditLevelCreateNullThrows() {
-        assertThrows(IllegalArgumentException.class, () -> AuditLevel.create(null));
+    void auditLevelCreateNullReturnsUnknown() {
+        assertEquals(AuditLevel.UNKNOWN, AuditLevel.create(null));
     }
 
     // ===== AuditName =====
@@ -152,8 +152,8 @@ class AllEnumsTest {
     }
 
     @Test
-    void auditPhaseCreateNullThrows() {
-        assertThrows(IllegalArgumentException.class, () -> AuditPhase.create(null));
+    void auditPhaseCreateNullReturnsUnknown() {
+        assertEquals(AuditPhase.UNKNOWN, AuditPhase.create(null));
     }
 
     // ===== AuditStage =====
@@ -165,8 +165,8 @@ class AllEnumsTest {
     }
 
     @Test
-    void auditStageCreateNullThrows() {
-        assertThrows(IllegalArgumentException.class, () -> AuditStage.create(null));
+    void auditStageCreateNullReturnsUnknown() {
+        assertEquals(AuditStage.UNKNOWN, AuditStage.create(null));
     }
 
     // ===== AuditStatus =====
@@ -210,8 +210,8 @@ class AllEnumsTest {
     }
 
     @Test
-    void auditTypeCreateNullThrows() {
-        assertThrows(IllegalArgumentException.class, () -> AuditType.create(null));
+    void auditTypeCreateNullReturnsUnknown() {
+        assertEquals(AuditType.UNKNOWN, AuditType.create(null));
     }
 
     // ===== AudienceProficiency =====
@@ -281,8 +281,8 @@ class AllEnumsTest {
     }
 
     @Test
-    void captchaResultCreateNullThrows() {
-        assertThrows(IllegalArgumentException.class, () -> CaptchaResult.create(null));
+    void captchaResultCreateNullReturnsUnset() {
+        assertEquals(CaptchaResult.CAPTCHA_UNSET, CaptchaResult.create(null));
     }
 
     // ===== ColorScheme =====
@@ -299,8 +299,8 @@ class AllEnumsTest {
     }
 
     @Test
-    void colorSchemeCreateNullThrows() {
-        assertThrows(IllegalArgumentException.class, () -> ColorScheme.create(null));
+    void colorSchemeCreateNullReturnsUnknown() {
+        assertEquals(ColorScheme.UNKNOWN, ColorScheme.create(null));
     }
 
     // ===== CrawlAction =====
@@ -483,8 +483,8 @@ class AllEnumsTest {
     }
 
     @Test
-    void observationTypeCreateNullThrows() {
-        assertThrows(IllegalArgumentException.class, () -> ObservationType.create(null));
+    void observationTypeCreateNullReturnsUnknown() {
+        assertEquals(ObservationType.UNKNOWN, ObservationType.create(null));
     }
 
     // ===== PathStatus =====

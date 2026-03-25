@@ -203,7 +203,7 @@ class ExceptionClassesTest {
     @Test
     void ruleValueRequiredExceptionMessage() {
         RuleValueRequiredException e = new RuleValueRequiredException(RuleType.PATTERN);
-        assertTrue(e.getMessage().contains("PATTERN"));
+        assertTrue(e.getMessage().contains("pattern"));
         assertTrue(e.getMessage().contains("requires a value"));
     }
 
