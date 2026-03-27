@@ -1073,11 +1073,15 @@ public class BrowserUtils {
 	 *
 	 * precondition: sanitized_url != null
 	 * precondition: !sanitized_url.isEmpty()
+	 * precondition: host != null
+	 * precondition: !host.isEmpty()
 	 */
 	public static boolean isValidUrl(String sanitized_url, String host)
 	{
 		assert sanitized_url != null;
 		assert !sanitized_url.isEmpty();
+		assert host != null;
+		assert !host.isEmpty();
 
 		if(BrowserUtils.isFile(sanitized_url)
 			|| BrowserUtils.isJavascript(sanitized_url)

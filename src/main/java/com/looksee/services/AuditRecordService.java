@@ -346,6 +346,9 @@ public class AuditRecordService {
 	 *
 	 * @param audit_record_key the key of the audit record
 	 * @return the set of margin audits
+	 *
+	 * precondition: audit_record_key != null
+	 * precondition: !audit_record_key.isEmpty()
 	 */
 	public Set<Audit> getAllMarginAudits(String audit_record_key) {
 		assert audit_record_key != null;
@@ -359,6 +362,9 @@ public class AuditRecordService {
 	 *
 	 * @param audit_record_key the key of the audit record
 	 * @return the set of page padding audits
+	 *
+	 * precondition: audit_record_key != null
+	 * precondition: !audit_record_key.isEmpty()
 	 */
 	public Set<Audit> getAllPagePaddingAudits(String audit_record_key) {
 		assert audit_record_key != null;
@@ -372,6 +378,9 @@ public class AuditRecordService {
 	 *
 	 * @param audit_record_key the key of the audit record
 	 * @return the set of page paragraphing audits
+	 *
+	 * precondition: audit_record_key != null
+	 * precondition: !audit_record_key.isEmpty()
 	 */
 	public Set<Audit> getAllPageParagraphingAudits(String audit_record_key) {
 		assert audit_record_key != null;
@@ -385,8 +394,12 @@ public class AuditRecordService {
 	 *
 	 * @param audit_record_id the id of the audit record
 	 * @return the set of page audits
+	 *
+	 * precondition: audit_record_id > 0
 	 */
 	public Set<PageAuditRecord> getAllPageAudits(long audit_record_id) {
+		assert audit_record_id > 0;
+
 		return audit_record_repo.getAllPageAudits(audit_record_id);
 	}
 
@@ -395,8 +408,12 @@ public class AuditRecordService {
 	 *
 	 * @param page_audit_id the id of the page audit record
 	 * @return the set of audits
+	 *
+	 * precondition: page_audit_id > 0
 	 */
 	public Set<Audit> getAllAuditsForPageAuditRecord(long page_audit_id) {
+		assert page_audit_id > 0;
+
 		return audit_record_repo.getAllAuditsForPageAuditRecord( page_audit_id);
 	}
 
@@ -406,10 +423,12 @@ public class AuditRecordService {
 	 * @param domain_audit_record_id the id of the domain audit record
 	 * @param page_audit_record_key the key of the page audit record
 	 *
+	 * precondition: domain_audit_record_id > 0
 	 * precondition: page_audit_record_key != null
 	 * precondition: !page_audit_record_key.isEmpty()
 	 */
 	public void addPageAuditToDomainAudit(long domain_audit_record_id, String page_audit_record_key) {
+		assert domain_audit_record_id > 0;
 		assert page_audit_record_key != null;
 		assert !page_audit_record_key.isEmpty();
 		
@@ -422,8 +441,14 @@ public class AuditRecordService {
 	 *
 	 * @param domain_audit_id the id of the domain audit
 	 * @param page_audit_id the id of the page audit
+	 *
+	 * precondition: domain_audit_id > 0
+	 * precondition: page_audit_id > 0
 	 */
 	public void addPageAuditToDomainAudit(long domain_audit_id, long page_audit_id) {
+		assert domain_audit_id > 0;
+		assert page_audit_id > 0;
+
 		audit_record_repo.addPageAuditRecord(domain_audit_id, page_audit_id);
 	}
 
@@ -448,6 +473,9 @@ public class AuditRecordService {
 	 *
 	 * @param page_audit_key the key of the page audit record
 	 * @return the page state
+	 *
+	 * precondition: page_audit_key != null
+	 * precondition: !page_audit_key.isEmpty()
 	 */
 	public PageState getPageStateForAuditRecord(String page_audit_key) {
 		assert page_audit_key != null;
@@ -461,8 +489,12 @@ public class AuditRecordService {
 	 *
 	 * @param id the id of the domain record
 	 * @return the set of content audits
+	 *
+	 * precondition: id > 0
 	 */
 	public Set<Audit> getAllContentAuditsForDomainRecord(long id) {
+		assert id > 0;
+
 		return audit_record_repo.getAllContentAuditsForDomainRecord(id);
 	}
 
@@ -471,8 +503,12 @@ public class AuditRecordService {
 	 *
 	 * @param id the id of the domain record
 	 * @return the set of information architecture audits
+	 *
+	 * precondition: id > 0
 	 */
 	public Set<Audit> getAllInformationArchitectureAuditsForDomainRecord(long id) {
+		assert id > 0;
+
 		return audit_record_repo.getAllInformationArchitectureAuditsForDomainRecord(id);
 	}
 
@@ -481,8 +517,12 @@ public class AuditRecordService {
 	 *
 	 * @param id the id of the domain record
 	 * @return the set of accessibility audits
+	 *
+	 * precondition: id > 0
 	 */
 	public Set<Audit> getAllAccessibilityAuditsForDomainRecord(long id) {
+		assert id > 0;
+
 		return audit_record_repo.getAllAccessibilityAuditsForDomainRecord(id);
 	}
 
@@ -491,8 +531,12 @@ public class AuditRecordService {
 	 *
 	 * @param id the id of the domain record
 	 * @return the set of aesthetic audits
+	 *
+	 * precondition: id > 0
 	 */
 	public Set<Audit> getAllAestheticAuditsForDomainRecord(long id) {
+		assert id > 0;
+
 		return audit_record_repo.getAllAestheticsAuditsForDomainRecord(id);
 	}
 
@@ -501,8 +545,12 @@ public class AuditRecordService {
 	 *
 	 * @param audit_record_id the id of the audit record
 	 * @return the set of content audits
+	 *
+	 * precondition: audit_record_id > 0
 	 */
 	public Set<Audit> getAllContentAudits(long audit_record_id) {
+		assert audit_record_id > 0;
+
 		return audit_record_repo.getAllContentAudits(audit_record_id);
 	}
 
@@ -511,8 +559,12 @@ public class AuditRecordService {
 	 *
 	 * @param id the id of the audit record
 	 * @return the set of information architecture audits
+	 *
+	 * precondition: id > 0
 	 */
 	public Set<Audit> getAllInformationArchitectureAudits(long id) {
+		assert id > 0;
+
 		return audit_record_repo.getAllInformationArchitectureAudits(id);
 	}
 
@@ -537,8 +589,12 @@ public class AuditRecordService {
 	 *
 	 * @param id the id of the audit record
 	 * @return the set of aesthetic audits
+	 *
+	 * precondition: id > 0
 	 */
 	public Set<Audit> getAllAestheticAudits(long id) {
+		assert id > 0;
+
 		return audit_record_repo.getAllAestheticsAudits(id);
 	}
 
@@ -547,8 +603,12 @@ public class AuditRecordService {
 	 *
 	 * @param page_audit_id the id of the page audit record
 	 * @return the page state
+	 *
+	 * precondition: page_audit_id > 0
 	 */
 	public PageState getPageStateForAuditRecord(long page_audit_id) {
+		assert page_audit_id > 0;
+
 		return audit_record_repo.getPageStateForAuditRecord(page_audit_id);
 	}
 
