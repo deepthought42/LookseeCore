@@ -1499,6 +1499,8 @@ public class BrowserService {
 	 * @throws IllegalArgumentException if list_elements_list is null
 	 */
 	public Map<String, Template> reduceTemplatesToParents(Map<String, Template> list_elements_list) {
+		assert list_elements_list != null;
+
 		Map<String, Template> element_map = new HashMap<>();
 		List<Template> template_list = new ArrayList<>(list_elements_list.values());
 		//check if element is a child of another element in the list. if yes then don't add it to the list
@@ -1535,6 +1537,9 @@ public class BrowserService {
 	 * precondition: template != null
 	 */
 	public TemplateType classifyTemplate(String template){
+		assert template != null;
+		assert !template.isEmpty();
+
 		Document html_doc = Jsoup.parseBodyFragment(template);
 		Element root_element = html_doc.body();
 
@@ -1619,6 +1624,8 @@ public class BrowserService {
 	 * @return true if the list of keys contains the string "elementstate", false otherwise
 	 */
 	public static boolean testContainsElement(List<String> keys) {
+		assert keys != null;
+
 		for(String key : keys) {
 			if(key.contains("elementstate")) {
 				return true;
@@ -1695,6 +1702,9 @@ public class BrowserService {
 	 * @return a shortened unique xpath
 	 */
 	public static String uniqifyXpath(String xpath, WebDriver driver){
+		assert xpath != null;
+		assert driver != null;
+
 		try {
 			//parse xpath into array
 			String temp_xpath = xpath.substring(1);
@@ -1738,6 +1748,9 @@ public class BrowserService {
 	 * @return a shortened unique xpath
 	 */
 	public static String uniqifyXpath(String xpath, Document html_doc){
+		assert xpath != null;
+		assert html_doc != null;
+
 		try {
 			String temp_xpath = xpath.substring(1);
 			String[] xpath_arr = temp_xpath.split("/");
@@ -1797,6 +1810,9 @@ public class BrowserService {
 	 * @return The host name without protocol or path
 	 */
 	public static String extractHost(String urlString) {
+		assert urlString != null;
+		assert !urlString.isEmpty();
+
 		try {
 			URL url = new URL(urlString);
 			return url.getHost();
@@ -1812,6 +1828,8 @@ public class BrowserService {
 	 * @return a set of metadata
 	 */
 	public static Set<String> extractMetadata(Document html_doc) {
+		assert html_doc != null;
+
 		Elements meta_tags = html_doc.getElementsByTag("meta");
 		Set<String> meta_tag_html = new HashSet<String>();
 		

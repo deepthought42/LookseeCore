@@ -95,6 +95,9 @@ public class PageStateService {
 	 * precondition: !page_key.isEmpty()
 	 */
 	public PageState findByKey(String page_key) {
+		assert page_key != null;
+		assert !page_key.isEmpty();
+
 		PageState page_state = page_state_repo.findByKey(page_key);
 		if(page_state != null){
 			page_state.setElements(getElementStates(page_key));
@@ -455,6 +458,8 @@ public class PageStateService {
 	 * precondition: audit_record_id > 0
 	 */
     public PageState getPageStateForAuditRecord(long audit_record_id) {
+		assert audit_record_id > 0;
+
         return page_state_repo.getPageStateForAuditRecord(audit_record_id);
     }
 
@@ -466,7 +471,8 @@ public class PageStateService {
 	 * precondition: id > 0
 	 */
 	public PageAuditRecord getAuditRecord(long id) {
-		
+		assert id > 0;
+
 		return audit_record_repo.getAuditRecord(id);
 	}
 
@@ -478,6 +484,8 @@ public class PageStateService {
 	 * precondition: page_id > 0
 	 */
 	public int getElementStateCount(long page_id) {
+		assert page_id > 0;
+
 		return element_state_repo.getElementStateCount(page_id);
 	}
 
@@ -490,6 +498,10 @@ public class PageStateService {
 	 * precondition: domain_map_id > 0
 	 */
 	public PageState findPageInDomainMap(long domain_map_id, String page_key) {
+		assert domain_map_id > 0;
+		assert page_key != null;
+		assert !page_key.isEmpty();
+
 		return page_state_repo.findByDomainMap(domain_map_id, page_key);
 	}
 

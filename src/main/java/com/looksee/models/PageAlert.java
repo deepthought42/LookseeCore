@@ -40,8 +40,8 @@ public class PageAlert extends LookseeObject {
 	 * precondition: choice != null
 	 */
 	public void performChoice(WebDriver driver, AlertChoice choice){
-		assert driver != null;
-		assert choice != null;
+		assert driver != null : "driver must not be null";
+		assert choice != null : "choice must not be null";
 
 		try{
 			Alert alert = driver.switchTo().alert();
@@ -75,7 +75,7 @@ public class PageAlert extends LookseeObject {
 	 * precondition: alert != null
 	 */
 	public static String getMessage(Alert alert) throws UnhandledAlertException{
-		assert alert != null;
+		assert alert != null : "alert must not be null";
 
 		return alert.getText(); 
 	}

@@ -267,9 +267,11 @@ public class BrowserUtils {
 	 * @return true if it contains a valid host format, otherwise false
 	 *
 	 * precondition: link_url != null
+	 * precondition: !link_url.isEmpty()
 	 */
 	public static boolean containsHost(String link_url) {
 		assert link_url != null;
+		assert !link_url.isEmpty();
 		
 		String host_pattern = "([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&%$-]+)*@)*((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?)(\\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}|([a-zA-Z0-9-]+\\.)*[a-zA-Z0-9-]+\\.(com|app|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|website|space|ca|us|co|uk|cc|es|tn|dev|us|ai))(:[0-9]+)*";
 		Pattern pattern = Pattern.compile(host_pattern);
@@ -286,11 +288,15 @@ public class BrowserUtils {
 	 * @throws URISyntaxException
 	 *
 	 * precondition: domain_host != null
+	 * precondition: !domain_host.isEmpty()
 	 * precondition: new_host != null
+	 * precondition: !new_host.isEmpty()
 	 */
 	public static boolean isSubdomain(String domain_host, String new_host) throws URISyntaxException {
 		assert domain_host != null;
+		assert !domain_host.isEmpty();
 		assert new_host != null;
+		assert !new_host.isEmpty();
 		
 		boolean is_contained = new_host.contains(domain_host) || domain_host.contains(new_host);
 		boolean is_equal = new_host.equals(domain_host);
@@ -304,9 +310,11 @@ public class BrowserUtils {
 	 * @return true if the url is a file, otherwise false
 	 *
 	 * precondition: url != null
+	 * precondition: !url.isEmpty()
 	 */
 	public static boolean isFile(String url) {
 		assert url != null;
+		assert !url.isEmpty();
 		
 		return url.endsWith(".zip")
 				|| url.endsWith(".usdt")
@@ -327,9 +335,11 @@ public class BrowserUtils {
 	 * @return true if the url is a video file, otherwise false
 	 *
 	 * precondition: url != null
+	 * precondition: !url.isEmpty()
 	 */
 	public static boolean isVideoFile(String url) {
 		assert url != null;
+		assert !url.isEmpty();
 		
 		return url.endsWith(".mov")
 				|| url.endsWith(".webm")
@@ -591,9 +601,11 @@ public class BrowserUtils {
 	 * @return true if the url is an image url, otherwise false
 	 *
 	 * precondition: href != null
+	 * precondition: !href.isEmpty()
 	 */
 	public static boolean isImageUrl(String href) {
 		assert href != null;
+		assert !href.isEmpty();
 		
 		return href.endsWith(".jpg") || href.endsWith(".png") || href.endsWith(".gif") || href.endsWith(".bmp") || href.endsWith(".tiff") || href.endsWith(".webp") || href.endsWith(".bpg") || href.endsWith(".heif");
 	}
@@ -700,9 +712,11 @@ public class BrowserUtils {
 	 * @return true if the font weight is bold, otherwise false
 	 *
 	 * precondition: font_weight != null
+	 * precondition: !font_weight.isEmpty()
 	 */
 	public static boolean isTextBold(String font_weight) {
 		assert font_weight != null;
+		assert !font_weight.isEmpty();
 		
 		return font_weight.contentEquals("bold")
 				|| font_weight.contentEquals("bolder")
@@ -925,9 +939,11 @@ public class BrowserUtils {
 	 * @return true if the url is a javascript url, otherwise false
 	 *
 	 * precondition: href != null
+	 * precondition: !href.isEmpty()
 	 */
 	public static boolean isJavascript(String href) {
 		assert href != null;
+		assert !href.isEmpty();
 		
 		return href.startsWith("javascript:");
 	}

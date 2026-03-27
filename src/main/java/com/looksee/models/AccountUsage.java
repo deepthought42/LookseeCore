@@ -78,8 +78,8 @@ public class AccountUsage {
 						Date currentDiscoveryStart,
 						long discoveryRunTime,
 						Date timestampOfLastDiscoveredTest){
-		assert currentDiscoveryStart != null;
-		assert timestampOfLastDiscoveredTest != null;
+		assert currentDiscoveryStart != null : "currentDiscoveryStart must not be null";
+		assert timestampOfLastDiscoveredTest != null : "timestampOfLastDiscoveredTest must not be null";
 
 		this.setDiscoveryLimit(discoveryLimit);
 		this.setDiscoveriesUsed(discoveriesUsed);

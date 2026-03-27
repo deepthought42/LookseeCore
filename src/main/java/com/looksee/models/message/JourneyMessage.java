@@ -28,6 +28,10 @@ public class JourneyMessage extends Message {
 	 * @param browserType the browser type
 	 * @param accountId the account id
 	 * @param auditRecordId the audit record id
+	 *
+	 * @precondition journey != null
+	 * @precondition status != null
+	 * @precondition browserType != null
 	 */
 	public JourneyMessage(Journey journey,
 						JourneyStatus status,
@@ -36,6 +40,11 @@ public class JourneyMessage extends Message {
 						long auditRecordId)
 	{
 		super(accountId);
+
+		assert journey != null : "journey must not be null";
+		assert status != null : "status must not be null";
+		assert browserType != null : "browserType must not be null";
+
 		setJourney(journey);
 		setStatus(status);
 		setBrowser(browserType);

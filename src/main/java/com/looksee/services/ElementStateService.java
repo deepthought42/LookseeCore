@@ -67,10 +67,12 @@ public class ElementStateService {
 	 * @param element element state
 	 * @return saved element state
 	 *
+	 * precondition: page_state_id > 0
 	 * precondition: element != null
 	 */
 	@Retryable
 	public ElementState save(long page_state_id, ElementState element) {
+		assert page_state_id > 0;
 		assert element != null;
 
 		ElementState element_record = element_repo.findByPageStateAndKey(page_state_id, element.getKey());
