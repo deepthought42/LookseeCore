@@ -18,8 +18,12 @@ public class RecommendationService {
 	 * Saves a recommendation
 	 * @param rec the recommendation to save
 	 * @return the saved recommendation
+	 *
+	 * precondition: rec != null
 	 */
 	public Recommendation save(Recommendation rec) {
+		assert rec != null;
+
 		return recommendation_repo.save(rec);
 	}
 }

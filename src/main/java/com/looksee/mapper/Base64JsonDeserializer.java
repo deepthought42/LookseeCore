@@ -28,12 +28,29 @@ public class Base64JsonDeserializer extends JsonDeserializer<Object> implements 
      */
     @Override
     public JsonDeserializer<?> createContextual(DeserializationContext context, BeanProperty property) throws JsonMappingException {
+        assert context != null : "context must not be null";
+        assert property != null : "property must not be null";
+
         this.resultClass = property.getType().getRawClass();
         return this;
     }
 
+    /**
+     * Deserializes a base64 encoded JSON string into the target class type.
+     *
+     * @param parser the JSON parser
+     * @param context the deserialization context
+     * @return the deserialized object
+     * @throws IOException if an I/O error occurs
+     * @throws JsonProcessingException if a JSON processing error occurs
+     *
+     * precondition: parser != null
+     * precondition: context != null
+     */
     @Override
     public Object deserialize(JsonParser parser, DeserializationContext context) throws IOException, JsonProcessingException {
+        assert parser != null : "parser must not be null";
+        assert context != null : "context must not be null";
         String value = parser.getValueAsString();
         Base64.Decoder decoder = Base64.getDecoder();
 

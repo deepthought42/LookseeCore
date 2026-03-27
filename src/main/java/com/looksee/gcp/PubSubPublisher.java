@@ -29,6 +29,7 @@ public abstract class PubSubPublisher {
      * @param audit_record_json the message to publish
      *
      * precondition: audit_record_json != null
+     * precondition: !audit_record_json.isEmpty()
      * @throws ExecutionException if an error occurs
      * @throws InterruptedException if the thread is interrupted
      *
@@ -36,6 +37,7 @@ public abstract class PubSubPublisher {
      */
     public void publish(String audit_record_json) throws ExecutionException, InterruptedException {
         assert audit_record_json != null;
+        assert !audit_record_json.isEmpty();
         pubSubTemplate.publish(topic(), audit_record_json).get();
     }
 }

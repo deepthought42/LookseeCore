@@ -25,6 +25,9 @@ public class AssetSize extends AuditDetail {
 	 * precondition: total_bytes > 0
 	 */
 	public AssetSize(String url, Integer total_bytes) {
+		assert url != null : "url must not be null";
+		assert total_bytes != null : "total_bytes must not be null";
+
 		setUrl(url);
 		setTotalBytes(total_bytes);
 	}

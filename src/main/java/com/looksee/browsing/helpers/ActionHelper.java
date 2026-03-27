@@ -67,11 +67,16 @@ public class ActionHelper {
 	
 	/**
 	 * Gets the order of operation for an action
-	 * 
+	 *
 	 * @param actionName name of the action
 	 * @return {@link Integer} representing the order of operation
+	 *
+	 * precondition: actionName != null
+	 * precondition: !actionName.isEmpty()
 	 */
 	public static Integer getOrderOfOperationForAction(String actionName){
+		assert actionName != null;
+		assert !actionName.isEmpty();
 		return actionOrderOfOperationsMap.get(actionName);
 	}
 }

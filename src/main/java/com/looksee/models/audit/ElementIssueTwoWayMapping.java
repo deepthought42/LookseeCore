@@ -33,6 +33,13 @@ public class ElementIssueTwoWayMapping {
 	 * @param element_issues the element issues
 	 * @param audit_score the audit score
 	 * @param page_src the page source
+	 *
+	 * precondition: issues != null
+	 * precondition: elements != null
+	 * precondition: issue_element_map != null
+	 * precondition: element_issues != null
+	 * precondition: audit_score != null
+	 * precondition: page_src != null
 	 */
 	 public ElementIssueTwoWayMapping(
 			Collection<? extends UXIssueMessage> issues,
@@ -42,6 +49,13 @@ public class ElementIssueTwoWayMapping {
 			AuditScore audit_score,
 			String page_src
 	) {
+		assert issues != null;
+		assert elements != null;
+		assert issue_element_map != null;
+		assert element_issues != null;
+		assert audit_score != null;
+		assert page_src != null;
+
 		setIssues(issues);
 		setElements(elements);
 		setIssuesElementMap(issue_element_map);

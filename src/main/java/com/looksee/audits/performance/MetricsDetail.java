@@ -115,6 +115,13 @@ public class MetricsDetail extends AuditDetail {
 			Integer observedLastVisualChange,
 			Boolean lcpInvalidated
 	) {
+		assert firstContentfulPaint != null : "firstContentfulPaint must not be null";
+		assert observedFirstPaintTs != null : "observedFirstPaintTs must not be null";
+		assert speedIndex != null : "speedIndex must not be null";
+		assert observedSpeedIndexTs != null : "observedSpeedIndexTs must not be null";
+		assert observedFirstContentfulPaint != null : "observedFirstContentfulPaint must not be null";
+		assert observedNavigationStartTs != null : "observedNavigationStartTs must not be null";
+
 		setFirstContentfulPaint(firstContentfulPaint);
 		setObservedFirstContentfulPaint(observedFirstContentfulPaint);
 		setEstimatedInputLatency(estimatedInputLatency);

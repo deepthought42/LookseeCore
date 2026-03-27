@@ -116,6 +116,9 @@ public class SubscriptionService {
 	 * precondition: domain_audit_cnt >= 0
 	 */
 	public boolean hasExceededDomainAuditLimit(SubscriptionPlan plan, int domain_audit_cnt) {
+		assert plan != null;
+		assert domain_audit_cnt >= 0;
+
 		if(plan.equals(SubscriptionPlan.FREE) && domain_audit_cnt >= 5){
 			return true;
 		}

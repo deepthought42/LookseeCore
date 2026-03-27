@@ -42,6 +42,10 @@ public class AuditStartMessage extends Message{
 	 * @param audit_id the audit id
 	 * @param type the audit type
 	 * @param account_id the account id
+	 *
+	 * @precondition url != null
+	 * @precondition browser != null
+	 * @precondition type != null
 	 */
 	public AuditStartMessage(String url,
 							BrowserType browser,
@@ -49,6 +53,10 @@ public class AuditStartMessage extends Message{
 							AuditLevel type,
 							long account_id)
 	{
+		assert url != null : "url must not be null";
+		assert browser != null : "browser must not be null";
+		assert type != null : "type must not be null";
+
 		setUrl(url);
 		setBrowser(browser);
 		setAuditId(audit_id);

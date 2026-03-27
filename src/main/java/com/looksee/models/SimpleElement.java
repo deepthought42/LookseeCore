@@ -5,7 +5,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Stores a simple element
+ * Stores a simple element.
+ *
+ * invariant: key != null
+ * invariant: cssSelector != null
  */
 @Getter
 @Setter
@@ -36,6 +39,9 @@ public class SimpleElement {
 	 * @param text the text of the simple element
 	 * @param is_image_flagged the image flagged of the simple element
 	 * @param is_adult_content the adult content of the simple element
+	 *
+	 * precondition: key != null
+	 * precondition: css_selector != null
 	 */
 	public SimpleElement(String key,
 						String screenshot_url,
@@ -47,6 +53,8 @@ public class SimpleElement {
 						String text,
 						boolean is_image_flagged,
 						boolean is_adult_content) {
+		assert key != null;
+		assert css_selector != null;
 		setKey(key);
 		setScreenshotUrl(screenshot_url);
 		setXLocation(x);

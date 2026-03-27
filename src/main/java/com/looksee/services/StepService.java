@@ -51,6 +51,9 @@ public class StepService {
 	 * precondition: !step_key.isEmpty()
 	 */
 	public Step findByKey(String step_key) {
+		assert step_key != null;
+		assert !step_key.isEmpty();
+
 		return step_repo.findByKey(step_key);
 	}
 
@@ -319,12 +322,19 @@ public class StepService {
 
 	/**
 	 * Retrieve single step with given candidate key
-	 * @param domain_map_id the id of the domain map
 	 * @param candidate_key the candidate key
-	 * 
+	 * @param domain_map_id the id of the domain map
 	 * @return the step
+	 *
+	 * precondition: candidate_key != null
+	 * precondition: !candidate_key.isEmpty()
+	 * precondition: domain_map_id > 0
 	 */
 	public Step findByCandidateKey(String candidate_key, long domain_map_id) {
+		assert candidate_key != null;
+		assert !candidate_key.isEmpty();
+		assert domain_map_id > 0;
+
 		return step_repo.findByCandidateKey(candidate_key, domain_map_id);
 	}
 }

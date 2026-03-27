@@ -17,10 +17,14 @@ public class ActionDto {
 	
 	/**
 	 * Constructs an {@link ActionDto} object from an {@link ActionOLD} object
-	 * 
+	 *
 	 * @param action {@link ActionOLD} object to construct the {@link ActionDto} from
+	 *
+	 * precondition: action != null
 	 */
 	public ActionDto(ActionOLD action){
+		assert action != null;
+
 		setKey(action.getKey());
 		setValue(action.getValue());
 		setName(action.getName());

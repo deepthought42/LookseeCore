@@ -21,8 +21,11 @@ public class TreeNode<E> {
 	/**
 	 * Constructor for {@link TreeNode}
 	 * @param root the root element of the tree
+	 *
+	 * precondition: root != null
 	 */
 	public TreeNode(E root){
+		assert root != null : "root must not be null";
 		this.root = root;
 		this.child_nodes = new ArrayList<TreeNode<E>>();
 	}
@@ -39,8 +42,11 @@ public class TreeNode<E> {
 	 * Adds a child node to the tree
 	 * @param child_node the child node to add
 	 * @return true if the child node was added, false otherwise
+	 *
+	 * precondition: child_node != null
 	 */
 	public boolean addChildNode(TreeNode<E> child_node){
+		assert child_node != null : "child_node must not be null";
 		return this.child_nodes.add(child_node);
 	}
 	
@@ -55,8 +61,11 @@ public class TreeNode<E> {
 	/**
 	 * Adds a list of child nodes to the tree
 	 * @param list the list of child nodes to add
+	 *
+	 * precondition: list != null
 	 */
 	public void addChildNodes(List<TreeNode<E>> list){
+		assert list != null : "list must not be null";
 		this.child_nodes.addAll(list);
 	}
 }

@@ -19,10 +19,13 @@ public class BrowserPassingStatuses {
 
 	/**
 	 * Sets the browser passing statuses
-	 * 
+	 *
 	 * @param browser_passing_statuses the browser passing statuses
+	 *
+	 * precondition: browser_passing_statuses != null
 	 */
 	public void setBrowserPassingStatuses(Map<String, Boolean> browser_passing_statuses) {
+		assert browser_passing_statuses != null : "browser_passing_statuses must not be null";
 		this.status_map = browser_passing_statuses;
 	}
 }

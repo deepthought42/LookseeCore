@@ -10,7 +10,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Represents an animation
+ * Represents an animation.
+ *
+ * invariant: imageUrls != null
+ * invariant: animationType != null
  */
 @Getter
 @Setter
@@ -34,6 +37,8 @@ public class Animation extends LookseeObject {
 	 */
 	public Animation(List<String> image_urls, List<String> image_checksums, AnimationType type) {
 		assert image_urls != null;
+		assert image_checksums != null;
+		assert type != null;
 		setImageUrls(image_urls);
 		setImageChecksums(image_checksums);
 		setAnimationType(type);

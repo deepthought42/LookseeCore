@@ -4,6 +4,8 @@ import lombok.NoArgsConstructor;
 
 /**
  * A factory for creating rules
+ *
+ * invariant: instances are stateless; all behavior is through static methods
  */
 @NoArgsConstructor
 public class RuleFactory {
@@ -21,6 +23,11 @@ public class RuleFactory {
 	 * precondition: !value.isEmpty()
 	 */
 	public static Rule build(String type, String value){
+		assert type != null;
+		assert !type.isEmpty();
+		assert value != null;
+		assert !value.isEmpty();
+
 		if(type.equalsIgnoreCase(RuleType.ALPHABETIC_RESTRICTION.toString())){
 			return new AlphabeticRestrictionRule();
 		}

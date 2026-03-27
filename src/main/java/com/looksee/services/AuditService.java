@@ -169,6 +169,8 @@ public class AuditService {
 	 * precondition: audits != null
 	 */
 	public List<PageStateAudits> groupAuditsByPage(Set<Audit> audits) {
+		assert audits != null;
+
 		Map<String, Set<Audit>> audit_url_map = new HashMap<>();
 		
 		for(Audit audit : audits) {
@@ -211,8 +213,12 @@ public class AuditService {
 	 *
 	 * @param audits the {@link Set} of {@link Audit}s
 	 * @return the {@link Map}
+	 *
+	 * precondition: audits != null
 	 */
 	public Map<String, Set<String>> generateElementIssuesMap(Set<Audit> audits)  {
+		assert audits != null;
+
 		Map<String, Set<String>> element_issues = new HashMap<>();
 				
 		for(Audit audit : audits) {
@@ -248,8 +254,12 @@ public class AuditService {
 	 * 
 	 * @param audits the {@link Set} of {@link Audit}s
 	 * @return the {@link Map}
+	 *
+	 * precondition: audits != null
 	 */
 	public Map<String, String> generateIssueElementMap(Set<Audit> audits)  {
+		assert audits != null;
+
 		Map<String, String> issue_element_map = new HashMap<>();
 				
 		for(Audit audit : audits) {	
@@ -496,11 +506,14 @@ public class AuditService {
 
 	/**
 	 * Calculates the data extraction progress for an audit
-	 * 
+	 *
 	 * @param audit_id the id of the audit
 	 * @return the data extraction progress
+	 *
+	 * precondition: audit_id > 0
 	 */
 	public double calculateDataExtractionProgress(long audit_id) {
+		assert audit_id > 0;
 //		int verified_journeys = journey_repo.findAllJourneysForDomainAudit(audit_id, JourneyStatus.VERIFIED.toString());
 		int verified_journeys = journey_repo.findAllNonStatusJourneysForDomainAudit(audit_id, JourneyStatus.CANDIDATE.toString());
 		log.warn("verified journeys = "+verified_journeys);

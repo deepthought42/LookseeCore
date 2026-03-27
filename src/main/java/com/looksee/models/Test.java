@@ -21,9 +21,15 @@ import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
 
 /**
- * Defines the path of a test, the result and the expected values to determine if a test was 
- * successful or not
+ * Defines the path of a test, the result and the expected values to determine if a test was
+ * successful or not.
  *
+ * invariant: name != null
+ * invariant: status != null
+ * invariant: pathKeys != null
+ * invariant: records != null
+ * invariant: groups != null
+ * invariant: pathObjects != null
  */
 @Getter
 @Setter
@@ -93,7 +99,9 @@ public class Test extends LookseeObject {
 		assert path_objects != null;
 		assert !path_objects.isEmpty();
 		assert result != null;
-		
+		assert name != null;
+		assert !name.isEmpty();
+
 		setPathKeys(path_keys);
 		setPathObjects(path_objects);
 		setResult(result);
@@ -159,8 +167,11 @@ public class Test extends LookseeObject {
 	 *
 	 * @param key the path key to add
 	 * @return true if the path key was added, false otherwise
+	 *
+	 * precondition: key != null
 	 */
 	public boolean addPathKey(String key) {
+		assert key != null;
 		return this.pathKeys.add(key);
 	}
 	
@@ -168,8 +179,11 @@ public class Test extends LookseeObject {
 	 * Adds a record to the test
 	 *
 	 * @param record the record to add
+	 *
+	 * precondition: record != null
 	 */
 	public void addRecord(TestRecord record){
+		assert record != null;
 		this.records.add(record);
 	}
 	
@@ -177,8 +191,11 @@ public class Test extends LookseeObject {
 	 * Adds a group to the test
 	 *
 	 * @param group the group to add
+	 *
+	 * precondition: group != null
 	 */
 	public void addGroup(Group group){
+		assert group != null;
 		this.groups.add(group);
 	}
 	
@@ -186,8 +203,11 @@ public class Test extends LookseeObject {
 	 * Removes a group from the test
 	 *
 	 * @param group the group to remove
+	 *
+	 * precondition: group != null
 	 */
 	public void removeGroup(Group group) {
+		assert group != null;
 		//remove edge between test and group
 		this.groups.remove(group);
 	}
@@ -196,8 +216,11 @@ public class Test extends LookseeObject {
 	 * Adds a path object to the test
 	 *
 	 * @param path_obj the path object to add
+	 *
+	 * precondition: path_obj != null
 	 */
 	public void addPathObject(LookseeObject path_obj) {
+		assert path_obj != null;
 		this.pathObjects.add(path_obj);
 	}
 
@@ -227,9 +250,13 @@ public class Test extends LookseeObject {
 	 * @param browser_name name of browser (ie 'chrome', 'firefox') (must not be null)
 	 * @param status boolean indicating passing or failing
 	 * @throws IllegalArgumentException if browser_name is null
+	 *
+	 * precondition: browser_name != null
+	 * precondition: status != null
 	 */
 	public void setBrowserStatus(String browser_name, String status){
 		assert browser_name != null;
+		assert status != null;
 		getBrowserPassingStatuses().put(browser_name, status);
 	}
 	

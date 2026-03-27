@@ -21,13 +21,17 @@ public class AnimationService {
 	
 	/**
 	 * Finds an {@link Animation} by key
-	 * 
+	 *
 	 * @param key key of the animation to find
 	 * @return {@link Animation}
-	 * 
+	 *
 	 * precondition: key != null
+	 * precondition: !key.isEmpty()
 	 */
 	public Animation findByKey(String key){
+		assert key != null;
+		assert !key.isEmpty();
+
 		return animation_repo.findByKey(key);
 	}
 	
@@ -40,6 +44,8 @@ public class AnimationService {
 	 * precondition: animation != null
 	 */
 	public Animation save(Animation animation){
+		assert animation != null;
+
 		Animation record = findByKey(animation.getKey());
 		if(record == null){
 			record = animation_repo.save(animation);

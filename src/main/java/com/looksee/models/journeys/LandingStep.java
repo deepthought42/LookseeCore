@@ -9,7 +9,13 @@ import com.looksee.models.enums.JourneyStatus;
 import com.looksee.models.enums.StepType;
 
 /**
- * A LandingStep is a step that is the first step in a journey
+ * A LandingStep is a step that is the first step in a journey.
+ *
+ * <p><b>Invariants:</b>
+ * <ul>
+ *   <li>startPage is never null when constructed via the parameterized constructor.</li>
+ *   <li>status is never null when constructed via the parameterized constructor.</li>
+ * </ul>
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeName("LANDING")
@@ -28,6 +34,9 @@ public class LandingStep extends Step {
 	 * @param start_page the start page of the landing step
 	 * @param status the status of the landing step
 	 * @throws IllegalArgumentException if the start page or status is null
+	 *
+	 * precondition: start_page != null
+	 * precondition: status != null
 	 */
 	public LandingStep(PageState start_page, JourneyStatus status)
 	{

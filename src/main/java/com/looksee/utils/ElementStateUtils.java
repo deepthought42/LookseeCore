@@ -301,8 +301,12 @@ public class ElementStateUtils {
 	 * @param element {@link ElementState}
 	 * 
 	 * @return true if element is a link or button element or if element class contains "btn or button"
+	 *
+	 * precondition: element != null
 	 */
 	public static boolean isInteractiveElement(ElementState element) {
+		assert element != null;
+
 		return element.getName().contentEquals("a") 
 				|| element.getName().contentEquals("button")
 				|| (element.getAttributes().containsKey("class")
@@ -326,6 +330,8 @@ public class ElementStateUtils {
 	 * precondition: element != null
 	 */
 	public static boolean isFormElement(ElementState element) {
+		assert element != null;
+
 		return element.getXpath().contains("form");
 	}
 

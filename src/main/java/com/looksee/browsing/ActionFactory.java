@@ -22,8 +22,11 @@ public class ActionFactory {
 	 * Creates a new action factory
 	 *
 	 * @param driver the web driver
+	 *
+	 * precondition: driver != null
 	 */
 	public ActionFactory(WebDriver driver){
+		assert driver != null;
 		builder = new Actions(driver);
 	}
 
@@ -33,8 +36,15 @@ public class ActionFactory {
 	 * @param input the input to send to the web element
 	 * @param action the action to perform
 	 * @throws WebDriverException if the action cannot be performed
+	 *
+	 * precondition: elem != null
+	 * precondition: input != null
+	 * precondition: action != null
 	 */
 	public void execAction(WebElement elem, String input, Action action) throws WebDriverException{
+		assert elem != null;
+		assert input != null;
+		assert action != null;
 		if(Action.CLICK.equals(action)){
 			builder.click(elem);
 		}

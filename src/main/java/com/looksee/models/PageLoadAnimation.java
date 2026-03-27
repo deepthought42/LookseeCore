@@ -8,7 +8,10 @@ import lombok.Setter;
 
 
 /**
- * Stores a page load animation
+ * Stores a page load animation.
+ *
+ * invariant: imageUrls != null
+ * invariant: pageUrl != null
  */
 @NoArgsConstructor
 @Getter
@@ -38,9 +41,13 @@ public class PageLoadAnimation extends LookseeObject {
 	 * @param page_url the page url of the page load animation
 	 *
 	 * precondition: image_urls != null
+	 * precondition: image_checksums != null
+	 * precondition: page_url != null
 	 */
 	public PageLoadAnimation(List<String> image_urls, List<String> image_checksums, String page_url) {
 		assert image_urls != null;
+		assert image_checksums != null;
+		assert page_url != null;
 		setImageUrls(image_urls);
 		setImageChecksums(image_checksums);
 		setPageUrl(page_url);

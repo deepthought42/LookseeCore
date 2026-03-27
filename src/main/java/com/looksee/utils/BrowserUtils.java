@@ -197,11 +197,15 @@ public class BrowserUtils {
 	 *
 	 * @return true if url is external, otherwise false
 	 *
+	 * precondition: domain_host != null
 	 * precondition: !domain_host.isEmpty()
+	 * precondition: url != null
 	 * precondition: !url.isEmpty()
 	 */
 	public static boolean isExternalLink(String domain_host, String url) {
+		assert domain_host != null;
 		assert !domain_host.isEmpty();
+		assert url != null;
 		assert !url.isEmpty();
 		
 		if(url.indexOf('?') >= 0) {
@@ -374,11 +378,17 @@ public class BrowserUtils {
 
 	/**
 	 * Extracts a {@link List list} of link urls by looking up `a` html tags and extracting the href values
-	 * 
+	 *
 	 * @param source valid html source
 	 * @return {@link List list} of link urls
+	 *
+	 * precondition: source != null
+	 * precondition: !source.isEmpty()
 	 */
 	public static List<String> extractLinkUrls(String source) {
+		assert source != null;
+		assert !source.isEmpty();
+
 		List<String> link_urls = new ArrayList<>();
 		Document document = Jsoup.parse(source);
 		Elements elements = document.getElementsByTag("a");
@@ -397,8 +407,12 @@ public class BrowserUtils {
 	 *
 	 * @param elements a list of {@link Element elements}
 	 * @return {@link List list} of link urls
+	 *
+	 * precondition: elements != null
 	 */
 	public static List<com.looksee.models.Element> extractLinks(List<com.looksee.models.Element> elements) {
+		assert elements != null;
+
 		List<com.looksee.models.Element> links = new ArrayList<>();
 		
 		for(com.looksee.models.Element element : elements) {
@@ -778,8 +792,12 @@ public class BrowserUtils {
 	 *
 	 * @param url the url to check
 	 * @return the http status code
+	 *
+	 * precondition: url != null
 	 */
 	public static int getHttpStatus(URL url) {
+		assert url != null;
+
 		int status_code = 500;
 		try {
 			if(url.getProtocol().contentEquals("http")) {
@@ -926,6 +944,10 @@ public class BrowserUtils {
 	 * precondition: viewportHeight > 0
 	 */
 	public static boolean isLargerThanViewport(Dimension element_size, int viewportWidth, int viewportHeight) {
+		assert element_size != null;
+		assert viewportWidth > 0;
+		assert viewportHeight > 0;
+
 		return element_size.getWidth() > viewportWidth || element_size.getHeight() > viewportHeight;
 	}
 
@@ -1158,8 +1180,12 @@ public class BrowserUtils {
 	 * @param web_element {@link WebElement element}
 	 *
 	 * @return returns true if it is hidden, otherwise returns false
+	 *
+	 * precondition: web_element != null
 	 */
 	public static boolean isHidden(WebElement web_element) {
+		assert web_element != null;
+
 		Rectangle rect = web_element.getRect();
 		return rect.getX()<=0 && rect.getY()<=0 && rect.getWidth()<=0 && rect.getHeight()<=0;
 	}
@@ -1171,8 +1197,14 @@ public class BrowserUtils {
 	 * @param size the {@link Dimension} size of the element
 	 *
 	 * @return returns true if it is hidden, otherwise returns false
+	 *
+	 * precondition: location != null
+	 * precondition: size != null
 	 */
 	public static boolean isHidden(Point location, Dimension size) {
+		assert location != null;
+		assert size != null;
+
 		return location.getX()<=0 && location.getY()<=0 && size.getWidth()<=0 && size.getHeight()<=0;
 	}
 	
@@ -1404,15 +1436,27 @@ public class BrowserUtils {
 	
 	/**
 	 * Checks if the start and end urls span multiple domains
-	 * 
+	 *
 	 * @param start_url the start url
 	 * @param end_url the end url
 	 * @param path_objects the path objects
 	 * @return true if the start and end urls span multiple domains, false otherwise
-	 * 
+	 *
 	 * @throws MalformedURLException if the url is malformed
+	 *
+	 * precondition: start_url != null
+	 * precondition: !start_url.isEmpty()
+	 * precondition: end_url != null
+	 * precondition: !end_url.isEmpty()
+	 * precondition: path_objects != null
 	 */
 	public static boolean doesSpanMutlipleDomains(String start_url, String end_url, List<LookseeObject> path_objects) throws MalformedURLException {
+		assert start_url != null;
+		assert !start_url.isEmpty();
+		assert end_url != null;
+		assert !end_url.isEmpty();
+		assert path_objects != null;
+
 		return !(start_url.trim().contains(new URL(end_url).getHost()) || end_url.contains((new URL(PathUtils.getLastPageStateOLD(path_objects).getUrl()).getHost())));
 	}
 }

@@ -6,7 +6,10 @@ import lombok.Setter;
 import org.springframework.data.neo4j.core.schema.Node;
 
 /**
- * Defines user information that can be used during testing and discovery
+ * Defines user information that can be used during testing and discovery.
+ *
+ * invariant: username != null
+ * invariant: password != null
  */
 @Node
 @Getter
@@ -22,8 +25,13 @@ public class TestUser extends LookseeObject{
 	 *
 	 * @param username the username of the test user
 	 * @param password the password of the test user
+	 *
+	 * precondition: username != null
+	 * precondition: password != null
 	 */
 	public TestUser(String username, String password){
+		assert username != null;
+		assert password != null;
 		setUsername(username);
 		setPassword(password);
 		setKey(generateKey());

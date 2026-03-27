@@ -7,7 +7,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Represents an both rgb and hsb and luminosity values
+ * Represents an both rgb and hsb and luminosity values.
+ *
+ * <p><b>Class Invariants:</b>
+ * <ul>
+ *   <li>invariant: red is between 0 and 255 inclusive</li>
+ *   <li>invariant: green is between 0 and 255 inclusive</li>
+ *   <li>invariant: blue is between 0 and 255 inclusive</li>
+ *   <li>invariant: hue is between 0 and 360 inclusive</li>
+ *   <li>invariant: saturation is between 0 and 100 inclusive</li>
+ *   <li>invariant: brightness is between 0 and 100 inclusive</li>
+ * </ul>
  */
 public class ColorData extends LookseeObject{
 	@SuppressWarnings("unused")
@@ -312,8 +322,11 @@ public class ColorData extends LookseeObject{
 	 * Alpha blends the color with a background color
 	 *
 	 * @param background_color_data the background color data
+	 *
+	 * precondition: background_color_data != null
 	 */
 	public void alphaBlend(ColorData background_color_data) {
+		assert background_color_data != null;
 		this.red = (int) (((1 - getTransparency()) * background_color_data.getRed()) + (getTransparency() * getRed()));
 		this.green = (int) (((1 - getTransparency()) * background_color_data.getGreen()) + (getTransparency() * getGreen()));
 		this.blue = (int) (((1 - getTransparency()) * background_color_data.getBlue()) + (getTransparency() * getBlue()));
@@ -335,8 +348,12 @@ public class ColorData extends LookseeObject{
 	 * @param color the {@link ColorData} color being evaluated
 	 *
 	 * @return true if the colors are within 5 arc degress of each other, false otherwise
+	 *
+	 * precondition: color != null
 	 */
 	public boolean isSimilarHue(ColorData color) {
+		assert color != null;
+
 		return Math.abs(this.getHue() - color.getHue()) <= 5.0;
 	}
 

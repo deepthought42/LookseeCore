@@ -14,10 +14,13 @@ public class RuleValueRequiredException extends RuntimeException {
 
 	/**
 	 * Constructor for {@link RuleValueRequiredException}
-	 * 
+	 *
 	 * @param type the type of rule that requires a value
+	 *
+	 * precondition: type != null
 	 */
 	public RuleValueRequiredException(RuleType type) {
 		super("The provided rule " + type + " requires a value.");
+		assert type != null : "type must not be null";
 	}
 }

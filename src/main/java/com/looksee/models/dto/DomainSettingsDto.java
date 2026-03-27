@@ -27,6 +27,9 @@ public class DomainSettingsDto {
 	 * precondition: testUsers != null
 	 */
 	public DomainSettingsDto(DesignSystem designSystem, Set<TestUser> testUsers) {
+		assert designSystem != null;
+		assert testUsers != null;
+
 		this.setDesignSystem(designSystem);
 		this.setTestUsers(testUsers);
 	}

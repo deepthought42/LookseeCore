@@ -176,8 +176,14 @@ public class ColorPaletteUtils {
 	 * @param palette the {@link List} of {@link String}s
 	 * @param colors the {@link List} of {@link ColorData}s
 	 * @return the {@link Map} of {@link String} to {@link Boolean}
+	 *
+	 * precondition: palette != null
+	 * precondition: colors != null
 	 */
 	public static Map<String, Boolean> retrieveNonCompliantColors(List<String> palette, List<ColorData> colors) {
+		assert palette != null;
+		assert colors != null;
+
 		Map<String, Boolean> non_compliant_colors = new HashMap<>();
 
 		for(ColorData color: colors) {
@@ -655,6 +661,8 @@ public class ColorPaletteUtils {
 	 * </ul>
 	 */
 	public static int getMin(ColorData color) {
+		assert color != null;
+
 		if(color.getRed() <= color.getBlue()
 				&& color.getRed() <= color.getGreen()) {
 			return color.getRed();

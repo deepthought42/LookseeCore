@@ -16,7 +16,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * A observation of potential error for a given {@link Element element}
+ * A observation of potential error for a given {@link Element element}.
+ *
+ * <p>invariant: typefaces is non-null</p>
+ * <p>invariant: when constructed with parameters, typefaces is non-empty</p>
+ * <p>invariant: inherits all invariants from {@link UXIssueMessage}</p>
  */
 @Node
 @Getter
@@ -73,12 +77,15 @@ public class TypefacesIssue extends UXIssueMessage {
 	}
 
 	/**
-	 * Adds typefaces to the typefaces issue
+	 * Adds typefaces to the typefaces issue.
 	 *
 	 * @param typefaces the typefaces to add to the typefaces issue
 	 * @return true if the typefaces were added, false otherwise
+	 *
+	 * precondition: typefaces != null
 	 */
 	public boolean addTypefaces(List<String> typefaces) {
+		assert typefaces != null;
 		return this.typefaces.addAll(typefaces);
 	}
 }

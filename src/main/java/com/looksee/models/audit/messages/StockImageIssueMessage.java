@@ -12,7 +12,9 @@ import org.springframework.data.neo4j.core.schema.Node;
 
 
 /**
- * A observation of potential error for a given {@link Element element}
+ * A observation of potential error for a given {@link Element element}.
+ *
+ * <p>invariant: when constructed with parameters, inherits all invariants from {@link ElementStateIssueMessage}</p>
  */
 @Getter
 @Setter
@@ -38,6 +40,10 @@ public class StockImageIssueMessage extends ElementStateIssueMessage {
 	 * @param pointsAwarded the points awarded of the stock image issue message
 	 * @param maxPoints the max points of the stock image issue message
 	 * @param isStockImage the stock image of the stock image issue message
+	 *
+	 * precondition: priority != null
+	 * precondition: category != null
+	 * precondition: labels != null
 	 */
 	public StockImageIssueMessage(
 			Priority priority,
@@ -62,7 +68,11 @@ public class StockImageIssueMessage extends ElementStateIssueMessage {
 				title,
 				pointsAwarded,
 				maxPoints);
-		
+
+		assert priority != null;
+		assert category != null;
+		assert labels != null;
+
 		setStockImage(isStockImage);
 	}
 }

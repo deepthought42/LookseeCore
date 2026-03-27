@@ -21,13 +21,23 @@ public class Message<T> {
 	
 	/**
 	 * Constructor for the Message class.
-	 * 
+	 *
 	 * @param accountKey the account key for the message
 	 * @param data the data for the message
 	 * @param options the options for the message
 	 * @param domain the domain for the message
+	 *
+	 * precondition: accountKey != null
+	 * precondition: data != null
+	 * precondition: options != null
+	 * precondition: domain != null
 	 */
 	public Message(String accountKey, T data, Map<String, Object> options, Domain domain){
+		assert accountKey != null : "accountKey must not be null";
+		assert data != null : "data must not be null";
+		assert options != null : "options must not be null";
+		assert domain != null : "domain must not be null";
+
 		this.accountKey = accountKey;
 		this.domain = domain;
 		this.data = data;

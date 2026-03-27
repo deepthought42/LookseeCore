@@ -20,6 +20,12 @@ import org.springframework.data.neo4j.core.schema.Relationship;
  * This class represents a record of an audit performed on a domain. It extends {@link AuditRecord}
  * and contains a set of {@link PageAuditRecord} objects, which represent the audits performed on
  * each page of the domain.
+ *
+ * <p><b>Invariants:</b>
+ * <ul>
+ *   <li>pageAuditRecords is never null (initialized to empty set by default).</li>
+ *   <li>The audit level for a DomainAuditRecord is always DOMAIN.</li>
+ * </ul>
  */
 @Node
 @Getter
@@ -84,8 +90,11 @@ public class DomainAuditRecord extends AuditRecord {
 	 * Adds a page audit record to the domain audit record
 	 *
 	 * @param audit The page audit record to add
+	 *
+	 * precondition: audit != null
 	 */
 	public void addAudit(PageAuditRecord audit) {
+		assert audit != null;
 		this.pageAuditRecords.add( audit );
 	}
 	
@@ -93,8 +102,11 @@ public class DomainAuditRecord extends AuditRecord {
 	 * Adds a set of page audit records to the domain audit record
 	 *
 	 * @param audits The set of page audit records to add
+	 *
+	 * precondition: audits != null
 	 */
 	public void addAudits(Set<PageAuditRecord> audits) {
+		assert audits != null;
 		this.pageAuditRecords.addAll( audits );
 	}
 }

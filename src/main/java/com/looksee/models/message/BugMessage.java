@@ -12,6 +12,9 @@ import lombok.Setter;
 
 /**
  * A BugMessage is a message that is used to report a bug
+ *
+ * invariant: message != null after parameterized construction
+ * invariant: bugType is always a valid {@link BugType} string or null
  */
 @NoArgsConstructor
 @Getter
@@ -37,12 +40,20 @@ public class BugMessage extends LookseeObject{
 	 * @param message the message of the bug
 	 * @param type the type of the bug
 	 * @param date the date the bug was identified
+	 *
+	 * precondition: message != null
+	 * precondition: type != null
+	 * precondition: date != null
 	 */
 	public BugMessage(
 		String message,
 		BugType type,
 		Date date
 	) {
+		assert message != null;
+		assert type != null;
+		assert date != null;
+
 		setMessage(message);
 		setBugType(type);
 		setDateIdentified(date);
@@ -76,8 +87,12 @@ public class BugMessage extends LookseeObject{
 	/**
 	 * Sets the type of the bug
 	 * @param bugType the type of the bug
+	 *
+	 * precondition: bugType != null
 	 */
 	public void setBugType(BugType bugType) {
+		assert bugType != null;
+
 		this.bugType = bugType.toString();
 	}
 

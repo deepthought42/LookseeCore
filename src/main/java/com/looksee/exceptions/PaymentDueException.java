@@ -19,10 +19,13 @@ public class PaymentDueException extends Exception {
 
 	/**
 	 * Constructor for {@link PaymentDueException}
-	 * 
+	 *
 	 * @param message the message to display
+	 *
+	 * precondition: message != null
 	 */
 	public PaymentDueException(String message) {
 		super(message);
+		assert message != null : "message must not be null";
 	}
 }

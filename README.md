@@ -21,7 +21,7 @@ Add the following dependency to your project:
 <dependency>
     <groupId>com.looksee</groupId>
     <artifactId>core</artifactId>
-    <version>0.3.22</version>
+    <version>0.3.24</version>
 </dependency>
 ```
 
@@ -356,6 +356,52 @@ public class LookseeCoreManualConfiguration {
     // Your manual configuration
 }
 ```
+
+## Design by Contract
+
+This project enforces **Design by Contract (DbC)** principles across all layers. Every public method documents and enforces its contract through:
+
+- **Preconditions**: `assert` statements at method entry validate all parameters
+- **Invariants**: Class-level Javadoc documents what must always be true about object state
+- **Javadoc contracts**: All preconditions are documented with `precondition:` comments
+
+### Example
+
+```java
+/**
+ * Finds a domain by its host for a given user.
+ * @param host the host of the domain to find
+ * @param username the username of the user
+ * @return the domain if found, or null if not found
+ *
+ * precondition: host != null
+ * precondition: !host.isEmpty()
+ * precondition: username != null
+ * precondition: !username.isEmpty()
+ */
+public Domain findByHostForUser(String host, String username) {
+    assert host != null;
+    assert !host.isEmpty();
+    assert username != null;
+    assert !username.isEmpty();
+    return domain_repo.findByHostForUser(host, username);
+}
+```
+
+### Enabling Assertions at Runtime
+
+Assertions are disabled by default in the JVM. To enable them (recommended for development and testing):
+
+```bash
+java -ea -jar your-application.jar
+```
+
+Or in Maven tests (already enabled by default):
+```bash
+mvn test
+```
+
+For detailed DbC conventions, see [docs/DESIGN_BY_CONTRACT.md](docs/DESIGN_BY_CONTRACT.md).
 
 ## Architecture
 

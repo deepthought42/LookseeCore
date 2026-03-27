@@ -27,9 +27,14 @@ public class Brand extends LookseeObject {
 	 * Constructor for {@link Brand}
 	 *
 	 * @param colors the colors of the brand
+	 *
+	 * precondition: colors != null
 	 */
 	public Brand( List<String> colors ) {
 		super();
+
+		assert colors != null;
+
 		setColors(colors);
 	}
 	

@@ -12,8 +12,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 	/**
- * Represents a domain map, which is a collection of journeys that are related 
- * to a specific domain
+ * Represents a domain map, which is a collection of journeys that are related
+ * to a specific domain.
+ *
+ * <p><b>Invariants:</b>
+ * <ul>
+ *   <li>journeys is never null (initialized to empty list by default).</li>
+ * </ul>
  */
 public class DomainMap extends LookseeObject {
 
@@ -37,6 +42,8 @@ public class DomainMap extends LookseeObject {
 	 * Creates a new domain map with the given journeys
 	 * @param journeys the journeys to add to the domain map
 	 * @throws IllegalArgumentException if the journeys are null
+	 *
+	 * precondition: journeys != null
 	 */
 	public DomainMap(List<Journey> journeys) {
 		assert journeys != null;
@@ -64,8 +71,11 @@ public class DomainMap extends LookseeObject {
 	 * Adds a journey to the domain map
 	 * @param journey the journey to add
 	 * @return true if the journey was added, false otherwise
+	 *
+	 * precondition: journey != null
 	 */
 	public boolean addJourney(Journey journey) {
+		assert journey != null;
 		return this.journeys.add(journey);
 	}
 }

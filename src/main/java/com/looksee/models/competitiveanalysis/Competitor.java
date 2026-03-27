@@ -10,6 +10,10 @@ import org.springframework.data.neo4j.core.schema.Relationship;
 
 /**
  * Defines the type of package paid for, which domains are registered and which Users belong to the account
+ *
+ * invariant: companyName != null after parameterized construction
+ * invariant: url != null after parameterized construction
+ * invariant: industry != null after parameterized construction
  */
 @Getter
 @Setter
@@ -30,6 +34,10 @@ public class Competitor extends LookseeObject{
 	 * @param company_name the name of the company
 	 * @param url the URL of the company
 	 * @param industry the industry of the company
+	 *
+	 * precondition: company_name != null
+	 * precondition: url != null
+	 * precondition: industry != null
 	 */
 	public Competitor(
 			String company_name,
@@ -37,6 +45,11 @@ public class Competitor extends LookseeObject{
 			String industry
 	){
 		super();
+
+		assert company_name != null;
+		assert url != null;
+		assert industry != null;
+
 		setCompanyName(company_name);
 		setUrl(url);
 		setIndustry(industry);

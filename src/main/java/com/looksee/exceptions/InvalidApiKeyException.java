@@ -19,10 +19,13 @@ public class InvalidApiKeyException extends Exception {
 
 	/**
 	 * Constructor for {@link InvalidApiKeyException}
-	 * 
+	 *
 	 * @param message the message to display
+	 *
+	 * precondition: message != null
 	 */
 	public InvalidApiKeyException(String message) {
 		super(message);
+		assert message != null : "message must not be null";
 	}
 }

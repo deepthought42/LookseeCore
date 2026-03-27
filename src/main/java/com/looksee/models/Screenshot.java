@@ -6,7 +6,11 @@ import lombok.Setter;
 import org.springframework.data.neo4j.core.schema.Node;
 
 /**
- * Stores a screenshot
+ * Stores a screenshot.
+ *
+ * invariant: browserName != null
+ * invariant: screenshotUrl != null
+ * invariant: checksum != null
  */
 @Getter
 @Setter
@@ -28,8 +32,15 @@ public class Screenshot extends LookseeObject {
 	 * @param checksum the checksum of the screenshot
 	 * @param width the width of the screenshot
 	 * @param height the height of the screenshot
+	 *
+	 * precondition: viewport != null
+	 * precondition: browser_name != null
+	 * precondition: checksum != null
 	 */
 	public Screenshot(String viewport, String browser_name, String checksum, int width, int height){
+		assert viewport != null;
+		assert browser_name != null;
+		assert checksum != null;
 		setScreenshotUrl(viewport);
 		setChecksum(checksum);
 		setBrowserName(browser_name);

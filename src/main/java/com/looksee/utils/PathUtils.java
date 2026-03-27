@@ -110,6 +110,9 @@ public class PathUtils {
 	 * precondition: pathObjects != null
 	 */
 	public static List<LookseeObject> orderPathObjects(List<String> pathKeys, List<LookseeObject> pathObjects) {
+		assert pathKeys != null;
+		assert pathObjects != null;
+
 		List<LookseeObject> orderedPathObjects = new ArrayList<>();
 		List<String> tempPathKeys = new ArrayList<>(pathKeys);
 		
@@ -142,8 +145,11 @@ public class PathUtils {
 	 *
 	 * @return list of {@link LookseeObject}s with duplicates removed
 	 *
+	 * precondition: orderedPathObjects != null
 	 */
 	public static List<LookseeObject> reducePathObjects(List<LookseeObject> orderedPathObjects) {
+		assert orderedPathObjects != null;
+
 		//scrub path objects for duplicates
 		List<LookseeObject> reducedPathObjs = new ArrayList<>();
 		LookseeObject lastPathObj = null;
@@ -164,9 +170,11 @@ public class PathUtils {
 	 *
 	 * @return first page state in list
 	 *
-	 * precondition: ordered_path_objects != null
+	 * precondition: orderedPathObjects != null
 	 */
 	public static PageState getFirstPage(List<LookseeObject> orderedPathObjects) {
+		assert orderedPathObjects != null;
+
 		//find first page
 		for(LookseeObject obj : orderedPathObjects){
 			if(obj instanceof PageState){
@@ -213,6 +221,8 @@ public class PathUtils {
 	 * precondition: finalKeyList != null
 	 */
 	public static List<String> reducePathKeys(List<String> finalKeyList) {
+		assert finalKeyList != null;
+
 		//scrub path objects for duplicates
 		List<String> reducedPathKeys = new ArrayList<>();
 		String lastPathKey = null;
@@ -232,9 +242,11 @@ public class PathUtils {
 	 *
 	 * @return first url in list
 	 *
+	 * precondition: pathObjects != null
 	 * precondition: !pathObjects.isEmpty()
 	 */
 	public static String getFirstUrl_OLD(List<LookseeObject> pathObjects) {
+		assert pathObjects != null;
 		assert !pathObjects.isEmpty();
 		
 		LookseeObject obj = pathObjects.get(0);
@@ -261,10 +273,12 @@ public class PathUtils {
 	 *
 	 * <b>Preconditions:</b>
 	 * <ul>
+	 *   <li>steps != null</li>
 	 *   <li>!steps.isEmpty()</li>
 	 * </ul>
 	 */
 	public static String getFirstUrl(List<Step> steps) {
+		assert steps != null;
 		assert !steps.isEmpty();
 		
 		Step obj = steps.get(0);

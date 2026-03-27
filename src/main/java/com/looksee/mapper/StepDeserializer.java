@@ -34,6 +34,9 @@ public class StepDeserializer extends JsonDeserializer<Object> implements Contex
      */
     @Override
     public JsonDeserializer<?> createContextual(DeserializationContext context, BeanProperty property) throws JsonMappingException {
+        assert context != null : "context must not be null";
+        assert property != null : "property must not be null";
+
         this.resultClass = property.getType().getRawClass();
         return this;
     }
@@ -45,9 +48,14 @@ public class StepDeserializer extends JsonDeserializer<Object> implements Contex
      * @param context the deserialization context
      *
      * @return the deserialized step
+     *
+     * precondition: parser != null
+     * precondition: context != null
      */
     @Override
     public Object deserialize(JsonParser parser, DeserializationContext context) throws IOException, JsonProcessingException {
+        assert parser != null : "parser must not be null";
+        assert context != null : "context must not be null";
         String value = parser.getValueAsString();
         log.warn("value from parser " + parser);
         try {

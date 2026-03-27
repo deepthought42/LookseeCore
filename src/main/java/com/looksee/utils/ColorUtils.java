@@ -63,6 +63,9 @@ public class ColorUtils {
 	 * @param font_size the font size
 	 * @param is_bold true if the font is bold, false otherwise
 	 * @return the compliant font color
+	 *
+	 * precondition: font_color != null
+	 * precondition: background_color != null
 	 */
 	public static ColorContrastRecommendation findCompliantFontColor(ColorData font_color,
 			ColorData background_color,
@@ -614,6 +617,8 @@ public class ColorUtils {
 	 * precondition: color_data != null
 	 */
 	public static boolean isBlack(ColorData color_data) {
+		assert color_data != null;
+
 		return color_data.getBrightness() < 15;
 	}
 
@@ -625,6 +630,8 @@ public class ColorUtils {
 	 * precondition: color_data != null
 	 */
 	public static boolean isWhite(ColorData color_data) {
+		assert color_data != null;
+
 		return color_data.getSaturation() < 5 && color_data.getBrightness() > 90;
 	}
 }

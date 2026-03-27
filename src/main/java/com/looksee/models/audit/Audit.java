@@ -63,6 +63,15 @@ public class Audit extends LookseeObject {
 	 * @param why_it_matters the why it matters
 	 * @param description the description
 	 * @param is_accessible the accessibility flag
+	 *
+	 * precondition: category != null
+	 * precondition: subcategory != null
+	 * precondition: name != null
+	 * precondition: ux_issues != null
+	 * precondition: level != null
+	 * precondition: url != null
+	 * precondition: why_it_matters != null
+	 * precondition: description != null
 	 */
 	public Audit(
 			AuditCategory category,
@@ -78,11 +87,15 @@ public class Audit extends LookseeObject {
 			boolean is_accessible
 	) {
 		super();
-		
+
 		assert category != null;
 		assert subcategory != null;
+		assert name != null;
 		assert ux_issues != null;
 		assert level != null;
+		assert url != null;
+		assert why_it_matters != null;
+		assert description != null;
 		
 		setName(name);
 		setCategory(category);

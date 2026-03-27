@@ -43,8 +43,20 @@ public class FormService {
 	 * @param url the URL
 	 * @param form the form
 	 * @return the page state
+	 *
+	 * precondition: user_id != null
+	 * precondition: user_id is not empty
+	 * precondition: url != null
+	 * precondition: url is not empty
+	 * precondition: form != null
 	 */
 	public PageState getPageState(String user_id, String url, Form form) {
+		assert user_id != null;
+		assert !user_id.isEmpty();
+		assert url != null;
+		assert !url.isEmpty();
+		assert form != null;
+
 		return page_state_repo.getPageState(user_id, url, form.getKey());
 	}
 	
@@ -55,8 +67,20 @@ public class FormService {
 	 * @param url the URL
 	 * @param key the key
 	 * @return the form
+	 *
+	 * precondition: account_id > 0
+	 * precondition: url != null
+	 * precondition: url is not empty
+	 * precondition: key != null
+	 * precondition: key is not empty
 	 */
 	public Form findByKey(long account_id, String url, String key){
+		assert account_id > 0;
+		assert url != null;
+		assert !url.isEmpty();
+		assert key != null;
+		assert !key.isEmpty();
+
 		return form_repo.findByKeyForUserAndDomain(account_id, url, key);
 	}
 
@@ -65,8 +89,12 @@ public class FormService {
 	 *
 	 * @param form the form
 	 * @return the saved form
+	 *
+	 * precondition: form != null
 	 */
 	public Form save(Form form) {
+		assert form != null;
+
 		Form form_record = form_repo.findById(form.getId()).get();
 		if(form_record == null){
 			
@@ -92,8 +120,18 @@ public class FormService {
 	 * @param domain_id the domain ID
 	 * @param form_id the form ID
 	 * @return the form
+	 *
+	 * precondition: user_id != null
+	 * precondition: user_id is not empty
+	 * precondition: domain_id > 0
+	 * precondition: form_id > 0
 	 */
 	public Form findById(String user_id, long domain_id, long form_id) {
+		assert user_id != null;
+		assert !user_id.isEmpty();
+		assert domain_id > 0;
+		assert form_id > 0;
+
 		Optional<Form> opt_form = form_repo.findById(form_id);
 		
 		if(opt_form.isPresent()){
@@ -127,8 +165,14 @@ public class FormService {
 	 * @param form_id the form ID
 	 * @param msg the bug message
 	 * @return the form
+	 *
+	 * precondition: form_id > 0
+	 * precondition: msg != null
 	 */
 	public Form addBugMessage(long form_id, BugMessage msg) {
+		assert form_id > 0;
+		assert msg != null;
+
 		Optional<Form> opt_form = form_repo.findById(form_id);
 		
 		if(opt_form.isPresent()){
@@ -167,8 +211,14 @@ public class FormService {
 	 * @param form_id the form ID
 	 * @param msg the bug message
 	 * @return the form
+	 *
+	 * precondition: form_id > 0
+	 * precondition: msg != null
 	 */
 	public Form removeBugMessage(long form_id, BugMessage msg) {
+		assert form_id > 0;
+		assert msg != null;
+
 		Optional<Form> opt_form = form_repo.findById(form_id);
 		
 		if(opt_form.isPresent()){
@@ -186,8 +236,18 @@ public class FormService {
 	 * @param user_id the user ID
 	 * @param form_key the form key
 	 * @return the form
+	 *
+	 * precondition: user_id != null
+	 * precondition: user_id is not empty
+	 * precondition: form_key != null
+	 * precondition: form_key is not empty
 	 */
 	public Form clearBugMessages(String user_id, String form_key) {
+		assert user_id != null;
+		assert !user_id.isEmpty();
+		assert form_key != null;
+		assert !form_key.isEmpty();
+
 		return form_repo.clearBugMessages(user_id, form_key);
 	}
 }

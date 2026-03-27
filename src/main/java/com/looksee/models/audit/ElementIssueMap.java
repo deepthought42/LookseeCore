@@ -23,11 +23,17 @@ public class ElementIssueMap {
 	 *
 	 * @param issues the issues
 	 * @param elements the elements
+	 *
+	 * precondition: issues != null
+	 * precondition: elements != null
 	 */
 	public ElementIssueMap(
 			Set<UXIssueMessage> issues,
 			SimpleElement elements
 	) {
+		assert issues != null;
+		assert elements != null;
+
 		setIssues(issues);
 		setElement(elements);
 	}

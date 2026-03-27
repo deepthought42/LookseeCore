@@ -40,8 +40,14 @@ public class GoogleCloudStorage {
 	 *
 	 * @param storage the storage to use
 	 * @param gcsProperties the properties to use
+	 *
+	 * precondition: storage != null
+	 * precondition: gcsProperties != null
 	 */
 	public GoogleCloudStorage(Storage storage, GoogleCloudStorageProperties gcsProperties) {
+		assert storage != null;
+		assert gcsProperties != null;
+
         this.storage = storage;
         this.bucketName = gcsProperties.getBucketName();
         this.publicUrl = gcsProperties.getPublicUrl();
@@ -55,10 +61,16 @@ public class GoogleCloudStorage {
 	 * @throws IOException if an error occurs
 	 *
 	 * precondition: content != null
+	 * precondition: !content.isEmpty()
 	 * precondition: key != null
 	 * precondition: !key.isEmpty()
 	 */
 	public String uploadHtmlContent(String content, String key) throws IOException {
+		assert content != null;
+		assert !content.isEmpty();
+		assert key != null;
+		assert !key.isEmpty();
+
         BlobId blobId = BlobId.of(bucketName, key);
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId)
             .setContentType("text/html")
@@ -80,6 +92,9 @@ public class GoogleCloudStorage {
 	 * precondition: !gcsUrl.isEmpty()
 	 */
     public String getHtmlContent(String gcsUrl) {
+		assert gcsUrl != null;
+		assert !gcsUrl.isEmpty();
+
         String key = gcsUrl.replace(publicUrl + "/", "");
         Blob blob = storage.get(bucketName, key);
         return new String(blob.getContent(), StandardCharsets.UTF_8);

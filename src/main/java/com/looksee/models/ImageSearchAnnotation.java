@@ -33,11 +33,19 @@ public class ImageSearchAnnotation extends LookseeObject{
 	 * @param best_guess_label the best guess label of the image search annotation
 	 * @param full_matching_images the full matching images of the image search annotation
 	 * @param similar_images the similar images of the image search annotation
+	 *
+	 * precondition: best_guess_label != null
+	 * precondition: full_matching_images != null
+	 * precondition: similar_images != null
 	 */
 	public ImageSearchAnnotation(Set<String> best_guess_label,
 								Set<String> full_matching_images,
 								Set<String> similar_images
 	) {
+		assert best_guess_label != null;
+		assert full_matching_images != null;
+		assert similar_images != null;
+
 		setScore(score);
 		setBestGuessLabel(best_guess_label);
 		setFullMatchingImages(full_matching_images);

@@ -165,8 +165,11 @@ public class ElementState extends LookseeObject implements Comparable<ElementSta
 	 *
 	 * @param attr_name the name of the attribute
 	 * @return the attribute value
+	 *
+	 * precondition: attr_name != null
 	 */
 	public String getAttribute(String attr_name){
+		assert attr_name != null;
 		//get id for element
 		for(String tag_attr : this.attributes.keySet()){
 			if(tag_attr.equalsIgnoreCase(attr_name)){
@@ -182,8 +185,14 @@ public class ElementState extends LookseeObject implements Comparable<ElementSta
 	 *
 	 * @param attribute the name of the attribute
 	 * @param values the value of the attribute
+	 *
+	 * precondition: attribute != null
+	 * precondition: values != null
 	 */
 	public void addAttribute(String attribute, String values) {
+		assert attribute != null;
+		assert values != null;
+
 		this.attributes.put(attribute, values);
 	}
 

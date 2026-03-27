@@ -28,6 +28,9 @@ public class DiscardedJourneyMessage extends Message {
 	 * @param domainId the domain id
 	 * @param accountId the account id
 	 * @param auditRecordId the audit record id
+	 *
+	 * @precondition journey != null
+	 * @precondition browserType != null
 	 */
 	public DiscardedJourneyMessage(Journey journey,
 									BrowserType browserType,
@@ -35,6 +38,10 @@ public class DiscardedJourneyMessage extends Message {
 									long accountId,
 									long auditRecordId) {
 		super(accountId);
+
+		assert journey != null : "journey must not be null";
+		assert browserType != null : "browserType must not be null";
+
 		setJourney(journey);
 		setBrowserType(browserType);
 		setDomainId(domainId);

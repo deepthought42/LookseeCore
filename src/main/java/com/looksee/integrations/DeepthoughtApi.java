@@ -32,8 +32,11 @@ public class DeepthoughtApi {
 	 * @param form the form
 	 * @throws UnsupportedOperationException if the form type is not supported
 	 * @throws IOException if an I/O error occurs
+	 *
+	 * precondition: form != null
 	 */
 	public static void predict(Form form) throws UnsupportedOperationException, IOException{
+		assert form != null;
 		ObjectMapper mapper = new ObjectMapper();
 
         //Object to JSON in String
@@ -112,8 +115,13 @@ public class DeepthoughtApi {
 	 * @param memory_id the memory ID
 	 * @throws UnsupportedOperationException if the form type is not supported
 	 * @throws IOException if an I/O error occurs
+	 *
+	 * precondition: form != null
+	 * precondition: memory_id != null
 	 */
 	public static void learn(Form form, Long memory_id) throws UnsupportedOperationException, IOException{
+		assert form != null;
+		assert memory_id != null;
 		log.info("FORM ::    "+form);
 		log.info("FORM MEMORY ID   :::   "+form.getMemoryId());
 		log.info("feature value :: "+form.getType());

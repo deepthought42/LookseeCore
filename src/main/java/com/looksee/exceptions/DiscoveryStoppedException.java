@@ -19,10 +19,13 @@ public class DiscoveryStoppedException extends Exception {
 
 	/**
 	 * Constructor for {@link DiscoveryStoppedException}
-	 * 
+	 *
 	 * @param message the message to display
+	 *
+	 * precondition: message != null
 	 */
 	public DiscoveryStoppedException(String message) {
 		super(message);
+		assert message != null : "message must not be null";
 	}
 }

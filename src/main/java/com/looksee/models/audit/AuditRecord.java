@@ -15,8 +15,16 @@ import lombok.Setter;
 import org.springframework.data.neo4j.core.schema.Node;
 
 /**
- * Record detailing an set of {@link Audit audits} and the outcomes of those
- *  audits. Outcomes include progress of audits and final scores of audits
+ * Record detailing a set of {@link Audit audits} and the outcomes of those
+ *  audits. Outcomes include progress of audits and final scores of audits.
+ *
+ * invariant: status != null
+ * invariant: colors != null
+ * invariant: auditLabels != null
+ * invariant: contentAuditProgress >= 0.0
+ * invariant: aestheticAuditProgress >= 0.0
+ * invariant: infoArchitectureAuditProgress >= 0.0
+ * invariant: dataExtractionProgress >= 0.0
  */
 @Getter
 @Setter
@@ -90,6 +98,11 @@ public class AuditRecord extends LookseeObject {
 	 * @param created_at the creation time of the audit record
 	 * @param endTime the end time of the audit record
 	 * @param url the url of the audit record
+	 *
+	 * precondition: status != null
+	 * precondition: level != null
+	 * precondition: key != null
+	 * precondition: url != null
 	 */
 	public AuditRecord(long id,
 						ExecutionStatus status,
@@ -107,12 +120,17 @@ public class AuditRecord extends LookseeObject {
 						LocalDateTime endTime,
 						String url
 	) {
+		assert status != null;
+		assert level != null;
+		assert key != null;
+		assert url != null;
+
 		setId(id);
 		setStatus(status);
 		setLevel(level);
 		setKey(key);
-		setStartTime(endTime);
-		setAestheticAuditProgress(dataExtractionProgress);
+		setStartTime(startTime);
+		setAestheticAuditProgress(aestheticAuditProgress);
 		setAestheticScore(aestheticScore);
 		setContentAuditScore(contentAuditScore);
 		setContentAuditProgress(contentAuditProgress);
@@ -150,8 +168,11 @@ public class AuditRecord extends LookseeObject {
 	 * Sets the status of the audit record.
 	 *
 	 * @param status the status to set
+	 *
+	 * precondition: status != null
 	 */
 	public void setStatus(ExecutionStatus status) {
+		assert status != null;
 		this.status = status.getShortName();
 	}
 
@@ -168,8 +189,11 @@ public class AuditRecord extends LookseeObject {
 	 * Sets the level of the audit record.
 	 *
 	 * @param level the level to set
+	 *
+	 * precondition: level != null
 	 */
 	public void setLevel(AuditLevel level) {
+		assert level != null;
 		this.level = level.toString();
 	}
 	
@@ -219,8 +243,13 @@ public class AuditRecord extends LookseeObject {
 	 * 
 	 * @param color the color to add
 	 * @return true if the color was added successfully, false otherwise
+	 *
+	 * precondition: color != null
+	 * precondition: !color.isEmpty()
 	 */
 	public boolean addColor(String color){
+		assert color != null;
+		assert !color.isEmpty();
 		if(!getColors().contains(color)) {
 			return getColors().add(color);
 		}

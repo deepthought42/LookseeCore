@@ -16,7 +16,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Universal object that contains values that are expected to exist on all persistable objects within the database
+ * Universal object that contains values that are expected to exist on all persistable objects within the database.
+ *
+ * invariant: createdAt != null
+ * invariant: key != null after generateKey() is called
  */
 @Node
 @Getter
@@ -42,11 +45,16 @@ public abstract class LookseeObject {
 	}
 	
 	/**
-	 * Constructs a new {@link LookseeObject}
+	 * Constructs a new {@link LookseeObject} with the given key
 	 *
 	 * @param key the key of the object
+	 *
+	 * precondition: key != null
+	 * precondition: !key.isEmpty()
 	 */
 	public LookseeObject(String key) {
+		assert key != null;
+		assert !key.isEmpty();
 		setKey(key);
 		setCreatedAt(LocalDateTime.now());
 	}

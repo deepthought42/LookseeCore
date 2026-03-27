@@ -20,6 +20,8 @@ public class RuleService {
 	 * Saves a rule
 	 * @param rule the rule to save
 	 * @return the saved rule
+	 *
+	 * precondition: rule != null
 	 */
 	public Rule save(Rule rule){
 		assert rule != null;
@@ -37,9 +39,18 @@ public class RuleService {
 	 * @param value the value of the rule
 	 * @return the rule
 	 * @throws RuleValueRequiredException if the rule value is required
+	 *
+	 * precondition: rule_type != null
+	 * precondition: !rule_type.isEmpty()
+	 * precondition: value != null
+	 * precondition: !value.isEmpty()
 	 */
 	public Rule findRule(String rule_type, String value) throws RuleValueRequiredException {
-		
+		assert rule_type != null;
+		assert !rule_type.isEmpty();
+		assert value != null;
+		assert !value.isEmpty();
+
 		Rule rule = rule_repo.findByTypeAndValue(rule_type, value);
 		if(rule == null) {
 			rule = RuleFactory.build(rule_type, value);

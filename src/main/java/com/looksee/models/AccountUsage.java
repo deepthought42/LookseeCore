@@ -51,7 +51,7 @@ public class AccountUsage {
 
 	/**
 	 * Constructs an {@link AccountUsage} object
-	 * 
+	 *
 	 * @param discoveryLimit the discovery limit
 	 * @param discoveriesUsed the discoveries used
 	 * @param testLimit the test limit
@@ -63,6 +63,9 @@ public class AccountUsage {
 	 * @param currentDiscoveryStart the current discovery start
 	 * @param discoveryRunTime the discovery run time
 	 * @param timestampOfLastDiscoveredTest the timestamp of the last discovered test
+	 *
+	 * precondition: currentDiscoveryStart != null
+	 * precondition: timestampOfLastDiscoveredTest != null
 	 */
 	public AccountUsage(int discoveryLimit,
 						int discoveriesUsed,
@@ -75,6 +78,9 @@ public class AccountUsage {
 						Date currentDiscoveryStart,
 						long discoveryRunTime,
 						Date timestampOfLastDiscoveredTest){
+		assert currentDiscoveryStart != null;
+		assert timestampOfLastDiscoveredTest != null;
+
 		this.setDiscoveryLimit(discoveryLimit);
 		this.setDiscoveriesUsed(discoveriesUsed);
 		this.setTestLimit(testLimit);

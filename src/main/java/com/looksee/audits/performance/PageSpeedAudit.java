@@ -32,7 +32,7 @@ public class PageSpeedAudit extends LookseeObject {
 	
 	/**
 	 * Constructor for {@link PageSpeedAudit}
-	 * 
+	 *
 	 * @param name the name of the page speed audit
 	 * @param description the description of the page speed audit
 	 * @param display_value the display value of the page speed audit
@@ -41,6 +41,9 @@ public class PageSpeedAudit extends LookseeObject {
 	 * @param numeric_value the numeric value of the page speed audit
 	 * @param score_display_value the score display value of the page speed audit
 	 * @param title the title of the page speed audit
+	 *
+	 * precondition: name != null
+	 * precondition: title != null
 	 */
 	public PageSpeedAudit(
 			String name,
@@ -53,6 +56,10 @@ public class PageSpeedAudit extends LookseeObject {
 			String title
 	) {
 		super();
+
+		assert name != null : "name must not be null";
+		assert title != null : "title must not be null";
+
 		setName(name);
 		setDescription(description);
 		setDisplayValue(display_value);
@@ -85,8 +92,11 @@ public class PageSpeedAudit extends LookseeObject {
 	/**
 	 * Sets the type of the page speed audit
 	 * @param type the type of the page speed audit
+	 *
+	 * precondition: type != null
 	 */
 	public void setType(InsightType type) {
+		assert type != null : "type must not be null";
 		this.type = type.getShortName();
 	}
 }

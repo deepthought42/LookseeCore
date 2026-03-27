@@ -31,6 +31,8 @@ public class AssetSizeOpportunityDetail extends AuditDetail {
 	 * precondition: total_bytes > 0
 	 */
 	public AssetSizeOpportunityDetail(String url, int wasted_bytes, double wasted_percent, int total_bytes) {
+		assert url != null : "url must not be null";
+
 		setUrl(url);
 		setWastedBytes(wasted_bytes);
 		setWastedPercent(wasted_percent);

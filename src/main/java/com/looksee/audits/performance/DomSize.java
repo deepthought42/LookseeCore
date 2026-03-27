@@ -35,6 +35,10 @@ public class DomSize extends AuditDetail {
 	 * precondition: elementDefinition != null
 	 */
 	public DomSize(String statistic, String value, Map<String, String> elementDefinition) {
+		assert statistic != null : "statistic must not be null";
+		assert value != null : "value must not be null";
+		assert elementDefinition != null : "elementDefinition must not be null";
+
 		setStatistic(statistic);
 		setValue(value);
 		setElementDefinition(elementDefinition);

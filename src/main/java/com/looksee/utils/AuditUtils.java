@@ -1305,6 +1305,8 @@ public class AuditUtils {
 	 * </ul>
 	 */
 	public static int getMin(ColorData color) {
+		assert color != null;
+
 		if(color.getRed() <= color.getBlue()
 				&& color.getRed() <= color.getGreen()) {
 			return color.getRed();
@@ -1383,6 +1385,8 @@ public class AuditUtils {
 	 * 
 	 * @param page_audits the list of {@link AuditRecord}s
 	 * @return the count of pages that have WCAG compliance issues
+	 *
+	 * precondition: page_audits != null
 	 */
 	public static int getCountOfPagesWithWcagComplianceIssues(List<AuditRecord> page_audits) {
 		assert page_audits != null;

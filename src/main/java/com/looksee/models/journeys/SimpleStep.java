@@ -18,7 +18,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * A SimpleStep is a step that is used to perform an action on an element
+ * A SimpleStep is a step that is used to perform an action on an element.
+ *
+ * <p><b>Invariants:</b>
+ * <ul>
+ *   <li>action is never null.</li>
+ *   <li>actionInput is never null.</li>
+ * </ul>
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeName("SIMPLE")
@@ -57,9 +63,14 @@ public class SimpleStep extends Step {
 	 * Creates a new SimpleStep with the given action and input string
 	 * @param action the action to perform
 	 * @param input_string the input string to perform the action on
+	 *
+	 * precondition: action != null
+	 * precondition: input_string != null
 	 */
 	public SimpleStep(Action action, String input_string) {
 		super();
+		assert action != null;
+		assert input_string != null;
 		setActionInput(input_string);
 		setAction(action);
 	}
@@ -72,6 +83,12 @@ public class SimpleStep extends Step {
 	 * @param action_input the input string to perform the action on
 	 * @param end_page the end page
 	 * @param status the status of the step
+	 *
+	 * precondition: start_page != null
+	 * precondition: action != null
+	 * precondition: action_input != null
+	 * precondition: end_page != null
+	 * precondition: status != null
 	 */
 	@JsonCreator
 	public SimpleStep(@JsonProperty("startPage") PageState start_page,
@@ -81,6 +98,11 @@ public class SimpleStep extends Step {
 						@JsonProperty("endPage") PageState end_page,
 						@JsonProperty("status") JourneyStatus status)
 	{
+		assert start_page != null;
+		assert action != null;
+		assert action_input != null;
+		assert end_page != null;
+		assert status != null;
 		setStartPage(start_page);
 		setElementState(element);
 		setAction(action);

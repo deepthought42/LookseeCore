@@ -40,6 +40,9 @@ public class Crawler {
 	 * @throws NoSuchElementException if the element is not found
 	 */
 	public static void performAction(Action action, com.looksee.models.Element elem, WebDriver driver) throws NoSuchElementException{
+		assert action != null;
+		assert elem != null;
+		assert driver != null;
 		ActionFactory actionFactory = new ActionFactory(driver);
 		WebElement element = driver.findElement(By.xpath(elem.getXpath()));
 		actionFactory.execAction(element, "", action);
@@ -62,6 +65,10 @@ public class Crawler {
 	 * precondition: location != null
 	 */
 	public static void performAction(Action action, com.looksee.models.Element elem, WebDriver driver, Point location) throws NoSuchElementException{
+		assert action != null;
+		assert elem != null;
+		assert driver != null;
+		assert location != null;
 		ActionFactory actionFactory = new ActionFactory(driver);
 		WebElement element = driver.findElement(By.xpath(elem.getXpath()));
 		actionFactory.execAction(element, "", action);
@@ -79,6 +86,7 @@ public class Crawler {
 	 */
 	public static void scrollDown(WebDriver driver, int distance)
     {
+        assert driver != null;
         ((JavascriptExecutor)driver).executeScript("scroll(0,"+ distance +");");
     }
 	

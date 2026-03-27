@@ -23,6 +23,8 @@ public class AuditDetailService {
 	 * precondition: audit_detail != null
 	 */
 	public AuditDetail save(AuditDetail audit_detail){
+		assert audit_detail != null;
+
 		return audit_detail_repo.save( audit_detail );
 	}
 }

@@ -22,11 +22,17 @@ public class IssueElementMap {
 	 *
 	 * @param issue_msg the issue message
 	 * @param element the element
+	 *
+	 * precondition: issue_msg != null
+	 * precondition: element != null
 	 */
 	public IssueElementMap(
 			UXIssueMessage issue_msg,
 			SimpleElement element
 	) {
+		assert issue_msg != null;
+		assert element != null;
+
 		setIssue(issue_msg);
 		setElement(element);
 	}

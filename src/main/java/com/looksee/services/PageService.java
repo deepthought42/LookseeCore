@@ -39,10 +39,13 @@ public class PageService {
 	 * @return {@link Page} object reference to database object
 	 * 
 	 * precondition: page != null;
+	 * precondition: user_id != null;
+	 * precondition: !user_id.isEmpty();
 	 */
 	public Page saveForUser(String user_id, Page page){
 		assert page != null;
 		assert user_id != null;
+		assert !user_id.isEmpty();
 		
 		Page page_record = page_repo.findByKeyAndUser(user_id, page.getKey());
 		if(page_record != null){
@@ -248,12 +251,12 @@ public class PageService {
 	 * 
 	 * precondition: page_key != null
 	 * precondition: !page_key.isEmpty()
-	 * precondition: page_state_key != null
-	 * precondition: !page_state_key.isEmpty()
+	 * precondition: page_state_id > 0
 	 */
 	public void addPageState(String page_key, long page_state_id) {
 		assert page_key != null;
 		assert !page_key.isEmpty();
+		assert page_state_id > 0;
 		
 		Optional<PageState> page_state_record = page_repo.findPageStateForPage(page_key, page_state_id);
 		if(!page_state_record.isPresent()) {
@@ -263,21 +266,33 @@ public class PageService {
 
 	/**
 	 * Retrieves the most recent {@link PageState} for a {@link Page} with a given key
-	 * 
+	 *
 	 * @param key key of the {@link Page} to retrieve the most recent page state for
 	 * @return most recent {@link PageState}
+	 *
+	 * precondition: key != null
+	 * precondition: !key.isEmpty()
 	 */
 	public PageState getMostRecentPageState(String key) {
+		assert key != null;
+		assert !key.isEmpty();
+
 		return page_repo.findMostRecentPageState(key);
 	}
 
 	/**
 	 * Retrieves all {@link Element}s for a {@link Page} with a given key
-	 * 
+	 *
 	 * @param key key of the {@link Page} to retrieve the elements for
 	 * @return list of {@link Element}s
+	 *
+	 * precondition: key != null
+	 * precondition: !key.isEmpty()
 	 */
 	public List<Element> getElements(String key) {
+		assert key != null;
+		assert !key.isEmpty();
+
 		return page_repo.getElements(key);
 	}
 }

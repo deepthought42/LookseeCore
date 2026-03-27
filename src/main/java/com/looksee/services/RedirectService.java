@@ -26,8 +26,14 @@ public class RedirectService {
 	 * Finds a redirect by its key
 	 * @param key the key of the redirect
 	 * @return the redirect
+	 *
+	 * precondition: key != null
+	 * precondition: !key.isEmpty()
 	 */
 	public Redirect findByKey(String key){
+		assert key != null;
+		assert !key.isEmpty();
+
 		return redirect_repo.findByKey(key);
 	}
 	
@@ -35,8 +41,12 @@ public class RedirectService {
 	 * Saves a redirect
 	 * @param redirect the redirect to save
 	 * @return the saved redirect
+	 *
+	 * precondition: redirect != null
 	 */
 	public Redirect save(Redirect redirect){
+		assert redirect != null;
+
 		Redirect record = findByKey(redirect.getKey());
 		if(record == null){
 			log.warn("redirect key   :: "+redirect.getKey());
@@ -52,8 +62,16 @@ public class RedirectService {
 	 * @param account_id the ID of the account
 	 * @param url the url of the domain
 	 * @return the redirects for the domain
+	 *
+	 * precondition: account_id > 0
+	 * precondition: url != null
+	 * precondition: !url.isEmpty()
 	 */
 	public Set<Redirect> getRedirects(long account_id, String url) {
+		assert account_id > 0;
+		assert url != null;
+		assert !url.isEmpty();
+
 		return domain_repo.getRedirects(account_id, url);
 	}
 }

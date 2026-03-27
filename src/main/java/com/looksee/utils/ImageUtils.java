@@ -138,8 +138,12 @@ public class ImageUtils {
 	 * @param buffered_image the image to extract properties from
 	 * @return a list of color usage statistics
 	 * @throws IOException if an error occurs
+	 *
+	 * precondition: buffered_image != null
 	 */
 	public static List<ColorUsageStat> extractImageProperties(BufferedImage buffered_image) throws IOException {
+		assert buffered_image != null;
+
 		int width = buffered_image.getWidth();
 		int height = buffered_image.getHeight();
 		
@@ -264,8 +268,14 @@ public class ImageUtils {
 	 * @return the background color
 	 * @throws MalformedURLException if the url is malformed
 	 * @throws IOException if an error occurs
+	 *
+	 * precondition: screenshot_url != null
+	 * precondition: font_color != null
 	 */
 	public static ColorData extractBackgroundColor(URL screenshot_url, ColorData font_color) throws IOException {
+		assert screenshot_url != null;
+		assert font_color != null;
+
 		List<ColorUsageStat> color_data_list = new ArrayList<>();
 		BufferedImage buffered_image = ImageUtils.readImageFromURL(screenshot_url);
 		color_data_list.addAll( extractImageProperties(buffered_image)); //DO NOT CHANGE!!!  LOCAL BRUTE FORCE METHOD - NOTE: This method is used because GCP cloud vision appears to use PCA to reduce color space, causing some really wrong results. DO NOT CHANGE!!!
@@ -343,6 +353,11 @@ public class ImageUtils {
 												PageState page_state,
 												BrowserType browser) throws IOException
 	{
+		assert onload_screenshot != null;
+		assert element_states != null;
+		assert page_state != null;
+		assert browser != null;
+
 		BufferedImage composite_image = new BufferedImage(page_state.getFullPageWidth(),
 															page_state.getFullPageHeight(),
 															BufferedImage.TYPE_INT_ARGB);
@@ -386,6 +401,11 @@ public class ImageUtils {
 			BufferedImage original_image,
 			int original_screenshot_row
 	) {
+		assert current_screenshot != null;
+		assert original_image != null;
+		assert current_screenshot_row >= 0;
+		assert original_screenshot_row >= 0;
+
 		for (int x = 0; x < current_screenshot.getWidth(); x++) {
 			int current_screenshot_rgb = current_screenshot.getRGB(x, current_screenshot_row);
 			int original_screenshot_rgb = original_image.getRGB(x, original_screenshot_row);
@@ -413,13 +433,18 @@ public class ImageUtils {
 	 * precondition: original_screenshot_row >= 0
 	 * precondition: window_height > 0
 	 */
-	public static boolean areWindowsMatching(BufferedImage current_screenshot, 
+	public static boolean areWindowsMatching(BufferedImage current_screenshot,
 											int current_screenshot_row,
-											BufferedImage original_image, 
+											BufferedImage original_image,
 											int original_screenshot_row,
 											int window_height
 	) {
-		
+		assert current_screenshot != null;
+		assert original_image != null;
+		assert current_screenshot_row >= 0;
+		assert original_screenshot_row >= 0;
+		assert window_height > 0;
+
 		if( (original_screenshot_row + window_height-1) >= original_image.getHeight()
 				|| (current_screenshot_row + window_height-1) >= current_screenshot.getHeight()
 				|| current_screenshot_row < 0) {
@@ -483,6 +508,9 @@ public class ImageUtils {
 	 */
     public static byte[] toByteArray(BufferedImage bi, String format)
         throws IOException {
+        assert bi != null;
+        assert format != null;
+        assert !format.isEmpty();
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ImageIO.write(bi, format, baos);
@@ -502,6 +530,8 @@ public class ImageUtils {
 	 */
 	@Retry(name="gcp")
 	public static BufferedImage readImageFromURL(URL full_page_screenshot_url) throws IOException {
+		assert full_page_screenshot_url != null;
+
 		return ImageIO.read( full_page_screenshot_url );
 	}
 	
@@ -510,8 +540,14 @@ public class ImageUtils {
 	* @param lab1 first colour
 	* @param lab2 second colour
 	* @return the CIE 2000 colour difference
+	*
+	* precondition: lab1 != null
+	* precondition: lab2 != null
 	*/
 	public static float calculateDeltaE(float [] lab1, float[] lab2) {
+		assert lab1 != null;
+		assert lab2 != null;
+
 		return 0.0f; //(float) CIEDE2000.calculateDeltaE(lab1[0],lab1[1],lab1[2],lab2[0],lab2[1],lab2[2]);
 	}
 
@@ -520,11 +556,16 @@ public class ImageUtils {
 		* @param color1 first colour
 		* @param color2 second colour
 		* @return the CIE 2000 colour difference
-
-
-		NOTE: This method is not properly implemented yet.
+		*
+		* precondition: color1 != null
+		* precondition: color2 != null
+		*
+		* NOTE: This method is not properly implemented yet.
 		*/
 	public static float calculateDeltaE(ColorData color1, ColorData color2) {
+		assert color1 != null;
+		assert color2 != null;
+
 		int[] lab1 = rgb2lab(color1.getRed(), color1.getGreen(), color1.getBlue());
 		int[] lab2 = rgb2lab(color2.getRed(), color2.getGreen(), color2.getBlue());
 

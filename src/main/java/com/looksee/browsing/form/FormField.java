@@ -31,10 +31,13 @@ public class FormField extends LookseeObject{
 	
 	/**
 	 * Constructs new FormField
-	 * 
+	 *
 	 * @param formField combo element defining the input grouping for this FormField
+	 *
+	 * precondition: formField != null
 	 */
 	public FormField(Element formField){
+		assert formField != null;
 		this.formField = formField;
 		this.rules = new ArrayList<Rule>();
 		setKey(generateKey());
@@ -52,40 +55,56 @@ public class FormField extends LookseeObject{
 
 	/**
 	 * Constructs new FormField
-	 * 
+	 *
 	 * @param formField combo element defining the input grouping for this FormField
 	 * @param rules list of {@link Rule} defined on this FormField
+	 *
+	 * precondition: formField != null
+	 * precondition: rules != null
 	 */
 	public FormField(Element formField, List<Rule> rules){
+		assert formField != null;
+		assert rules != null;
 		this.formField = formField;
 		this.rules = rules;
 	}
 	
 	/**
 	 * Adds a rule
-	 * 
+	 *
 	 * @param rule Rule to be added
-	 * 
 	 * @return true if the rule was added successfully, otherwise return false;
+	 *
+	 * precondition: rule != null
 	 */
 	public boolean addRule(Rule rule){
+		assert rule != null;
 		return this.rules.add(rule);
 	}
 	
 	/**
 	 * Adds a Collection of rules
-	 * 
+	 *
 	 * @param rules List of {@link Rule}s to be added
 	 * @return true if rules were added successfully, otherwise return false;
+	 *
+	 * precondition: rules != null
 	 */
 	public boolean addRules(List<Rule> rules){
+		assert rules != null;
 		return this.rules.addAll(rules);
 	}
 	
 	/**
 	 * This handles the performing of a {@link ActionOLD}
-	 * 
+	 *
 	 * @param action the action to perform
+	 *
+	 * precondition: action != null
+	 * precondition: !action.isEmpty()
 	 */
-	public void performAction(String action){}
+	public void performAction(String action){
+		assert action != null;
+		assert !action.isEmpty();
+	}
 }

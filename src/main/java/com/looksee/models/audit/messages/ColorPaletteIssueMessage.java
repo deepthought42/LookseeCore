@@ -12,7 +12,11 @@ import lombok.Getter;
 import org.springframework.data.neo4j.core.schema.Node;
 
 /**
- * A observation of potential error for a given color palette 
+ * A observation of potential error for a given color palette.
+ *
+ * <p>invariant: paletteColors is non-null</p>
+ * <p>invariant: colors is non-null</p>
+ * <p>invariant: colorScheme is a valid {@link ColorScheme} value</p>
  */
 @Node
 public class ColorPaletteIssueMessage extends UXIssueMessage{
@@ -95,11 +99,14 @@ public class ColorPaletteIssueMessage extends UXIssueMessage{
 	}
 
 	/**
-	 * Sets the colors of the color palette issue message
+	 * Sets the colors of the color palette issue message.
 	 *
 	 * @param colors the colors of the color palette issue message
+	 *
+	 * precondition: colors != null
 	 */
 	public void setColors(Set<String> colors) {
+		assert colors != null;
 		for(String color : colors) {
 			this.colors.add(color);
 		}
@@ -115,20 +122,26 @@ public class ColorPaletteIssueMessage extends UXIssueMessage{
 	}
 
 	/**
-	 * Sets the color scheme of the color palette issue message
+	 * Sets the color scheme of the color palette issue message.
 	 *
 	 * @param colorScheme the color scheme of the color palette issue message
+	 *
+	 * precondition: colorScheme != null
 	 */
 	public void setColorScheme(ColorScheme colorScheme) {
+		assert colorScheme != null;
 		this.colorScheme = colorScheme.getShortName();
 	}
 
 	/**
-	 * Sets the palette colors of the color palette issue message
+	 * Sets the palette colors of the color palette issue message.
 	 *
 	 * @param palette the palette colors of the color palette issue message
+	 *
+	 * precondition: palette != null
 	 */
 	public void setPaletteColors(List<String> palette) {
+		assert palette != null;
 		this.paletteColors.addAll(palette);
 	}
 }

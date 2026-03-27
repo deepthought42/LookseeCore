@@ -78,8 +78,12 @@ public abstract class Step extends LookseeObject{
 	/**
 	 * Sets the status of the step
 	 * @param status the status of the step
+	 *
+	 * precondition: status != null
 	 */
 	public void setStatus(JourneyStatus status) {
+		assert status != null;
+
 		this.status = status.toString();
 	}
 	

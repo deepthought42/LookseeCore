@@ -49,8 +49,16 @@ public class Body {
      * @param messageId the message id
      * @param publishTime the publish time
      * @param data the data
+     *
+     * precondition: messageId != null
+     * precondition: publishTime != null
+     * precondition: data != null
      */
     public Message(String messageId, String publishTime, String data) {
+      assert messageId != null : "messageId must not be null";
+      assert publishTime != null : "publishTime must not be null";
+      assert data != null : "data must not be null";
+
       this.messageId = messageId;
       this.publishTime = publishTime;
       this.data = data;

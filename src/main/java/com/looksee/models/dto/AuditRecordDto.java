@@ -13,6 +13,9 @@ import lombok.Setter;
 
 /**
  * Client facing audit record.
+ *
+ * invariant: status is always a valid {@link ExecutionStatus} short name or null
+ * invariant: level is always a valid {@link AuditLevel} string or null
  */
 @Getter
 @Setter
@@ -54,7 +57,7 @@ public class AuditRecordDto {
 	
 	/**
 	 * Constructs an {@link AuditRecordDto} object
-	 * 
+	 *
 	 * @param id id of the audit record
 	 * @param status status of the audit record
 	 * @param level level of the audit record
@@ -65,6 +68,12 @@ public class AuditRecordDto {
 	 * @param created_at creation time of the audit record
 	 * @param endTime end time of the audit record
 	 * @param url url of the audit record
+	 *
+	 * precondition: status != null
+	 * precondition: level != null
+	 * precondition: startTime != null
+	 * precondition: created_at != null
+	 * precondition: url != null
 	 */
 	public AuditRecordDto(long id,
 						ExecutionStatus status,
@@ -77,6 +86,12 @@ public class AuditRecordDto {
 						LocalDateTime endTime,
 						String url
 	) {
+		assert status != null;
+		assert level != null;
+		assert startTime != null;
+		assert created_at != null;
+		assert url != null;
+
 		setId(id);
 		setStatus(status);
 		setLevel(level);
@@ -109,10 +124,14 @@ public class AuditRecordDto {
 
 	/**
 	 * Sets the status of the audit record
-	 * 
+	 *
 	 * @param status {@link ExecutionStatus}
+	 *
+	 * precondition: status != null
 	 */
 	public void setStatus(ExecutionStatus status) {
+		assert status != null;
+
 		this.status = status.getShortName();
 	}
 
@@ -127,10 +146,14 @@ public class AuditRecordDto {
 
 	/**
 	 * Sets the level of the audit record
-	 * 
+	 *
 	 * @param level {@link AuditLevel}
+	 *
+	 * precondition: level != null
 	 */
 	public void setLevel(AuditLevel level) {
+		assert level != null;
+
 		this.level = level.toString();
 	}
 	

@@ -19,13 +19,23 @@ public class TimingDetail extends AuditDetail {
 	
 	/**
 	 * Constructor for {@link TimingDetail}
-	 * 
+	 *
 	 * @param name the name
 	 * @param start_time the start time
 	 * @param duration the duration
 	 * @param timing_type the timing type
+	 *
+	 * precondition: name != null
+	 * precondition: start_time != null
+	 * precondition: duration != null
+	 * precondition: timing_type != null
 	 */
 	public TimingDetail(String name, Double start_time, Double duration, String timing_type) {
+		assert name != null : "name must not be null";
+		assert start_time != null : "start_time must not be null";
+		assert duration != null : "duration must not be null";
+		assert timing_type != null : "timing_type must not be null";
+
 		setName(name);
 		setStartTime(start_time);
 		setDuration(duration);

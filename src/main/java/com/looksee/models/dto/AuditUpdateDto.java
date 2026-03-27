@@ -10,6 +10,9 @@ import lombok.Setter;
 
 /**
  * Data transfer object for the audit update message
+ *
+ * invariant: status is always a valid {@link ExecutionStatus} short name or null
+ * invariant: level != null after parameterized construction
  */
 @Getter
 @Setter
@@ -45,6 +48,10 @@ public class AuditUpdateDto {
 	 * @param data_extraction_progress the data extraction progress of the audit
 	 * @param message the message of the audit
 	 * @param status the status of the audit
+	 *
+	 * precondition: level != null
+	 * precondition: message != null
+	 * precondition: status != null
 	 */
 	public AuditUpdateDto(
 			long id,
@@ -60,6 +67,10 @@ public class AuditUpdateDto {
 			String message,
 			ExecutionStatus status
 	){
+		assert level != null;
+		assert message != null;
+		assert status != null;
+
 		setId(id);
 		setLevel(level);
 		setContentScore(content_score);
@@ -87,8 +98,12 @@ public class AuditUpdateDto {
 	 * Set the status of the audit
 	 *
 	 * @param status the status of the audit
+	 *
+	 * precondition: status != null
 	 */
 	public void setStatus(ExecutionStatus status) {
+		assert status != null;
+
 		this.status = status.getShortName();
 	}
 }

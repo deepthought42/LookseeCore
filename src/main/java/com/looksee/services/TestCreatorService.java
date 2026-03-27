@@ -60,6 +60,7 @@ public class TestCreatorService {
 	 * precondition: path_objects != null
 	 * precondition: page_state != null
 	 * precondition: browser_name != null
+	 * precondition: !browser_name.isEmpty()
 	 * precondition: domain != null
 	 * precondition: account_id > 0
 	 */
@@ -70,6 +71,13 @@ public class TestCreatorService {
 									Domain domain,
 									long account_id
 	) throws MalformedURLException, IOException, NullPointerException, GridException, WebDriverException, NoSuchAlgorithmException{
+		assert path_keys != null;
+		assert path_objects != null;
+		assert page_state != null;
+		assert browser_name != null;
+		assert !browser_name.isEmpty();
+		assert domain != null;
+		assert account_id > 0;
 
 		log.warn("domain url :: "+domain.getUrl());
 		URL domain_url = new URL(domain.getUrl());
@@ -118,7 +126,9 @@ public class TestCreatorService {
 	 * precondition: result_page != null
 	 * precondition: crawl_time > 0
 	 * precondition: browser_name != null
+	 * precondition: !browser_name.isEmpty()
 	 * precondition: domain_host != null
+	 * precondition: !domain_host.isEmpty()
 	 * precondition: account_id > 0
 	 */
 	public Test createTest(
@@ -133,7 +143,13 @@ public class TestCreatorService {
 		assert path_keys != null;
 		assert path_objects != null;
 		assert result_page != null;
-		
+		assert crawl_time > 0;
+		assert browser_name != null;
+		assert !browser_name.isEmpty();
+		assert domain_host != null;
+		assert !domain_host.isEmpty();
+		assert account_id > 0;
+
 		String result_url = result_page.getUrl();
 		log.warn("Creating test........");
 		

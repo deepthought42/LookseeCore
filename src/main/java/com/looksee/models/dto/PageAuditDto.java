@@ -80,6 +80,10 @@ public class PageAuditDto {
 	 * @param data_extraction_progress the data extraction progress
 	 * @param message the message
 	 * @param status the status
+	 *
+	 * precondition: url != null
+	 * precondition: message != null
+	 * precondition: status != null
 	 */
 	public PageAuditDto(
 			long id,
@@ -96,6 +100,10 @@ public class PageAuditDto {
 			String message,
 			ExecutionStatus status
 	){
+		assert url != null;
+		assert message != null;
+		assert status != null;
+
 		setId(id);
 		setUrl(url);
 		setContentScore(content_score);
@@ -127,6 +135,12 @@ public class PageAuditDto {
 	 * @param created_at the created at time
 	 * @param endTime the end time
 	 * @param url the url of the page
+	 *
+	 * precondition: status != null
+	 * precondition: level != null
+	 * precondition: startTime != null
+	 * precondition: created_at != null
+	 * precondition: url != null
 	 */
 	public PageAuditDto(long id,
 						ExecutionStatus status,
@@ -143,6 +157,12 @@ public class PageAuditDto {
 						LocalDateTime endTime,
 						String url
 	) {
+		assert status != null;
+		assert level != null;
+		assert startTime != null;
+		assert created_at != null;
+		assert url != null;
+
 		setId(id);
 		setStatus(status);
 		setLevel(level);
@@ -198,8 +218,12 @@ public class PageAuditDto {
 	/**
 	 * Set the level of the page audit
 	 * @param level the level of the page audit
+	 *
+	 * precondition: level != null
 	 */
 	public void setLevel(AuditLevel level) {
+		assert level != null;
+
 		this.level = level.getShortName();
 	}
 

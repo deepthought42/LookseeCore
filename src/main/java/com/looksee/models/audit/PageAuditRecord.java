@@ -69,6 +69,11 @@ public class PageAuditRecord extends AuditRecord {
 	 * @param is_part_of_domain_audit whether this audit is part of a larger domain audit
 	 * @param audit_list the set of audit types that were performed
 	 * @throws IllegalArgumentException if status, audits, or page_state is null
+	 *
+	 * precondition: status != null
+	 * precondition: audits != null
+	 * precondition: page_state != null
+	 * precondition: audit_list != null
 	 */
 	public PageAuditRecord(
 			ExecutionStatus status,
@@ -80,7 +85,8 @@ public class PageAuditRecord extends AuditRecord {
 		assert audits != null;
 		assert status != null;
 		assert page_state != null;
-		
+		assert audit_list != null;
+
 		setAudits(audits);
 		setPageState(page_state);
 		setStatus(status);
@@ -103,8 +109,11 @@ public class PageAuditRecord extends AuditRecord {
 	 * Adds an audit to the record.
 	 *
 	 * @param audit the audit to add
+	 *
+	 * precondition: audit != null
 	 */
 	public void addAudit(Audit audit) {
+		assert audit != null;
 		audits.add(audit);
 	}
 
@@ -112,8 +121,11 @@ public class PageAuditRecord extends AuditRecord {
 	 * Removes an audit from the record.
 	 *
 	 * @param audit the audit to remove
+	 *
+	 * precondition: audit != null
 	 */
 	public void removeAudit(Audit audit) {
+		assert audit != null;
 		audits.remove(audit);
 	}
 
@@ -121,8 +133,11 @@ public class PageAuditRecord extends AuditRecord {
 	 * Adds a set of audits to the record.
 	 *
 	 * @param audits the set of audits to add
+	 *
+	 * precondition: audits != null
 	 */
 	public void addAudits(Set<Audit> audits) {
+		assert audits != null;
 		audits.addAll(audits);
 	}
 }

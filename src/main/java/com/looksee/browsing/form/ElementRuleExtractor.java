@@ -26,8 +26,11 @@ public class ElementRuleExtractor {
 	 *
 	 * @param elem the element
 	 * @return the rules
+	 *
+	 * precondition: elem != null
 	 */
 	public List<Rule> extractInputRules(Element elem){
+		assert elem != null;
 		List<Rule> rules = new ArrayList<Rule>();
 
 		for(String attr : elem.getAttributes().keySet()){
@@ -46,8 +49,11 @@ public class ElementRuleExtractor {
 	 *
 	 * @param pageElement the page element
 	 * @return the rules
+	 *
+	 * precondition: pageElement != null
 	 */
 	public List<Rule> extractMouseRules(Element pageElement) {
+		assert pageElement != null;
 		List<Rule> rules = new ArrayList<Rule>();
 
 		//iterate over possible mouse actions.

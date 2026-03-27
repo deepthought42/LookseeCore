@@ -17,8 +17,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * A Step is the increment of work that start with a {@link PageState} contians an {@link ElementState} 
- * 	 that has an {@link Action} performed on it and results in an end {@link PageState}
+ * A Step is the increment of work that start with a {@link PageState} contians an {@link ElementState}
+ * 	 that has an {@link Action} performed on it and results in an end {@link PageState}.
+ *
+ * <p><b>Invariants:</b>
+ * <ul>
+ *   <li>testUser is never null when constructed via the parameterized constructor.</li>
+ *   <li>usernameElement is never null when constructed via the parameterized constructor.</li>
+ *   <li>passwordElement is never null when constructed via the parameterized constructor.</li>
+ *   <li>submitElement is never null when constructed via the parameterized constructor.</li>
+ * </ul>
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeName("LOGIN")
@@ -62,6 +70,14 @@ public class LoginStep extends Step{
 	 * @param submit_btn the submit button
 	 * @param user the test user
 	 * @param status the status of the journey
+	 *
+	 * precondition: start_page != null
+	 * precondition: end_page != null
+	 * precondition: username_element != null
+	 * precondition: password_element != null
+	 * precondition: submit_btn != null
+	 * precondition: user != null
+	 * precondition: status != null
 	 */
 	public LoginStep(PageState start_page,
 					PageState end_page,
@@ -71,6 +87,13 @@ public class LoginStep extends Step{
 					TestUser user,
 					JourneyStatus status)
 	{
+		assert start_page != null;
+		assert end_page != null;
+		assert username_element != null;
+		assert password_element != null;
+		assert submit_btn != null;
+		assert user != null;
+		assert status != null;
 		setStartPage(start_page);
 		setEndPage(end_page);
 		setUsernameElement(username_element);

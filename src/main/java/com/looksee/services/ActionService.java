@@ -23,6 +23,8 @@ public class ActionService {
 	 * precondition: action != null
 	 */
 	public ActionOLD save(ActionOLD action){
+		assert action != null;
+
 		ActionOLD action_record = action_repo.findByKey(action.getKey());
 		if(action_record == null){
 			action_record = action_repo.save(action);
@@ -32,13 +34,17 @@ public class ActionService {
 
 	/**
 	 * Retrieve data from database
-	 * 
+	 *
 	 * @param key key of the action to find
 	 * @return {@link ActionOLD}
-	 * 
+	 *
 	 * precondition: key != null
+	 * precondition: !key.isEmpty()
 	 */
 	public ActionOLD findByKey(String key) {
+		assert key != null;
+		assert !key.isEmpty();
+
 		return action_repo.findByKey(key);
 	}
 }

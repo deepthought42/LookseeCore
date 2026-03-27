@@ -24,6 +24,9 @@ import org.springframework.data.neo4j.core.schema.Relationship;
 /**
  * A reference to a web page that contains information about the page's state,
  * including its URL, title, source code, and associated elements.
+ *
+ * invariant: elements != null
+ * invariant: pageStates != null
  */
 @Getter
 @Setter
@@ -60,6 +63,12 @@ public class Page extends LookseeObject {
 	 * @param url the URL of the page
 	 * @param path the file path of the page
 	 * @throws IllegalArgumentException if any parameter is null
+	 *
+	 * precondition: elements != null
+	 * precondition: url != null
+	 * precondition: src != null
+	 * precondition: title != null
+	 * precondition: path != null
 	 */
 	public Page(List<Element> elements, String src, String title, String url, String path)
 	{
@@ -85,8 +94,11 @@ public class Page extends LookseeObject {
 	 *
 	 * @param tags the set of elements to count
 	 * @return a map containing counts for all tag names in the provided elements
+	 *
+	 * precondition: tags != null
 	 */
 	public Map<String, Integer> countTags(Set<Element> tags) {
+		assert tags != null;
 		Map<String, Integer> elem_cnts = new HashMap<String, Integer>();
 		for (Element tag : tags) {
 			if (elem_cnts.containsKey(tag.getName())) {
@@ -106,8 +118,13 @@ public class Page extends LookseeObject {
 	 * @param imgA the first image
 	 * @param imgB the second image
 	 * @return true if the images are identical, false otherwise
+	 *
+	 * precondition: imgA != null
+	 * precondition: imgB != null
 	 */
 	public static boolean compareImages(BufferedImage imgA, BufferedImage imgB) {
+		assert imgA != null;
+		assert imgB != null;
 		// The images must be the same size.
 		if (imgA.getWidth() == imgB.getWidth() && imgA.getHeight() == imgB.getHeight()) {
 			int width = imgA.getWidth();
@@ -184,8 +201,11 @@ public class Page extends LookseeObject {
 	 * Adds a single element to this page.
 	 *
 	 * @param element the element to add
+	 *
+	 * precondition: element != null
 	 */
 	public void addElement(Element element) {
+		assert element != null;
 		this.elements.add(element);
 	}
 
@@ -196,8 +216,13 @@ public class Page extends LookseeObject {
 	 * @param url the URL of the image
 	 * @return the hexadecimal string representation of the checksum
 	 * @throws IOException if there is an error reading the image
+	 *
+	 * precondition: digest != null
+	 * precondition: url != null
 	 */
 	public String getFileChecksum(MessageDigest digest, String url) throws IOException {
+		assert digest != null;
+		assert url != null;
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		BufferedImage buff_img = ImageIO.read(new URL(url));
 
@@ -218,6 +243,8 @@ public class Page extends LookseeObject {
 	 * @param buff_img the buffered image to generate checksum for
 	 * @return the hexadecimal string representation of the SHA-256 checksum
 	 * @throws IOException if there is an error processing the image
+	 *
+	 * precondition: buff_img != null
 	 */
 	public static String getFileChecksum(BufferedImage buff_img) throws IOException {
 		assert buff_img != null;
@@ -254,8 +281,11 @@ public class Page extends LookseeObject {
 	 * Adds multiple elements to this page, avoiding duplicates.
 	 *
 	 * @param elements the list of elements to add
+	 *
+	 * precondition: elements != null
 	 */
 	public void addElements(List<Element> elements) {
+		assert elements != null;
 		//check for duplicates before adding
 		for(Element element : elements) {
 			if(!this.elements.contains(element)) {
@@ -269,8 +299,11 @@ public class Page extends LookseeObject {
 	 *
 	 * @param page_state_record the page state to add
 	 * @return true if the page state was added successfully
+	 *
+	 * precondition: page_state_record != null
 	 */
 	public boolean addPageState(PageState page_state_record) {
+		assert page_state_record != null;
 		return this.pageStates.add(page_state_record);
 	}
 }

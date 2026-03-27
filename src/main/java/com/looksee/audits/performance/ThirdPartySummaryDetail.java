@@ -24,16 +24,20 @@ public class ThirdPartySummaryDetail extends AuditDetail {
 	
 	/**
 	 * Constructor for {@link ThirdPartySummaryDetail}
-	 * 
+	 *
 	 * @param transferSize the transfer size
 	 * @param blockingTime the blocking time
 	 * @param mainThreadTime the main thread time
 	 * @param entity the entity
+	 *
+	 * precondition: entity != null
 	 */
 	public ThirdPartySummaryDetail(int transferSize,
 									double blockingTime,
 									double mainThreadTime,
 									Map<String, String> entity) {
+		assert entity != null : "entity must not be null";
+
 		setTransferSize(transferSize);
 		setBlockingTime(blockingTime);
 		setMainThreadTime(mainThreadTime);

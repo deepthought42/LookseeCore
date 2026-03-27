@@ -11,7 +11,10 @@ import lombok.Setter;
 
 
 /**
- * A observation of potential error for a given {@link Element element}
+ * A observation of potential error for a given {@link Element element}.
+ *
+ * <p>invariant: wordCount &gt;= 0</p>
+ * <p>invariant: when constructed with parameters, inherits all invariants from {@link ElementStateIssueMessage}</p>
  */
 @Getter
 @Setter
@@ -37,6 +40,10 @@ public class SentenceIssueMessage extends ElementStateIssueMessage {
 	 * @param points_awarded the points awarded of the sentence issue message
 	 * @param max_points the max points of the sentence issue message
 	 * @param word_count the word count of the sentence issue message
+	 *
+	 * precondition: priority != null
+	 * precondition: category != null
+	 * precondition: labels != null
 	 */
 	public SentenceIssueMessage(
 			Priority priority,
@@ -61,7 +68,11 @@ public class SentenceIssueMessage extends ElementStateIssueMessage {
 				title,
 				points_awarded,
 				max_points);
-		
+
+		assert priority != null;
+		assert category != null;
+		assert labels != null;
+
 		setWordCount(word_count);
 	}
 }

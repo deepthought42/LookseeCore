@@ -12,8 +12,13 @@ import org.springframework.data.neo4j.core.schema.Node;
 
 
 /**
- * Defines a design system for use in defining and evaluating standards based on 
+ * Defines a design system for use in defining and evaluating standards based on
  * the settings withing the design system
+ *
+ * invariant: wcagComplianceLevel is always a valid {@link WCAGComplianceLevel} string
+ * invariant: audienceProficiency is always a valid {@link AudienceProficiency} string
+ * invariant: allowedImageCharacteristics != null
+ * invariant: colorPalette != null
  */
 @Node
 @Getter
@@ -63,8 +68,12 @@ public class DesignSystem extends LookseeObject{
 	 * Sets the WCAG compliance level of the design system
 	 *
 	 * @param wcag_compliance_level the WCAG compliance level of the design system
+	 *
+	 * precondition: wcag_compliance_level != null
 	 */
 	public void setWcagComplianceLevel(WCAGComplianceLevel wcag_compliance_level) {
+		assert wcag_compliance_level != null;
+
 		this.wcagComplianceLevel = wcag_compliance_level.toString();
 	}
 
@@ -81,8 +90,12 @@ public class DesignSystem extends LookseeObject{
 	 * Sets the audience proficiency of the design system
 	 *
 	 * @param audience_proficiency the audience proficiency of the design system
+	 *
+	 * precondition: audience_proficiency != null
 	 */
 	public void setAudienceProficiency(AudienceProficiency audience_proficiency) {
+		assert audience_proficiency != null;
+
 		this.audienceProficiency = audience_proficiency.toString();
 	}
 	
@@ -101,8 +114,12 @@ public class DesignSystem extends LookseeObject{
 	 *
 	 * @param color the color to add
 	 * @return true if the color was added, false otherwise
+	 *
+	 * precondition: color != null
 	 */
 	public boolean addColor(String color){
+		assert color != null;
+
 		if(!getColorPalette().contains(color)) {
 			return getColorPalette().add(color);
 		}
@@ -115,8 +132,12 @@ public class DesignSystem extends LookseeObject{
 	 *
 	 * @param color the color to remove
 	 * @return true if the color was removed, false otherwise
+	 *
+	 * precondition: color != null
 	 */
 	public boolean removeColor(String color) {
+		assert color != null;
+
 		return getColorPalette().remove(color);
 	}
 }

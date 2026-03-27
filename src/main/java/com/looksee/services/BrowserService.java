@@ -340,6 +340,8 @@ public class BrowserService {
 	 * @param e the element
 	 */
 	public static void removeComments(Element e) {
+		assert e != null;
+
 		e.childNodes().stream()
 			.filter(n -> n.nodeName().equals("#comment"))
 			.collect(Collectors.toList())
@@ -963,6 +965,8 @@ public class BrowserService {
 	 * @return list of WebElements
 	 */
 	public static List<WebElement> getChildElements(WebElement elem) throws WebDriverException{
+		assert elem != null;
+
 		return elem.findElements(By.xpath("./*"));
 	}
 
@@ -973,6 +977,8 @@ public class BrowserService {
 	 * @return list of WebElements
 	 */
 	public static List<WebElement> getNestedElements(WebElement elem) throws WebDriverException{
+		assert elem != null;
+
 		return elem.findElements(By.xpath(".//*"));
 	}
 
@@ -983,6 +989,8 @@ public class BrowserService {
 	 * @return parent {@linkplain WebElement}
 	 */
 	public WebElement getParentElement(WebElement elem) throws WebDriverException{
+		assert elem != null;
+
 		return elem.findElement(By.xpath(".."));
 	}
 
@@ -993,6 +1001,8 @@ public class BrowserService {
 	 * @return the cleaned attribute values string
 	 */
 	public static String cleanAttributeValues(String attribute_values_string) {
+		assert attribute_values_string != null;
+
 		String escaped = attribute_values_string.replaceAll("[\\t\\n\\r]+"," ");
 		escaped = escaped.trim().replaceAll("\\s+", " ");
 		escaped = escaped.replace("\"", "\\\"");
@@ -1147,6 +1157,9 @@ public class BrowserService {
 	 * @return an xpath that identifies this element uniquely
 	 */
 	public static String generateCssSelectorFromXpath(String xpath){
+		assert xpath != null;
+		assert !xpath.isEmpty();
+
 		List<String> selectors = new ArrayList<>();
 		
 		//split xpath on '/' character
@@ -1188,6 +1201,8 @@ public class BrowserService {
 	 * @return the css selector
 	 */
 	public static String transformXpathSelectorToCss(String xpath_selector) {
+		assert xpath_selector != null;
+
 		String selector = "";
 		
 		//convert index value with format '[integer]' to css format
@@ -1249,6 +1264,8 @@ public class BrowserService {
 	 * precondition: element != null
 	 */
 	public static Map<String, String> generateAttributesMapUsingJsoup(Element element){
+		assert element != null;
+
 		Map<String, String> attributes = new HashMap<>();
 		for(Attribute attribute : element.attributes() ){
 			attributes.put(attribute.getKey(), attribute.getValue());
@@ -1273,6 +1290,11 @@ public class BrowserService {
 	 * precondition: xpath_cnt != null
 	 */
 	public static String uniqifyXpath(Element elem, String xpath, Document doc, Map<String, Integer> xpath_cnt){
+		assert elem != null;
+		assert xpath != null;
+		assert doc != null;
+		assert xpath_cnt != null;
+
 		try {
 			List<Element> elements = Xsoup.compile(xpath).evaluate(doc).getElements();
 			if(elements.size() > 1){
@@ -1306,6 +1328,10 @@ public class BrowserService {
 	 * precondition: driver != null
 	 */
 	public static String uniqifyXpath(WebElement elem, String xpath, WebDriver driver){
+		assert elem != null;
+		assert xpath != null;
+		assert driver != null;
+
 		try {
 			List<WebElement> elements = driver.findElements(By.xpath(xpath));
 			String element_tag_name = elem.getTagName();
@@ -1339,6 +1365,8 @@ public class BrowserService {
 	 * precondition: element_list != null
 	 */
 	public Map<String, Template> findTemplates(List<com.looksee.models.Element> element_list){
+		assert element_list != null;
+
 		//create a map for the various duplicate elements
 		Map<String, Template> element_templates = new HashMap<>();
 		List<com.looksee.models.Element> parents_only_element_list = new ArrayList<>();

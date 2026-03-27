@@ -8,6 +8,10 @@ import lombok.Setter;
 
 /**
  * Page audit stats for a page audit record.
+ *
+ * <p>invariant: status is a valid {@link ExecutionStatus} string representation when set</p>
+ * <p>invariant: startTime is non-null when constructed with parameters</p>
+ * <p>invariant: score values are between 0.0 and 100.0 inclusive</p>
  */
 @Getter
 @Setter
@@ -109,6 +113,9 @@ public class PageAuditStats extends AuditStats{
 	 * @param total_issues the total issues
 	 * @param status the status of the audit
 	 * @param link_score the link score
+	 *
+	 * precondition: start_time != null
+	 * precondition: status != null
 	 */
 	public PageAuditStats(
 			long audit_record_id,
@@ -134,6 +141,8 @@ public class PageAuditStats extends AuditStats{
 			ExecutionStatus status,
 			double link_score
 	) {
+		assert start_time != null;
+		assert status != null;
 		setAuditRecordId(audit_record_id);
 		setStartTime(start_time);
 		setEndTime(end_time);
@@ -165,10 +174,14 @@ public class PageAuditStats extends AuditStats{
 	}
 
 	/**
-	 * Set the status of the audit
+	 * Set the status of the audit.
+	 *
 	 * @param status the status of the audit
+	 *
+	 * precondition: status != null
 	 */
 	public void setStatus(ExecutionStatus status) {
+		assert status != null;
 		this.status = status.toString();
 	}
 }

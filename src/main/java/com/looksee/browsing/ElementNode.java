@@ -39,8 +39,11 @@ public class ElementNode<T> {
 	 * Adds a child to the {@link ElementNode}
 	 *
 	 * @param data the data
+	 *
+	 * precondition: data != null
 	 */
     public void addChild(T data) {
+        assert data != null;
         ElementNode<T> child = new ElementNode<T>(data);
         child.setParent(this);
         this.children.add(child);
@@ -50,8 +53,11 @@ public class ElementNode<T> {
 	 * Adds a child to the {@link ElementNode}
 	 *
 	 * @param child the child
+	 *
+	 * precondition: child != null
 	 */
     public void addChild(ElementNode<T> child) {
+        assert child != null;
         child.setParent(this);
         this.children.add(child);
     }

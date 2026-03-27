@@ -25,6 +25,9 @@ public class AuditProgressMessage extends DomainAuditMessage {
 	 * @param audit_record_id the ID of the audit record
 	 * @param audit_statuses the statuses of the audits
 	 * @param audit_scores the scores of the audits
+	 *
+	 * @precondition audit_statuses != null
+	 * @precondition audit_scores != null
 	 */
 	public AuditProgressMessage(
 			long account_id,
@@ -33,6 +36,10 @@ public class AuditProgressMessage extends DomainAuditMessage {
 			Map<String, Float> audit_scores
 	) {
 		super(account_id, audit_record_id);
+
+		assert audit_statuses != null : "audit_statuses must not be null";
+		assert audit_scores != null : "audit_scores must not be null";
+
 		setAuditStatuses(audit_statuses);
 		setAuditScores(audit_scores);
 	}

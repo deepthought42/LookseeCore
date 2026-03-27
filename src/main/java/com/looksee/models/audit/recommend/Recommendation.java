@@ -8,7 +8,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * A Recommendation is a recommendation to improve a page
+ * A Recommendation is a recommendation to improve a page.
+ *
+ * <p>invariant: key is always generated via {@link #generateKey()}</p>
  */
 @NoArgsConstructor
 @AllArgsConstructor
