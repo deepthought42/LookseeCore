@@ -23,6 +23,8 @@ public class PageIdentifiedMessage extends DomainAuditMessage {
 	 * @param domain_audit_record_id the id of the domain audit record
 	 * @param page_id the id of the page
 	 * @param url the url of the page
+	 *
+	 * @precondition url != null
 	 */
 	public PageIdentifiedMessage(
 			long account_id,
@@ -31,6 +33,9 @@ public class PageIdentifiedMessage extends DomainAuditMessage {
 			String url
 	) {
 		super(account_id, domain_audit_record_id);
+
+		assert url != null : "url must not be null";
+
 		setPageId(page_id);
 		setUrl(url);
 	}

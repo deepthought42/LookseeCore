@@ -534,6 +534,10 @@ public class PageStateService {
 	 * precondition: !current_url.isEmpty()
 	 */
 	public PageState findByDomainAudit(long domainAuditRecordId, String current_url) {
+		assert domainAuditRecordId > 0;
+		assert current_url != null;
+		assert !current_url.isEmpty();
+
 		return page_state_repo.findByDomainAudit(domainAuditRecordId, current_url);
 	}
 
@@ -548,6 +552,9 @@ public class PageStateService {
 	@Retryable
 	@Synchronized
 	public void updateElementExtractionCompleteStatus(Long page_id, boolean is_complete) throws Exception {
+		assert page_id != null;
+		assert page_id > 0;
+
 		PageState page = page_state_repo.updateElementExtractionCompleteStatus(page_id, is_complete);
 		if(page == null){
 			throw new Exception("Page state with id = "+page_id+" was not found");

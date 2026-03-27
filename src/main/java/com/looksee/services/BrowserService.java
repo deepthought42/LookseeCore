@@ -2729,6 +2729,8 @@ public class BrowserService {
 	 * @return the set of metadata
 	 */
 	public static Set<String> extractMetadata(String src) {
+		assert src != null;
+
 		Document html_doc = Jsoup.parse(src);
 		Elements meta_tags = html_doc.getElementsByTag("meta");
 		Set<String> meta_tag_html = new HashSet<String>();
@@ -2746,6 +2748,8 @@ public class BrowserService {
 	 * @return the set of stylesheets
 	 */
 	public static Set<String> extractStylesheets(String src) {
+		assert src != null;
+
 		Document html_doc = Jsoup.parse(src);
 		Elements link_tags = html_doc.getElementsByTag("link");
 		Set<String> stylesheet_urls = new HashSet<String>();

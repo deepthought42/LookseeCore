@@ -38,12 +38,19 @@ public class PageDataExtractionError extends Message {
 	 * @param auditRecordId the audit record id
 	 * @param url the url of the page
 	 * @param errorMessage the error message
+	 *
+	 * @precondition url != null
+	 * @precondition errorMessage != null
 	 */
 	public PageDataExtractionError(long accountId,
 									long auditRecordId,
 									String url,
 									String errorMessage) {
 		super(accountId);
+
+		assert url != null : "url must not be null";
+		assert errorMessage != null : "errorMessage must not be null";
+
 		setUrl(url);
 		setAuditRecordId(auditRecordId);
 		setErrorMessage(errorMessage);

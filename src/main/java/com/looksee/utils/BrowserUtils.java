@@ -669,9 +669,11 @@ public class BrowserUtils {
 	 * @return the RGB color
 	 *
 	 * precondition: color_str != null
+	 * precondition: !color_str.isEmpty()
 	 */
 	public static Color hex2Rgb(String color_str) {
 		assert color_str != null;
+		assert !color_str.isEmpty();
 
 		if(color_str.contentEquals("0")) {
 			return new Color(0,0,0);
