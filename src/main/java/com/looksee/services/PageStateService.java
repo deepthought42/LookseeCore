@@ -572,6 +572,9 @@ public class PageStateService {
 	@Retryable
 	@Synchronized
     public void updateInteractiveElementExtractionComplete(Long page_id, boolean is_complete) throws Exception {
+		assert page_id != null;
+		assert page_id > 0;
+
         PageState page = page_state_repo.updateInteractiveElementExtractionCompleteStatus(page_id, is_complete);
 		if(page == null){
 			throw new Exception("Page state with id = "+page_id+" was not found");

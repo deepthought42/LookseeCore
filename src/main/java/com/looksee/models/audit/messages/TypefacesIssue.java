@@ -46,6 +46,16 @@ public class TypefacesIssue extends UXIssueMessage {
 	 * @param pointsAwarded the points awarded of the typefaces issue
 	 * @param maxPoints the max points of the typefaces issue
 	 * @param title the title of the typefaces issue
+	 *
+	 * @precondition typefaces != null
+	 * @precondition !typefaces.isEmpty()
+	 * @precondition description != null
+	 * @precondition recommendation != null
+	 * @precondition priority != null
+	 * @precondition category != null
+	 * @precondition labels != null
+	 * @precondition wcagCompliance != null
+	 * @precondition title != null
 	 */
 	public TypefacesIssue(
 			List<String> typefaces,
@@ -72,7 +82,14 @@ public class TypefacesIssue extends UXIssueMessage {
 		
 		assert typefaces != null;
 		assert !typefaces.isEmpty();
-		
+		assert description != null : "description must not be null";
+		assert recommendation != null : "recommendation must not be null";
+		assert priority != null : "priority must not be null";
+		assert category != null : "category must not be null";
+		assert labels != null : "labels must not be null";
+		assert wcagCompliance != null : "wcagCompliance must not be null";
+		assert title != null : "title must not be null";
+
 		setTypefaces(typefaces);
 	}
 

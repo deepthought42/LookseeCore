@@ -92,8 +92,12 @@ public class AuditRecordService {
 	 *
 	 * @param id the id of the audit record
 	 * @return the audit record
+	 *
+	 * precondition: id > 0
 	 */
 	public Optional<AuditRecord> findById(long id) {
+		assert id > 0;
+
 		return audit_record_repo.findById(id);
 	}
 	
@@ -151,8 +155,14 @@ public class AuditRecordService {
 	 *
 	 * @param audit_record_id the id of the audit record
 	 * @param audit_id the id of the audit
+	 *
+	 * precondition: audit_record_id > 0
+	 * precondition: audit_id > 0
 	 */
 	public void addAudit(long audit_record_id, long audit_id) {
+		assert audit_record_id > 0;
+		assert audit_id > 0;
+
 		audit_record_repo.addAudit(audit_record_id, audit_id);
 	}
 	
@@ -161,8 +171,12 @@ public class AuditRecordService {
 	 *
 	 * @param audit_id the id of the audit
 	 * @return the set of audits and issues
+	 *
+	 * precondition: audit_id > 0
 	 */
 	public Set<Audit> getAllAuditsAndIssues(long audit_id) {
+		assert audit_id > 0;
+
 		return audit_record_repo.getAllAuditsForPageAuditRecord(audit_id);
 	}
 	
@@ -171,8 +185,12 @@ public class AuditRecordService {
 	 *
 	 * @param id the id of the domain audit record
 	 * @return the most recent domain audit record
+	 *
+	 * precondition: id > 0
 	 */
 	public Optional<DomainAuditRecord> findMostRecentDomainAuditRecord(long id) {
+		assert id > 0;
+
 		return audit_record_repo.findMostRecentDomainAuditRecord(id);
 	}
 

@@ -489,9 +489,11 @@ public class BrowserUtils {
 	 * @throws Exception
 	 *
 	 * precondition: url_str != null
+	 * precondition: !url_str.isEmpty()
 	 */
 	public static boolean doesUrlExist(String url_str) throws Exception {
 		assert url_str != null;
+		assert !url_str.isEmpty();
 		
 		if(BrowserUtils.isJavascript(url_str)
 			|| url_str.startsWith("itms-apps:")
@@ -631,11 +633,15 @@ public class BrowserUtils {
 	 * @return {@link List list} of css property declarations
 	 *
 	 * precondition: prop != null
+	 * precondition: !prop.isEmpty()
 	 * precondition: css != null
+	 * precondition: !css.isEmpty()
 	 */
 	public static List<String> extractCssPropertyDeclarations(String prop, String css) {
 		assert prop != null;
+		assert !prop.isEmpty();
 		assert css != null;
+		assert !css.isEmpty();
 		
 		String patternString = prop+":(.*?)[?=;|}]";
 		List<String> settings = new ArrayList<>();
@@ -753,9 +759,11 @@ public class BrowserUtils {
 	 * @return the page url
 	 *
 	 * precondition: sanitized_url != null
+	 * precondition: !sanitized_url.isEmpty()
 	 */
 	public static String getPageUrl(String sanitized_url) {
 		assert sanitized_url != null;
+		assert !sanitized_url.isEmpty();
 		//remove protocol
 		String url_without_protocol = sanitized_url.replace("https://", "");
 		url_without_protocol = url_without_protocol.replace("http://", "");

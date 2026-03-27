@@ -2767,6 +2767,8 @@ public class BrowserService {
 	 * @return the set of script urls
 	 */
 	public static Set<String> extractScriptUrls(String src) {
+		assert src != null;
+
 		Document html_doc = Jsoup.parse(src);
 		Elements script_tags = html_doc.getElementsByTag("script");
 		Set<String> script_urls = new HashSet<String>();
@@ -2787,10 +2789,12 @@ public class BrowserService {
 	 * @return the set of icon links
 	 */
 	public static Set<String> extractIconLinks(String src) {
+		assert src != null;
+
 		Document html_doc = Jsoup.parse(src);
 		Elements icon_tags = html_doc.getElementsByTag("link");
 		Set<String> icon_urls = new HashSet<String>();
-		
+
 		for(Element icon_tag : icon_tags) {
 			if(icon_tag.attr("rel").contains("icon")){
 				icon_urls.add(icon_tag.absUrl("href"));
@@ -3092,6 +3096,7 @@ public class BrowserService {
 	 */
 	public static boolean doesElementFitInViewport(Dimension viewport_size, Point position, Dimension size){
 		assert viewport_size != null;
+		assert position != null;
 		assert size != null;
 
 		int height = size.getHeight();
@@ -3108,6 +3113,8 @@ public class BrowserService {
 	 */
 	public List<ElementState> enrichImageElement(List<ElementState> element_states)
 	{
+		assert element_states != null;
+
 		return element_states.parallelStream().map(element_state -> {
 			if(element_state instanceof ImageElementState && !element_state.getScreenshotUrl().isEmpty()) {
 				BufferedImage element_screenshot;
@@ -3164,6 +3171,8 @@ public class BrowserService {
 	 */
 	public ElementState enrichImageElement(ElementState element_state)
 	{
+		assert element_state != null;
+
 		if(element_state instanceof ImageElementState
 				&& element_state.getScreenshotUrl() != null
 				&& !element_state.getScreenshotUrl().isEmpty())
