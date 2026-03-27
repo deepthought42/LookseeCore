@@ -894,8 +894,12 @@ public class AuditRecordService {
 	 *
 	 * @param audit_record_id the id of the audit record
 	 * @return the account
+	 *
+	 * precondition: audit_record_id > 0
 	 */
 	public Optional<Account> getAccount(long audit_record_id) {
+		assert audit_record_id > 0;
+
 		return account_repo.getAccount(audit_record_id);
 	}
 
@@ -907,6 +911,8 @@ public class AuditRecordService {
 	 * @param info_architecture_progress the information architecture audit progress
 	 * @param aesthetic_progress the aesthetic audit progress
 	 * @param data_extraction_progress the data extraction progress
+	 *
+	 * precondition: audit_record_id > 0
 	 */
 	public void updateAuditProgress(long audit_record_id,
 									double content_progress,
@@ -914,6 +920,8 @@ public class AuditRecordService {
 									double aesthetic_progress,
 									double data_extraction_progress)
 	{
+		assert audit_record_id > 0;
+
 		AuditRecord audit_record = findById(audit_record_id).get();
 		audit_record.setDataExtractionProgress(data_extraction_progress);
 		audit_record.setStatus(ExecutionStatus.RUNNING_AUDITS);
@@ -930,8 +938,12 @@ public class AuditRecordService {
 	 *
 	 * @param id the id of the domain
 	 * @return the most recent audit record for the domain
+	 *
+	 * precondition: id > 0
 	 */
 	public Optional<AuditRecord> getMostRecentAuditRecordForDomain(long id) {
+		assert id > 0;
+
 		return audit_record_repo.getMostRecentAuditRecordForDomain(id);
 	}
 
@@ -941,6 +953,9 @@ public class AuditRecordService {
 	 * @param host the host of the domain
 	 * @return the most recent audit record for the domain
 	 * @deprecated Use {@link #getMostRecentAuditRecordForDomain(long)} instead
+	 *
+	 * precondition: host != null
+	 * precondition: !host.isEmpty()
 	 */
 	@Deprecated
 	public Optional<AuditRecord> getMostRecentAuditRecordForDomain(String host) {
@@ -955,8 +970,12 @@ public class AuditRecordService {
 	 *
 	 * @param domain_audit_record_id the id of the domain audit record
 	 * @return the set of audits for the domain audit
+	 *
+	 * precondition: domain_audit_record_id > 0
 	 */
 	public Set<Audit> getAllAuditsForDomainAudit(long domain_audit_record_id) {
+		assert domain_audit_record_id > 0;
+
 		return audit_repo.getAllAuditsForDomainAudit(domain_audit_record_id);
 	}
 
@@ -968,11 +987,15 @@ public class AuditRecordService {
 	 * @param info_architecture_score the information architecture score
 	 * @param aesthetic_score the aesthetic score
 	 * @return true if the update was successful, false otherwise
+	 *
+	 * precondition: audit_record_id > 0
 	 */
     public boolean updateAuditScores(long audit_record_id,
 									double content_score,
 									double info_architecture_score,
 									double aesthetic_score) {
+		assert audit_record_id > 0;
+
 		try{
 	audit_record_repo.updateScores(audit_record_id, content_score, info_architecture_score, aesthetic_score);
 			return true;
@@ -987,8 +1010,14 @@ public class AuditRecordService {
 	 * @param domain_audit_id the id of the domain audit
 	 * @param candidate the journey status to count
 	 * @return the number of journeys with the specified status
+	 *
+	 * precondition: domain_audit_id > 0
+	 * precondition: candidate != null
 	 */
 	public int getNumberOfJourneysWithStatus(long domain_audit_id, JourneyStatus candidate) {
+		assert domain_audit_id > 0;
+		assert candidate != null;
+
 		return audit_record_repo.getNumberOfJourneysWithStatus(domain_audit_id, candidate.toString());
 	}
 
@@ -997,8 +1026,12 @@ public class AuditRecordService {
 	 *
 	 * @param domain_audit_id the id of the domain audit
 	 * @return the total number of journeys
+	 *
+	 * precondition: domain_audit_id > 0
 	 */
 	public int getNumberOfJourneys(long domain_audit_id) {
+		assert domain_audit_id > 0;
+
 		return audit_record_repo.getNumberOfJourneys(domain_audit_id);
 	}
 
@@ -1007,8 +1040,12 @@ public class AuditRecordService {
 	 *
 	 * @param audit_record_id the id of the audit record
 	 * @return the page state
+	 *
+	 * precondition: audit_record_id > 0
 	 */
 	public PageState findPage(long audit_record_id) {
+		assert audit_record_id > 0;
+
 		return page_state_service.getPageStateForAuditRecord(audit_record_id);
 	}
 	
@@ -1022,6 +1059,9 @@ public class AuditRecordService {
 	 * precondition: audit != null
 	 */
 	public void addAudit(long audit_record_id, Audit audit) {
+		assert audit_record_id > 0;
+		assert audit != null;
+
 		//check if audit already exists for page state
 		Optional<Audit> audit_opt = audit_repo.getAuditForAuditRecord(audit_record_id, audit.getKey());
 		if(!audit_opt.isPresent()) {
@@ -1040,6 +1080,9 @@ public class AuditRecordService {
 	 * precondition: page_id > 0
 	 */
 	public AuditRecord findPageWithId(long audit_record_id, long page_id) {
+		assert audit_record_id > 0;
+		assert page_id > 0;
+
 		return audit_record_repo.findPageWithId(audit_record_id, page_id);
 	}
 
@@ -1049,8 +1092,14 @@ public class AuditRecordService {
 	 * @param domainAuditRecordId the id of the domain audit record
 	 * @param pageId the id of the page
 	 * @return true if the page was already audited, false otherwise
+	 *
+	 * precondition: domainAuditRecordId > 0
+	 * precondition: pageId > 0
 	 */
 	public boolean wasPageAlreadyAudited(long domainAuditRecordId, long pageId) {
+		assert domainAuditRecordId > 0;
+		assert pageId > 0;
+
 		return audit_record_repo.wasPageAlreadyAudited(domainAuditRecordId, pageId) != null;
 	}
 
@@ -1060,19 +1109,31 @@ public class AuditRecordService {
 	 * @param pageAuditRecordId the id of the page audit record
 	 * @param pageId the id of the page
 	 * @return true if the page was already audited, false otherwise
+	 *
+	 * precondition: pageAuditRecordId > 0
+	 * precondition: pageId > 0
 	 */
 	public boolean wasSinglePageAlreadyAudited(long pageAuditRecordId, long pageId) {
+		assert pageAuditRecordId > 0;
+		assert pageId > 0;
+
 		return audit_record_repo.wasSinglePageAlreadyAudited(pageAuditRecordId, pageId) != null;
 	}
 
 	/**
 	 * Get the number of journeys without a specific status for a domain audit
-	 * 
+	 *
 	 * @param domain_audit_id the id of the domain audit
 	 * @param status the status of the journey
 	 * @return the number of journeys without the specified status
+	 *
+	 * precondition: domain_audit_id > 0
+	 * precondition: status != null
 	 */
 	public int getNumberOfJourneysWithoutStatus(long domain_audit_id, JourneyStatus status) {
+		assert domain_audit_id > 0;
+		assert status != null;
+
 		return audit_record_repo.getNumberOfJourneysWithoutStatus(domain_audit_id, status.toString());
 	}
 
@@ -1085,6 +1146,8 @@ public class AuditRecordService {
 	 * precondition: acct_id > 0
 	 */
     public List<AuditRecord> findByAccountId(long acct_id) {
+		assert acct_id > 0;
+
 		return audit_record_repo.findAuditRecordByAccountId(acct_id);
     }
 
@@ -1097,6 +1160,8 @@ public class AuditRecordService {
 	 * precondition: audits_records != null
 	 */
     public List<AuditRecordDto> buildAudits(List<AuditRecord> audits_records) {
+		assert audits_records != null;
+
 		List<AuditRecordDto> auditDtoList = new ArrayList<>();
 		for(AuditRecord audit_record: audits_records){
 			auditDtoList.add(buildAudit(audit_record));
@@ -1114,6 +1179,8 @@ public class AuditRecordService {
 	 * precondition: audit_record != null
 	 */
     public AuditRecordDto buildAudit(AuditRecord audit_record) {
+		assert audit_record != null;
+
 		Set<Audit> audits = new HashSet<>();
 		if(audit_record instanceof DomainAuditRecord){
 			audits = getAllAuditsForDomainAudit(audit_record.getId());
