@@ -99,7 +99,7 @@ public class TypefacesIssue extends UXIssueMessage {
 	 * @param typefaces the typefaces to add to the typefaces issue
 	 * @return true if the typefaces were added, false otherwise
 	 *
-	 * precondition: typefaces != null
+	 * @precondition typefaces != null
 	 */
 	public boolean addTypefaces(List<String> typefaces) {
 		assert typefaces != null;

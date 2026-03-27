@@ -910,6 +910,7 @@ public class BrowserService {
 	 */
 	public static boolean isElementVisibleInPane(Browser browser, ElementState element){
 		assert browser != null;
+		assert element != null;
 
 		//Point offsets = browser.getViewportScrollOffset();
 		long y_offset = browser.getYScrollOffset();
@@ -2290,6 +2291,8 @@ public class BrowserService {
 												int page_height
 	) throws MalformedURLException {
 		assert page_state != null;
+		assert xpaths != null;
+		assert url != null;
 
 		List<ElementState> elements = new ArrayList<>();
 		Map<String, ElementState> elements_mapped = new HashMap<>();
@@ -2841,7 +2844,9 @@ public class BrowserService {
 	 */
 	public PageState buildPageState( Browser browser, long audit_record_id, String browser_url) throws WebDriverException, IOException {
 		assert browser != null;
-		
+		assert browser_url != null;
+		assert !browser_url.isEmpty();
+
 		//remove 3rd party chat apps such as drift, and ...(NB: fill in as more identified)
 		
 		URL current_url = new URL(browser_url);
@@ -3230,6 +3235,8 @@ public class BrowserService {
      * @return A string representing the XPath of the element.
      */
     public static String getXPath(Element element) {
+        assert element != null;
+
         StringBuilder xpath = new StringBuilder();
 
         // Traverse up the DOM tree to construct the XPath
@@ -3377,6 +3384,10 @@ public class BrowserService {
 	 */
 	@Deprecated
 	public Set<Form> extractAllForms(long account_id, Domain domain, Browser browser) throws Exception {
+		assert account_id > 0;
+		assert domain != null;
+		assert browser != null;
+
 		Set<Form> form_list = new HashSet<Form>();
 		log.info("extracting forms from page with url    ::     "+browser.getDriver().getCurrentUrl());
 		List<WebElement> form_elements = browser.getDriver().findElements(By.xpath("//form"));
@@ -3519,6 +3530,10 @@ public class BrowserService {
 	 * @throws XPathExpressionException if an error occurs while extracting elements
 	 */
 	public List<com.looksee.models.Element> extractElements(String page_src, URL url, List<RuleSet> rule_sets) throws IOException, XPathExpressionException {
+		assert page_src != null;
+		assert url != null;
+		assert rule_sets != null;
+
 		return getDomElements(page_src, url, rule_sets);
 	}
 	

@@ -199,6 +199,9 @@ public class AuditRecordService {
 	 *
 	 * @param page_url the url of the page
 	 * @return the most recent page audit record
+	 *
+	 * precondition: page_url != null
+	 * precondition: !page_url.isEmpty()
 	 */
 	public Optional<PageAuditRecord> findMostRecentPageAuditRecord(String page_url) {
 		assert page_url != null;
@@ -212,6 +215,9 @@ public class AuditRecordService {
 	 *
 	 * @param page_url the url of the page
 	 * @return the most recent audits for the page
+	 *
+	 * precondition: page_url != null
+	 * precondition: !page_url.isEmpty()
 	 */
 	public Set<Audit> findMostRecentAuditsForPage(String page_url) {
 		assert page_url != null;
@@ -228,6 +234,9 @@ public class AuditRecordService {
 	 *
 	 * @param audit_record_key the key of the audit record
 	 * @return the set of color palette audits
+	 *
+	 * precondition: audit_record_key != null
+	 * precondition: !audit_record_key.isEmpty()
 	 */
 	public Set<Audit> getAllColorPaletteAudits(String audit_record_key) {
 		assert audit_record_key != null;
@@ -241,6 +250,9 @@ public class AuditRecordService {
 	 *
 	 * @param audit_record_key the key of the audit record
 	 * @return the set of text color contrast audits
+	 *
+	 * precondition: audit_record_key != null
+	 * precondition: !audit_record_key.isEmpty()
 	 */
 	public Set<Audit> getAllTextColorContrastAudits(String audit_record_key) {
 		assert audit_record_key != null;
@@ -254,6 +266,9 @@ public class AuditRecordService {
 	 *
 	 * @param audit_record_key the key of the audit record
 	 * @return the set of non-text color contrast audits
+	 *
+	 * precondition: audit_record_key != null
+	 * precondition: !audit_record_key.isEmpty()
 	 */
 	public Set<Audit> getAllNonTextColorContrastAudits(String audit_record_key) {
 		assert audit_record_key != null;
@@ -267,6 +282,9 @@ public class AuditRecordService {
 	 *
 	 * @param audit_record_key the key of the audit record
 	 * @return the set of typeface audits
+	 *
+	 * precondition: audit_record_key != null
+	 * precondition: !audit_record_key.isEmpty()
 	 */
 	public Set<Audit> getAllTypefaceAudits(String audit_record_key) {
 		assert audit_record_key != null;
@@ -280,6 +298,9 @@ public class AuditRecordService {
 	 *
 	 * @param audit_record_key the key of the audit record
 	 * @return the set of link audits
+	 *
+	 * precondition: audit_record_key != null
+	 * precondition: !audit_record_key.isEmpty()
 	 */
 	public Set<Audit> getAllLinkAudits(String audit_record_key) {
 		assert audit_record_key != null;
@@ -293,6 +314,9 @@ public class AuditRecordService {
 	 *
 	 * @param audit_record_key the key of the audit record
 	 * @return the set of title and header audits
+	 *
+	 * precondition: audit_record_key != null
+	 * precondition: !audit_record_key.isEmpty()
 	 */
 	public Set<Audit> getAllTitleAndHeaderAudits(String audit_record_key) {
 		assert audit_record_key != null;
@@ -306,6 +330,9 @@ public class AuditRecordService {
 	 *
 	 * @param audit_record_key the key of the audit record
 	 * @return the set of alt text audits
+	 *
+	 * precondition: audit_record_key != null
+	 * precondition: !audit_record_key.isEmpty()
 	 */
 	public Set<Audit> getAllAltTextAudits(String audit_record_key) {
 		assert audit_record_key != null;

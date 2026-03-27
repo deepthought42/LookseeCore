@@ -235,10 +235,12 @@ public class BrowserUtils {
 	 * @return true if link is empty or if it starts with a '/' and doesn't contain the domain host, otherwise false
 	 *
 	 * precondition: domain_host != null
+	 * precondition: !domain_host.isEmpty()
 	 * precondition: link_url != null
 	 */
 	public static boolean isRelativeLink(String domain_host, String link_url) {
 		assert domain_host != null;
+		assert !domain_host.isEmpty();
 		assert link_url != null;
 		
 		//add check that link url does not contain a host. The host does not need to be the same as the domain host. for example the domain host might be look-see.com and the link url might be shopify.dev/docs/api/customer/unstable/mutations/subscriptionContractPause
@@ -1239,9 +1241,11 @@ public class BrowserUtils {
 	 * @return A set of font families
 	 * 
 	 * precondition: stylesheet != null
+	 * precondition: !stylesheet.isEmpty()
 	 */
 	public static Collection<? extends String> extractFontFamiliesFromStylesheet(String stylesheet) {
 		assert stylesheet != null;
+		assert !stylesheet.isEmpty();
 		
 		Map<String, Boolean> font_families = new HashMap<>();
 
@@ -1278,9 +1282,11 @@ public class BrowserUtils {
 	 * @return the set of colors declared as background or text color in the css
 	 * 
 	 * precondition: stylesheet != null
+	 * precondition: !stylesheet.isEmpty()
 	 */
 	public static Collection<? extends ColorData> extractColorsFromStylesheet(String stylesheet) {
 		assert stylesheet != null;
+		assert !stylesheet.isEmpty();
 		
 		List<ColorData> colors = new ArrayList<>();
 
