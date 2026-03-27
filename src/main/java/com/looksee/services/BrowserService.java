@@ -1845,6 +1845,8 @@ public class BrowserService {
 	 * @return a set of stylesheet urls
 	 */
 	public static Set<String> extractStylesheets(Document html_doc) {
+		assert html_doc != null;
+
 		Elements link_tags = html_doc.getElementsByTag("link");
 		Set<String> stylesheet_urls = new HashSet<String>();
 		
@@ -1884,9 +1886,11 @@ public class BrowserService {
 	 * precondition:: html_doc != null
 	 */
 	public static Set<String> extractIconLinks(Document html_doc) {
+		assert html_doc != null;
+
 		Elements icon_tags = html_doc.getElementsByTag("link");
 		Set<String> icon_urls = new HashSet<String>();
-		
+
 		for(Element icon_tag : icon_tags) {
 			if(icon_tag.attr("rel").contains("icon")){
 				icon_urls.add(icon_tag.absUrl("href"));

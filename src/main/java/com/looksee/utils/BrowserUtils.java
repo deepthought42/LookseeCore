@@ -267,11 +267,9 @@ public class BrowserUtils {
 	 * @return true if it contains a valid host format, otherwise false
 	 *
 	 * precondition: link_url != null
-	 * precondition: !link_url.isEmpty()
 	 */
 	public static boolean containsHost(String link_url) {
 		assert link_url != null;
-		assert !link_url.isEmpty();
 		
 		String host_pattern = "([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&%$-]+)*@)*((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?)(\\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}|([a-zA-Z0-9-]+\\.)*[a-zA-Z0-9-]+\\.(com|app|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|website|space|ca|us|co|uk|cc|es|tn|dev|us|ai))(:[0-9]+)*";
 		Pattern pattern = Pattern.compile(host_pattern);

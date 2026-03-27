@@ -496,6 +496,8 @@ public class PageStateService {
 	 * @return the page state
 	 *
 	 * precondition: domain_map_id > 0
+	 * precondition: page_key != null
+	 * precondition: !page_key.isEmpty()
 	 */
 	public PageState findPageInDomainMap(long domain_map_id, String page_key) {
 		assert domain_map_id > 0;
@@ -510,8 +512,14 @@ public class PageStateService {
 	 * @param domainAuditRecordId the id of the domain audit record
 	 * @param page_state_id the id of the page state
 	 * @return the page state
+	 *
+	 * precondition: domainAuditRecordId > 0
+	 * precondition: page_state_id > 0
 	 */
 	public PageState findByDomainAudit(long domainAuditRecordId, long page_state_id) {
+		assert domainAuditRecordId > 0;
+		assert page_state_id > 0;
+
 		return page_state_repo.findByDomainAudit(domainAuditRecordId, page_state_id);
 	}
 

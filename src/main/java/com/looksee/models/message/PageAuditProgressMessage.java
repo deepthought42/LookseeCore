@@ -32,6 +32,10 @@ public class PageAuditProgressMessage extends Message {
 	 * @param level the level of the audit
 	 * @param domain_id the id of the domain
 	 * @param page_audit_id the id of the page audit
+	 *
+	 * @precondition message != null
+	 * @precondition category != null
+	 * @precondition level != null
 	 */
 	public PageAuditProgressMessage(
 			long account_id,
@@ -44,6 +48,11 @@ public class PageAuditProgressMessage extends Message {
 			long page_audit_id
 	) {
 		super(account_id);
+
+		assert message != null : "message must not be null";
+		assert category != null : "category must not be null";
+		assert level != null : "level must not be null";
+
 		setProgress(progress);
 		setMessage(message);
 		setCategory(category);

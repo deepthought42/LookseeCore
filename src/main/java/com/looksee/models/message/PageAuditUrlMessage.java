@@ -30,6 +30,9 @@ public class PageAuditUrlMessage extends PageAuditMessage {
 	 * @param pageAuditId the page audit id
 	 * @param url the url to audit
 	 * @param browser the browser to audit
+	 *
+	 * @precondition url != null
+	 * @precondition browser != null
 	 */
 	public PageAuditUrlMessage(long accountId,
 								long pageAuditId,
@@ -37,6 +40,10 @@ public class PageAuditUrlMessage extends PageAuditMessage {
 								BrowserType browser)
 	{
 		super(accountId, pageAuditId);
+
+		assert url != null : "url must not be null";
+		assert browser != null : "browser must not be null";
+
 		setUrl(url);
 		setBrowser(browser);
 	}
