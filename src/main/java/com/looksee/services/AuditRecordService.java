@@ -631,8 +631,12 @@ public class AuditRecordService {
 	 *
 	 * @param audit_record_id the id of the audit record
 	 * @return the set of page states
+	 *
+	 * precondition: audit_record_id > 0
 	 */
 	public Set<PageState> getPageStatesForDomainAuditRecord(long audit_record_id) {
+		assert audit_record_id > 0;
+
 		return audit_record_repo.getPageStatesForDomainAuditRecord(audit_record_id);
 	}
 
@@ -641,8 +645,14 @@ public class AuditRecordService {
 	 *
 	 * @param audit_record_id the id of the audit record
 	 * @param page_state_id the id of the page state
+	 *
+	 * precondition: audit_record_id > 0
+	 * precondition: page_state_id > 0
 	 */
 	public void addPageToAuditRecord(long audit_record_id, long page_state_id) {
+		assert audit_record_id > 0;
+		assert page_state_id > 0;
+
 		audit_record_repo.addPageToAuditRecord( audit_record_id, page_state_id );
 	}
 
@@ -670,8 +680,12 @@ public class AuditRecordService {
 	 *
 	 * @param domain_audit_id the id of the domain audit record
 	 * @return the page audit count
+	 *
+	 * precondition: domain_audit_id > 0
 	 */
 	public int getPageAuditCount(long domain_audit_id) {
+		assert domain_audit_id > 0;
+
 		return audit_record_repo.getPageAuditRecordCount(domain_audit_id);
 	}
 
@@ -680,8 +694,12 @@ public class AuditRecordService {
 	 *
 	 * @param id the id of the audit record
 	 * @return the set of audits
+	 *
+	 * precondition: id > 0
 	 */
 	public Set<Audit> getAllAudits(long id) {
+		assert id > 0;
+
 		return audit_record_repo.getAllAudits(id);
 	}
 
@@ -715,8 +733,12 @@ public class AuditRecordService {
 	 *
 	 * @param id the id of the page record
 	 * @return the domain audit record
+	 *
+	 * precondition: id > 0
 	 */
 	public Optional<DomainAuditRecord> getDomainAuditRecordForPageRecord(long id) {
+		assert id > 0;
+
 		return audit_record_repo.getDomainForPageAuditRecord(id);
 	}
 
@@ -725,8 +747,12 @@ public class AuditRecordService {
 	 *
 	 * @param id the id of the audit record
 	 * @return the set of labels
+	 *
+	 * precondition: id > 0
 	 */
 	public Set<Label> getLabelsForImageElements(long id) {
+		assert id > 0;
+
 		return audit_record_repo.getLabelsForImageElements(id);
 	}
 
@@ -735,8 +761,12 @@ public class AuditRecordService {
 	 *
 	 * @param audit_record_id the id of the audit record
 	 * @return the design system
+	 *
+	 * precondition: audit_record_id > 0
 	 */
 	public Optional<DesignSystem> getDesignSystem(long audit_record_id) {
+		assert audit_record_id > 0;
+
 		return audit_record_repo.getDesignSystem(audit_record_id);
 	}
 
@@ -746,8 +776,14 @@ public class AuditRecordService {
 	 * @param audit_record_id the id of the audit record
 	 * @param journey_id the id of the journey
 	 * @return the audit record
+	 *
+	 * precondition: audit_record_id > 0
+	 * precondition: journey_id > 0
 	 */
 	public AuditRecord addJourney(long audit_record_id, long journey_id) {
+		assert audit_record_id > 0;
+		assert journey_id > 0;
+
 		return audit_record_repo.addJourney(audit_record_id, journey_id);
 	}
 
