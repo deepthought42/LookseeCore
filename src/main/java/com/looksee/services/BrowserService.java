@@ -3145,6 +3145,10 @@ public class BrowserService {
 	 * @param size {@link Dimension size} of the element
 	 *
 	 * @return true if element is rendered within viewport, otherwise false
+	 *
+	 * precondition: viewport_size != null
+	 * precondition: position != null
+	 * precondition: size != null
 	 */
 	public static boolean doesElementFitInViewport(Dimension viewport_size, Point position, Dimension size){
 		assert viewport_size != null;
@@ -3285,6 +3289,8 @@ public class BrowserService {
      *
      * @param element The JSoup Element for which to generate the XPath.
      * @return A string representing the XPath of the element.
+     *
+     * precondition: element != null
      */
     public static String getXPath(Element element) {
         assert element != null;
