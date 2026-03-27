@@ -617,8 +617,12 @@ public class AuditRecordService {
 	 *
 	 * @param audit_record_id the id of the audit record
 	 * @return the set of issues
+	 *
+	 * precondition: audit_record_id > 0
 	 */
 	public Set<UXIssueMessage> getIssues(long audit_record_id) {
+		assert audit_record_id > 0;
+
 		return audit_record_repo.getIssues(audit_record_id);
 	}
 
