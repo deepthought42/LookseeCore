@@ -25,8 +25,14 @@ public class TestRecordDto {
 	 * Constructor for {@link TestRecordDto}
 	 * @param record the {@link TestRecord} to convert
 	 * @param test_key the key of the {@link Test}
+	 *
+	 * precondition: record != null
+	 * precondition: test_key != null
 	 */
 	public TestRecordDto(TestRecord record, String test_key){
+		assert record != null;
+		assert test_key != null;
+
 		setKey(record.getKey());
 		setRanAt(record.getRanAt());
 		setBrowser(record.getBrowser());

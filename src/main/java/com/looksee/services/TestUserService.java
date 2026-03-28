@@ -27,8 +27,12 @@ public class TestUserService {
 	 * @param id the ID of the {@link TestUser} to find
 	 *
 	 * @return the {@link TestUser} with the given ID
+	 *
+	 * precondition: id > 0
 	 */
 	public TestUser findById(long id) {
+		assert id > 0;
+
 		return test_user_repo.findById(id).get();
 	}
 

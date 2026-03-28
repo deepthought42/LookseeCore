@@ -95,6 +95,9 @@ public class PageStateService {
 	 * precondition: !page_key.isEmpty()
 	 */
 	public PageState findByKey(String page_key) {
+		assert page_key != null;
+		assert !page_key.isEmpty();
+
 		PageState page_state = page_state_repo.findByKey(page_key);
 		if(page_state != null){
 			page_state.setElements(getElementStates(page_key));
@@ -455,6 +458,8 @@ public class PageStateService {
 	 * precondition: audit_record_id > 0
 	 */
     public PageState getPageStateForAuditRecord(long audit_record_id) {
+		assert audit_record_id > 0;
+
         return page_state_repo.getPageStateForAuditRecord(audit_record_id);
     }
 
@@ -466,7 +471,8 @@ public class PageStateService {
 	 * precondition: id > 0
 	 */
 	public PageAuditRecord getAuditRecord(long id) {
-		
+		assert id > 0;
+
 		return audit_record_repo.getAuditRecord(id);
 	}
 
@@ -478,6 +484,8 @@ public class PageStateService {
 	 * precondition: page_id > 0
 	 */
 	public int getElementStateCount(long page_id) {
+		assert page_id > 0;
+
 		return element_state_repo.getElementStateCount(page_id);
 	}
 
@@ -488,8 +496,14 @@ public class PageStateService {
 	 * @return the page state
 	 *
 	 * precondition: domain_map_id > 0
+	 * precondition: page_key != null
+	 * precondition: !page_key.isEmpty()
 	 */
 	public PageState findPageInDomainMap(long domain_map_id, String page_key) {
+		assert domain_map_id > 0;
+		assert page_key != null;
+		assert !page_key.isEmpty();
+
 		return page_state_repo.findByDomainMap(domain_map_id, page_key);
 	}
 
@@ -498,8 +512,14 @@ public class PageStateService {
 	 * @param domainAuditRecordId the id of the domain audit record
 	 * @param page_state_id the id of the page state
 	 * @return the page state
+	 *
+	 * precondition: domainAuditRecordId > 0
+	 * precondition: page_state_id > 0
 	 */
 	public PageState findByDomainAudit(long domainAuditRecordId, long page_state_id) {
+		assert domainAuditRecordId > 0;
+		assert page_state_id > 0;
+
 		return page_state_repo.findByDomainAudit(domainAuditRecordId, page_state_id);
 	}
 
@@ -514,6 +534,10 @@ public class PageStateService {
 	 * precondition: !current_url.isEmpty()
 	 */
 	public PageState findByDomainAudit(long domainAuditRecordId, String current_url) {
+		assert domainAuditRecordId > 0;
+		assert current_url != null;
+		assert !current_url.isEmpty();
+
 		return page_state_repo.findByDomainAudit(domainAuditRecordId, current_url);
 	}
 
@@ -528,6 +552,9 @@ public class PageStateService {
 	@Retryable
 	@Synchronized
 	public void updateElementExtractionCompleteStatus(Long page_id, boolean is_complete) throws Exception {
+		assert page_id != null;
+		assert page_id > 0;
+
 		PageState page = page_state_repo.updateElementExtractionCompleteStatus(page_id, is_complete);
 		if(page == null){
 			throw new Exception("Page state with id = "+page_id+" was not found");
@@ -545,6 +572,9 @@ public class PageStateService {
 	@Retryable
 	@Synchronized
     public void updateInteractiveElementExtractionComplete(Long page_id, boolean is_complete) throws Exception {
+		assert page_id != null;
+		assert page_id > 0;
+
         PageState page = page_state_repo.updateInteractiveElementExtractionCompleteStatus(page_id, is_complete);
 		if(page == null){
 			throw new Exception("Page state with id = "+page_id+" was not found");

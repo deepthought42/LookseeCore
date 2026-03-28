@@ -108,14 +108,18 @@ public class BrowserService {
 	 * Retrieves a new browser connection
 	 *
 	 * @param browser the browser (must not be null)
-	 * @param browser_env the browser environment
+	 * @param browser_env the browser environment (must not be null)
 	 *
 	 * @return new {@link Browser} instance
 	 * @throws MalformedURLException if the url is malformed
 	 * @throws IllegalArgumentException if browser is null
+	 *
+	 * precondition: browser != null
+	 * precondition: browser_env != null
 	 */
 	public Browser getConnection(BrowserType browser, BrowserEnvironment browser_env) throws MalformedURLException {
 		assert browser != null;
+		assert browser_env != null;
 
 		return BrowserConnectionHelper.getConnection(browser, browser_env);
 	}
@@ -340,6 +344,8 @@ public class BrowserService {
 	 * @param e the element
 	 */
 	public static void removeComments(Element e) {
+		assert e != null;
+
 		e.childNodes().stream()
 			.filter(n -> n.nodeName().equals("#comment"))
 			.collect(Collectors.toList())
@@ -908,6 +914,7 @@ public class BrowserService {
 	 */
 	public static boolean isElementVisibleInPane(Browser browser, ElementState element){
 		assert browser != null;
+		assert element != null;
 
 		//Point offsets = browser.getViewportScrollOffset();
 		long y_offset = browser.getYScrollOffset();
@@ -961,8 +968,12 @@ public class BrowserService {
 	 *
 	 * @param elem	WebElement to get children for
 	 * @return list of WebElements
+	 *
+	 * precondition: elem != null
 	 */
 	public static List<WebElement> getChildElements(WebElement elem) throws WebDriverException{
+		assert elem != null;
+
 		return elem.findElements(By.xpath("./*"));
 	}
 
@@ -971,8 +982,12 @@ public class BrowserService {
 	 *
 	 * @param elem	WebElement to get children for
 	 * @return list of WebElements
+	 *
+	 * precondition: elem != null
 	 */
 	public static List<WebElement> getNestedElements(WebElement elem) throws WebDriverException{
+		assert elem != null;
+
 		return elem.findElements(By.xpath(".//*"));
 	}
 
@@ -981,8 +996,12 @@ public class BrowserService {
 	 *
 	 * @param elem	{@linkplain WebElement} to get parent of
 	 * @return parent {@linkplain WebElement}
+	 *
+	 * precondition: elem != null
 	 */
 	public WebElement getParentElement(WebElement elem) throws WebDriverException{
+		assert elem != null;
+
 		return elem.findElement(By.xpath(".."));
 	}
 
@@ -991,8 +1010,13 @@ public class BrowserService {
 	 *
 	 * @param attribute_values_string the attribute values string
 	 * @return the cleaned attribute values string
+	 *
+	 * precondition: attribute_values_string != null
 	 */
 	public static String cleanAttributeValues(String attribute_values_string) {
+		assert attribute_values_string != null;
+		assert attribute_values_string != null;
+
 		String escaped = attribute_values_string.replaceAll("[\\t\\n\\r]+"," ");
 		escaped = escaped.trim().replaceAll("\\s+", " ");
 		escaped = escaped.replace("\"", "\\\"");
@@ -1145,8 +1169,14 @@ public class BrowserService {
 	 *
 	 * @param xpath the xpath to generate a css selector for
 	 * @return an xpath that identifies this element uniquely
+	 *
+	 * precondition: xpath != null
+	 * precondition: !xpath.isEmpty()
 	 */
 	public static String generateCssSelectorFromXpath(String xpath){
+		assert xpath != null;
+		assert !xpath.isEmpty();
+
 		List<String> selectors = new ArrayList<>();
 		
 		//split xpath on '/' character
@@ -1188,6 +1218,8 @@ public class BrowserService {
 	 * @return the css selector
 	 */
 	public static String transformXpathSelectorToCss(String xpath_selector) {
+		assert xpath_selector != null;
+
 		String selector = "";
 		
 		//convert index value with format '[integer]' to css format
@@ -1249,6 +1281,8 @@ public class BrowserService {
 	 * precondition: element != null
 	 */
 	public static Map<String, String> generateAttributesMapUsingJsoup(Element element){
+		assert element != null;
+
 		Map<String, String> attributes = new HashMap<>();
 		for(Attribute attribute : element.attributes() ){
 			attributes.put(attribute.getKey(), attribute.getValue());
@@ -1273,6 +1307,11 @@ public class BrowserService {
 	 * precondition: xpath_cnt != null
 	 */
 	public static String uniqifyXpath(Element elem, String xpath, Document doc, Map<String, Integer> xpath_cnt){
+		assert elem != null;
+		assert xpath != null;
+		assert doc != null;
+		assert xpath_cnt != null;
+
 		try {
 			List<Element> elements = Xsoup.compile(xpath).evaluate(doc).getElements();
 			if(elements.size() > 1){
@@ -1306,6 +1345,10 @@ public class BrowserService {
 	 * precondition: driver != null
 	 */
 	public static String uniqifyXpath(WebElement elem, String xpath, WebDriver driver){
+		assert elem != null;
+		assert xpath != null;
+		assert driver != null;
+
 		try {
 			List<WebElement> elements = driver.findElements(By.xpath(xpath));
 			String element_tag_name = elem.getTagName();
@@ -1339,6 +1382,8 @@ public class BrowserService {
 	 * precondition: element_list != null
 	 */
 	public Map<String, Template> findTemplates(List<com.looksee.models.Element> element_list){
+		assert element_list != null;
+
 		//create a map for the various duplicate elements
 		Map<String, Template> element_templates = new HashMap<>();
 		List<com.looksee.models.Element> parents_only_element_list = new ArrayList<>();
@@ -1469,8 +1514,12 @@ public class BrowserService {
 	 * @param list_elements_list the list of templates to reduce (must not be null)
 	 * @return the reduced list of templates
 	 * @throws IllegalArgumentException if list_elements_list is null
+	 *
+	 * precondition: list_elements_list != null
 	 */
 	public Map<String, Template> reduceTemplatesToParents(Map<String, Template> list_elements_list) {
+		assert list_elements_list != null;
+
 		Map<String, Template> element_map = new HashMap<>();
 		List<Template> template_list = new ArrayList<>(list_elements_list.values());
 		//check if element is a child of another element in the list. if yes then don't add it to the list
@@ -1507,6 +1556,9 @@ public class BrowserService {
 	 * precondition: template != null
 	 */
 	public TemplateType classifyTemplate(String template){
+		assert template != null;
+		assert !template.isEmpty();
+
 		Document html_doc = Jsoup.parseBodyFragment(template);
 		Element root_element = html_doc.body();
 
@@ -1589,8 +1641,13 @@ public class BrowserService {
 	 *
 	 * @param keys the list of keys to test
 	 * @return true if the list of keys contains the string "elementstate", false otherwise
+	 *
+	 * precondition: keys != null
 	 */
 	public static boolean testContainsElement(List<String> keys) {
+		assert keys != null;
+		assert keys != null;
+
 		for(String key : keys) {
 			if(key.contains("elementstate")) {
 				return true;
@@ -1605,6 +1662,8 @@ public class BrowserService {
 	 *
 	 * @param src the source code to extract xpaths from
 	 * @return a list of unique xpaths
+	 *
+	 * precondition: src != null
 	 */
 	public List<String> extractAllUniqueElementXpaths(String src) {
 		assert src != null;
@@ -1667,6 +1726,9 @@ public class BrowserService {
 	 * @return a shortened unique xpath
 	 */
 	public static String uniqifyXpath(String xpath, WebDriver driver){
+		assert xpath != null;
+		assert driver != null;
+
 		try {
 			//parse xpath into array
 			String temp_xpath = xpath.substring(1);
@@ -1710,6 +1772,9 @@ public class BrowserService {
 	 * @return a shortened unique xpath
 	 */
 	public static String uniqifyXpath(String xpath, Document html_doc){
+		assert xpath != null;
+		assert html_doc != null;
+
 		try {
 			String temp_xpath = xpath.substring(1);
 			String[] xpath_arr = temp_xpath.split("/");
@@ -1767,8 +1832,16 @@ public class BrowserService {
 	 * Extracts the host from a URL string
 	 * @param urlString The URL string to extract host from
 	 * @return The host name without protocol or path
+	 *
+	 * precondition: urlString != null
+	 * precondition: urlString is not empty
 	 */
 	public static String extractHost(String urlString) {
+		assert urlString != null;
+		assert !urlString.isEmpty();
+		assert urlString != null;
+		assert !urlString.isEmpty();
+
 		try {
 			URL url = new URL(urlString);
 			return url.getHost();
@@ -1782,8 +1855,13 @@ public class BrowserService {
 	 * Extracts metadata from a document
 	 * @param html_doc the document to extract metadata from
 	 * @return a set of metadata
+	 *
+	 * precondition: html_doc != null
 	 */
 	public static Set<String> extractMetadata(Document html_doc) {
+		assert html_doc != null;
+		assert html_doc != null;
+
 		Elements meta_tags = html_doc.getElementsByTag("meta");
 		Set<String> meta_tag_html = new HashSet<String>();
 		
@@ -1797,8 +1875,13 @@ public class BrowserService {
 	 * Extracts stylesheets from a document
 	 * @param html_doc the document to extract stylesheets from
 	 * @return a set of stylesheet urls
+	 *
+	 * precondition: html_doc != null
 	 */
 	public static Set<String> extractStylesheets(Document html_doc) {
+		assert html_doc != null;
+		assert html_doc != null;
+
 		Elements link_tags = html_doc.getElementsByTag("link");
 		Set<String> stylesheet_urls = new HashSet<String>();
 		
@@ -1835,12 +1918,15 @@ public class BrowserService {
 	 * @param html_doc the document to extract icon links from
 	 * @return a set of icon urls
 	 *
-	 * precondition:: html_doc != null
+	 * precondition: html_doc != null
 	 */
 	public static Set<String> extractIconLinks(Document html_doc) {
+		assert html_doc != null;
+		assert html_doc != null;
+
 		Elements icon_tags = html_doc.getElementsByTag("link");
 		Set<String> icon_urls = new HashSet<String>();
-		
+
 		for(Element icon_tag : icon_tags) {
 			if(icon_tag.attr("rel").contains("icon")){
 				icon_urls.add(icon_tag.absUrl("href"));
@@ -2240,6 +2326,8 @@ public class BrowserService {
 												int page_height
 	) throws MalformedURLException {
 		assert page_state != null;
+		assert xpaths != null;
+		assert url != null;
 
 		List<ElementState> elements = new ArrayList<>();
 		Map<String, ElementState> elements_mapped = new HashMap<>();
@@ -2674,11 +2762,16 @@ public class BrowserService {
 
 	/**
 	 * Extracts metadata from a string
-	 * 
+	 *
 	 * @param src the string to extract metadata from
 	 * @return the set of metadata
+	 *
+	 * precondition: src != null
 	 */
 	public static Set<String> extractMetadata(String src) {
+		assert src != null;
+		assert src != null;
+
 		Document html_doc = Jsoup.parse(src);
 		Elements meta_tags = html_doc.getElementsByTag("meta");
 		Set<String> meta_tag_html = new HashSet<String>();
@@ -2691,11 +2784,16 @@ public class BrowserService {
 
 	/**
 	 * Extracts stylesheets from a string
-	 * 
+	 *
 	 * @param src the string to extract stylesheets from
 	 * @return the set of stylesheets
+	 *
+	 * precondition: src != null
 	 */
 	public static Set<String> extractStylesheets(String src) {
+		assert src != null;
+		assert src != null;
+
 		Document html_doc = Jsoup.parse(src);
 		Elements link_tags = html_doc.getElementsByTag("link");
 		Set<String> stylesheet_urls = new HashSet<String>();
@@ -2708,11 +2806,16 @@ public class BrowserService {
 
 	/**
 	 * Extracts script urls from a string
-	 * 
+	 *
 	 * @param src the string to extract script urls from
 	 * @return the set of script urls
+	 *
+	 * precondition: src != null
 	 */
 	public static Set<String> extractScriptUrls(String src) {
+		assert src != null;
+		assert src != null;
+
 		Document html_doc = Jsoup.parse(src);
 		Elements script_tags = html_doc.getElementsByTag("script");
 		Set<String> script_urls = new HashSet<String>();
@@ -2728,15 +2831,20 @@ public class BrowserService {
 
 	/**
 	 * Extracts icon links from a string
-	 * 
+	 *
 	 * @param src the string to extract icon links from
 	 * @return the set of icon links
+	 *
+	 * precondition: src != null
 	 */
 	public static Set<String> extractIconLinks(String src) {
+		assert src != null;
+		assert src != null;
+
 		Document html_doc = Jsoup.parse(src);
 		Elements icon_tags = html_doc.getElementsByTag("link");
 		Set<String> icon_urls = new HashSet<String>();
-		
+
 		for(Element icon_tag : icon_tags) {
 			if(icon_tag.attr("rel").contains("icon")){
 				icon_urls.add(icon_tag.absUrl("href"));
@@ -2783,7 +2891,9 @@ public class BrowserService {
 	 */
 	public PageState buildPageState( Browser browser, long audit_record_id, String browser_url) throws WebDriverException, IOException {
 		assert browser != null;
-		
+		assert browser_url != null;
+		assert !browser_url.isEmpty();
+
 		//remove 3rd party chat apps such as drift, and ...(NB: fill in as more identified)
 		
 		URL current_url = new URL(browser_url);
@@ -3035,9 +3145,14 @@ public class BrowserService {
 	 * @param size {@link Dimension size} of the element
 	 *
 	 * @return true if element is rendered within viewport, otherwise false
+	 *
+	 * precondition: viewport_size != null
+	 * precondition: position != null
+	 * precondition: size != null
 	 */
 	public static boolean doesElementFitInViewport(Dimension viewport_size, Point position, Dimension size){
 		assert viewport_size != null;
+		assert position != null;
 		assert size != null;
 
 		int height = size.getHeight();
@@ -3051,9 +3166,14 @@ public class BrowserService {
 	 * Performs image enrichment in parallel for all elements in the given list
 	 * @param element_states list of element states to enrich
 	 * @return list of enriched element states
+	 *
+	 * precondition: element_states != null
 	 */
 	public List<ElementState> enrichImageElement(List<ElementState> element_states)
 	{
+		assert element_states != null;
+		assert element_states != null;
+
 		return element_states.parallelStream().map(element_state -> {
 			if(element_state instanceof ImageElementState && !element_state.getScreenshotUrl().isEmpty()) {
 				BufferedImage element_screenshot;
@@ -3104,12 +3224,16 @@ public class BrowserService {
 
 	/**
 	 * Enriches elements using cloud vision utils
-	 * 
+	 *
 	 * @param element_state the element state to enrich
 	 * @return the enriched element state
+	 *
+	 * precondition: element_state != null
 	 */
 	public ElementState enrichImageElement(ElementState element_state)
 	{
+		assert element_state != null;
+
 		if(element_state instanceof ImageElementState
 				&& element_state.getScreenshotUrl() != null
 				&& !element_state.getScreenshotUrl().isEmpty())
@@ -3165,8 +3289,12 @@ public class BrowserService {
      *
      * @param element The JSoup Element for which to generate the XPath.
      * @return A string representing the XPath of the element.
+     *
+     * precondition: element != null
      */
     public static String getXPath(Element element) {
+        assert element != null;
+
         StringBuilder xpath = new StringBuilder();
 
         // Traverse up the DOM tree to construct the XPath
@@ -3314,6 +3442,10 @@ public class BrowserService {
 	 */
 	@Deprecated
 	public Set<Form> extractAllForms(long account_id, Domain domain, Browser browser) throws Exception {
+		assert account_id > 0;
+		assert domain != null;
+		assert browser != null;
+
 		Set<Form> form_list = new HashSet<Form>();
 		log.info("extracting forms from page with url    ::     "+browser.getDriver().getCurrentUrl());
 		List<WebElement> form_elements = browser.getDriver().findElements(By.xpath("//form"));
@@ -3456,6 +3588,10 @@ public class BrowserService {
 	 * @throws XPathExpressionException if an error occurs while extracting elements
 	 */
 	public List<com.looksee.models.Element> extractElements(String page_src, URL url, List<RuleSet> rule_sets) throws IOException, XPathExpressionException {
+		assert page_src != null;
+		assert url != null;
+		assert rule_sets != null;
+
 		return getDomElements(page_src, url, rule_sets);
 	}
 	

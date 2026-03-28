@@ -4,7 +4,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Represents the audit score of a page
+ * Represents the audit score of a page.
+ *
+ * <p><b>Invariants:</b>
+ * <ul>
+ *   <li>All score values represent valid numeric scores.</li>
+ * </ul>
  */
 @Getter
 @Setter

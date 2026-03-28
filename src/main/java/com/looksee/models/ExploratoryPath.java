@@ -9,7 +9,10 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * A set of vertex objects that form a sequential movement through a graph
+ * A set of vertex objects that form a sequential movement through a graph.
+ *
+ * invariant: pathKeys != null
+ * invariant: pathObjects != null
  */
 @Getter
 @Setter
@@ -33,6 +36,9 @@ public class ExploratoryPath {
 	 */
 	@Deprecated
 	public ExploratoryPath(List<String> path_keys, List<LookseeObject> current_path, List<ActionOLD> actions){
+		assert path_keys != null;
+		assert current_path != null;
+		assert actions != null;
 		setPathKeys(path_keys);
 		setPathObjects(current_path);
 		setPossibleActions(actions);
@@ -48,6 +54,8 @@ public class ExploratoryPath {
 	 * precondition: current_path != null
 	 */
 	public ExploratoryPath(List<String> path_keys, List<LookseeObject> current_path){
+		assert path_keys != null;
+		assert current_path != null;
 		setPathKeys(path_keys);
 		setPathObjects(current_path);
 	}
@@ -61,6 +69,7 @@ public class ExploratoryPath {
 	 * precondition: obj != null
 	 */
 	public boolean add(LookseeObject obj){
+		assert obj != null;
 		return getPathObjects().add(obj);
 	}
 	
@@ -104,6 +113,7 @@ public class ExploratoryPath {
 	 * @return true if sequence appears more than once
 	 */
 	public static boolean hasCycle(List<PageState> path_objects, PageState page, boolean isSinglePage){
+		assert path_objects != null;
 		assert page != null;
 	
 		if(isSinglePage){
@@ -127,8 +137,11 @@ public class ExploratoryPath {
 	 * 
 	 * @param path list of {@link LookseeObject}s to check
 	 * @return true if sequence appears more than once
+	 *
+	 * precondition: path != null
 	 */
 	public static boolean hasPageCycle(List<LookseeObject> path){
+		assert path != null;
 		for(int i = path.size()-1; i > 0; i--){
 			for(int j = i-1; j>= 0; j--){
 				if(path.get(i) instanceof PageState
@@ -166,6 +179,7 @@ public class ExploratoryPath {
 	 * precondition: key != null
 	 */
 	public boolean addToPathKeys(String key){
+		assert key != null;
 		return this.getPathKeys().add(key);
 	}
 	
@@ -177,6 +191,7 @@ public class ExploratoryPath {
 	 * precondition: path_obj != null
 	 */
 	public void addPathObject(LookseeObject path_obj) {
+		assert path_obj != null;
 		this.pathObjects.add(path_obj);
 	}
 	
@@ -185,8 +200,11 @@ public class ExploratoryPath {
 	 * 
 	 * @param path {@link ExploratoryPath} to clone
 	 * @return cloned {@link ExploratoryPath}
+	 *
+	 * precondition: path != null
 	 */
 	public static ExploratoryPath clone(ExploratoryPath path){
+		assert path != null;
 		List<LookseeObject> path_objects = new ArrayList<LookseeObject>(path.getPathObjects());
 		List<String> path_keys = new ArrayList<String>(path.getPathKeys());
 		

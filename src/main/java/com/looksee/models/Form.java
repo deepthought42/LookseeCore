@@ -63,11 +63,17 @@ public class Form extends LookseeObject{
 	 * @param form_fields the form fields of the form
 	 * @param submit_field the submit field of the form
 	 * @param name the name of the form
+	 *
+	 * precondition: form_tag != null
+	 * precondition: form_fields != null
 	 */
 	public Form(ElementState form_tag,
 				List<ElementState> form_fields,
 				ElementState submit_field,
 				String name){
+		assert form_tag != null;
+		assert form_fields != null;
+
 		setFormTag(form_tag);
 		setFormFields(form_fields);
 		setSubmitField(submit_field);
@@ -177,8 +183,12 @@ public class Form extends LookseeObject{
 	 * @param form_field form field to add
 	 *
 	 * @return true if form field was added, false otherwise
+	 *
+	 * precondition: form_field != null
 	 */
 	public boolean addFormField(ElementState form_field) {
+		assert form_field != null;
+
 		return this.formFields.add(form_field);
 	}
 	
@@ -188,8 +198,12 @@ public class Form extends LookseeObject{
 	 * @param form_field list of form fields to add
 	 *
 	 * @return true if form fields were added, false otherwise
+	 *
+	 * precondition: form_field != null
 	 */
 	public boolean addFormFields(List<ElementState> form_field) {
+		assert form_field != null;
+
 		return this.formFields.addAll(form_field);
 	}
 
@@ -206,8 +220,12 @@ public class Form extends LookseeObject{
 	 * Sets the type of the form
 	 *
 	 * @param type the type of form
+	 *
+	 * precondition: type != null
 	 */
 	public void setType(FormType type) {
+		assert type != null;
+
 		this.type = type.toString();
 	}
 	
@@ -220,8 +238,11 @@ public class Form extends LookseeObject{
 	 * Sets the {@link BugMessage}s of the form
 	 *
 	 * @param bug_messages the bug messages to set
+	 *
+	 * precondition: bug_messages != null
 	 */
 	public void setBugMessages(List<BugMessage> bug_messages) {
+		assert bug_messages != null;
 		if(this.bugMessages == null) {
 			this.bugMessages = new ArrayList<>();
 		}
@@ -232,8 +253,11 @@ public class Form extends LookseeObject{
 	 * Adds a {@link BugMessage} to the form
 	 *
 	 * @param bug_message the bug message to add
+	 *
+	 * precondition: bug_message != null
 	 */
 	public void addBugMessage(BugMessage bug_message) {
+		assert bug_message != null;
 		if(this.bugMessages == null) {
 			this.bugMessages = new ArrayList<>();
 		}
@@ -245,8 +269,11 @@ public class Form extends LookseeObject{
 	 * Removes a {@link BugMessage} from the form
 	 *
 	 * @param msg the bug message to remove
+	 *
+	 * precondition: msg != null
 	 */
 	public void removeBugMessage(BugMessage msg) {
+		assert msg != null;
 		int idx = bugMessages.indexOf(msg);
 		this.bugMessages.remove(idx);
 	}

@@ -19,8 +19,12 @@ public class JourneyUtils {
 	 * Checks if a list of {@link Step steps} has a {@linkplain LoginStep}
 	 * @param steps the list of steps
 	 * @return true if the list of steps has a {@linkplain LoginStep}, otherwise false
+	 *
+	 * precondition: steps != null
 	 */
 	public static boolean hasLoginStep(List<Step> steps) {
+		assert steps != null;
+
 		for(Step step: steps) {
 			if(step instanceof LoginStep) {
 				return true;
@@ -34,6 +38,9 @@ public class JourneyUtils {
 	 * Trims the pre-login steps from a list of steps
 	 * @param steps the list of steps
 	 * @return the list of steps without the pre-login steps
+	 *
+	 * precondition: steps != null
+	 * precondition: !steps.isEmpty()
 	 */
 	public static List<Step> trimPreLoginSteps(List<Step> steps) {
 		assert steps != null;
@@ -58,12 +65,18 @@ public class JourneyUtils {
 	/**
 	 * Checks the url of the start page for a {@link Step} agains a list of {@link Step}
 	 * to ensure that the page url hasn't already been expanded
-	 * 
+	 *
 	 * @param steps the list of steps
 	 * @param step the step to check for
 	 * @return true if page url exists in list, otherwise false
+	 *
+	 * precondition: steps != null
+	 * precondition: step != null
 	 */
 	public static boolean hasStartPageAlreadyBeenExpanded(List<Step> steps, Step step) {
+		assert steps != null;
+		assert step != null;
+
 		for(Step list_step: steps) {
 			if(list_step.getStartPage().getUrl().equals(step.getStartPage().getUrl())) {
 				return true;

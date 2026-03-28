@@ -20,10 +20,13 @@ public class ActionOLD extends LookseeObject {
 		
 	/**
 	 * Constructs an {@link ActionOLD} object with the given name
-	 * 
+	 *
 	 * @param action_name name of the action
+	 *
+	 * precondition: action_name != null
 	 */
 	public ActionOLD(String action_name) {
+		assert action_name != null : "action_name must not be null";
 		this.name = action_name;
 		this.value = "";
 		this.setKey(generateKey());
@@ -31,11 +34,16 @@ public class ActionOLD extends LookseeObject {
 	
 	/**
 	 * Constructs an {@link ActionOLD} object with the given name and value
-	 * 
+	 *
 	 * @param action_name name of the action
 	 * @param value value of the action
+	 *
+	 * precondition: action_name != null
+	 * precondition: value != null
 	 */
 	public ActionOLD(String action_name, String value) {
+		assert action_name != null : "action_name must not be null";
+		assert value != null : "value must not be null";
 		setName(action_name);
 		setValue(value);
 		this.setKey(generateKey());

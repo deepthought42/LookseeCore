@@ -34,10 +34,12 @@ public class Table {
 	 * 
 	 * @return List of {@link Row}s for table header
 	 * 
-	 * precondition: table_header != null
+	 * precondition: tableHeader != null
+	 * precondition: driver != null
 	 */
 	public List<Row> loadHeaders(WebElement tableHeader, WebDriver driver){
 		assert tableHeader != null;
+		assert driver != null;
 				
 		List<WebElement> headerRows = tableHeader.findElements(By.xpath("./tr"));
 		List<Row> rows = new ArrayList<Row>();
@@ -71,11 +73,14 @@ public class Table {
 	
 	/**
 	 * Loads the rows of a table
-	 * 
+	 *
 	 * @param tableBody {@link WebElement} of the table body
 	 * @return List of {@link Row}s for table body
+	 *
+	 * precondition: tableBody != null
 	 */
 	public List<Row> loadRows(WebElement tableBody){
+		assert tableBody != null;
 		return null;
 	}
 }

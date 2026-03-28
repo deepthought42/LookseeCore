@@ -20,10 +20,13 @@ public class SubscriptionExceededException extends RuntimeException {
 
 	/**
 	 * Constructor for {@link SubscriptionExceededException}
-	 * 
+	 *
 	 * @param message the message to display
+	 *
+	 * precondition: message != null
 	 */
 	public SubscriptionExceededException(String message) {
 		super(message);
+		assert message != null : "message must not be null";
 	}
 }

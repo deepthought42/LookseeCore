@@ -6,7 +6,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Domain audit statistics
+ * Domain audit statistics.
+ *
+ * <p>invariant: status is non-null when set via the full constructor</p>
+ * <p>invariant: score values are between 0.0 and 100.0 inclusive</p>
  */
 @Getter
 @Setter
@@ -55,6 +58,8 @@ public class DomainAuditStats extends AuditStats{
 	 * @param non_text_contrast_score the non-text contrast score
 	 * @param status the status
 	 * @param link_score the link score
+	 *
+	 * precondition: status != null
 	 */
 	public DomainAuditStats(
 			long audit_record_id,
@@ -72,6 +77,7 @@ public class DomainAuditStats extends AuditStats{
 			ExecutionStatus status,
 			double link_score
 	) {
+		assert status != null;
 		setId(audit_record_id);
 		setJourneysExplored(journeys_explored);
 		setJourneysTotal(journeys_total);

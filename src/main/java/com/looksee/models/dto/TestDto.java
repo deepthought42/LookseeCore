@@ -14,6 +14,8 @@ import lombok.Setter;
 /**
  * Data transfer object for {@link Test} object that is designed to comply with
  * the data format for browser extensions
+ *
+ * invariant: path != null after parameterized construction
  */
 @Getter
 @Setter
@@ -26,8 +28,12 @@ public class TestDto {
 	/**
 	 * Constructor for {@link TestDto}
 	 * @param test the {@link Test} to convert
+	 *
+	 * precondition: test != null
 	 */
 	public TestDto(Test test){
+		assert test != null;
+
 		setKey(test.getKey());
 		setName(test.getName());
 

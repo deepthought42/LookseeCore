@@ -9,6 +9,10 @@ import lombok.Setter;
 
 /**
  * Intended to contain information about progress an audit
+ *
+ * invariant: category != null after parameterized construction
+ * invariant: level != null after parameterized construction
+ * invariant: message != null after parameterized construction
  */
 @Getter
 @Setter
@@ -29,6 +33,10 @@ public class AuditProgressUpdate extends Message {
 	 * @param category the audit category
 	 * @param level the audit level
 	 * @param page_audit_id the id of the page audit
+	 *
+	 * precondition: message != null
+	 * precondition: category != null
+	 * precondition: level != null
 	 */
 	public AuditProgressUpdate(
 			long account_id,
@@ -39,6 +47,11 @@ public class AuditProgressUpdate extends Message {
 			long page_audit_id
 	) {
 		super(account_id);
+
+		assert message != null;
+		assert category != null;
+		assert level != null;
+
 		setProgress(progress);
 		setMessage(message);
 		setCategory(category);

@@ -45,6 +45,9 @@ public class PageStatisticDto {
 	 * @param elements_extracted the elements extracted
 	 * @param is_complete the is complete
 	 * @param data_extraction_progress the data extraction progress
+	 *
+	 * precondition: url != null
+	 * precondition: screenshot_url != null
 	 */
 	public PageStatisticDto(
 			long id,
@@ -64,6 +67,9 @@ public class PageStatisticDto {
 			boolean is_complete,
 			double data_extraction_progress
 	) {
+		assert url != null;
+		assert screenshot_url != null;
+
 		setId(id);
 		setUrl(url);
 		setAuditRecordId(audit_record_id);

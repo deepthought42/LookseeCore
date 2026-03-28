@@ -18,10 +18,15 @@ public class CompareImages {
 	 * @return true if the images are the same, false otherwise
 	 *
 	 * precondition: img1Url != null
+	 * precondition: !img1Url.isEmpty()
 	 * precondition: img2Url != null
+	 * precondition: !img2Url.isEmpty()
 	 */
 	public static boolean imagesMatch(String img1Url, String img2Url) {
-		assert img1Url != null && img2Url != null;
+		assert img1Url != null;
+		assert !img1Url.isEmpty();
+		assert img2Url != null;
+		assert !img2Url.isEmpty();
 
 		String file1 = img1Url;
 		String file2 = img2Url;

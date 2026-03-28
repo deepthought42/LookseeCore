@@ -12,7 +12,15 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * A RedirectStep is a step that is used to redirect the user to a new URL
+ * A RedirectStep is a step that is used to redirect the user to a new URL.
+ *
+ * <p><b>Invariants:</b>
+ * <ul>
+ *   <li>urls is never null (initialized to empty list by default).</li>
+ *   <li>imageUrls is never null (initialized to empty list by default).</li>
+ *   <li>imageChecksums is never null (initialized to empty list by default).</li>
+ *   <li>startUrl is never null when constructed via the parameterized constructor.</li>
+ * </ul>
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeName("REDIRECT")
@@ -104,8 +112,11 @@ public class Redirect extends Step {
 	/**
 	 * Sets the URLs to redirect to
 	 * @param urls the URLs to redirect to
+	 *
+	 * precondition: urls != null
 	 */
 	public void setUrls(List<String> urls) {
+		assert urls != null;
 		List<String> clean_urls = new ArrayList<>();
 		for(String url : urls){
 			clean_urls.add(url);
@@ -116,8 +127,11 @@ public class Redirect extends Step {
 	/**
 	 * Sets the image URLs
 	 * @param image_urls the image URLs
+	 *
+	 * precondition: image_urls != null
 	 */
 	public void setImageUrls(List<String> image_urls) {
+		assert image_urls != null;
 		List<String> deduped_list = new ArrayList<>();
 		//remove sequential duplicates from list
 		String last_url = "";
@@ -134,8 +148,11 @@ public class Redirect extends Step {
 	/**
 	 * Sets the start URL
 	 * @param start_url the start URL
+	 *
+	 * precondition: start_url != null
 	 */
 	public void setStartUrl(String start_url) {
+		assert start_url != null;
 		int params_idx = start_url.indexOf("?");
 		String new_url = start_url;
 		if(params_idx > -1){

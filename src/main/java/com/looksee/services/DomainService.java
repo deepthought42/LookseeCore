@@ -77,8 +77,11 @@ public class DomainService {
 	 *
 	 * @param domain_id The ID of the domain to retrieve test users for
 	 * @return A set of all test users for the given domain
+	 *
+	 * precondition: domain_id > 0
 	 */
 	public Set<TestUser> getTestUsers(long domain_id) {
+		assert domain_id > 0;
 		return domain_repo.getTestUsers(domain_id);
 	}
 
@@ -140,6 +143,8 @@ public class DomainService {
 	 *
 	 * @param domain The domain to save
 	 * @return The saved domain
+	 *
+	 * precondition: domain != null
 	 */
 	public Domain save(Domain domain) {
 		assert domain != null;
@@ -153,10 +158,12 @@ public class DomainService {
 	 * @param url The URL to retrieve tests for
 	 * @return The number of tests for the given account and URL
 	 *
+	 * precondition: account_id > 0
 	 * precondition: url != null
 	 * precondition: !url.isEmpty()
 	 */
 	public int getTestCount(long account_id, String url) {
+		assert account_id > 0;
 		assert url != null;
 		assert !url.isEmpty();
 
@@ -168,8 +175,11 @@ public class DomainService {
 	 *
 	 * @param domain_id The ID of the domain to find
 	 * @return An optional containing the domain if found, or empty if not found
+	 *
+	 * precondition: domain_id > 0
 	 */
 	public Optional<Domain> findById(long domain_id) {
+		assert domain_id > 0;
 		return domain_repo.findById(domain_id);
 	}
 
@@ -179,8 +189,13 @@ public class DomainService {
 	 * @param domain_id The ID of the domain to delete the test user from
 	 * @param user_id The ID of the test user to delete
 	 * @return true if the test user was deleted successfully, false otherwise
+	 *
+	 * precondition: domain_id > 0
+	 * precondition: user_id > 0
 	 */
 	public boolean deleteTestUser(long domain_id, long user_id) {
+		assert domain_id > 0;
+		assert user_id > 0;
 		return domain_repo.deleteTestUser(domain_id, user_id) > 0;
 	}
 

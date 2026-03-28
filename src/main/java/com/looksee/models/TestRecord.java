@@ -12,12 +12,17 @@ import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
 
 /**
- * A {@link Test} record for reflecting an execution of a test 
+ * A {@link Test} record for reflecting an execution of a test
  * indicating whether the execution is aligned with the test and therefore status
- * or mis-aligned with the expectations of the test and therefore failing in 
+ * or mis-aligned with the expectations of the test and therefore failing in
  * which case a {@link PageState} can be saved as a record of what the state of the page
  * was after the test was executed.
  *
+ * invariant: ranAt != null
+ * invariant: browser != null
+ * invariant: status != null
+ * invariant: result != null
+ * invariant: pathKeys != null
  */
 @Node
 @Getter

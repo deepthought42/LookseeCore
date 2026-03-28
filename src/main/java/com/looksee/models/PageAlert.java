@@ -21,8 +21,12 @@ public class PageAlert extends LookseeObject {
 	/**
 	 * Constructor
 	 * @param message message of the alert
+	 *
+	 * precondition: message != null
 	 */
 	public PageAlert(String message){
+		assert message != null : "message must not be null";
+
 		this.message = message;
 		this.setKey(generateKey());
 	}
@@ -31,8 +35,14 @@ public class PageAlert extends LookseeObject {
 	 * Performs a choice on the alert
 	 * @param driver {@link WebDriver} to perform the choice on
 	 * @param choice {@link AlertChoice} to perform
+	 *
+	 * precondition: driver != null
+	 * precondition: choice != null
 	 */
 	public void performChoice(WebDriver driver, AlertChoice choice){
+		assert driver != null : "driver must not be null";
+		assert choice != null : "choice must not be null";
+
 		try{
 			Alert alert = driver.switchTo().alert();
 			if(AlertChoice.ACCEPT.equals(choice)){
@@ -61,8 +71,12 @@ public class PageAlert extends LookseeObject {
 	 * @param alert {@link Alert} to retrieve the message from
 	 * @return message of the alert
 	 * @throws UnhandledAlertException if the alert is not present
+	 *
+	 * precondition: alert != null
 	 */
 	public static String getMessage(Alert alert) throws UnhandledAlertException{
+		assert alert != null : "alert must not be null";
+
 		return alert.getText(); 
 	}
 	

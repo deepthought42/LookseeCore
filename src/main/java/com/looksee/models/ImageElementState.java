@@ -91,6 +91,14 @@ public class ImageElementState extends ElementState {
 	 * @param logos the logos of the element
 	 * @param labels the labels of the element
 	 * @param safe_search_annotation the safe search annotation of the element
+	 *
+	 * precondition: xpath != null
+	 * precondition: tagName != null
+	 * precondition: outer_html != null
+	 * precondition: css_selector != null
+	 * precondition: classification != null
+	 * precondition: image_search != null
+	 * precondition: safe_search_annotation != null
 	 */
 	public ImageElementState(String owned_text,
 							String all_text,
@@ -132,6 +140,15 @@ public class ImageElementState extends ElementState {
 				foreground_color,
 				background_color,
 				!image_search.getFullMatchingImages().isEmpty());
+
+		assert xpath != null;
+		assert tagName != null;
+		assert outer_html != null;
+		assert css_selector != null;
+		assert classification != null;
+		assert image_search != null;
+		assert safe_search_annotation != null;
+
 		setLandmarkInfoSet(landmark_info_set);
 		setFaces(faces);
 		setImageSearchSet(image_search);
@@ -144,7 +161,7 @@ public class ImageElementState extends ElementState {
 	
 	/**
 	 * Constructor for an image element state.
-	 * 
+	 *
 	 * @param owned_text the owned text of the element
 	 * @param all_text the all text of the element
 	 * @param xpath the xpath of the element
@@ -166,6 +183,12 @@ public class ImageElementState extends ElementState {
 	 * @param image_search the image search of the element
 	 * @param logos the logos of the element
 	 * @param labels the labels of the element
+	 *
+	 * precondition: xpath != null
+	 * precondition: tagName != null
+	 * precondition: outer_html != null
+	 * precondition: css_selector != null
+	 * precondition: classification != null
 	 */
 	public ImageElementState(String owned_text,
 							String all_text,
@@ -206,6 +229,13 @@ public class ImageElementState extends ElementState {
 				foreground_color,
 				background_color,
 				false);
+
+			assert xpath != null;
+			assert tagName != null;
+			assert outer_html != null;
+			assert css_selector != null;
+			assert classification != null;
+
 			setLandmarkInfoSet(landmark_info_set);
 			setFaces(faces);
 			setImageSearchSet(image_search);

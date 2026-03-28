@@ -317,8 +317,14 @@ public class AccountService {
 	 *
 	 * @param account_id the ID of the account
 	 * @param domain_id the ID of the domain to add
+	 *
+	 * precondition: account_id > 0
+	 * precondition: domain_id > 0
 	 */
 	public void addDomainToAccount(long account_id, long domain_id){
+		assert account_id > 0;
+		assert domain_id > 0;
+
 		account_repo.addDomain(domain_id, account_id);
 	}
 
@@ -328,8 +334,16 @@ public class AccountService {
 	 * @param username the username of the account
 	 * @param month the month to retrieve the discovery records for
 	 * @return the discovery records for the account in the given month
+	 *
+	 * precondition: username != null
+	 * precondition: !username.isEmpty()
+	 * precondition: month >= 0
 	 */
 	public Set<DiscoveryRecord> getDiscoveryRecordsByMonth(String username, int month) {
+		assert username != null;
+		assert !username.isEmpty();
+		assert month >= 0;
+
 		return account_repo.getDiscoveryRecordsByMonth(username, month);
 	}
 
@@ -339,8 +353,14 @@ public class AccountService {
 	 * @param account_id the ID of the account
 	 * @param limit the limit of audits to return
 	 * @return the most recent page audits
+	 *
+	 * precondition: account_id > 0
+	 * precondition: limit > 0
 	 */
 	public List<AuditRecord> findMostRecentPageAudits(long account_id, int limit) {
+		assert account_id > 0;
+		assert limit > 0;
+
 		return account_repo.findMostRecentAuditsByAccount(account_id, limit);
 	}
 

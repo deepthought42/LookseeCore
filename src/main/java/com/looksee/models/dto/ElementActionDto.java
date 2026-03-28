@@ -20,11 +20,17 @@ public class ElementActionDto{
 
 	/**
 	 * Constructs an {@link ElementActionDto}
-	 * 
+	 *
 	 * @param elem the element
 	 * @param action the action
+	 *
+	 * precondition: elem != null
+	 * precondition: action != null
 	 */
 	public ElementActionDto(Element elem, ActionOLD action){
+		assert elem != null;
+		assert action != null;
+
 		setElement(new ElementStateDto(elem));
 		setAction(new ActionDto(action));
 	}

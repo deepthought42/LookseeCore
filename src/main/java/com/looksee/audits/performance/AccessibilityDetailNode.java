@@ -23,16 +23,24 @@ public class AccessibilityDetailNode extends AuditDetail {
 
 	/**
 	 * Constructs an {@link AccessibilityDetailNode}
-	 * 
+	 *
 	 * @param requiredMessages the required change messages
 	 * @param optionalMessages the optional change messages
 	 * @param element the element that the accessibility detail node belongs to
+	 *
+	 * precondition: requiredMessages != null
+	 * precondition: optionalMessages != null
+	 * precondition: element != null
 	 */
 	public AccessibilityDetailNode(
 			String[] requiredMessages,
 			String[] optionalMessages,
 			ElementState element
 	) {
+		assert requiredMessages != null : "requiredMessages must not be null";
+		assert optionalMessages != null : "optionalMessages must not be null";
+		assert element != null : "element must not be null";
+
 		setRequiredChangeMessages(requiredMessages);
 		setOptionalChangeMessages(optionalMessages);
 		setElement(element);

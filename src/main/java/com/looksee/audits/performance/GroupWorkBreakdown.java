@@ -22,8 +22,14 @@ public class GroupWorkBreakdown extends AuditDetail {
 	 * @param group the group
 	 * @param duration the duration
 	 * @param groupLabel the group label
+	 *
+	 * precondition: group != null
+	 * precondition: groupLabel != null
 	 */
 	public GroupWorkBreakdown(String group, double duration, String groupLabel ) {
+		assert group != null : "group must not be null";
+		assert groupLabel != null : "groupLabel must not be null";
+
 		setGroup(group);
 		setGroupLabel(groupLabel);
 		setDuration(duration);

@@ -61,6 +61,7 @@ public class JourneyService {
 	 * precondition: id > 0
 	 */
 	public Optional<Journey> findById(long id) {
+		assert id > 0;
 		return journey_repo.findById(id);
 	}
 	
@@ -71,8 +72,11 @@ public class JourneyService {
 	 * @return the journey
 	 *
 	 * precondition: key != null
+	 * precondition: !key.isEmpty()
 	 */
 	public Journey findByKey(String key) {
+		assert key != null;
+		assert !key.isEmpty();
 		return journey_repo.findByKey(key);
 	}
 
@@ -83,8 +87,11 @@ public class JourneyService {
 	 * @return the journey
 	 *
 	 * precondition: candidateKey != null
+	 * precondition: !candidateKey.isEmpty()
 	 */
 	public Journey findByCandidateKey(String candidateKey) {
+		assert candidateKey != null;
+		assert !candidateKey.isEmpty();
 		return journey_repo.findByCandidateKey(candidateKey);
 	}
 	
@@ -101,6 +108,8 @@ public class JourneyService {
 	@Retryable
 	@Synchronized
 	public Journey save(long domain_map_id, Journey journey) {
+		assert domain_map_id > 0;
+		assert journey != null;
 		Journey journey_record = journey_repo.findByKeyOrCandidateKey(domain_map_id, journey.getKey(), journey.getCandidateKey());
 		if(journey_record == null) {
 			//journey_record = journey_repo.save(journey);
@@ -129,8 +138,19 @@ public class JourneyService {
 	 * @param ordered_ids the ordered ids of the journey
 	 * 
 	 * @return {@link Journey} after saving
+	 *
+	 * precondition: journey_id > 0
+	 * precondition: status != null
+	 * precondition: key != null
+	 * precondition: !key.isEmpty()
+	 * precondition: ordered_ids != null
 	 */
 	public Journey updateFields(long journey_id, JourneyStatus status, String key, List<Long> ordered_ids) {
+		assert journey_id > 0;
+		assert status != null;
+		assert key != null;
+		assert !key.isEmpty();
+		assert ordered_ids != null;
 		return journey_repo.updateFields(journey_id, status, key, ordered_ids);
 	}
 
@@ -140,8 +160,13 @@ public class JourneyService {
 	 * @param journey_id the id of the journey
 	 * @param step_id the id of the step
 	 * @return the journey
+	 *
+	 * precondition: journey_id > 0
+	 * precondition: step_id > 0
 	 */
 	public Journey addStep(long journey_id, long step_id) {
+		assert journey_id > 0;
+		assert step_id > 0;
 		return journey_repo.addStep(journey_id, step_id);
 	}
 
@@ -153,8 +178,13 @@ public class JourneyService {
 	 * @return the journey
 	 *
 	 * precondition: domain_map_id > 0
+	 * precondition: key != null
+	 * precondition: !key.isEmpty()
 	 */
 	public Journey findByKey(long domain_map_id, String key) {
+		assert domain_map_id > 0;
+		assert key != null;
+		assert !key.isEmpty();
 		return journey_repo.findByKey(domain_map_id, key);
 	}
 	
@@ -165,10 +195,15 @@ public class JourneyService {
 	 * @param journey_id the id of the journey
 	 * @param status the status of the journey
 	 * @return the updated journey
+	 *
+	 * precondition: journey_id > 0
+	 * precondition: status != null
 	 */
 	@Synchronized
 	@Retryable
 	public Journey updateStatus(long journey_id, JourneyStatus status) {
+		assert journey_id > 0;
+		assert status != null;
 		return journey_repo.updateStatus(journey_id, status.toString());
 	}
 }

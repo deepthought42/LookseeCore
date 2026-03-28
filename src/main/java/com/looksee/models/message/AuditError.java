@@ -8,7 +8,11 @@ import lombok.Setter;
 /**
  * Represents an error that occurred during an audit process.
  * This class extends {@link Message} to provide error information specific to audit operations.
- * 
+ *
+ * invariant: errorMessage != null after construction
+ * invariant: auditCategory != null after construction
+ * invariant: progress &gt;= 0 and progress &lt;= 1 after construction
+ *
  * @see Message
  * @see AuditCategory
  */
@@ -45,6 +49,10 @@ public class AuditError extends Message {
 	 * @param auditCategory the category of audit where the error occurred
 	 * @param progress the progress of the audit operation when the error occurred (0-1)
 	 * 
+	 * precondition: errorMessage != null
+	 * precondition: auditCategory != null
+	 * precondition: progress &gt;= 0 and progress &lt;= 1
+	 *
 	 * @throws IllegalArgumentException if progress is not between 0 and 1
 	 */
 	public AuditError(long accountId,
@@ -54,6 +62,10 @@ public class AuditError extends Message {
 					double progress
 	) {
 		super(accountId);
+
+		assert errorMessage != null;
+		assert auditCategory != null;
+
 		if (progress < 0 || progress > 1) {
 			throw new IllegalArgumentException("Progress must be between 0 and 1");
 		}

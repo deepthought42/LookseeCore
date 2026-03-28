@@ -25,6 +25,9 @@ public class ReportService {
 	 * @return the Excel spreadsheet
 	 * @throws FileNotFoundException if the file is not found
 	 * @throws IOException if an error occurs while writing the file
+	 *
+	 * precondition: audit_messages != null
+	 * precondition: url != null
 	 */
 	public static XSSFWorkbook generateExcelSpreadsheet(
 			List<UXIssueReportDto> audit_messages,
@@ -121,6 +124,9 @@ public class ReportService {
 	 * @return the Excel spreadsheet
 	 * @throws FileNotFoundException if the file is not found
 	 * @throws IOException if an error occurs while writing the file
+	 *
+	 * precondition: ux_issues != null
+	 * precondition: url != null
 	 */
 	public static XSSFWorkbook generateDomainExcelSpreadsheet(
 			List<UXIssueReportDto> ux_issues,

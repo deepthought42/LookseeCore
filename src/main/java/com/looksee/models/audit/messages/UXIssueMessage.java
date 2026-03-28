@@ -14,7 +14,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.neo4j.core.schema.Node;
 
 /**
- * Represents a UX issue message
+ * Represents a UX issue message.
+ *
+ * <p>invariant: title may be null but when set should be non-empty</p>
+ * <p>invariant: priority is always a valid {@link Priority} value when set</p>
+ * <p>invariant: category is always a valid {@link AuditCategory} value when set</p>
+ * <p>invariant: labels is non-null when set via constructor</p>
+ * <p>invariant: maxPoints &gt; 0 when score is computed</p>
  */
 @Node
 @Getter
@@ -49,6 +55,11 @@ public class UXIssueMessage extends LookseeObject {
 	 * @param points points of the ux issue message
 	 * @param maxPoints max points of the ux issue message
 	 * @param recommendation recommendation of the ux issue message
+	 *
+	 * precondition: priority != null
+	 * precondition: type != null
+	 * precondition: category != null
+	 * precondition: labels != null
 	 */
 	public UXIssueMessage(
 			Priority priority,
@@ -64,6 +75,7 @@ public class UXIssueMessage extends LookseeObject {
 			String recommendation
 	) {
 		assert priority != null;
+		assert type != null;
 		assert category != null;
 		assert labels != null;
 
@@ -113,11 +125,14 @@ public class UXIssueMessage extends LookseeObject {
 	}
 	
 	/**
-	 * Sets the priority of the UX issue message
+	 * Sets the priority of the UX issue message.
 	 *
 	 * @param priority the priority of the UX issue message
+	 *
+	 * precondition: priority != null
 	 */
 	public void setPriority(Priority priority) {
+		assert priority != null;
 		this.priority = priority.getShortName();
 	}
 	
@@ -131,11 +146,14 @@ public class UXIssueMessage extends LookseeObject {
 	}
 
 	/**
-	 * Sets the type of the UX issue message
+	 * Sets the type of the UX issue message.
 	 *
 	 * @param type the type of the UX issue message
+	 *
+	 * precondition: type != null
 	 */
 	public void setType(ObservationType type) {
+		assert type != null;
 		this.type = type.getShortName();
 	}
 
@@ -149,11 +167,14 @@ public class UXIssueMessage extends LookseeObject {
 	}
 
 	/**
-	 * Sets the category of the UX issue message
+	 * Sets the category of the UX issue message.
 	 *
 	 * @param category the category of the UX issue message
+	 *
+	 * precondition: category != null
 	 */
 	public void setCategory(AuditCategory category) {
+		assert category != null;
 		this.category = category.getShortName();
 	}
 

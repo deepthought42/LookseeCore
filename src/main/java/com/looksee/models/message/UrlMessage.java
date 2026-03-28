@@ -9,6 +9,10 @@ import lombok.Setter;
 
 /**
  * A UrlMessage is a message that is used to send a url to the browser
+ *
+ * invariant: url != null after parameterized construction
+ * invariant: browser != null after parameterized construction
+ * invariant: type != null after parameterized construction
  */
 @NoArgsConstructor
 @Getter
@@ -42,6 +46,10 @@ public class UrlMessage extends Message{
 	 * @param auditId the audit id
 	 * @param type the type
 	 * @param accountId the account id
+	 *
+	 * precondition: url != null
+	 * precondition: browser != null
+	 * precondition: type != null
 	 */
 	public UrlMessage(String url,
 					  BrowserType browser,
@@ -49,6 +57,10 @@ public class UrlMessage extends Message{
 					  AuditLevel type,
 					  long accountId)
 	{
+		assert url != null;
+		assert browser != null;
+		assert type != null;
+
 		setUrl(url);
 		setBrowser(browser);
 		setAuditId(auditId);

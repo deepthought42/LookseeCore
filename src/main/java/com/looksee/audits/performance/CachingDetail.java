@@ -42,6 +42,12 @@ public class CachingDetail extends AuditDetail {
 			Double cacheHitProbability,
 			Long cacheLifetimeMs
 	) {
+		assert url != null : "url must not be null";
+		assert wastedBytes != null : "wastedBytes must not be null";
+		assert totalBytes != null : "totalBytes must not be null";
+		assert cacheHitProbability != null : "cacheHitProbability must not be null";
+		assert cacheLifetimeMs != null : "cacheLifetimeMs must not be null";
+
 		setUrl(url);
 		setWastedBytes(wastedBytes);
 		setTotalBytes(totalBytes);

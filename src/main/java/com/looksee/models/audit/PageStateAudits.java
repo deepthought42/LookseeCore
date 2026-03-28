@@ -20,8 +20,14 @@ public class PageStateAudits {
 	 *
 	 * @param page the page of the page state audits
 	 * @param audits the audits of the page state audits
+	 *
+	 * precondition: page != null
+	 * precondition: audits != null
 	 */
 	public PageStateAudits(SimplePage page, Set<Audit> audits) {
+		assert page != null;
+		assert audits != null;
+
 		setPage(page);
 		setAudits(audits);
 	}

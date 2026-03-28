@@ -33,8 +33,11 @@ public class BrowserConnectionHelper {
 	/**
 	 * Gets the selenium hub URLs, either from environment variable SELENIUM_URLS or fallback to hardcoded list
 	 * @param urls the selenium hub URLs
+	 *
+	 * precondition: urls != null
 	 */
 	public static void setConfiguredSeleniumUrls(String[] urls) {
+		assert urls != null;
 		HUB_URLS=urls;
 	}
 

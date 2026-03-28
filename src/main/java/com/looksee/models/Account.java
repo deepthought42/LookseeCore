@@ -14,6 +14,13 @@ import org.springframework.data.neo4j.core.schema.Relationship;
 
 /**
  * Defines the type of package paid for, which domains are registered and which Users belong to the account
+ *
+ * <p><b>Class Invariants:</b>
+ * <ul>
+ *   <li>invariant: domains is never null</li>
+ *   <li>invariant: audits is never null</li>
+ *   <li>invariant: onboardedSteps is never null</li>
+ * </ul>
  */
 @Getter
 @Setter
@@ -57,6 +64,12 @@ public class Account extends LookseeObject{
 			String subscriptionToken
 	){
 		super();
+
+		assert userId != null;
+		assert email != null;
+		assert customerToken != null;
+		assert subscriptionToken != null;
+
 		setUserId(userId);
 		setEmail(email);
 		setCustomerToken(customerToken);
@@ -89,6 +102,8 @@ public class Account extends LookseeObject{
 	 * precondition: step_name != null
 	 */
 	public void addOnboardingStep(String step_name) {
+		assert step_name != null;
+
 		if(!this.onboardedSteps.contains(step_name)){
 			this.onboardedSteps.add(step_name);
 		}
@@ -102,6 +117,8 @@ public class Account extends LookseeObject{
 	 * precondition: domain != null
 	 */
 	public void addDomain(Domain domain) {
+		assert domain != null;
+
 		this.domains.add(domain);
 	}
 
@@ -113,6 +130,8 @@ public class Account extends LookseeObject{
 	 * precondition: domain != null
 	 */
 	public void removeDomain(Domain domain) {
+		assert domain != null;
+
 		boolean domain_found = false;
 		for(Domain curr_domain : this.domains){
 			if(curr_domain.getKey().equals(domain.getKey())){
@@ -134,6 +153,8 @@ public class Account extends LookseeObject{
 	 * precondition: record != null
 	 */
 	public void addAuditRecord(AuditRecord record) {
+		assert record != null;
+
 		this.audits.add(record);
 	}
 

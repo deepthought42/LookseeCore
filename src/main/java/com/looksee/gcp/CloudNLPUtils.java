@@ -32,11 +32,13 @@ public class CloudNLPUtils {
 	 * @return the sentences from the text
 	 *
 	 * precondition: text != null
+	 * precondition: !text.isEmpty()
 	 *
 	 * @throws IOException if an error occurs while extracting the sentences
 	 */
 	public static List<Sentence> extractSentences(String text) throws IOException {
 		assert text != null;
+		assert !text.isEmpty();
 
 		LanguageServiceClient language = LanguageServiceClient.create();
 		Document doc = Document.newBuilder().setContent(text).setType(Type.PLAIN_TEXT).setLanguage("en").build();
@@ -54,11 +56,13 @@ public class CloudNLPUtils {
 	 * @return the paragraphs from the text
 	 *
 	 * precondition: text != null
+	 * precondition: !text.isEmpty()
 	 *
 	 * @throws IOException if an error occurs while extracting the paragraphs
 	 */
 	public static List<Sentence> extractParagraphs(String text) throws IOException {
 		assert text != null;
+		assert !text.isEmpty();
 
 	    LanguageServiceClient language = LanguageServiceClient.create();
 		Document doc = Document.newBuilder().setContent(text).setType(Type.PLAIN_TEXT).setLanguage("en").build();
@@ -76,11 +80,13 @@ public class CloudNLPUtils {
 	 * @return the sentiment of the text
 	 *
 	 * precondition: text != null
+	 * precondition: !text.isEmpty()
 	 *
 	 * @throws IOException if an error occurs while extracting the sentiment
 	 */
 	public static Sentiment extractSentiment(String text) throws IOException {
 		assert text != null;
+		assert !text.isEmpty();
 
 	    LanguageServiceClient language = LanguageServiceClient.create();
 	    Document doc = Document.newBuilder().setContent(text).setType(Type.PLAIN_TEXT).setLanguage("en").build();
@@ -98,11 +104,13 @@ public class CloudNLPUtils {
 	 * @return the entities from the text
 	 *
 	 * precondition: text != null
+	 * precondition: !text.isEmpty()
 	 *
 	 * @throws IOException if an error occurs while extracting the entities
 	 */
 	public static List<Entity> extractEntities(String text) throws IOException {
 		assert text != null;
+		assert !text.isEmpty();
 		
 		LanguageServiceClient language = LanguageServiceClient.create();
 		Document doc = Document.newBuilder().setContent(text).setType(Type.PLAIN_TEXT).setLanguage("en").build();
@@ -120,11 +128,13 @@ public class CloudNLPUtils {
 	 * @return the syntax analysis of the text
 	 *
 	 * precondition: text != null
+	 * precondition: !text.isEmpty()
 	 *
 	 * @throws IOException if an error occurs while analyzing the syntax
 	 */
 	public static SyntaxAnalysis analyzeSyntax(String text) throws IOException {
 		assert text != null;
+		assert !text.isEmpty();
 		
 		Map<String, Boolean> moods = new HashMap<>();
 		Map<String, Boolean> voices = new HashMap<>();

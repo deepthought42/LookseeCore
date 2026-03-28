@@ -30,9 +30,11 @@ public class DomainMapService {
 	 * @return the domain map
 	 *
 	 * precondition: journey_map_key != null
+	 * precondition: !journey_map_key.isEmpty()
 	 */
 	public DomainMap findByKey(String journey_map_key) {
 		assert journey_map_key != null;
+		assert !journey_map_key.isEmpty();
 		return domain_map_repo.findByKey(journey_map_key);
 	}
 
@@ -67,6 +69,9 @@ public class DomainMapService {
 	 *
 	 * @param journey_id the id of the journey
 	 * @param domain_map_id the id of the domain map
+	 *
+	 * precondition: journey_id > 0
+	 * precondition: domain_map_id > 0
 	 */
 	public void addJourneyToDomainMap(long journey_id, long domain_map_id) {
 		assert journey_id > 0;
@@ -93,6 +98,9 @@ public class DomainMapService {
 	 *
 	 * @param domain_map_id the id of the domain map
 	 * @param page_state_id the id of the page state
+	 *
+	 * precondition: domain_map_id > 0
+	 * precondition: page_state_id > 0
 	 */
     public void addPageToDomainMap(long domain_map_id, long page_state_id) {
 		assert domain_map_id > 0;

@@ -13,7 +13,14 @@ import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
 
 /**
- * Represents the series of steps taken for an end to end journey
+ * Represents the series of steps taken for an end to end journey.
+ *
+ * <p><b>Invariants:</b>
+ * <ul>
+ *   <li>steps is never null (initialized to empty list by default).</li>
+ *   <li>orderedIds is never null (initialized to empty list by default).</li>
+ *   <li>status is never null after construction with a parameterized constructor.</li>
+ * </ul>
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Node
@@ -60,9 +67,14 @@ public class Journey extends LookseeObject {
 	 * Creates a new journey with the given steps and status
 	 * @param steps the steps to add to the journey
 	 * @param status the status of the journey
+	 *
+	 * precondition: steps != null
+	 * precondition: status != null
 	 */
 	public Journey(List<Step> steps, JourneyStatus status) {
 		super();
+		assert steps != null;
+		assert status != null;
 		List<Long> ordered_ids = steps.stream()
 									.map(step -> step.getId())
 									.filter(id -> id != null)
@@ -81,11 +93,16 @@ public class Journey extends LookseeObject {
 	 * @param steps the steps to add to the journey
 	 * @param ordered_ids the ordered IDs of the steps
 	 * @param status the status of the journey
+	 *
+	 * precondition: steps != null
+	 * precondition: ordered_ids != null
 	 */
 	public Journey(List<Step> steps,
 					List<Long> ordered_ids,
 					JourneyStatus status) {
 		super();
+		assert steps != null;
+		assert ordered_ids != null;
 		setSteps(steps);
 		setOrderedIds(ordered_ids);
 		setStatus(status);
@@ -135,6 +152,7 @@ public class Journey extends LookseeObject {
 	 * precondition: steps != null
 	 */
 	public void setSteps(List<Step> steps) {
+		assert steps != null;
 		this.steps = steps;
 		
 		List<Long> ordered_ids = steps.stream()
@@ -152,6 +170,7 @@ public class Journey extends LookseeObject {
 	 * precondition: step != null
 	 */
 	public boolean addStep(SimpleStep step) {
+		assert step != null;
 		return this.steps.add(step);
 	}
 

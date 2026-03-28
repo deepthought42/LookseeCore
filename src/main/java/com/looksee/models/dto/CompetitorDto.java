@@ -31,6 +31,9 @@ public class CompetitorDto {
 	 * @param analysis_running true if analysis is running for the competitor, false otherwise
 	 * @param brand {@link Brand} of the competitor
 	 * 
+	 * precondition: company_name != null
+	 * precondition: url != null
+	 * precondition: industry != null
 	 * precondition: brand != null
 	 */
 	public CompetitorDto(
@@ -41,6 +44,11 @@ public class CompetitorDto {
 			boolean analysis_running,
 			Brand brand
 	){
+		assert company_name != null;
+		assert url != null;
+		assert industry != null;
+		assert brand != null;
+
 		setId(id);
 		setCompanyName(company_name);
 		setUrl(url);

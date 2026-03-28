@@ -20,8 +20,14 @@ public class DiscoveryActionRequest {
 	 *
 	 * @param domain the domain
 	 * @param accountId the account ID
+	 *
+	 * precondition: domain != null
+	 * precondition: accountId != null
 	 */
 	public DiscoveryActionRequest(Domain domain, String accountId) {
+		assert domain != null : "domain must not be null";
+		assert accountId != null : "accountId must not be null";
+
 		this.setDomain(domain);
 		this.setAccountId(accountId);
 	}

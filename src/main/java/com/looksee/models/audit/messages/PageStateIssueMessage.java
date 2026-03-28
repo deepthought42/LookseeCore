@@ -13,7 +13,10 @@ import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
 
 /**
- * A observation of potential error for a given {@link Element element}
+ * A observation of potential error for a given {@link Element element}.
+ *
+ * <p>invariant: pageState may be null for default-constructed instances</p>
+ * <p>invariant: when constructed with parameters, inherits all invariants from {@link UXIssueMessage}</p>
  */
 @Node
 @Getter
@@ -40,6 +43,11 @@ public class PageStateIssueMessage extends UXIssueMessage {
 	 * @param title the title of the page state issue message
 	 * @param points_awarded the points awarded of the page state issue message
 	 * @param max_points the max points of the page state issue message
+	 *
+	 * precondition: page != null
+	 * precondition: priority != null
+	 * precondition: category != null
+	 * precondition: labels != null
 	 */
 	public PageStateIssueMessage(
 				PageState page,
@@ -64,7 +72,12 @@ public class PageStateIssueMessage extends UXIssueMessage {
 				points_awarded,
 				max_points,
 				recommendation);
-		
+
+		assert page != null;
+		assert priority != null;
+		assert category != null;
+		assert labels != null;
+
 		setPage(page);
 	}
 
@@ -79,11 +92,14 @@ public class PageStateIssueMessage extends UXIssueMessage {
 
 
 	/**
-	 * Sets the page state of the page state issue message
+	 * Sets the page state of the page state issue message.
 	 *
 	 * @param page_state the page state of the page state issue message
+	 *
+	 * precondition: page_state != null
 	 */
 	public void setPage(PageState page_state) {
+		assert page_state != null;
 		this.pageState = page_state;
 	}
 }

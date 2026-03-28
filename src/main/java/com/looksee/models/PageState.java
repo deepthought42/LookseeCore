@@ -185,8 +185,13 @@ public class PageState extends LookseeObject {
 	 * @param imgA the first image
 	 * @param imgB the second image
 	 * @return whether the images are both the same or not.
+	 *
+	 * precondition: imgA != null
+	 * precondition: imgB != null
 	 */
 	public static boolean compareImages(BufferedImage imgA, BufferedImage imgB) {
+		assert imgA != null;
+		assert imgB != null;
 		// The images must be the same size.
 		if (imgA.getWidth() == imgB.getWidth() && imgA.getHeight() == imgB.getHeight()) {
 			int width = imgA.getWidth();
@@ -266,8 +271,12 @@ public class PageState extends LookseeObject {
 	 * Adds an element to the page state
 	 *
 	 * @param element the element to add
+	 *
+	 * precondition: element != null
 	 */
 	public void addElement(ElementState element) {
+		assert element != null;
+
 		this.elements.add(element);
 	}
 
@@ -276,8 +285,11 @@ public class PageState extends LookseeObject {
 	 *
 	 * @param url the url of the page
 	 * @return the page name
+	 *
+	 * precondition: url != null
 	 */
 	public String generatePageName(String url) {
+		assert url != null;
 		String name = "";
 
 		try {
@@ -335,6 +347,8 @@ public class PageState extends LookseeObject {
 	 * precondition: elements != null
 	 */
 	public void addElements(List<ElementState> elements) {
+		assert elements != null;
+
 		//check for duplicates before adding
 		for(ElementState element : elements) {
 			if(element != null && !this.elements.contains(element)) {

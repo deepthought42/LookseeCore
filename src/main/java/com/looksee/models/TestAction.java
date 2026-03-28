@@ -9,7 +9,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Defines an action in name only
+ * Defines an action in name only.
+ *
+ * invariant: name != null
+ * invariant: value != null
  */
 @Node
 @Getter
@@ -24,8 +27,11 @@ public class TestAction extends LookseeObject {
 	 * Creates a new test action with the given name and value
 	 *
 	 * @param action_name the name of the action
+	 *
+	 * precondition: action_name != null
 	 */
 	public TestAction(String action_name) {
+		assert action_name != null;
 		this.name = action_name;
 		this.value = "";
 		this.setKey(generateKey());
@@ -36,8 +42,13 @@ public class TestAction extends LookseeObject {
 	 *
 	 * @param action_name the name of the action
 	 * @param value the value of the action
+	 *
+	 * precondition: action_name != null
+	 * precondition: value != null
 	 */
 	public TestAction(String action_name, String value) {
+		assert action_name != null;
+		assert value != null;
 		setName(action_name);
 		setValue(value);
 		this.setKey(generateKey());

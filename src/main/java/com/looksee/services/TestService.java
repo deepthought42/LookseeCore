@@ -85,9 +85,16 @@ public class TestService {
 	 * precondition: last_test_status != null
 	 * precondition: domain != null
 	 * precondition: user_id != null
+	 * precondition: !user_id.isEmpty()
 	 */
 	public TestRecord runTest(Test test, String browser_name, TestStatus last_test_status, Domain domain, String user_id) {
 		assert test != null;
+		assert browser_name != null;
+		assert !browser_name.isEmpty();
+		assert last_test_status != null;
+		assert domain != null;
+		assert user_id != null;
+		assert !user_id.isEmpty();
 
 		TestStatus passing = null;
 		PageState page = null;
@@ -133,9 +140,18 @@ public class TestService {
 	 * @param account_id the id of the account
 	 * @return the saved test
 	 * @throws Exception if the test cannot be saved
+	 *
+	 * precondition: test != null
+	 * precondition: url != null
+	 * precondition: !url.isEmpty()
+	 * precondition: account_id > 0
 	 */
 	public Test save(Test test, String url, long account_id) throws Exception {
 		assert test != null;
+		assert url != null;
+		assert !url.isEmpty();
+		assert account_id > 0;
+
 		Test record = test_repo.findByKey(test.getKey(), url, account_id);
 
 		if(record == null){

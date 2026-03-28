@@ -41,6 +41,14 @@ public class UXIssueReportDto {
 	 * @param title the title
 	 * @param element_selector the element selector
 	 * @param url the url
+	 *
+	 * precondition: recommendation != null
+	 * precondition: priority != null
+	 * precondition: description != null
+	 * precondition: type != null
+	 * precondition: category != null
+	 * precondition: wcag_compliance != null
+	 * precondition: labels != null
 	 */
 	public UXIssueReportDto(
 			String recommendation,
@@ -55,6 +63,14 @@ public class UXIssueReportDto {
 			String element_selector,
 			String url
 	) {
+		assert recommendation != null;
+		assert priority != null;
+		assert description != null;
+		assert type != null;
+		assert category != null;
+		assert wcag_compliance != null;
+		assert labels != null;
+
 		setRecommendation(recommendation);
 		setPriority(priority);
 		setDescription(description);
@@ -79,8 +95,12 @@ public class UXIssueReportDto {
 	/**
 	 * Sets the {@link Priority priority}
 	 * @param priority the priority
+	 *
+	 * precondition: priority != null
 	 */
 	public void setPriority(Priority priority) {
+		assert priority != null;
+
 		this.priority = priority.getShortName();
 	}
 	
@@ -95,8 +115,12 @@ public class UXIssueReportDto {
 	/**
 	 * Sets the {@link ObservationType type}
 	 * @param type the type
+	 *
+	 * precondition: type != null
 	 */
 	public void setType(ObservationType type) {
+		assert type != null;
+
 		this.type = type.getShortName();
 	}
 
@@ -111,8 +135,12 @@ public class UXIssueReportDto {
 	/**
 	 * Sets the {@link AuditCategory category}
 	 * @param category the category
+	 *
+	 * precondition: category != null
 	 */
 	public void setCategory(AuditCategory category) {
+		assert category != null;
+
 		this.category = category.getShortName();
 	}
 }

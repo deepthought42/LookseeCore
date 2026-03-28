@@ -36,8 +36,64 @@ Thank you for your interest in contributing to LookseeCore.
 - Use Java 17 language features where appropriate
 - Follow existing naming conventions (snake_case for parameters, camelCase for fields)
 - Use Lombok annotations (`@Getter`, `@Setter`, `@NoArgsConstructor`) for boilerplate reduction
-- Add precondition assertions for public method parameters
 - Use SLF4J logging (not `System.out.println` or `printStackTrace`)
+
+### Design by Contract (DbC)
+
+This project follows Design by Contract principles. All new code **must** comply with these conventions. See [docs/DESIGN_BY_CONTRACT.md](docs/DESIGN_BY_CONTRACT.md) for full details.
+
+#### Preconditions
+Every public method must validate its parameters with `assert` statements at the method entry:
+
+```java
+/**
+ * Finds a domain by host for a given user
+ * @param host the host of the domain
+ * @param username the username of the user
+ * @return the domain if found, or null if not found
+ *
+ * precondition: host != null
+ * precondition: !host.isEmpty()
+ * precondition: username != null
+ * precondition: !username.isEmpty()
+ */
+public Domain findByHostForUser(String host, String username) {
+    assert host != null;
+    assert !host.isEmpty();
+    assert username != null;
+    assert !username.isEmpty();
+    return domain_repo.findByHostForUser(host, username);
+}
+```
+
+**Parameter assertion rules:**
+- Object parameters: `assert param != null;`
+- String parameters: `assert param != null;` and `assert !param.isEmpty();`
+- Numeric ID parameters (database IDs): `assert id > 0;`
+- Collection parameters: `assert param != null;`
+
+#### Invariants
+All model/entity classes must document class invariants in the class-level Javadoc:
+
+```java
+/**
+ * Represents a domain with its protocol, host, and path.
+ *
+ * invariant: host != null
+ * invariant: protocol != null
+ * invariant: colors != null
+ */
+```
+
+#### Javadoc Requirements
+- Every public method must have Javadoc with `@param`, `@return`, and `precondition:` comments
+- Every model class must document `invariant:` conditions in class-level Javadoc
+- Preconditions are listed after a blank line at the end of the Javadoc block
+
+#### Where NOT to add assertions
+- No-arg constructors (used for deserialization/ORM)
+- Simple Lombok-generated getters/setters
+- `equals()` / `hashCode()` / `toString()` overrides
 
 ### Testing
 

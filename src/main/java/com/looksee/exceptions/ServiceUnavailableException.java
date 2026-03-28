@@ -13,8 +13,11 @@ public class ServiceUnavailableException extends RuntimeException {
 	 * Constructor for {@link ServiceUnavailableException}
 	 *
 	 * @param msg the message
+	 *
+	 * precondition: msg != null
 	 */
 	public ServiceUnavailableException(String msg) {
 		super(msg);
+		assert msg != null : "msg must not be null";
 	}
 }

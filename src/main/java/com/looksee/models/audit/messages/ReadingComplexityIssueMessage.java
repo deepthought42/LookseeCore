@@ -11,7 +11,10 @@ import lombok.Setter;
 import org.springframework.data.neo4j.core.schema.Node;
 
 /**
- * A observation of potential error for a given {@link Element element}
+ * A observation of potential error for a given {@link Element element}.
+ *
+ * <p>invariant: easeOfReadingScore represents a valid readability metric value</p>
+ * <p>invariant: when constructed with parameters, inherits all invariants from {@link ElementStateIssueMessage}</p>
  */
 @Node
 @Getter
@@ -37,6 +40,10 @@ public class ReadingComplexityIssueMessage extends ElementStateIssueMessage {
 	 * @param points_awarded the points awarded of the reading complexity issue message
 	 * @param max_points the max points of the reading complexity issue message
 	 * @param ease_of_reading_score the ease of reading score of the reading complexity issue message
+	 *
+	 * precondition: priority != null
+	 * precondition: category != null
+	 * precondition: labels != null
 	 */
 	public ReadingComplexityIssueMessage(
 			Priority priority,
@@ -61,7 +68,11 @@ public class ReadingComplexityIssueMessage extends ElementStateIssueMessage {
 				title,
 				points_awarded,
 				max_points);
-		
+
+		assert priority != null;
+		assert category != null;
+		assert labels != null;
+
 		setEaseOfReadingScore(ease_of_reading_score);
 	}
 

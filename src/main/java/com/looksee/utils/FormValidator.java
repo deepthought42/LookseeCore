@@ -17,8 +17,11 @@ public class FormValidator {
      *
      * @param form The JSoup Element representing the form to validate.
      * @return True if the form structure is valid, false otherwise.
+     *
+     * precondition: form != null
      */
     public Set<GenericIssue> validateFormStructure(Element form) {
+        assert form != null;
         // Select all <fieldset> elements in the form
         Elements fieldsets = form.select("fieldset");
 
@@ -57,8 +60,13 @@ public class FormValidator {
      * @param control The control element to check.
      * @param fieldsets The list of fieldsets to check against.
      * @return True if the control is within a fieldset, false otherwise.
+     *
+     * precondition: control != null
+     * precondition: fieldsets != null
      */
     private boolean isWithinFieldset(Element control, Elements fieldsets) {
+        assert control != null;
+        assert fieldsets != null;
         for (Element fieldset : fieldsets) {
             if (fieldset.getAllElements().contains(control)) {
                 return true;

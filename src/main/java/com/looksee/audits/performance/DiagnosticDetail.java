@@ -83,6 +83,23 @@ public class DiagnosticDetail extends AuditDetail {
 			Double max_rtt,
 			Integer num_fonts,
 			Integer num_scripts) {
+		assert num_stylesheets != null : "num_stylesheets must not be null";
+		assert throughput != null : "throughput must not be null";
+		assert num_tasks_over_10ms != null : "num_tasks_over_10ms must not be null";
+		assert num_tasks_over_25ms != null : "num_tasks_over_25ms must not be null";
+		assert num_tasks_over_50ms != null : "num_tasks_over_50ms must not be null";
+		assert num_tasks_over_100ms != null : "num_tasks_over_100ms must not be null";
+		assert num_tasks_over_500ms != null : "num_tasks_over_500ms must not be null";
+		assert num_requests != null : "num_requests must not be null";
+		assert total_task_time != null : "total_task_time must not be null";
+		assert main_document_transfer_size != null : "main_document_transfer_size must not be null";
+		assert total_byte_weight != null : "total_byte_weight must not be null";
+		assert num_tasks != null : "num_tasks must not be null";
+		assert rtt != null : "rtt must not be null";
+		assert max_rtt != null : "max_rtt must not be null";
+		assert num_fonts != null : "num_fonts must not be null";
+		assert num_scripts != null : "num_scripts must not be null";
+
 		setNumStylesheets(num_stylesheets);
 		setThroughput(throughput);
 		setNumTasksOver10ms(num_tasks_over_10ms);

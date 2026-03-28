@@ -195,6 +195,9 @@ public class UXIssueMessageService {
 	 * precondition: element_id > 0
 	 */
 	public Set<UXIssueMessage> findByNameForElement(AuditName audit_name, long element_id) {
+		assert audit_name != null;
+		assert element_id > 0;
+
 		return issue_message_repo.findByNameForElement(audit_name, element_id);
 	}
 
@@ -208,6 +211,9 @@ public class UXIssueMessageService {
 	 * precondition: element_id > 0
 	 */
 	public boolean hasAuditBeenExecuted(AuditName audit_name, long element_id) {
+		assert audit_name != null;
+		assert element_id > 0;
+
 		int count = issue_message_repo.getNumberOfUXIssuesForElement(audit_name, element_id);
 		return count > 0;
 	}

@@ -197,11 +197,15 @@ public class BrowserUtils {
 	 *
 	 * @return true if url is external, otherwise false
 	 *
+	 * precondition: domain_host != null
 	 * precondition: !domain_host.isEmpty()
+	 * precondition: url != null
 	 * precondition: !url.isEmpty()
 	 */
 	public static boolean isExternalLink(String domain_host, String url) {
+		assert domain_host != null;
 		assert !domain_host.isEmpty();
+		assert url != null;
 		assert !url.isEmpty();
 		
 		if(url.indexOf('?') >= 0) {
@@ -231,10 +235,12 @@ public class BrowserUtils {
 	 * @return true if link is empty or if it starts with a '/' and doesn't contain the domain host, otherwise false
 	 *
 	 * precondition: domain_host != null
+	 * precondition: !domain_host.isEmpty()
 	 * precondition: link_url != null
 	 */
 	public static boolean isRelativeLink(String domain_host, String link_url) {
 		assert domain_host != null;
+		assert !domain_host.isEmpty();
 		assert link_url != null;
 		
 		//add check that link url does not contain a host. The host does not need to be the same as the domain host. for example the domain host might be look-see.com and the link url might be shopify.dev/docs/api/customer/unstable/mutations/subscriptionContractPause
@@ -282,11 +288,15 @@ public class BrowserUtils {
 	 * @throws URISyntaxException
 	 *
 	 * precondition: domain_host != null
+	 * precondition: !domain_host.isEmpty()
 	 * precondition: new_host != null
+	 * precondition: !new_host.isEmpty()
 	 */
 	public static boolean isSubdomain(String domain_host, String new_host) throws URISyntaxException {
 		assert domain_host != null;
+		assert !domain_host.isEmpty();
 		assert new_host != null;
+		assert !new_host.isEmpty();
 		
 		boolean is_contained = new_host.contains(domain_host) || domain_host.contains(new_host);
 		boolean is_equal = new_host.equals(domain_host);
@@ -300,9 +310,11 @@ public class BrowserUtils {
 	 * @return true if the url is a file, otherwise false
 	 *
 	 * precondition: url != null
+	 * precondition: !url.isEmpty()
 	 */
 	public static boolean isFile(String url) {
 		assert url != null;
+		assert !url.isEmpty();
 		
 		return url.endsWith(".zip")
 				|| url.endsWith(".usdt")
@@ -323,9 +335,11 @@ public class BrowserUtils {
 	 * @return true if the url is a video file, otherwise false
 	 *
 	 * precondition: url != null
+	 * precondition: !url.isEmpty()
 	 */
 	public static boolean isVideoFile(String url) {
 		assert url != null;
+		assert !url.isEmpty();
 		
 		return url.endsWith(".mov")
 				|| url.endsWith(".webm")
@@ -374,11 +388,17 @@ public class BrowserUtils {
 
 	/**
 	 * Extracts a {@link List list} of link urls by looking up `a` html tags and extracting the href values
-	 * 
+	 *
 	 * @param source valid html source
 	 * @return {@link List list} of link urls
+	 *
+	 * precondition: source != null
+	 * precondition: !source.isEmpty()
 	 */
 	public static List<String> extractLinkUrls(String source) {
+		assert source != null;
+		assert !source.isEmpty();
+
 		List<String> link_urls = new ArrayList<>();
 		Document document = Jsoup.parse(source);
 		Elements elements = document.getElementsByTag("a");
@@ -397,8 +417,12 @@ public class BrowserUtils {
 	 *
 	 * @param elements a list of {@link Element elements}
 	 * @return {@link List list} of link urls
+	 *
+	 * precondition: elements != null
 	 */
 	public static List<com.looksee.models.Element> extractLinks(List<com.looksee.models.Element> elements) {
+		assert elements != null;
+
 		List<com.looksee.models.Element> links = new ArrayList<>();
 		
 		for(com.looksee.models.Element element : elements) {
@@ -467,9 +491,11 @@ public class BrowserUtils {
 	 * @throws Exception
 	 *
 	 * precondition: url_str != null
+	 * precondition: !url_str.isEmpty()
 	 */
 	public static boolean doesUrlExist(String url_str) throws Exception {
 		assert url_str != null;
+		assert !url_str.isEmpty();
 		
 		if(BrowserUtils.isJavascript(url_str)
 			|| url_str.startsWith("itms-apps:")
@@ -577,9 +603,11 @@ public class BrowserUtils {
 	 * @return true if the url is an image url, otherwise false
 	 *
 	 * precondition: href != null
+	 * precondition: !href.isEmpty()
 	 */
 	public static boolean isImageUrl(String href) {
 		assert href != null;
+		assert !href.isEmpty();
 		
 		return href.endsWith(".jpg") || href.endsWith(".png") || href.endsWith(".gif") || href.endsWith(".bmp") || href.endsWith(".tiff") || href.endsWith(".webp") || href.endsWith(".bpg") || href.endsWith(".heif");
 	}
@@ -607,11 +635,15 @@ public class BrowserUtils {
 	 * @return {@link List list} of css property declarations
 	 *
 	 * precondition: prop != null
+	 * precondition: !prop.isEmpty()
 	 * precondition: css != null
+	 * precondition: !css.isEmpty()
 	 */
 	public static List<String> extractCssPropertyDeclarations(String prop, String css) {
 		assert prop != null;
+		assert !prop.isEmpty();
 		assert css != null;
+		assert !css.isEmpty();
 		
 		String patternString = prop+":(.*?)[?=;|}]";
 		List<String> settings = new ArrayList<>();
@@ -645,9 +677,11 @@ public class BrowserUtils {
 	 * @return the RGB color
 	 *
 	 * precondition: color_str != null
+	 * precondition: !color_str.isEmpty()
 	 */
 	public static Color hex2Rgb(String color_str) {
 		assert color_str != null;
+		assert !color_str.isEmpty();
 
 		if(color_str.contentEquals("0")) {
 			return new Color(0,0,0);
@@ -686,9 +720,11 @@ public class BrowserUtils {
 	 * @return true if the font weight is bold, otherwise false
 	 *
 	 * precondition: font_weight != null
+	 * precondition: !font_weight.isEmpty()
 	 */
 	public static boolean isTextBold(String font_weight) {
 		assert font_weight != null;
+		assert !font_weight.isEmpty();
 		
 		return font_weight.contentEquals("bold")
 				|| font_weight.contentEquals("bolder")
@@ -725,9 +761,11 @@ public class BrowserUtils {
 	 * @return the page url
 	 *
 	 * precondition: sanitized_url != null
+	 * precondition: !sanitized_url.isEmpty()
 	 */
 	public static String getPageUrl(String sanitized_url) {
 		assert sanitized_url != null;
+		assert !sanitized_url.isEmpty();
 		//remove protocol
 		String url_without_protocol = sanitized_url.replace("https://", "");
 		url_without_protocol = url_without_protocol.replace("http://", "");
@@ -778,8 +816,12 @@ public class BrowserUtils {
 	 *
 	 * @param url the url to check
 	 * @return the http status code
+	 *
+	 * precondition: url != null
 	 */
 	public static int getHttpStatus(URL url) {
+		assert url != null;
+
 		int status_code = 500;
 		try {
 			if(url.getProtocol().contentEquals("http")) {
@@ -907,9 +949,11 @@ public class BrowserUtils {
 	 * @return true if the url is a javascript url, otherwise false
 	 *
 	 * precondition: href != null
+	 * precondition: !href.isEmpty()
 	 */
 	public static boolean isJavascript(String href) {
 		assert href != null;
+		assert !href.isEmpty();
 		
 		return href.startsWith("javascript:");
 	}
@@ -926,6 +970,10 @@ public class BrowserUtils {
 	 * precondition: viewportHeight > 0
 	 */
 	public static boolean isLargerThanViewport(Dimension element_size, int viewportWidth, int viewportHeight) {
+		assert element_size != null;
+		assert viewportWidth > 0;
+		assert viewportHeight > 0;
+
 		return element_size.getWidth() > viewportWidth || element_size.getHeight() > viewportHeight;
 	}
 
@@ -1025,11 +1073,15 @@ public class BrowserUtils {
 	 *
 	 * precondition: sanitized_url != null
 	 * precondition: !sanitized_url.isEmpty()
+	 * precondition: host != null
+	 * precondition: !host.isEmpty()
 	 */
 	public static boolean isValidUrl(String sanitized_url, String host)
 	{
 		assert sanitized_url != null;
 		assert !sanitized_url.isEmpty();
+		assert host != null;
+		assert !host.isEmpty();
 
 		if(BrowserUtils.isFile(sanitized_url)
 			|| BrowserUtils.isJavascript(sanitized_url)
@@ -1158,8 +1210,12 @@ public class BrowserUtils {
 	 * @param web_element {@link WebElement element}
 	 *
 	 * @return returns true if it is hidden, otherwise returns false
+	 *
+	 * precondition: web_element != null
 	 */
 	public static boolean isHidden(WebElement web_element) {
+		assert web_element != null;
+
 		Rectangle rect = web_element.getRect();
 		return rect.getX()<=0 && rect.getY()<=0 && rect.getWidth()<=0 && rect.getHeight()<=0;
 	}
@@ -1171,8 +1227,14 @@ public class BrowserUtils {
 	 * @param size the {@link Dimension} size of the element
 	 *
 	 * @return returns true if it is hidden, otherwise returns false
+	 *
+	 * precondition: location != null
+	 * precondition: size != null
 	 */
 	public static boolean isHidden(Point location, Dimension size) {
+		assert location != null;
+		assert size != null;
+
 		return location.getX()<=0 && location.getY()<=0 && size.getWidth()<=0 && size.getHeight()<=0;
 	}
 	
@@ -1183,9 +1245,11 @@ public class BrowserUtils {
 	 * @return A set of font families
 	 * 
 	 * precondition: stylesheet != null
+	 * precondition: !stylesheet.isEmpty()
 	 */
 	public static Collection<? extends String> extractFontFamiliesFromStylesheet(String stylesheet) {
 		assert stylesheet != null;
+		assert !stylesheet.isEmpty();
 		
 		Map<String, Boolean> font_families = new HashMap<>();
 
@@ -1222,9 +1286,11 @@ public class BrowserUtils {
 	 * @return the set of colors declared as background or text color in the css
 	 * 
 	 * precondition: stylesheet != null
+	 * precondition: !stylesheet.isEmpty()
 	 */
 	public static Collection<? extends ColorData> extractColorsFromStylesheet(String stylesheet) {
 		assert stylesheet != null;
+		assert !stylesheet.isEmpty();
 		
 		List<ColorData> colors = new ArrayList<>();
 
@@ -1404,15 +1470,27 @@ public class BrowserUtils {
 	
 	/**
 	 * Checks if the start and end urls span multiple domains
-	 * 
+	 *
 	 * @param start_url the start url
 	 * @param end_url the end url
 	 * @param path_objects the path objects
 	 * @return true if the start and end urls span multiple domains, false otherwise
-	 * 
+	 *
 	 * @throws MalformedURLException if the url is malformed
+	 *
+	 * precondition: start_url != null
+	 * precondition: !start_url.isEmpty()
+	 * precondition: end_url != null
+	 * precondition: !end_url.isEmpty()
+	 * precondition: path_objects != null
 	 */
 	public static boolean doesSpanMutlipleDomains(String start_url, String end_url, List<LookseeObject> path_objects) throws MalformedURLException {
+		assert start_url != null;
+		assert !start_url.isEmpty();
+		assert end_url != null;
+		assert !end_url.isEmpty();
+		assert path_objects != null;
+
 		return !(start_url.trim().contains(new URL(end_url).getHost()) || end_url.contains((new URL(PathUtils.getLastPageStateOLD(path_objects).getUrl()).getHost())));
 	}
 }

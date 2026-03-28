@@ -10,6 +10,9 @@ import lombok.Setter;
 /**
  * Data transfer object for {@link Domain} object that is designed to comply with
  * the data format for browser extensions
+ *
+ * invariant: url may be null only when using the no-arg constructor
+ * invariant: status may be null only when using the no-arg constructor
  */
 @Getter
 @Setter
@@ -37,8 +40,14 @@ public class DomainDto {
 	 * @param id the id of the domain
 	 * @param url the url of the domain
 	 * @param progress the progress of the domain
+	 *
+	 * precondition: url != null
+	 * precondition: progress >= 0
 	 */
 	public DomainDto(long id, String url, double progress) {
+		assert url != null;
+		assert progress >= 0;
+
 		this.id = id;
 		this.url = url;
 		this.contentProgress = progress;

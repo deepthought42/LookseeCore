@@ -76,6 +76,15 @@ public class ImageFaceAnnotation extends LookseeObject{
 	 * @param surpriseLikelihood the likelihood of surprise
 	 * @param underExposedLikelihood the likelihood of under exposed
 	 * @param bounding_poly the bounding poly
+	 *
+	 * precondition: angerLikelihood != null
+	 * precondition: joyLikelihood != null
+	 * precondition: blurredLikelihood != null
+	 * precondition: headwearLikelihood != null
+	 * precondition: sorrowLikelihood != null
+	 * precondition: surpriseLikelihood != null
+	 * precondition: underExposedLikelihood != null
+	 * precondition: bounding_poly != null
 	 */
 	public ImageFaceAnnotation(Likelihood angerLikelihood,
 								Likelihood joyLikelihood,
@@ -86,6 +95,15 @@ public class ImageFaceAnnotation extends LookseeObject{
 								Likelihood underExposedLikelihood,
 								BoundingPoly bounding_poly
 	) {
+		assert angerLikelihood != null;
+		assert joyLikelihood != null;
+		assert blurredLikelihood != null;
+		assert headwearLikelihood != null;
+		assert sorrowLikelihood != null;
+		assert surpriseLikelihood != null;
+		assert underExposedLikelihood != null;
+		assert bounding_poly != null;
+
 		setAngerLikelihood(angerLikelihood.toString());
 		setJoyLikelihood(joyLikelihood.toString());
 		setBlurredLikelihood(blurredLikelihood.toString());

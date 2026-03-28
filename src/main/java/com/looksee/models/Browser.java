@@ -74,7 +74,16 @@ import ru.yandex.qatools.ashot.AShot;
 import ru.yandex.qatools.ashot.shooting.ShootingStrategies;
 
 /**
- * Handles the management of selenium browser instances and provides various methods for interacting with the browser 
+ * Handles the management of selenium browser instances and provides various methods for interacting with the browser.
+ *
+ * <p><b>Class Invariants:</b>
+ * <ul>
+ *   <li>invariant: browserName is not null after parameterized construction</li>
+ *   <li>invariant: driver is not null after parameterized construction</li>
+ *   <li>invariant: viewportSize is not null after parameterized construction</li>
+ *   <li>invariant: yScrollOffset >= 0</li>
+ *   <li>invariant: xScrollOffset >= 0</li>
+ * </ul>
  */
 @NoArgsConstructor
 @Component
@@ -146,6 +155,8 @@ public class Browser {
 	 * precondition: url != null
 	 */
 	public void navigateTo(String url) {
+		assert url != null;
+
 		getDriver().get(url);
 		
 		try {
@@ -164,6 +175,8 @@ public class Browser {
 	 * version: 9/18/2023
 	 */
 	public static String cleanSrc(String src) {
+		assert src != null;
+
 		Document html_doc = Jsoup.parse(src);
 		html_doc.select("script").remove();
 		html_doc.select("style").remove();
@@ -276,6 +289,8 @@ public class Browser {
 	 * precondition: wait != null
 	 */
 	public static void AcceptAlert(WebDriver driver, WebDriverWait wait) {
+		assert driver != null;
+
 		if (wait == null) {
 			wait = new WebDriverWait(driver, 5);
 		}
@@ -458,8 +473,11 @@ public class Browser {
 	 * @param element the element to get a screenshot of
 	 * @return the screenshot
 	 * @throws Exception if an error occurs while getting the screenshot
+	 *
+	 * precondition: element != null
 	 */
 	public BufferedImage getElementScreenshot(WebElement element) throws Exception{
+		assert element != null;
 		//calculate element position within screen
 		return Shutterbug.shootElementVerticallyCentered(driver, element).getImage();
 	}
@@ -472,9 +490,14 @@ public class Browser {
 	 * @param page_screenshot the screenshot to get the element from
 	 * @return the screenshot of the element
 	 * @throws IOException if an error occurs while getting the screenshot
+	 *
+	 * precondition: element_state != null
+	 * precondition: page_screenshot != null
 	 */
 	public static BufferedImage getElementScreenshot(ElementState element_state,
 													BufferedImage page_screenshot) throws IOException{
+		assert element_state != null;
+		assert page_screenshot != null;
 		int width = element_state.getWidth();
 		int height = element_state.getHeight();
 		
@@ -497,11 +520,18 @@ public class Browser {
 	 * @param page_screenshot the screenshot to get the element from
 	 * @return the screenshot of the element
 	 * @throws IOException if an error occurs while getting the screenshot
+	 *
+	 * precondition: element_location != null
+	 * precondition: element_size != null
+	 * precondition: page_screenshot != null
 	 */
 	public static BufferedImage getElementScreenshot(Point element_location,
 													Dimension element_size,
 													BufferedImage page_screenshot) throws IOException
 	{
+		assert element_location != null;
+		assert element_size != null;
+		assert page_screenshot != null;
 		int width = element_size.getWidth();
 		int height = element_size.getHeight();
 		
@@ -522,8 +552,13 @@ public class Browser {
 	 * @param elements the elements to search
 	 * @param for_id the id to search for
 	 * @return the label
+	 *
+	 * precondition: elements != null
+	 * precondition: for_id != null
 	 */
 	public static ElementState findLabelFor(Set<ElementState> elements, String for_id){
+		assert elements != null;
+		assert for_id != null;
 		for(ElementState elem : elements){
 			//ElementState tag = (ElementState)elem;
 			if(elem.getName().equals("label") ){
@@ -542,8 +577,13 @@ public class Browser {
 	 * @param elements the elements to search
 	 * @param for_ids the ids to search for
 	 * @return the labels
+	 *
+	 * precondition: elements != null
+	 * precondition: for_ids != null
 	 */
 	public static Set<ElementState> findLabelsFor(Set<ElementState> elements, String[] for_ids){
+		assert elements != null;
+		assert for_ids != null;
 		Set<ElementState> labels = new HashSet<ElementState>();
 		for(ElementState elem : elements){
 			//ElementState tag = (ElementState)elem;
@@ -565,8 +605,13 @@ public class Browser {
 	 *
 	 * @param page_element the element to outline
 	 * @param driver the driver to use
+	 *
+	 * precondition: page_element != null
+	 * precondition: driver != null
 	 */
 	public static void outlineElement(ElementState page_element, WebDriver driver) {
+		assert page_element != null;
+		assert driver != null;
 		WebElement element = driver.findElement(By.xpath(page_element.getXpath()));
 		((JavascriptExecutor)driver).executeScript("arguments[0].style.border='2px solid yellow'", element);
 	}
@@ -948,6 +993,7 @@ public class Browser {
 	 */
 	@SuppressWarnings("unchecked")
 	public Map<String, String> extractAttributes(WebElement element) {
+		assert element != null;
 		List<String> attribute_strings = (ArrayList<String>)((JavascriptExecutor)driver).executeScript("var items = []; for (index = 0; index < arguments[0].attributes.length; ++index) { items.push(arguments[0].attributes[index].name + '::' + arguments[0].attributes[index].value) }; return items;", element);
 		return loadAttributes(attribute_strings);
 	}
@@ -1142,8 +1188,11 @@ public class Browser {
 	 * Moves the mouse to a non-interactive point
 	 *
 	 * @param point the point to move the mouse to
+	 *
+	 * precondition: point != null
 	 */
 	public void moveMouseToNonInteractive(Point point) {
+		assert point != null;
 		try{
 			Actions mouseMoveAction = new Actions(driver).moveByOffset(point.getX(), point.getY());
 			mouseMoveAction.build().perform();
@@ -1171,8 +1220,11 @@ public class Browser {
 	 *
 	 * @param element the element to check
 	 * @return {@code true} if the element is displayed, {@code false} otherwise
+	 *
+	 * precondition: element != null
 	 */
 	public boolean isDisplayed(ElementState element) {
+		assert element != null;
 		WebElement web_element = driver.findElement(By.xpath(element.getXpath()));
 		return web_element.isDisplayed();
 	}
@@ -1183,8 +1235,13 @@ public class Browser {
 	 * @param raw_stylesheets the raw stylesheets
 	 * @param page_state_url the page state url
 	 * @return the rule sets
+	 *
+	 * precondition: raw_stylesheets != null
+	 * precondition: page_state_url != null
 	 */
 	public static List<RuleSet> extractRuleSetsFromStylesheets(List<String> raw_stylesheets, URL page_state_url) {
+		assert raw_stylesheets != null;
+		assert page_state_url != null;
 		List<RuleSet> rule_sets = new ArrayList<>();
 		for(String raw_stylesheet : raw_stylesheets) {
 			//parse the style sheet
@@ -1215,8 +1272,11 @@ public class Browser {
 	 *
 	 * @param src the source to extract stylesheets from
 	 * @return the stylesheets
+	 *
+	 * precondition: src != null
 	 */
 	public static List<String> extractStylesheets(String src) {
+		assert src != null;
 		List<String> raw_stylesheets = new ArrayList<>();
 		Document doc = Jsoup.parse(src);
 		Elements stylesheets = doc.select("link");
@@ -1373,8 +1433,12 @@ public class Browser {
 	 *
 	 * @param source the source to check
 	 * @return {@code true} if the page is a 503 error, {@code false} otherwise
+	 *
+	 * precondition: source != null
 	 */
 	public static boolean is503Error(String source) {
+		assert source != null;
+
 		return source.contains("503 Service Temporarily Unavailable");
 	}
 
@@ -1383,8 +1447,13 @@ public class Browser {
 	 *
 	 * @param xpath the xpath to find the element at
 	 * @return the element
+	 *
+	 * precondition: xpath != null
+	 * precondition: !xpath.isEmpty()
 	 */
 	public WebElement findElement(String xpath) throws WebDriverException{
+		assert xpath != null;
+		assert !xpath.isEmpty();
 		return getDriver().findElement(By.xpath(xpath));
 	}
 
@@ -1392,9 +1461,12 @@ public class Browser {
 	 * Scrolls to an element centered in the viewport
 	 *
 	 * @param element the element to scroll to
+	 *
+	 * precondition: element != null
 	 */
 	public void scrollToElementCentered(WebElement element)
 	{
+		assert element != null;
 		((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", element);
 		
 		getViewportScrollOffset();

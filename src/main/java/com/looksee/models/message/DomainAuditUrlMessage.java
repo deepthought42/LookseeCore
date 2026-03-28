@@ -30,6 +30,9 @@ public class DomainAuditUrlMessage extends DomainAuditMessage {
 	 * @param domain_audit_id the domain audit id
 	 * @param url the url to audit
 	 * @param browser the browser to audit
+	 *
+	 * precondition: url != null
+	 * precondition: browser != null
 	 */
 	public DomainAuditUrlMessage(long account_id,
 								long domain_audit_id,
@@ -37,6 +40,10 @@ public class DomainAuditUrlMessage extends DomainAuditMessage {
 								BrowserType browser)
 	{
 		super(account_id, domain_audit_id);
+
+		assert url != null : "url must not be null";
+		assert browser != null : "browser must not be null";
+
 		setUrl(url);
 		setBrowser(browser);
 	}

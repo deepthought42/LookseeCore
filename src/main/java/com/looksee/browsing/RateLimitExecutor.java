@@ -33,9 +33,12 @@ public class RateLimitExecutor extends HttpCommandExecutor {
     /**
      * Creates a new RateLimitExecutor
      * @param addressOfRemoteServer the address of the remote server
+     *
+     * precondition: addressOfRemoteServer != null
      */
     public RateLimitExecutor(URL addressOfRemoteServer) {
         super(addressOfRemoteServer);
+        assert addressOfRemoteServer != null;
         lastExecutionTime = 0;
     }
 
@@ -44,8 +47,11 @@ public class RateLimitExecutor extends HttpCommandExecutor {
      * @param command the command to execute
      * @return the response
      * @throws IOException if an I/O error occurs
+     *
+     * precondition: command != null
      */
     public Response execute(Command command) throws IOException {
+        assert command != null;
         long currentTime = Instant.now().toEpochMilli();
         double elapsedTime = TimeUnit.MILLISECONDS.toSeconds(currentTime - lastExecutionTime);
         if (elapsedTime < SECONDS_PER_ACTION) {

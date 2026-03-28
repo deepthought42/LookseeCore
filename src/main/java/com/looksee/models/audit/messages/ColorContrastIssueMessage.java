@@ -12,7 +12,11 @@ import org.springframework.data.neo4j.core.schema.Node;
 
 
 /**
- * A observation of potential error for a given color palette
+ * A observation of potential error for a given color palette.
+ *
+ * <p>invariant: foregroundColor is non-null and non-empty when set via constructor</p>
+ * <p>invariant: backgroundColor is non-null and non-empty when set via constructor</p>
+ * <p>invariant: contrast is a non-negative value</p>
  */
 @NoArgsConstructor
 @Getter
@@ -70,10 +74,15 @@ public class ColorContrastIssueMessage extends ElementStateIssueMessage{
 			String recommendation
 	) {
 		assert priority != null;
+		assert recommendation != null;
+		assert !recommendation.isEmpty();
+		assert element != null;
 		assert foreground_color != null;
 		assert !foreground_color.isEmpty();
 		assert background_color != null;
 		assert !background_color.isEmpty();
+		assert category != null;
+		assert labels != null;
 
 		setPriority(priority);
 		setDescription(description);

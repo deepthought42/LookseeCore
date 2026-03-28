@@ -18,8 +18,11 @@ public class CssPropertyFactory {
 	 *
 	 * @param property the property
 	 * @return the constructed property
+	 *
+	 * precondition: property != null
 	 */
 	public static String construct(CSSProperty property) {
+		assert property != null;
 		log.warn(property.getClass().getName());
 		if(property instanceof Margin) {
 			Margin margin = (Margin)property;

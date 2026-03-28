@@ -37,11 +37,14 @@ public class MessageBroadcaster {
 	
 	/**
 	 * Constructor for the message broadcaster
-	 * 
+	 *
 	 * @param pusher the configured Pusher client (real or fallback)
 	 * @param environment Spring Environment for property resolution (optional, can be null)
+	 *
+	 * precondition: pusher != null
 	 */
 	public MessageBroadcaster(Pusher pusher, Environment environment) {
+		assert pusher != null;
 		this.pusher = pusher;
 		
 		// Detect if this is the fallback Pusher by checking if all required properties are set
@@ -78,8 +81,10 @@ public class MessageBroadcaster {
 	
 	/**
 	 * Legacy constructor for backward compatibility
-	 * 
+	 *
 	 * @param pusher the configured Pusher client (real or fallback)
+	 *
+	 * precondition: pusher != null
 	 */
 	public MessageBroadcaster(Pusher pusher) {
 		this(pusher, null);
@@ -120,8 +125,15 @@ public class MessageBroadcaster {
      * @param host the host of the test
      * @param audit {@link Audit} to be emitted to clients
      * @throws JsonProcessingException if there is an error converting the audit to a JSON string
+     *
+     * precondition: host != null
+     * precondition: !host.isEmpty()
+     * precondition: audit != null
      */
 	public void broadcastAudit(String host, Audit audit) throws JsonProcessingException {
+		assert host != null;
+		assert !host.isEmpty();
+		assert audit != null;
         //Object to JSON in String
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
@@ -140,8 +152,11 @@ public class MessageBroadcaster {
 	 * send {@link Account} to the users pusher channel
 	 * @param account {@link Account} to be emitted to clients
 	 * @throws JsonProcessingException if there is an error converting the account to a JSON string
+	 *
+	 * precondition: account != null
 	 */
 	public void broadcastSubscriptionExceeded(Account account) throws JsonProcessingException {
+		assert account != null;
         //Object to JSON in String
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());

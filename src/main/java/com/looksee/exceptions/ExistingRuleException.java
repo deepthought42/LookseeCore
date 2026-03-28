@@ -10,8 +10,11 @@ public class ExistingRuleException extends RuntimeException {
 	 * Constructor for {@link ExistingRuleException}
 	 *
 	 * @param rule_type the type of rule that already exists
+	 *
+	 * precondition: rule_type != null
 	 */
 	public ExistingRuleException(String rule_type) {
 		super("Element already has the " + rule_type + " rule applied.");
+		assert rule_type != null : "rule_type must not be null";
 	}
 }

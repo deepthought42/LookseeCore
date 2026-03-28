@@ -11,8 +11,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Defines rule to be used to evaluate if a {@link Element} has a value that satisfies the 
+ * Defines rule to be used to evaluate if a {@link Element} has a value that satisfies the
  * rule based on its {@link RuleType}
+ *
+ * invariant: type is always a valid {@link RuleType} short name or null
  */
 @Getter
 @Setter
@@ -36,8 +38,12 @@ public abstract class Rule extends LookseeObject {
 	 * Sets the type of the rule
 	 *
 	 * @param type the type of the rule
+	 *
+	 * precondition: type != null
 	 */
 	public void setType(RuleType type) {
+		assert type != null;
+
 		this.type = type.getShortName();
 	}
 	

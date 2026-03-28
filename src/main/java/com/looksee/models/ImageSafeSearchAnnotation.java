@@ -37,6 +37,12 @@ public class ImageSafeSearchAnnotation extends LookseeObject{
 	 * @param adult annotations for adult content
 	 * @param violence annotations for violence
 	 * @param racy annotations for racy content
+	 *
+	 * precondition: spoof != null
+	 * precondition: medical != null
+	 * precondition: adult != null
+	 * precondition: violence != null
+	 * precondition: racy != null
 	 */
 	public ImageSafeSearchAnnotation(String spoof,
 									String medical,
@@ -44,6 +50,12 @@ public class ImageSafeSearchAnnotation extends LookseeObject{
 									String violence,
 									String racy
 	) {
+		assert spoof != null : "spoof must not be null";
+		assert medical != null : "medical must not be null";
+		assert adult != null : "adult must not be null";
+		assert violence != null : "violence must not be null";
+		assert racy != null : "racy must not be null";
+
 		setSpoof(spoof);
 		setMedical(medical);
 		setAdult(adult);

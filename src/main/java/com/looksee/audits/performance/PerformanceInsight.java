@@ -41,7 +41,7 @@ public class PerformanceInsight extends LookseeObject {
 	
 	/**
 	 * Constructor for {@link PerformanceInsight}
-	 * 
+	 *
 	 * @param executedAt the date and time the performance insight was executed
 	 * @param timing the timing of the performance insight
 	 * @param requestId the request id of the performance insight
@@ -49,6 +49,14 @@ public class PerformanceInsight extends LookseeObject {
 	 * @param captchaResult the captcha result of the performance insight
 	 * @param runWarnings the run warnings of the performance insight
 	 * @param emulatedFormFactor the emulated form factor of the performance insight
+	 *
+	 * precondition: executedAt != null
+	 * precondition: timing != null
+	 * precondition: requestId != null
+	 * precondition: locale != null
+	 * precondition: captchaResult != null
+	 * precondition: runWarnings != null
+	 * precondition: emulatedFormFactor != null
 	 */
 	public PerformanceInsight(
 			Date executedAt,
@@ -59,6 +67,14 @@ public class PerformanceInsight extends LookseeObject {
 			List<Object> runWarnings,
 			FormFactor emulatedFormFactor
 	) {
+		assert executedAt != null : "executedAt must not be null";
+		assert timing != null : "timing must not be null";
+		assert requestId != null : "requestId must not be null";
+		assert locale != null : "locale must not be null";
+		assert captchaResult != null : "captchaResult must not be null";
+		assert runWarnings != null : "runWarnings must not be null";
+		assert emulatedFormFactor != null : "emulatedFormFactor must not be null";
+
 		setExecutedAt(executedAt);
 		setTiming(timing);
 		setRequestId(requestId);
@@ -81,8 +97,11 @@ public class PerformanceInsight extends LookseeObject {
 	/**
 	 * Sets the captcha result
 	 * @param captchaResult the captcha result
+	 *
+	 * precondition: captchaResult != null
 	 */
 	public void setCaptchaResult(CaptchaResult captchaResult) {
+		assert captchaResult != null : "captchaResult must not be null";
 		this.captchaResult = captchaResult.toString();
 	}
 	
@@ -97,16 +116,22 @@ public class PerformanceInsight extends LookseeObject {
 	/**
 	 * Sets the emulated form factor
 	 * @param emulatedFormFactor the emulated form factor
+	 *
+	 * precondition: emulatedFormFactor != null
 	 */
 	public void setEmulatedFormFactor(FormFactor emulatedFormFactor) {
+		assert emulatedFormFactor != null : "emulatedFormFactor must not be null";
 		this.emulatedFormFactor = emulatedFormFactor.toString();
 	}
 
 	/**
 	 * Adds an audit to the performance insight
 	 * @param audit the audit
+	 *
+	 * precondition: audit != null
 	 */
 	public void addAudit(PageSpeedAudit audit) {
+		assert audit != null : "audit must not be null";
 		this.audits.add(audit);
 	}
 

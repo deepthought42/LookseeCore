@@ -27,6 +27,7 @@ public class TestMapper {
 	 * precondition: test != null
 	 */
 	public void addTest(Test test){
+		assert test != null : "test must not be null";
 		int hash_code = test.hashCode();
 		
 		if(!this.testHash.containsKey(Integer.toString(hash_code))){
@@ -43,6 +44,7 @@ public class TestMapper {
 	 * precondition: test != null
 	 */
 	public boolean containsTest(Test test){
+		assert test != null : "test must not be null";
 		String hash_key = Integer.toString(test.hashCode());
 		return  this.testHash.containsKey(hash_key);
 	}

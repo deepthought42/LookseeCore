@@ -44,8 +44,14 @@ public class PageSpeedAuditService {
 	 *
 	 * @param key key of the {@link PageSpeedAudit} to retrieve
 	 * @return {@link PageSpeedAudit}
+	 *
+	 * precondition: key != null
+	 * precondition: !key.isEmpty()
 	 */
 	public PageSpeedAudit findByKey(String key) {
+		assert key != null;
+		assert !key.isEmpty();
+
 		return audit_repo.findByKey(key);
 	}
 }

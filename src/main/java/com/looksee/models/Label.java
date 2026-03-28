@@ -25,8 +25,12 @@ public class Label extends LookseeObject{
 	 *
 	 * @param description the description of the label
 	 * @param score the score of the label
+	 *
+	 * precondition: description != null
 	 */
 	public Label(String description, float score) {
+		assert description != null : "description must not be null";
+
 		setDescription(description);
 		setScore(score);
 		setKey(generateKey());

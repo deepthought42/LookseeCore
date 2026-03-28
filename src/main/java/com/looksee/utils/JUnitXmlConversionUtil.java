@@ -18,8 +18,14 @@ public class JUnitXmlConversionUtil {
 	 * @param time_in_sec the time in seconds
 	 * @param date the date
 	 * @return the JUnit XML string
+	 *
+	 * precondition: test_record_list != null
+	 * precondition: date != null
 	 */
 	public static String convertToJUnitXml(List<TestRecord> test_record_list, int failing_cnt, long time_in_sec, Date date){
+		assert test_record_list != null;
+		assert date != null;
+
 		StringBuffer str_buf = new StringBuffer();
 		
 		str_buf.append("<testsuites id='' name='' tests='" +test_record_list.size()+ "' failures='" + failing_cnt + "' time='" + time_in_sec + "'>\n");

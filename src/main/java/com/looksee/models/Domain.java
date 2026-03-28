@@ -13,9 +13,18 @@ import org.springframework.data.neo4j.core.schema.Relationship;
 /**
  * Represents a domain.
  *
- * This class represents a domain and contains a list of {@link PageState} objects,
+ * <p>This class represents a domain and contains a list of {@link PageState} objects,
  * which represent the pages of the domain. It also contains a {@link DesignSystem} object,
  * which represents the design system of the domain.
+ *
+ * <p><b>Class Invariants:</b>
+ * <ul>
+ *   <li>invariant: url is not null after construction with parameters</li>
+ *   <li>invariant: pages list is never null</li>
+ *   <li>invariant: auditRecords set is never null</li>
+ *   <li>invariant: sitemap list is never null</li>
+ *   <li>invariant: designSystem is never null</li>
+ * </ul>
  */
 @Getter
 @Setter
@@ -105,8 +114,11 @@ public class Domain extends LookseeObject{
 	 *
 	 * @param page The page to add
 	 * @return true if the page was added successfully, false otherwise
+	 *
+	 * precondition: page != null
 	 */
 	public boolean addPage(PageState page) {
+		assert page != null;
 		//check if page state exists
 		for(PageState state : this.getPages()){
 			if(state.getKey().equals(page.getKey())){

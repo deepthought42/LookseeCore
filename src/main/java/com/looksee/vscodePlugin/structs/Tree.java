@@ -13,8 +13,11 @@ public class Tree<E> {
 	/**
 	 * Constructor for {@link Tree}
 	 * @param root the root node of the tree
+	 *
+	 * precondition: root != null
 	 */
 	public Tree(TreeNode<E> root){
+		assert root != null : "root must not be null";
 		this.root_node = root;
 	}
 }

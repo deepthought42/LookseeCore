@@ -7,6 +7,12 @@ import lombok.Setter;
 
 /**
  * GenericIssue is a class that represents a generic issue.
+ *
+ * <p><b>Invariants:</b>
+ * <ul>
+ *   <li>description, title, cssSelector, and recommendation are never null when
+ *       constructed via the all-args constructor.</li>
+ * </ul>
  */
 @NoArgsConstructor
 @AllArgsConstructor

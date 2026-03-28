@@ -67,10 +67,12 @@ public class ElementStateService {
 	 * @param element element state
 	 * @return saved element state
 	 *
+	 * precondition: page_state_id > 0
 	 * precondition: element != null
 	 */
 	@Retryable
 	public ElementState save(long page_state_id, ElementState element) {
+		assert page_state_id > 0;
 		assert element != null;
 
 		ElementState element_record = element_repo.findByPageStateAndKey(page_state_id, element.getKey());
@@ -151,8 +153,11 @@ public class ElementStateService {
 	 *
 	 * @param id element id
 	 * @return element state
+	 *
+	 * precondition: id > 0
 	 */
 	public ElementState findById(long id) {
+		assert id > 0;
 		return element_repo.findById(id).get();
 	}
 
@@ -216,10 +221,12 @@ public class ElementStateService {
 	 * @param snippet snippet of outer HTML
 	 * @return element state
 	 *
+	 * precondition: account_id > 0
 	 * precondition: snippet != null
 	 * precondition: snippet is not empty
 	 */
 	public ElementState findByOuterHtml(long account_id, String snippet) {
+		assert account_id > 0;
 		assert snippet != null;
 		assert !snippet.isEmpty();
 
@@ -232,10 +239,12 @@ public class ElementStateService {
 	 * @param account_id account id
 	 * @param form_key form key
 	 *
+	 * precondition: account_id > 0
 	 * precondition: form_key != null
 	 * precondition: form_key is not empty
 	 */
 	public void clearBugMessages(long account_id, String form_key) {
+		assert account_id > 0;
 		assert form_key != null;
 		assert !form_key.isEmpty();
 
@@ -427,10 +436,16 @@ public class ElementStateService {
 	 * @param page_state_id the id of the page state
 	 *
 	 * @return the list of saved element states
+	 *
+	 * precondition: element_states != null
+	 * precondition: page_state_id > 0
 	 */
 	public List<ElementState> saveAll(List<ElementState> element_states,
 										long page_state_id)
 	{
+		assert element_states != null;
+		assert page_state_id > 0;
+
 		return element_states.parallelStream()
 								.map(element -> save(page_state_id, element))
 								.collect(Collectors.toList());
@@ -441,8 +456,12 @@ public class ElementStateService {
 	 *
 	 * @param page_state_id the id of the page state
 	 * @return the list of existing keys
+	 *
+	 * precondition: page_state_id > 0
 	 */
 	public List<String> getAllExistingKeys(long page_state_id) {
+		assert page_state_id > 0;
+
 		return element_repo.getAllExistingKeys(page_state_id);
 	}
 
@@ -451,8 +470,12 @@ public class ElementStateService {
 	 *
 	 * @param existing_keys the set of existing keys
 	 * @return the list of element states
+	 *
+	 * precondition: existing_keys != null
 	 */
 	public List<ElementState> getElements(Set<String> existing_keys) {
+		assert existing_keys != null;
+
 		return element_repo.getElements(existing_keys);
 	}
 
@@ -463,8 +486,14 @@ public class ElementStateService {
 	 * @param element the element to find
 	 * @return the element state
 	 * @throws Exception if the element state is not found
+	 *
+	 * precondition: domain_audit_id > 0
+	 * precondition: element != null
 	 */
 	public ElementState findByDomainAuditAndKey(long domain_audit_id, ElementState element) throws Exception {
+		assert domain_audit_id > 0;
+		assert element != null;
+
 		return element_repo.findByDomainAuditAndKey(domain_audit_id, element.getKey());
 	}
 	
@@ -514,24 +543,32 @@ public class ElementStateService {
 
 	/**
 	 * Retrieves all visible leaf elements for a given page state
-	 * 
+	 *
 	 * @param page_state_id the id of the page state
 	 * @return a list of visible leaf elements
+	 *
+	 * precondition: page_state_id > 0
 	 */
 	public List<ElementState> getVisibleLeafElements(long page_state_id) {
+		assert page_state_id > 0;
+
 		return element_repo.getVisibleLeafElements(page_state_id);
 	}
 	
 	/**
 	 * Saves a list of element states to the database
-	 * 
+	 *
 	 * NOTE: This is best for a database with significant memory as the size of data can be difficult to process all at once
 	 * on smaller machines
-	 * 
+	 *
 	 * @param element_states the list of element states to save
 	 * @return {@link List} of {@link ElementState} ids
+	 *
+	 * precondition: element_states != null
 	 */
 	public List<ElementState> saveElements(List<ElementState> element_states) {
+		assert element_states != null;
+
 		return element_states.parallelStream()
 									.map(element -> save(element))
 									.collect(Collectors.toList());
@@ -539,25 +576,39 @@ public class ElementStateService {
 
 	/**
 	 * Finds an {@link ElementState} by the domain map id and key
-	 * 
+	 *
 	 * @param domain_map_id the id of the domain map
 	 * @param element the element to find
 	 * @return the element state
 	 * @throws Exception if the element state is null or not found in the database
+	 *
+	 * precondition: domain_map_id > 0
+	 * precondition: element != null
 	 */
 	@Retryable
 	public ElementState findByDomainMapAndKey(long domain_map_id, ElementState element) throws Exception {
+		assert domain_map_id > 0;
+		assert element != null;
+
 		return element_repo.findByDomainMapAndKey(domain_map_id, element.getKey());
 	}
 
 	/**
 	 * Finds an {@link ElementState} by the page id and css selector
-	 * 
+	 *
 	 * @param id the id of the page
 	 * @param cssSelector the css selector of the element
 	 * @return the element state
+	 *
+	 * precondition: id > 0
+	 * precondition: cssSelector != null
+	 * precondition: cssSelector is not empty
 	 */
     public ElementState findByPageAndCssSelector(long id, String cssSelector) {
+        assert id > 0;
+        assert cssSelector != null;
+        assert !cssSelector.isEmpty();
+
         return element_repo.findByPageAndCssSelector(id, cssSelector);
     }
 }

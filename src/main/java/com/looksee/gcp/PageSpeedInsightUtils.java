@@ -129,9 +129,11 @@ public class PageSpeedInsightUtils {
 	 * 
 	 * @return list of {@link UXIssueMessage}s with accessibility issues
 	 * 
-	 * precondition: details != null
+	 * precondition: audit_record != null
 	 */
 	public List<UXIssueMessage> extractAccessibilityAuditDetails(LighthouseAuditResultV5 audit_record) {
+		assert audit_record != null;
+
 		List<UXIssueMessage> ux_issues = new ArrayList<>();
 		if(audit_record.getDetails() != null) {
 			List<Object> items = (List)audit_record.getDetails().get("items");
@@ -221,8 +223,12 @@ public class PageSpeedInsightUtils {
 	 * 
 	 * @param page_speed_response {@link PagespeedApiPagespeedResponseV5}
 	 * @return list of {@link UXIssueMessage}s with font size issues
+	 *
+	 * precondition: page_speed_response != null
 	 */
 	public List<UXIssueMessage> extractFontSizeIssues(PagespeedApiPagespeedResponseV5 page_speed_response) {
+		assert page_speed_response != null;
+
 		List<UXIssueMessage> ux_issues = new ArrayList<UXIssueMessage>();
 		
 		log.warn("extracting page speed audit results for accessibility");
@@ -267,8 +273,12 @@ public class PageSpeedInsightUtils {
 	 * 
 	 * @param page_speed_response {@link PagespeedApiPagespeedResponseV5}
 	 * @return list of {@link UXIssueMessage}s with issues from page speed insights api
+	 *
+	 * precondition: page_speed_response != null
 	 */
 	public List<UXIssueMessage> extractIssues(PagespeedApiPagespeedResponseV5 page_speed_response) {
+		assert page_speed_response != null;
+
 		List<UXIssueMessage> ux_issues = new ArrayList<UXIssueMessage>();
 		
 		log.warn("extracting page speed audit results for accessibility");

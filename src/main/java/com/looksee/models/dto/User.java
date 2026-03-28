@@ -19,9 +19,15 @@ public class User{
 	 * Constructor for {@link User}
 	 * @param email the email of the user
 	 * @param name the name of the user
+	 *
+	 * precondition: email != null
+	 * precondition: name != null
 	 */
 	public User(String email,
 				String name) {
+		assert email != null;
+		assert name != null;
+
 		setEmail(email);
 		setName(name);
 	}

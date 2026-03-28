@@ -53,8 +53,16 @@ public class Logo extends LookseeObject{
 	 * @param locale the locale of the logo
 	 * @param score the score of the logo
 	 * @param bounding_poly the bounding poly of the logo
+	 *
+	 * precondition: description != null
+	 * precondition: locale != null
+	 * precondition: bounding_poly != null
 	 */
 	public Logo(String description, String locale, float score, BoundingPoly bounding_poly) {
+		assert description != null : "description must not be null";
+		assert locale != null : "locale must not be null";
+		assert bounding_poly != null : "bounding_poly must not be null";
+
 		setDescription(description);
 		setLocale(locale);
 		setScore(score);

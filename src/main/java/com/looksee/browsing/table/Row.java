@@ -18,10 +18,13 @@ public class Row {
 	
 	/**
 	 * Constructs a {@link Row}
-	 * 
+	 *
 	 * @param table_row the list of {@link ElementNode}s that make up the row
+	 *
+	 * precondition: table_row != null
 	 */
 	public Row(List<ElementNode<Element>> table_row){
+		assert table_row != null;
 		this.setRowCells(table_row);
 	}
 }

@@ -4,6 +4,28 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [0.3.24] - 2026-03-27
+
+### Added
+- Comprehensive Design by Contract (DbC) enforcement across all packages:
+  - **Service layer**: All 37 service classes now enforce preconditions with `assert` statements and document contracts in Javadoc (`precondition:` comments)
+  - **Model/entity classes**: All domain models include class-level `invariant:` documentation and constructor preconditions
+  - **Audit models**: AuditRecord, Audit, Score, and all audit message/recommendation classes enforce parameter contracts
+  - **Journey models**: Journey, Step, DomainMap and all step types include precondition assertions
+  - **DTO classes**: All data transfer objects validate constructor parameters
+  - **Utility classes**: BrowserUtils, ColorUtils, ContentUtils, and other utilities enforce input contracts
+  - **Browsing classes**: Crawler, ActionFactory, and form/table helpers include precondition checks
+  - **GCP classes**: All PubSub publishers, CloudVisionUtils, CloudNLPUtils, and GoogleCloudStorage enforce contracts
+  - **Rule classes**: Rule, RuleFactory, and all rule implementations validate inputs
+  - **Message classes**: All inter-service message types include constructor preconditions
+- Fixed constructor parameter assignment bugs in AuditRecord (startTime and aestheticAuditProgress were assigned wrong values)
+- New `docs/DESIGN_BY_CONTRACT.md` documenting the project's DbC conventions and patterns
+
+### Changed
+- Updated README.md with Design by Contract section and updated version to 0.3.23
+- Updated CONTRIBUTING.md with DbC guidelines for contributors
+- LookseeObject base class now enforces key non-null precondition in parameterized constructor
+
 ## [0.3.22] - 2026-03-25
 
 ### Added

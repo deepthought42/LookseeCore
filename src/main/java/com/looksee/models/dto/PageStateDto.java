@@ -6,6 +6,9 @@ import lombok.Setter;
 
 /**
  * Data transfer object representing a {@link PageState} in a format readable for browser extensions
+ *
+ * invariant: key != null after construction
+ * invariant: url != null after construction
  */
 @Getter
 @Setter
@@ -18,8 +21,12 @@ public class PageStateDto {
 	/**
 	 * Constructor for PageStateDto
 	 * @param page the page state
+	 *
+	 * precondition: page != null
 	 */
 	public PageStateDto(PageState page){
+		assert page != null;
+
 		setKey(page.getKey());
 		setUrl(page.getUrl());
 	}

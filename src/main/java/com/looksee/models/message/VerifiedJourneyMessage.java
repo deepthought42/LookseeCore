@@ -36,6 +36,9 @@ public class VerifiedJourneyMessage extends Message {
 	 * @param browser the browser
 	 * @param accountId the account id
 	 * @param auditRecordId the audit record id
+	 *
+	 * precondition: journey != null
+	 * precondition: browser != null
 	 */
 	public VerifiedJourneyMessage( Journey journey,
 									BrowserType browser,
@@ -43,6 +46,10 @@ public class VerifiedJourneyMessage extends Message {
 									long auditRecordId)
 	{
 		super(accountId);
+
+		assert journey != null : "journey must not be null";
+		assert browser != null : "browser must not be null";
+
 		setJourney(journey);
 		setBrowser(browser);
 		setAuditRecordId(auditRecordId);

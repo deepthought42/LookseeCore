@@ -17,8 +17,12 @@ public class TestCreatedDto {
 	/**
 	 * Constructor for {@link TestCreatedDto}
 	 * @param test the {@link Test} to convert
+	 *
+	 * precondition: test != null
 	 */
 	public TestCreatedDto(Test test){
+		assert test != null;
+
 		setKey(test.getKey());
 		setName(test.getName());
 	}

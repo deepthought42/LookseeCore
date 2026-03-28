@@ -19,8 +19,11 @@ public class GroupService {
 	 *
 	 * @param group the group to save
 	 * @return the saved group
+	 *
+	 * precondition: group != null
 	 */
 	public Group save(Group group){
+		assert group != null;
 		Group groupRecord = findByKey(group.getKey());
 		if(groupRecord == null){
 			groupRecord = groupRepo.save(group);
@@ -33,8 +36,13 @@ public class GroupService {
 	 *
 	 * @param key the key
 	 * @return the group
+	 *
+	 * precondition: key != null
+	 * precondition: key is not empty
 	 */
 	public Group findByKey(String key){
+		assert key != null;
+		assert !key.isEmpty();
 		return groupRepo.findByKey(key);
 	}
 }

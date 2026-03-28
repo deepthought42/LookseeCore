@@ -12,6 +12,17 @@ import org.springframework.data.neo4j.core.schema.Node;
 
 /**
  * Record detailing a "Discovery" ran by an account.
+ *
+ * <p><b>Class Invariants:</b>
+ * <ul>
+ *   <li>invariant: startTime is not null after parameterized construction</li>
+ *   <li>invariant: browserName is not null after parameterized construction</li>
+ *   <li>invariant: domainUrl is not null after parameterized construction</li>
+ *   <li>invariant: expandedUrls list is never null after parameterized construction</li>
+ *   <li>invariant: expandedPathKeys list is never null after parameterized construction</li>
+ *   <li>invariant: totalPathCount >= 0</li>
+ *   <li>invariant: testCount >= 0</li>
+ * </ul>
  */
 @Node
 @Getter
@@ -77,8 +88,11 @@ public class DiscoveryRecord extends LookseeObject {
 	 *
 	 * @param expanded_path_key the expanded path key to add
 	 * @return true if the expanded path key was added, false otherwise
+	 *
+	 * precondition: expanded_path_key != null
 	 */
 	public boolean addExpandedPathKey(String expanded_path_key) {
+		assert expanded_path_key != null;
 		if(!this.expandedPathKeys.contains(expanded_path_key)){
 			return this.expandedPathKeys.add(expanded_path_key);
 		}

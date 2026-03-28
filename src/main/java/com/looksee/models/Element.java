@@ -23,6 +23,15 @@ import org.springframework.data.neo4j.core.schema.Relationship.Direction;
  * Contains all the pertinent information for an element on a page. A ElementState
  *  may be a Parent and/or child of another ElementState. This heirarchy is not
  *  maintained by ElementState though.
+ *
+ * <p><b>Class Invariants:</b>
+ * <ul>
+ *   <li>invariant: attributes map is never null</li>
+ *   <li>invariant: preRenderCssValues map is never null</li>
+ *   <li>invariant: rules set is never null</li>
+ *   <li>invariant: childElements list is never null</li>
+ *   <li>invariant: classification is never null after parameterized construction</li>
+ * </ul>
  */
 @NoArgsConstructor
 @Getter

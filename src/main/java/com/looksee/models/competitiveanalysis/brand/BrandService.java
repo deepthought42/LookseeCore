@@ -15,11 +15,15 @@ public class BrandService {
 	
 	/**
 	 * Saves a {@link Brand}
-	 * 
+	 *
 	 * @param brand {@link Brand} to save
 	 * @return saved {@link Brand}
+	 *
+	 * precondition: brand != null
 	 */
 	public Brand save(Brand brand){
+		assert brand != null;
+
 		return brand_repo.save(brand);
 	}
 }

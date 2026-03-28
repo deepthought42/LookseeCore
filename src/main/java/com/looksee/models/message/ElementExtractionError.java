@@ -21,6 +21,9 @@ public class ElementExtractionError extends Message{
 	 * @param page_state_id the page state id
 	 * @param page_url the page url
 	 * @param msg the message
+	 *
+	 * precondition: page_url != null
+	 * precondition: msg != null
 	 */
 	public ElementExtractionError(long account_id,
 									long page_state_id,
@@ -28,9 +31,12 @@ public class ElementExtractionError extends Message{
 									String msg
 	) {
 		super(account_id);
+
+		assert page_url != null : "page_url must not be null";
+		assert msg != null : "msg must not be null";
+
 		setPageId(page_state_id);
 		setMessage(msg);
 		setPageUrl(page_url);
-		
 	}
 }

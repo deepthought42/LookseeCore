@@ -18,12 +18,20 @@ public class BlockingResource extends AuditDetail {
 	
 	/**
 	 * Constructs a {@link BlockingResource} object
-	 * 
+	 *
 	 * @param url url of the blocking resource
 	 * @param total_bytes total bytes of the blocking resource
 	 * @param wasted_ms wasted milliseconds of the blocking resource
+	 *
+	 * precondition: url != null
+	 * precondition: total_bytes != null
+	 * precondition: wasted_ms != null
 	 */
 	public BlockingResource(String url, Integer total_bytes, Double wasted_ms) {
+		assert url != null : "url must not be null";
+		assert total_bytes != null : "total_bytes must not be null";
+		assert wasted_ms != null : "wasted_ms must not be null";
+
 		setUrl(url);
 		setTotalBytes(total_bytes);
 		setWastedMs(wasted_ms);

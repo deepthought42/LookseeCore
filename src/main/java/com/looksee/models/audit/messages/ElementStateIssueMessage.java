@@ -14,7 +14,10 @@ import org.springframework.data.neo4j.core.schema.Relationship;
 
 
 /**
- * A observation of potential error for a given {@link ElementState element state}
+ * A observation of potential error for a given {@link ElementState element state}.
+ *
+ * <p>invariant: element may be null for default-constructed instances</p>
+ * <p>invariant: when constructed with parameters, inherits all invariants from {@link UXIssueMessage}</p>
  */
 @Node
 @NoArgsConstructor
@@ -40,6 +43,10 @@ public class ElementStateIssueMessage extends UXIssueMessage {
 	 * @param title the title of the element state issue message
 	 * @param points_awarded the points awarded of the element state issue message
 	 * @param max_points the max points of the element state issue message
+	 *
+	 * precondition: priority != null
+	 * precondition: category != null
+	 * precondition: labels != null
 	 */
 	public ElementStateIssueMessage(
 			Priority priority,
@@ -64,7 +71,11 @@ public class ElementStateIssueMessage extends UXIssueMessage {
 				points_awarded,
 				max_points,
 				recommendation);
-		
+
+		assert priority != null;
+		assert category != null;
+		assert labels != null;
+
 		setElement(element);
 	}
 
@@ -78,11 +89,14 @@ public class ElementStateIssueMessage extends UXIssueMessage {
 	}
 
 	/**
-	 * Sets the element state of the element state issue message
+	 * Sets the element state of the element state issue message.
 	 *
 	 * @param element the element state of the element state issue message
+	 *
+	 * precondition: element != null
 	 */
 	public void setElement(ElementState element) {
+		assert element != null;
 		this.element = element;
 	}
 	
