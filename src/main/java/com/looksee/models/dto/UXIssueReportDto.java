@@ -49,10 +49,6 @@ public class UXIssueReportDto {
 	 * precondition: category != null
 	 * precondition: wcag_compliance != null
 	 * precondition: labels != null
-	 * precondition: why_it_matters != null
-	 * precondition: title != null
-	 * precondition: element_selector != null
-	 * precondition: url != null
 	 */
 	public UXIssueReportDto(
 			String recommendation,
@@ -74,10 +70,6 @@ public class UXIssueReportDto {
 		assert category != null;
 		assert wcag_compliance != null;
 		assert labels != null;
-		assert why_it_matters != null;
-		assert title != null;
-		assert element_selector != null;
-		assert url != null;
 
 		setRecommendation(recommendation);
 		setPriority(priority);

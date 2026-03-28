@@ -20,13 +20,11 @@ public class RuleFactory {
 	 * precondition: type != null
 	 * precondition: !type.isEmpty()
 	 * precondition: value != null
-	 * precondition: !value.isEmpty()
 	 */
 	public static Rule build(String type, String value){
 		assert type != null;
 		assert !type.isEmpty();
 		assert value != null;
-		assert !value.isEmpty();
 
 		if(type.equalsIgnoreCase(RuleType.ALPHABETIC_RESTRICTION.toString())){
 			return new AlphabeticRestrictionRule();
