@@ -39,8 +39,8 @@ public class PageDataExtractionError extends Message {
 	 * @param url the url of the page
 	 * @param errorMessage the error message
 	 *
-	 * @precondition url != null
-	 * @precondition errorMessage != null
+	 * precondition: url != null
+	 * precondition: errorMessage != null
 	 */
 	public PageDataExtractionError(long accountId,
 									long auditRecordId,

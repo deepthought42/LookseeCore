@@ -33,9 +33,9 @@ public class PageAuditProgressMessage extends Message {
 	 * @param domain_id the id of the domain
 	 * @param page_audit_id the id of the page audit
 	 *
-	 * @precondition message != null
-	 * @precondition category != null
-	 * @precondition level != null
+	 * precondition: message != null
+	 * precondition: category != null
+	 * precondition: level != null
 	 */
 	public PageAuditProgressMessage(
 			long account_id,

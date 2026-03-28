@@ -26,8 +26,8 @@ public class AuditProgressMessage extends DomainAuditMessage {
 	 * @param audit_statuses the statuses of the audits
 	 * @param audit_scores the scores of the audits
 	 *
-	 * @precondition audit_statuses != null
-	 * @precondition audit_scores != null
+	 * precondition: audit_statuses != null
+	 * precondition: audit_scores != null
 	 */
 	public AuditProgressMessage(
 			long account_id,

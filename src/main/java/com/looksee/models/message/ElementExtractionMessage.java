@@ -32,8 +32,8 @@ public class ElementExtractionMessage extends Message{
 	 * @param page the page state
 	 * @param xpaths the xpaths to extract
 	 *
-	 * @precondition page != null
-	 * @precondition xpaths != null
+	 * precondition: page != null
+	 * precondition: xpaths != null
 	 */
 	public ElementExtractionMessage(long accountId,
 									PageState page,

@@ -11,7 +11,7 @@ import lombok.Setter;
  *
  * invariant: errorMessage != null after construction
  * invariant: auditCategory != null after construction
- * invariant: progress >= 0 and progress <= 1 after construction
+ * invariant: progress &gt;= 0 and progress &lt;= 1 after construction
  *
  * @see Message
  * @see AuditCategory
@@ -51,7 +51,7 @@ public class AuditError extends Message {
 	 * 
 	 * precondition: errorMessage != null
 	 * precondition: auditCategory != null
-	 * precondition: progress >= 0 and progress <= 1
+	 * precondition: progress &gt;= 0 and progress &lt;= 1
 	 *
 	 * @throws IllegalArgumentException if progress is not between 0 and 1
 	 */

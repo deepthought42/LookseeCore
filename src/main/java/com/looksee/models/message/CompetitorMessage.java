@@ -19,7 +19,7 @@ public class CompetitorMessage extends Message {
 	 *
 	 * @param competitor the {@link Competitor}
 	 *
-	 * @precondition competitor != null
+	 * precondition: competitor != null
 	 */
 	public CompetitorMessage(Competitor competitor) {
 		super();
@@ -34,7 +34,7 @@ public class CompetitorMessage extends Message {
 	 * @param account_id the id of the {@link Account}
 	 * @param competitor the {@link Competitor}
 	 *
-	 * @precondition competitor != null
+	 * precondition: competitor != null
 	 */
 	public CompetitorMessage(long competitor_id, long account_id, Competitor competitor) {
 		super(account_id);

@@ -24,7 +24,7 @@ public class PageIdentifiedMessage extends DomainAuditMessage {
 	 * @param page_id the id of the page
 	 * @param url the url of the page
 	 *
-	 * @precondition url != null
+	 * precondition: url != null
 	 */
 	public PageIdentifiedMessage(
 			long account_id,

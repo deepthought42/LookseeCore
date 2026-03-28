@@ -10,7 +10,7 @@ import lombok.Setter;
  * Contains audit details, progress tracking, and associated page audit record information.
  *
  * invariant: audit != null after parameterized construction
- * invariant: auditProgress >= 0.0 and auditProgress <= 1.0 after parameterized construction
+ * invariant: auditProgress &gt;= 0.0 and auditProgress &lt;= 1.0 after parameterized construction
  */
 @Getter
 @Setter
@@ -30,7 +30,7 @@ public class AuditMessage extends Message {
 	 * @param page_audit_record_id The ID of the page audit record
 	 *
 	 * precondition: audit != null
-	 * precondition: audit_progress >= 0.0 and audit_progress <= 1.0
+	 * precondition: audit_progress &gt;= 0.0 and audit_progress &lt;= 1.0
 	 */
 	public AuditMessage(Audit audit,
 						double audit_progress,

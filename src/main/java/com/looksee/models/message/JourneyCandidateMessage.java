@@ -28,8 +28,8 @@ public class JourneyCandidateMessage extends Message {
 	 * @param auditRecordId the audit record id
 	 * @param mapId the map id
 	 *
-	 * @precondition journey != null
-	 * @precondition browserType != null
+	 * precondition: journey != null
+	 * precondition: browserType != null
 	 */
 	public JourneyCandidateMessage(Journey journey,
 									BrowserType browserType,

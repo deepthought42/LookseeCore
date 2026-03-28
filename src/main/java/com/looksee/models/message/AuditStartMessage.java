@@ -43,9 +43,9 @@ public class AuditStartMessage extends Message{
 	 * @param type the audit type
 	 * @param account_id the account id
 	 *
-	 * @precondition url != null
-	 * @precondition browser != null
-	 * @precondition type != null
+	 * precondition: url != null
+	 * precondition: browser != null
+	 * precondition: type != null
 	 */
 	public AuditStartMessage(String url,
 							BrowserType browser,

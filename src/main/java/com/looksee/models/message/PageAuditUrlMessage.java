@@ -31,8 +31,8 @@ public class PageAuditUrlMessage extends PageAuditMessage {
 	 * @param url the url to audit
 	 * @param browser the browser to audit
 	 *
-	 * @precondition url != null
-	 * @precondition browser != null
+	 * precondition: url != null
+	 * precondition: browser != null
 	 */
 	public PageAuditUrlMessage(long accountId,
 								long pageAuditId,

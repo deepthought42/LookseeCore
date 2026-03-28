@@ -29,9 +29,9 @@ public class JourneyMessage extends Message {
 	 * @param accountId the account id
 	 * @param auditRecordId the audit record id
 	 *
-	 * @precondition journey != null
-	 * @precondition status != null
-	 * @precondition browserType != null
+	 * precondition: journey != null
+	 * precondition: status != null
+	 * precondition: browserType != null
 	 */
 	public JourneyMessage(Journey journey,
 						JourneyStatus status,

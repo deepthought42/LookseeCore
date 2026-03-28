@@ -31,8 +31,8 @@ public class DomainAuditUrlMessage extends DomainAuditMessage {
 	 * @param url the url to audit
 	 * @param browser the browser to audit
 	 *
-	 * @precondition url != null
-	 * @precondition browser != null
+	 * precondition: url != null
+	 * precondition: browser != null
 	 */
 	public DomainAuditUrlMessage(long account_id,
 								long domain_audit_id,

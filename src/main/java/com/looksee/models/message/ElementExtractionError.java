@@ -22,8 +22,8 @@ public class ElementExtractionError extends Message{
 	 * @param page_url the page url
 	 * @param msg the message
 	 *
-	 * @precondition page_url != null
-	 * @precondition msg != null
+	 * precondition: page_url != null
+	 * precondition: msg != null
 	 */
 	public ElementExtractionError(long account_id,
 									long page_state_id,

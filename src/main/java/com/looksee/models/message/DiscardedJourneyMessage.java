@@ -29,8 +29,8 @@ public class DiscardedJourneyMessage extends Message {
 	 * @param accountId the account id
 	 * @param auditRecordId the audit record id
 	 *
-	 * @precondition journey != null
-	 * @precondition browserType != null
+	 * precondition: journey != null
+	 * precondition: browserType != null
 	 */
 	public DiscardedJourneyMessage(Journey journey,
 									BrowserType browserType,

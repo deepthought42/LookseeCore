@@ -23,8 +23,8 @@ public class AuditSetMessage extends Message {
 	 * @param audits list of audits
 	 * @param url url of the audit
 	 *
-	 * @precondition audits != null
-	 * @precondition url != null
+	 * precondition: audits != null
+	 * precondition: url != null
 	 */
 	public AuditSetMessage(long account_id, List<Audit> audits, String url){
 		assert audits != null : "audits must not be null";

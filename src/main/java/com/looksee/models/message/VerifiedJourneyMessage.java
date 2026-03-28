@@ -37,8 +37,8 @@ public class VerifiedJourneyMessage extends Message {
 	 * @param accountId the account id
 	 * @param auditRecordId the audit record id
 	 *
-	 * @precondition journey != null
-	 * @precondition browser != null
+	 * precondition: journey != null
+	 * precondition: browser != null
 	 */
 	public VerifiedJourneyMessage( Journey journey,
 									BrowserType browser,
