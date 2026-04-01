@@ -9,6 +9,9 @@ import com.looksee.gcp.GoogleCloudStorage;
 import com.looksee.gcp.ImageSafeSearchAnnotation;
 import com.looksee.models.Browser;
 import com.looksee.models.Domain;
+import com.looksee.utils.CssUtils;
+import com.looksee.utils.HtmlUtils;
+import com.looksee.utils.ScreenshotUtils;
 import com.looksee.models.ElementState;
 import com.looksee.models.Form;
 import com.looksee.models.ImageElementState;
@@ -393,9 +396,9 @@ public class BrowserService {
         int status_code = BrowserUtils.getHttpStatus(current_url);
 
         //scroll to bottom then back to top to make sure all elements that may be hidden until the page is scrolled
-		String source = Browser.cleanSrc(browser.getDriver().getPageSource());
+		String source = HtmlUtils.cleanSrc(browser.getDriver().getPageSource());
 
-		if(Browser.is503Error(source)) {
+		if(HtmlUtils.is503Error(source)) {
 			browser.close();
 			throw new ServiceUnavailableException("503(Service Unavailable) Error encountered.");
 		}
@@ -2029,12 +2032,12 @@ public class BrowserService {
 		//String current_url = browser.getDriver().getCurrentUrl();
 		String element_screenshot_url = "";
 		BufferedImage element_screenshot = null;
-		Map<String, String> rendered_css_props = Browser.loadCssProperties(web_element, browser.getDriver());
+		Map<String, String> rendered_css_props = CssUtils.loadCssProperties(web_element, browser.getDriver());
 		Map<String, String> attributes = browser.extractAttributes(web_element);
 		
 		if(BrowserUtils.isLargerThanViewport(element_state, browser.getViewportSize().getWidth(), browser.getViewportSize().getHeight())) {
 			try {
-				element_screenshot = Browser.getElementScreenshot(element_state, page_screenshot);
+				element_screenshot = ScreenshotUtils.getElementScreenshot(element_state, page_screenshot);
 				String screenshot_checksum = ImageUtils.getChecksum(element_screenshot);
 				element_screenshot_url = googleCloudStorage.saveImage(element_screenshot,
 																		host,
@@ -2592,7 +2595,7 @@ public class BrowserService {
 				}
 				
 				
-				Map<String, String> rendered_css_props = Browser.loadCssProperties(web_element, browser.getDriver());
+				Map<String, String> rendered_css_props = CssUtils.loadCssProperties(web_element, browser.getDriver());
 				Map<String, String> attributes = browser.extractAttributes(web_element);
 
 				ElementClassification classification = null;
@@ -2903,9 +2906,9 @@ public class BrowserService {
 		browser.removeGDPRmodals();
 		boolean is_secure = BrowserUtils.checkIfSecure(current_url);
 
-		String source = Browser.cleanSrc(browser.getDriver().getPageSource());
+		String source = HtmlUtils.cleanSrc(browser.getDriver().getPageSource());
 		
-		if(Browser.is503Error(source)) {
+		if(HtmlUtils.is503Error(source)) {
 			throw new ServiceUnavailableException("503(Service Unavailable) Error encountered. Starting over..");
 		}
 		
@@ -3365,10 +3368,10 @@ public class BrowserService {
 		String url_without_params = BrowserUtils.sanitizeUrl(page_url, true);
 		
 		//Element root = html_doc.getElementsByTag("body").get(0);
-		List<String> raw_stylesheets = Browser.extractStylesheets(page_src);
-		List<RuleSet> rule_sets = Browser.extractRuleSetsFromStylesheets(raw_stylesheets, new URL(page_url)); 
+		List<String> raw_stylesheets = HtmlUtils.extractStylesheets(page_src);
+		List<RuleSet> rule_sets = HtmlUtils.extractRuleSetsFromStylesheets(raw_stylesheets, new URL(page_url)); 
 		
-		String clean_source = Browser.cleanSrc(page_src);
+		String clean_source = HtmlUtils.cleanSrc(page_src);
 		URL clean_url = new URL(url_without_params);
 		List<com.looksee.models.Element> elements = extractElements(clean_source, clean_url, rule_sets);
 				
@@ -3459,7 +3462,7 @@ public class BrowserService {
 			
 			//BufferedImage img = browser.getElementScreenshot(form_elem);
 			//String checksum = PageState.getFileChecksum(img);
-			//Map<String, String> css_map = Browser.loadCssProperties(form_elem);
+			//Map<String, String> css_map = CssUtils.loadCssProperties(form_elem);
 			com.looksee.models.Element form_tag = new com.looksee.models.Element(
 					form_elem.getText(),
 					uniqifyXpath(form_elem, "//form", browser.getDriver()),
@@ -3628,7 +3631,7 @@ public class BrowserService {
 		log.warn("url 1  :: "+url);
 		Map<String, String> css_props = new HashMap<>();
 		try{
-			css_props.putAll(Browser.loadCssPrerenderedPropertiesUsingParser(rule_sets, root));
+			css_props.putAll(CssUtils.loadCssPrerenderedPropertiesUsingParser(rule_sets, root));
 		}
 		catch(Exception e) {
 			log.warn(e.getMessage());
@@ -3657,7 +3660,7 @@ public class BrowserService {
 			Map<String, String> pre_render_css_props = new HashMap<>();
 			
 			try{
-				pre_render_css_props.putAll(Browser.loadCssPrerenderedPropertiesUsingParser(rule_sets, element));
+				pre_render_css_props.putAll(CssUtils.loadCssPrerenderedPropertiesUsingParser(rule_sets, element));
 			}
 			catch(Exception e) {
 				log.warn(e.getMessage());

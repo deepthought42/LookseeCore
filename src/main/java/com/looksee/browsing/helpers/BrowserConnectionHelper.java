@@ -1,5 +1,6 @@
 package com.looksee.browsing.helpers;
 
+import com.looksee.browsing.BrowserFactory;
 import com.looksee.models.Browser;
 import com.looksee.models.enums.BrowserEnvironment;
 import com.looksee.models.enums.BrowserType;
@@ -7,7 +8,6 @@ import io.github.resilience4j.retry.annotation.Retry;
 import java.net.MalformedURLException;
 import java.net.URL;
 import lombok.NoArgsConstructor;
-import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,7 +42,7 @@ public class BrowserConnectionHelper {
 	}
 
 	/**
-	 * Creates a {@linkplain WebDriver} connection
+	 * Creates a {@link Browser} connection
 	 *
 	 * @param browser the browser to connect to
 	 * @param environment the environment to connect to
@@ -71,6 +71,6 @@ public class BrowserConnectionHelper {
 		}
 		SELENIUM_HUB_IDX++;
 
-		return new Browser(browser.toString(), hub_url);
+		return BrowserFactory.createBrowser(browser.toString(), hub_url);
 	}
 }
