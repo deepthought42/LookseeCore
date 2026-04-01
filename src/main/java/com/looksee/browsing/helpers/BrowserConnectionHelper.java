@@ -42,7 +42,7 @@ public class BrowserConnectionHelper {
 	}
 
 	/**
-	 * Creates a {@linkplain WebDriver} connection
+	 * Creates a {@link Browser} connection
 	 *
 	 * @param browser the browser to connect to
 	 * @param environment the environment to connect to
